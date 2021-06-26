@@ -4,7 +4,7 @@ using SkateSpot.Application.Features.SpotFeatures.Queries;
 
 namespace SkateSpot.Application.Services.Interfaces
 {
-	public interface ISpotService
+	public interface ISpotsService
 	{
 		List<SpotDto> GetSpots(GetSpotsQuery request);
 	}

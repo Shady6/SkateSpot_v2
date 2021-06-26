@@ -1,37 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using MediatR;
+﻿using Newtonsoft.Json;
 using SkateSpot.Application.DTOs.DomainDTOs;
-using SkateSpot.Application.Services.Interfaces;
 using SkateSpot.Domain.Models;
+using System;
+using System.Collections.Generic;
 
 namespace SkateSpot.Application.Features.TempSpotFeatures.Commands
 {
-	public class CreateTempSpotCommand : AuthorizedCommand, IRequest<Guid>
+	public class CreateTempSpotCommand
 	{
 		public string Name { get; set; }
+
 		public string Description { get; set; }
+
 		public AddressDto Address { get; set; }
+
 		public byte SurfaceScore { get; set; }
+
 		public ObstaclesDto Obstacles { get; set; }
+
 		public List<Image> Images { get; set; }
 
-		public class CreateTempSpotCommandHandler : IRequestHandler<CreateTempSpotCommand, Guid>
-		{
-			private readonly ITempSpotService _tempSpotService;
-
-			public CreateTempSpotCommandHandler(ITempSpotService tempSpotService)
-			{
-				_tempSpotService = tempSpotService;
-			}
-
-			public async Task<Guid> Handle(CreateTempSpotCommand request, CancellationToken cancellationToken)
-			{
-				var tempSpotId = await _tempSpotService.CreateTempSpot(request);
-				return tempSpotId;
-			}
-		}
+		[JsonIgnore]
+		public Guid UserId { get; set; }
 	}
 }

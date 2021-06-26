@@ -3,7 +3,7 @@ using SkateSpot.Application.Features.SpotVideoFeatures.Commands;
 
 namespace SkateSpot.Application.Services.Interfaces
 {
-	public interface ISpotVideoService
+	public interface ISpotVideosService
 	{
 		Task AddSpotVideo(AddSpotVideoCommand request);
 

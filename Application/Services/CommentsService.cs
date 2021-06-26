@@ -9,12 +9,12 @@ using SkateSpot.Application.Services.Interfaces;
 
 namespace SkateSpot.Application.Services
 {
-	public class CommentService : Service, ICommentService
+	public class CommentsService : Service, ICommentsService
 	{
 		private readonly ICommentRepository _commentRepository;
 		private readonly IMapper _mapper;
 
-		public CommentService(ICommentRepository commentRepository, IMapper mapper)
+		public CommentsService(ICommentRepository commentRepository, IMapper mapper)
 		{
 			_commentRepository = commentRepository;
 			_mapper = mapper;

@@ -8,12 +8,12 @@ using SkateSpot.Application.Services.Interfaces;
 
 namespace SkateSpot.Application.Services
 {
-	public class VoteService : Service, IVoteService
+	public class VotesService : Service, IVotesService
 	{
 		private readonly ITempSpotRepository _tempSpotRepository;
 		private readonly ISpotRepository _spotRepository;
 
-		public VoteService(ITempSpotRepository tempSpotRepository, ISpotRepository spotRepository)
+		public VotesService(ITempSpotRepository tempSpotRepository, ISpotRepository spotRepository)
 		{
 			_tempSpotRepository = tempSpotRepository;
 			_spotRepository = spotRepository;

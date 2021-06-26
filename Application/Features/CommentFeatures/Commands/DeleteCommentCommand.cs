@@ -1,13 +1,10 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using MediatR;
+﻿using Newtonsoft.Json;
 using SkateSpot.Application.DTOs;
-using SkateSpot.Application.Services.Interfaces;
+using System;
 
 namespace SkateSpot.Application.Features.CommentFeatures.Commands
 {
-	public class DeleteCommentCommand : AuthorizedCommand, IRequest
+	public class DeleteCommentCommand
 	{
 		public Guid SubjectId { get; set; }
 
@@ -15,20 +12,7 @@ namespace SkateSpot.Application.Features.CommentFeatures.Commands
 
 		public Guid CommentId { get; set; }
 
-		public class DeleteCommentCommandHandler : IRequestHandler<DeleteCommentCommand>
-		{
-			private readonly ICommentService _commentService;
-
-			public DeleteCommentCommandHandler(ICommentService commentService)
-			{
-				_commentService = commentService;
-			}
-
-			public async Task<Unit> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
-			{
-				await _commentService.DeleteComment(request);
-				return Unit.Value;
-			}
-		}
+		[JsonIgnore]
+		public Guid UserId { get; set; }
 	}
 }

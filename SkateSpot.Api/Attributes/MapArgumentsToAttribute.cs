@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using MediatR;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SkateSpot.Api.Extensions;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SkateSpot.Api.Attributes
 {
@@ -19,7 +20,7 @@ namespace SkateSpot.Api.Attributes
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			var actionArguments = filterContext.ActionArguments;
-			var requestCommand = actionArguments.First(a => a.Value is IRequest);
+			var requestCommand = actionArguments.First(a => a.Key == "request");
 
 			foreach (var actionArgument in actionArguments)
 			{
@@ -29,6 +30,9 @@ namespace SkateSpot.Api.Attributes
 					prop.SetValue(requestCommand.Value, actionArgument.Value, null);
 				}
 			}
+			var userIdProp = ObjectToMapToType.GetProperty("UserId");
+			if (userIdProp != null)
+				userIdProp.SetValue(requestCommand.Value, filterContext.HttpContext.User.GetUserId());
 			filterContext.ActionArguments["request"] = requestCommand.Value;
 		}
 	}

@@ -49,12 +49,12 @@ namespace SkateSpot.Application.Services
 		}
 	}
 
-	public class SpotService : ISpotService
+	public class SpotsService : ISpotsService
 	{
 		private readonly ISpotRepository _spotRepository;
 		private readonly IMapper _mapper;
 
-		public SpotService(ISpotRepository spotRepository, IMapper mapper)
+		public SpotsService(ISpotRepository spotRepository, IMapper mapper)
 		{
 			_spotRepository = spotRepository;
 			_mapper = mapper;

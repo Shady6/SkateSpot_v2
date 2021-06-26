@@ -7,7 +7,7 @@ using SkateSpot.Application.Features.TempSpotFeatures.Queries;
 
 namespace SkateSpot.Application.Services.Interfaces
 {
-	public interface ITempSpotService
+	public interface ITempSpotsService
 	{
 		Task<Guid> CreateTempSpot(CreateTempSpotCommand request);
 

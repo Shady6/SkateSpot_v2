@@ -1,31 +1,37 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkateSpot.Api.Attributes;
-using SkateSpot.Api.Controllers.Common;
-using SkateSpot.Application.Features.LikeFeatures.Commands;
 using SkateSpot.Application.Features.SpotVideoFeatures.Commands;
+using SkateSpot.Application.Services.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace SkateSpot.Api.Controllers
 {
 	[Route("api/")]
 	[ApiController]
 	[Authorize]
-	public class SpotVideosController : BaseApiController
+	public class SpotVideosController : ControllerBase
 	{
+		private readonly ISpotVideosService _spotVideosService;
+
+		public SpotVideosController(ISpotVideosService spotVideosService)
+		{
+			_spotVideosService = spotVideosService;
+		}
+
 		[HttpPost("spots/{spotId}/spotVideos")]
 		[MapArgumentsTo(typeof(AddSpotVideoCommand))]
-		public async Task<ActionResult> AddSpotVideo(Guid spotId, AddSpotVideoCommand request)
+		public async Task<ActionResult> AddSpotVideo([FromRoute] Guid spotId, [FromBody] AddSpotVideoCommand request)
 		{
-			await SendAsync(request);
+			await _spotVideosService.AddSpotVideo(request);
 			return Ok();
 		}
 
-		[HttpDelete("spots/{spotId}/spotVideos/{spotVideoId}")]		
+		[HttpDelete("spots/{spotId}/spotVideos/{spotVideoId}")]
 		public async Task<ActionResult> DeleteSpotVideo([FromRoute] DeleteSpotVideoCommand request)
 		{
-			await SendAsync(request);
+			await _spotVideosService.DeleteSpotVideo(request);
 			return Ok();
 		}
 	}

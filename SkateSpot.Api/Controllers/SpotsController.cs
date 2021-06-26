@@ -1,35 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkateSpot.Api.Attributes;
-using SkateSpot.Api.Controllers.Common;
-using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.SpotFeatures.Queries;
 using SkateSpot.Application.Features.SpotVideoFeatures.Commands;
+using SkateSpot.Application.Services.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace SkateSpot.Api.Controllers
 {
 	[Route("api/")]
 	[ApiController]
 	[Authorize]
-	public class SpotsController : BaseApiController
+	public class SpotsController : ControllerBase
 	{
+		private readonly ISpotsService _spotsService;
+
+		public SpotsController(ISpotsService spotsService)
+		{
+			_spotsService = spotsService;
+		}
+
 		[HttpPost("spots/{spotId}/spotVideos")]
 		[MapArgumentsTo(typeof(AddSpotVideoCommand))]
-		public async Task<ActionResult> AddSpotVideo(Guid spotId, AddSpotVideoCommand request)
+		public async Task<ActionResult> AddSpotVideo([FromRoute] Guid spotId, [FromBody] AddSpotVideoCommand request)
 		{
-			await SendAsync(request);
 			return Ok();
 		}
 
-		[HttpGet("spots")]	
+		[HttpGet("spots")]
 		[AllowAnonymous]
-		public async Task<ActionResult> AddSpotVideo(GetSpotsQuery request)
+		public async Task<ActionResult> AddSpotVideo([FromBody] GetSpotsQuery request)
 		{
-			var result = await SendAsync<List<SpotDto>, GetSpotsQuery>(request);
-			return Ok(result);
+			return Ok();
 		}
 	}
 }

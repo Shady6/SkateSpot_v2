@@ -14,14 +14,14 @@ using SkateSpot.Domain.Factories;
 
 namespace SkateSpot.Application.Services
 {
-	public class TempSpotService : Service, ITempSpotService
+	public class TempSpotsService : Service, ITempSpotsService
 	{
 		private readonly ISpotRepository _spotRepository;
 		private readonly ITempSpotRepository _tempSpotRepository;
 		private readonly IMapper _mapper;
 		private readonly IServiceScopeFactory _scopeFactory;
 
-		public TempSpotService(ISpotRepository spotRepository,
+		public TempSpotsService(ISpotRepository spotRepository,
 						 IMapper mapper,
 						 IServiceScopeFactory scopeFactory,
 						 ITempSpotRepository tempSpotRepository)

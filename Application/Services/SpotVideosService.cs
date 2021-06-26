@@ -6,11 +6,11 @@ using SkateSpot.Domain.Models;
 
 namespace SkateSpot.Application.Services
 {
-	public class SpotVideoService : Service, ISpotVideoService
+	public class SpotVideosService : Service, ISpotVideosService
 	{
 		private readonly ISpotRepository _spotRepository;
 
-		public SpotVideoService(ISpotRepository spotRepository)
+		public SpotVideosService(ISpotRepository spotRepository)
 		{
 			_spotRepository = spotRepository;
 		}

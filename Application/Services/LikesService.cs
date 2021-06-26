@@ -9,12 +9,12 @@ using SkateSpot.Application.Services.Interfaces;
 
 namespace SkateSpot.Application.Services
 {
-	public class LikeService : Service, ILikeService
+	public class LikesService : Service, ILikesService
 	{
 		private readonly ILikeRepository _likeRepository;
 		private readonly IMapper _mapper;
 
-		public LikeService(ILikeRepository LikeRepository, IMapper mapper)
+		public LikesService(ILikeRepository LikeRepository, IMapper mapper)
 		{
 			_likeRepository = LikeRepository;
 			_mapper = mapper;

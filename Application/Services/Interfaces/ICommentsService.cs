@@ -3,7 +3,7 @@ using SkateSpot.Application.Features.CommentFeatures.Commands;
 
 namespace SkateSpot.Application.Services.Interfaces
 {
-	public interface ICommentService
+	public interface ICommentsService
 	{
 		Task Comment(CommentCommand request);
 		Task DeleteComment(DeleteCommentCommand request);

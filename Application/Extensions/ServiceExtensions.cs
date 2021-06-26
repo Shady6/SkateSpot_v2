@@ -1,8 +1,6 @@
-﻿using System.Reflection;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SkateSpot.Application.Services;
-using SkateSpot.Application.Services.Interfaces;
+using System.Reflection;
 
 namespace SkateSpot.Extensions.Application
 {
@@ -10,7 +8,6 @@ namespace SkateSpot.Extensions.Application
 	{
 		public static void AddApplicationLayer(this IServiceCollection services)
 		{
-			services.AddMediatR(Assembly.GetExecutingAssembly());
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.Scan(scan =>
 			scan.FromCallingAssembly()

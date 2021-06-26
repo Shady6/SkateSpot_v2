@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -7,9 +6,10 @@ using SkateSpot.Application.DTOs.Identity;
 using SkateSpot.Application.DTOs.Mail;
 using SkateSpot.Application.DTOs.Settings;
 using SkateSpot.Application.Enums;
-using SkateSpot.Application.Features.UserFeatures.Commands;
 using SkateSpot.Application.Interfaces;
+using SkateSpot.Application.Interfaces.Repositories;
 using SkateSpot.Application.Interfaces.Shared;
+using SkateSpot.Domain.Models;
 using SkateSpot.Infrastructure.Identity.Models;
 using System;
 using System.Collections.Generic;
@@ -27,34 +27,35 @@ namespace SkateSpot.Infrastructure.Identity.Services
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
-		private readonly JWTSettings _jwtSettings;		
+		private readonly JWTSettings _jwtSettings;
 		private readonly IMailService _mailService;
-		private readonly IMediator _mediator;
+		private readonly IUserRepository _userRepository;
 
 		public IdentityService(UserManager<ApplicationUser> userManager,
-			RoleManager<IdentityRole> roleManager,
-			IOptions<JWTSettings> jwtSettings,
-			SignInManager<ApplicationUser> signInManager,
-			IMailService mailService, IMediator mediator)
+						 RoleManager<IdentityRole> roleManager,
+						 IOptions<JWTSettings> jwtSettings,
+						 SignInManager<ApplicationUser> signInManager,
+						 IMailService mailService,
+						 IUserRepository userRepository)
 		{
 			_userManager = userManager;
 			_roleManager = roleManager;
 			_jwtSettings = jwtSettings.Value;
 			_signInManager = signInManager;
 			_mailService = mailService;
-			_mediator = mediator;
+			_userRepository = userRepository;
 		}
 
 		public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress)
 		{
-			var user = await _userManager.FindByEmailAsync(request.Email);			
+			var user = await _userManager.FindByEmailAsync(request.Email);
 			if (user == null)
 				throw new Exception($"No Accounts Registered with {request.Email}.");
-			var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);			
+			var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
 			if (!user.EmailConfirmed)
-				throw new Exception($"Email is not confirmed for '{request.Email}'.");			
+				throw new Exception($"Email is not confirmed for '{request.Email}'.");
 			//if (!user.IsActive)
-			//	throw new Exception($"Account for '{request.Email}' is not active. Please contact the Administrator.");			
+			//	throw new Exception($"Account for '{request.Email}' is not active. Please contact the Administrator.");
 			if (!result.Succeeded)
 				throw new Exception($"Invalid Credentials for '{request.Email}'.");
 			JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user, ipAddress);
@@ -70,7 +71,7 @@ namespace SkateSpot.Infrastructure.Identity.Services
 			response.IsVerified = user.EmailConfirmed;
 			var refreshToken = GenerateRefreshToken(ipAddress);
 			response.RefreshToken = refreshToken.Token;
-			
+
 			return response;
 		}
 
@@ -151,9 +152,9 @@ namespace SkateSpot.Infrastructure.Identity.Services
 				if (result.Succeeded)
 				{
 					await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
-					var verificationUri = await CreateVerificationUri(user, origin);	
+					var verificationUri = await CreateVerificationUri(user, origin);
 					// TODO Uncomment when in production
-					 //_mailService.Send(new MailRequest() { To = user.Email, Body = $"Please confirm your account by <a href='{verificationUri}'>clicking here</a>.", Subject = "Confirm Registration" });					
+					//_mailService.Send(new MailRequest() { To = user.Email, Body = $"Please confirm your account by <a href='{verificationUri}'>clicking here</a>.", Subject = "Confirm Registration" });
 					return $"{verificationUri}";
 				}
 				else
@@ -185,14 +186,9 @@ namespace SkateSpot.Infrastructure.Identity.Services
 			code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
 			var result = await _userManager.ConfirmEmailAsync(user, code);
 			if (result.Succeeded)
-			{				
-				CreateUserCommand createUserCommand = new CreateUserCommand
-				{
-					Id = Guid.Parse(user.Id),
-					Email = user.Email,
-					UserName = user.UserName
-				};
-				await _mediator.Send(createUserCommand);
+			{
+				await _userRepository.AddAsync(new User(Guid.Parse(user.Id), user.Email, user.UserName));
+				await _userRepository.SaveChangesAsync();
 				return $"{user.Id} Account Confirmed for {user.Email}. You can now use the /api/identity/token endpoint to generate JWT.";
 			}
 			else
@@ -217,7 +213,7 @@ namespace SkateSpot.Infrastructure.Identity.Services
 				To = model.Email,
 				Subject = "Reset Password",
 			};
-			 _mailService.Send(emailRequest);
+			_mailService.Send(emailRequest);
 		}
 
 		public async Task<string> ResetPassword(ResetPasswordRequest model)
