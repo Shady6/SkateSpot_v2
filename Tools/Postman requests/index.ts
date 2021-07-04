@@ -45,8 +45,8 @@ const mergeCollections = (oldC: Collection, newC: Collection) => {
     let oldFlat = getFlatListOfItems(oldC);
     let newFlat = getFlatListOfItems(newC);
 
-    fs.writeFile('old_flat.json', JSON.stringify(oldFlat, null, 4), () => { });
-    fs.writeFile('new_flat.json', JSON.stringify(newFlat, null, 4), () => { });
+    // fs.writeFile('old_flat.json', JSON.stringify(oldFlat, null, 4), () => { });
+    // fs.writeFile('new_flat.json', JSON.stringify(newFlat, null, 4), () => { });
 
     newFlat.forEach(newItem => {
         // Get matching item
@@ -69,7 +69,7 @@ const mergeCollections = (oldC: Collection, newC: Collection) => {
             UpdateBody(newReq, oldReq);
         }
     });
-    fs.writeFile('merged.json', JSON.stringify(oldC, null, 4), () => { });
+    // fs.writeFile('merged.json', JSON.stringify(oldC, null, 4), () => { });
     return oldC;
 }
 

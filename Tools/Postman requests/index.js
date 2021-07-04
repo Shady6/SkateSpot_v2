@@ -38,8 +38,8 @@ const main = async () => {
 const mergeCollections = (oldC, newC) => {
     let oldFlat = getFlatListOfItems(oldC);
     let newFlat = getFlatListOfItems(newC);
-    fs.writeFile('old_flat.json', JSON.stringify(oldFlat, null, 4), () => { });
-    fs.writeFile('new_flat.json', JSON.stringify(newFlat, null, 4), () => { });
+    // fs.writeFile('old_flat.json', JSON.stringify(oldFlat, null, 4), () => { });
+    // fs.writeFile('new_flat.json', JSON.stringify(newFlat, null, 4), () => { });
     newFlat.forEach(newItem => {
         // Get matching item
         let matchingItem = oldFlat.filter(oldItem => oldItem.name.toLowerCase() == newItem.name.toLowerCase());
@@ -60,7 +60,7 @@ const mergeCollections = (oldC, newC) => {
             UpdateBody(newReq, oldReq);
         }
     });
-    fs.writeFile('merged.json', JSON.stringify(oldC, null, 4), () => { });
+    // fs.writeFile('merged.json', JSON.stringify(oldC, null, 4), () => { });
     return oldC;
 };
 const getFlatListOfItems = (col) => {
