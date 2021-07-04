@@ -1,0 +1,23 @@
+{
+  "name": "postman-requests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/node": "^15.12.4",
+    "@types/node-fetch": "^2.5.10",
+    "@types/postman-collection": "^3.5.5",
+    "dotenv": "^10.0.0",
+    "node-fetch": "^2.6.1",
+    "openapi-to-postmanv2": "^2.7.0",
+    "postman-collection": "^4.0.0",
+    "source-map-support": "^0.5.19"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
