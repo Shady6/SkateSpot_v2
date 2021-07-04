@@ -2,15 +2,15 @@
 {
 	public class Image
 	{
-		public string Link { get; protected set; }
+		public string Url { get; protected set; }
 
 		public Image()
 		{
 		}
 
-		public Image(string link)
+		public Image(string url)
 		{
-			Link = link;
+			Url = url;
 		}
 	}
 }

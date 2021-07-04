@@ -71,18 +71,20 @@ namespace SkateSpot.Domain.Models
 			var verifiedImages = Images.Count();
 			var freeImageSlots = maxImages - verifiedImages + imagesInVerification;
 			if (freeImageSlots == 0 && imagesInVerification != 0)
-				throw new DomainException(DomainErrorCode.IMAGES_MAXED, "The spot already has maximum number of images including images which are currently being verified.");
+				throw new DomainException(DomainErrorCode.IMAGES_MAXED, 
+					"The spot already has maximum number of images including images which are currently being verified.");
 			else if (freeImageSlots == 0)
-				throw new DomainException(DomainErrorCode.IMAGES_MAXED, "The spot already has maximum number of images.");
+				throw new DomainException(DomainErrorCode.IMAGES_MAXED, 
+					"The spot already has maximum number of images.");
 			else if (images.Count() > freeImageSlots)
-				throw new DomainException(DomainErrorCode.TOO_MANY_IMAGES, $"There spot has {verifiedImages} images and {imagesInVerification} " +
+				throw new DomainException(DomainErrorCode.TOO_MANY_IMAGES, 
+					$"There spot has {verifiedImages} images and {imagesInVerification} " +
 					$"are currently in verification. Spot can only have {maxImages} images so you can add maximum of {freeImageSlots}.");
 
 			var spotImageVerification = new SpotImagesVerification(images);
 			spotImageVerification.SetupVerificationProcess(userId);
 		}
-
-		// TODO work here
+		
 		public void HandleImagesVerificationEnd()
 		{
 			var imagesVerification = ImagesVerifications.FirstOrDefault(iv =>
