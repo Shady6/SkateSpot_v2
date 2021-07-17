@@ -4,7 +4,7 @@ namespace SkateSpot.Application.DTOs.Errors
 {
 	public class SkateSpotError
 	{
-		public DomainErrorCode ErrorCode { get; set; }
+		public ErrorCode ErrorCode { get; set; }
 		public string Message { get; set; }
 	}
 }

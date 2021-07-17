@@ -9,6 +9,7 @@ using SkateSpot.Application.Enums;
 using SkateSpot.Application.Interfaces;
 using SkateSpot.Application.Interfaces.Repositories;
 using SkateSpot.Application.Interfaces.Shared;
+using SkateSpot.Domain.Common;
 using SkateSpot.Domain.Models;
 using SkateSpot.Infrastructure.Identity.Models;
 using System;
@@ -50,14 +51,14 @@ namespace SkateSpot.Infrastructure.Identity.Services
 		{
 			var user = await _userManager.FindByEmailAsync(request.Email);
 			if (user == null)
-				throw new Exception($"No Accounts Registered with {request.Email}.");
+				throw new AppException(ErrorCode.BAD_INPUT, $"Email or password wrong.");
 			var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
 			if (!user.EmailConfirmed)
-				throw new Exception($"Email is not confirmed for '{request.Email}'.");
+				throw new AppException(ErrorCode.EMAIL_NOT_VERIFIED, $"Email is not confirmed for '{request.Email}'.");
 			//if (!user.IsActive)
 			//	throw new Exception($"Account for '{request.Email}' is not active. Please contact the Administrator.");
 			if (!result.Succeeded)
-				throw new Exception($"Invalid Credentials for '{request.Email}'.");
+				throw new AppException(ErrorCode.BAD_INPUT, $"Email or password wrong.");
 			JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user, ipAddress);
 			var response = new TokenResponse();
 			response.Id = user.Id;

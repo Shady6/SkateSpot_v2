@@ -14,7 +14,6 @@ namespace SkateSpot.Application.DTOs.Identity
 		public string JWToken { get; set; }
 		public DateTime IssuedOn { get; set; }
 		public DateTime ExpiresOn { get; set; }
-
 		[JsonIgnore]
 		public string RefreshToken { get; set; }
 	}

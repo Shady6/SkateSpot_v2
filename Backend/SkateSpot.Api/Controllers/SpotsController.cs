@@ -19,7 +19,7 @@ namespace SkateSpot.Api.Controllers
 		}
 
 		[HttpGet]
-		[AllowAnonymous]		
+		[AllowAnonymous]
 		public async Task<ActionResult> GetSpots([FromBody] GetSpotsQuery request)
 		{
 			var response = _spotsService.GetSpots(request);

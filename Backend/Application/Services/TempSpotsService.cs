@@ -1,16 +1,16 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Factories;
 using SkateSpot.Application.Features.TempSpotFeatures.Commands;
 using SkateSpot.Application.Features.TempSpotFeatures.Queries;
 using SkateSpot.Application.Interfaces.Repositories;
-using SkateSpot.Application.Services.Common;
 using SkateSpot.Application.Services.Interfaces;
 using SkateSpot.Application.Utility;
+using SkateSpot.Domain.Common;
 using SkateSpot.Domain.Factories;
+using System;
+using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Services
 {
@@ -36,11 +36,11 @@ namespace SkateSpot.Application.Services
 		{
 			var foundSpot = await _spotRepository.FindByNameAsync(request.Name);
 			if (foundSpot != null)
-				throw new ServiceException(ServiceErrorCode.ALREADY_EXISTS, $"Spot with name {request.Name} already exists.");
+				throw new AppException(ErrorCode.ALREADY_EXISTS, $"Spot with name {request.Name} already exists.");
 
 			var foundTempSpot = await _tempSpotRepository.FindByNameAsync(request.Name);
 			if (foundTempSpot != null)
-				throw new ServiceException(ServiceErrorCode.ALREADY_EXISTS, $"Spot with name {request.Name} is already in verification process.");
+				throw new AppException(ErrorCode.ALREADY_EXISTS, $"Spot with name {request.Name} is already in verification process.");
 
 			var tempSpot = TempSpotFactory.CreateTempSpotFromCreateCommand(request, _mapper);
 

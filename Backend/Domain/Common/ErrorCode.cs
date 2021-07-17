@@ -1,16 +1,16 @@
 ﻿namespace SkateSpot.Domain.Common
 {
-	public enum DomainErrorCode
+	public enum ErrorCode
 	{
 		DEFAULT_ERROR,
 		ALREADY_EXISTS,
 		VOTING_FINISHED,
-		DOESNT_EXIST,
-		NOT_FOUND,
+		DOESNT_EXIST,		
 		NOT_OWNED,
-		CANT_DO_THAT_YET,
+		EMAIL_NOT_VERIFIED,
 		CANT_DO_THAT,
 		IMAGES_MAXED,
-		TOO_MANY_IMAGES
+		TOO_MANY_IMAGES,
+		BAD_INPUT
 	}
 }

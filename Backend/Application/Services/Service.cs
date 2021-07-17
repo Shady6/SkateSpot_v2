@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SkateSpot.Application.Services.Interfaces;
+using SkateSpot.Domain.Common;
+using System;
 using System.Threading.Tasks;
-using SkateSpot.Application.Services.Common;
-using SkateSpot.Application.Services.Interfaces;
 
 namespace SkateSpot.Application.Services
 {
@@ -11,7 +11,7 @@ namespace SkateSpot.Application.Services
 		{
 			var result = await func();
 			if (result == null)
-				throw new ServiceException(ServiceErrorCode.DOESNT_EXIST, "The object doesn't exist.");
+				throw new AppException(ErrorCode.DOESNT_EXIST, "The object doesn't exist.");
 			return result;
 		}
 	}

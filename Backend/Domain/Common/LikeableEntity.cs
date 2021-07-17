@@ -19,7 +19,7 @@ namespace SkateSpot.Domain.Common
 		{
 			var foundLike = Likes.FirstOrDefault(c => c.GiverId == like.GiverId);
 			if (foundLike != null)
-				throw new DomainException(DomainErrorCode.ALREADY_EXISTS, "You've already liked this.");
+				throw new AppException(ErrorCode.ALREADY_EXISTS, "You've already liked this.");
 
 			Likes.Add(like);
 		}
@@ -28,7 +28,7 @@ namespace SkateSpot.Domain.Common
 		{
 			var foundLike = Likes.FirstOrDefault(c => c.GiverId == userId);
 			if (foundLike == null)
-				throw new DomainException(DomainErrorCode.DOESNT_EXIST, "You have no like to delete.");
+				throw new AppException(ErrorCode.DOESNT_EXIST, "You have no like to delete.");
 
 			Likes.Remove(foundLike);
 		}

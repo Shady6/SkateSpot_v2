@@ -71,13 +71,13 @@ namespace SkateSpot.Domain.Models
 			var verifiedImages = Images.Count();
 			var freeImageSlots = maxImages - verifiedImages + imagesInVerification;
 			if (freeImageSlots == 0 && imagesInVerification != 0)
-				throw new DomainException(DomainErrorCode.IMAGES_MAXED, 
+				throw new AppException(ErrorCode.IMAGES_MAXED, 
 					"The spot already has maximum number of images including images which are currently being verified.");
 			else if (freeImageSlots == 0)
-				throw new DomainException(DomainErrorCode.IMAGES_MAXED, 
+				throw new AppException(ErrorCode.IMAGES_MAXED, 
 					"The spot already has maximum number of images.");
 			else if (images.Count() > freeImageSlots)
-				throw new DomainException(DomainErrorCode.TOO_MANY_IMAGES, 
+				throw new AppException(ErrorCode.TOO_MANY_IMAGES, 
 					$"There spot has {verifiedImages} images and {imagesInVerification} " +
 					$"are currently in verification. Spot can only have {maxImages} images so you can add maximum of {freeImageSlots}.");
 
@@ -116,11 +116,11 @@ namespace SkateSpot.Domain.Models
 		{
 			var foundVideo = Videos.FirstOrDefault(v => v.Id == spotVideoId);
 			if (foundVideo == null)
-				throw new DomainException(DomainErrorCode.DOESNT_EXIST, "The video you're trying to delete doesn't exist.");
+				throw new AppException(ErrorCode.DOESNT_EXIST, "The video you're trying to delete doesn't exist.");
 			else if (foundVideo.AuthorId != userId)
-				throw new DomainException(DomainErrorCode.NOT_OWNED, "You don't own this video.");
+				throw new AppException(ErrorCode.NOT_OWNED, "You don't own this video.");
 			Videos.Remove(foundVideo);
-		}
+		}		
 
 		public void AddLike(Like like) =>
 			Likeable.AddLike(like);

@@ -21,8 +21,8 @@ namespace SkateSpot.Domain.Models
 		public CommentableEntity Commentable { get; protected set; } = new CommentableEntity();
 
 		public readonly TimeSpan VerificationDuration = TimeSpan.FromDays(1);
-		private readonly int MinRealVotesToConsiderVerifyOnAdd = 30;
-		private readonly int MinRealFakeRatioToVerify = 3;
+		private const int MinRealVotesToConsiderVerifyOnAdd = 30;
+		private const int MinRealFakeRatioToVerify = 3;
 
 		public VerificationProcess()
 		{
@@ -53,7 +53,7 @@ namespace SkateSpot.Domain.Models
 				SetIsVerifiedOnVotesChanged();
 			}
 			else
-				throw new DomainException(DomainErrorCode.DOESNT_EXIST, "You don't have a vote to delete.");
+				throw new AppException(ErrorCode.DOESNT_EXIST, "You don't have a vote to delete.");
 		}
 
 		public void Vote(Guid voterId, bool isReal)

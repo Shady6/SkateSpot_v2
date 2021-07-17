@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SkateSpot.Api.Data;
 using SkateSpot.Application.DTOs.Identity;
 using SkateSpot.Application.Interfaces;
 using System.Threading.Tasks;
@@ -17,7 +18,8 @@ namespace SkateSpot.Api.Controllers.Identity
 		}
 
 		[HttpPost("token")]
-		public async Task<IActionResult> GetToken([FromBody] TokenRequest tokenRequest)
+		[ProducesResponseType(typeof(ApiResponse<TokenResponse>), 200)]
+		public async Task<ActionResult<TokenResponse>> GetToken([FromBody] TokenRequest tokenRequest)
 		{
 			var ipAddress = GenerateIPAddress();
 			var token = await _identityService.GetTokenAsync(tokenRequest, ipAddress);
@@ -25,27 +27,27 @@ namespace SkateSpot.Api.Controllers.Identity
 		}
 
 		[HttpPost("register")]
-		public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+		public async Task<ActionResult<string>> Register([FromBody] RegisterRequest request)
 		{
 			var origin = Request.Headers["origin"];
 			return Ok(await _identityService.RegisterAsync(request, origin));
 		}
 
 		[HttpGet("confirm-email")]
-		public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string code)
+		public async Task<ActionResult<string>> ConfirmEmail([FromQuery] string userId, [FromQuery] string code)
 		{
 			return Ok(await _identityService.ConfirmEmailAsync(userId, code));
 		}
 
 		[HttpPost("forgot-password")]
-		public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest model)
+		public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequest model)
 		{
 			await _identityService.ForgotPassword(model, Request.Headers["origin"]);
 			return Ok();
 		}
 
 		[HttpPost("reset-password")]
-		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest model)
+		public async Task<ActionResult<string>> ResetPassword([FromBody] ResetPasswordRequest model)
 		{
 			return Ok(await _identityService.ResetPassword(model));
 		}

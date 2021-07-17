@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SkateSpot.Api.Extensions;
+using SkateSpot.Api.Middleware;
 using SkateSpot.Api.Swagger;
 using SkateSpot.Extensions.Application;
 using SkateSpot.Infrastructure.Extensions;
@@ -13,7 +14,7 @@ using System.Text.Json.Serialization;
 namespace SkateSpot.Api
 {
 	public class Startup
-	{
+	{		
 		public Startup(IConfiguration configuration)
 		{
 			_configuration = configuration;
@@ -30,6 +31,16 @@ namespace SkateSpot.Api
 			services.AddRepositories();
 			services.AddSharedInfrastructure(_configuration);
 			services.RegisterSwagger();
+			services.AddCors(options =>
+			{
+				options.AddDefaultPolicy(builder =>
+				{
+					builder
+					.AllowAnyOrigin()
+					.AllowAnyHeader()
+					.AllowAnyMethod();					
+				});
+			});
 
 			services.AddControllers().AddJsonOptions(o =>
 			{
@@ -42,16 +53,19 @@ namespace SkateSpot.Api
 		{
 			if (env.IsDevelopment())
 			{				
-				//app.UseExceptionHandler("/error");
 				app.UseDeveloperExceptionPage();
 			}
 
-			app.ConfigureSwagger();
+			app.ConfigureSwagger();				
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+			app.UseCors();
+			app.UseMiddleware<ToApiResponseConverter>();
+			app.UseMiddleware<ExceptionHandler>();
 			app.UseAuthentication();
 			app.UseAuthorization();
+
 
 			app.UseEndpoints(endpoints =>
 			{

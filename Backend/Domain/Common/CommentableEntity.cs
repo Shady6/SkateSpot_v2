@@ -37,9 +37,9 @@ namespace SkateSpot.Domain.Common
 		private void ValidateComment(Comment comment, Guid userId)
 		{
 			if (comment == null)
-				throw new DomainException(DomainErrorCode.DOESNT_EXIST, "The comment doesn't exist.");
+				throw new AppException(ErrorCode.DOESNT_EXIST, "The comment doesn't exist.");
 			else if (comment.AuthorId != userId)
-				throw new DomainException(DomainErrorCode.NOT_OWNED, "You don't own this comment.");
+				throw new AppException(ErrorCode.NOT_OWNED, "You don't own this comment.");
 		}
 	}
 }

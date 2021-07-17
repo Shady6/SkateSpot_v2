@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace SkateSpot.Api
 {
 	public class Program
 	{
-		public async static Task Main(string[] args)
+		public static void Main(string[] args)
 		{
 			var host = CreateHostBuilder(args).Build();
 			host.Run();
