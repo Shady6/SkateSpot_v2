@@ -14,7 +14,7 @@ using System.Text.Json.Serialization;
 namespace SkateSpot.Api
 {
 	public class Startup
-	{		
+	{
 		public Startup(IConfiguration configuration)
 		{
 			_configuration = configuration;
@@ -36,9 +36,9 @@ namespace SkateSpot.Api
 				options.AddDefaultPolicy(builder =>
 				{
 					builder
-					.AllowAnyOrigin()
+					.WithOrigins("http://localhost:3000")
 					.AllowAnyHeader()
-					.AllowAnyMethod();					
+					.AllowAnyMethod();
 				});
 			});
 
@@ -52,11 +52,11 @@ namespace SkateSpot.Api
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider sp)
 		{
 			if (env.IsDevelopment())
-			{				
+			{
 				app.UseDeveloperExceptionPage();
 			}
 
-			app.ConfigureSwagger();				
+			app.ConfigureSwagger();
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
