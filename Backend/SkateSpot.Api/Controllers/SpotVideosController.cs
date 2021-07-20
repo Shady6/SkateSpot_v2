@@ -21,7 +21,7 @@ namespace SkateSpot.Api.Controllers
 		}
 
 		[HttpPost("spots/{spotId}/spotVideos")]
-		[MapArgumentsTo(typeof(AddSpotVideoCommand))]
+		[MapsRouteArgumentsIntoBody(typeof(AddSpotVideoCommand))]
 		public async Task<ActionResult> AddSpotVideo([FromRoute] Guid spotId, [FromBody] AddSpotVideoCommand request)
 		{
 			await _spotVideosService.AddSpotVideo(request);

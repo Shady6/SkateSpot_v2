@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SkateSpot.Api.Attributes
 {
-	public class MapArgumentsToAttribute : ActionFilterAttribute
+	public class MapsRouteArgumentsIntoBodyAttribute : ActionFilterAttribute
 	{
 		public Type ObjectToMapToType { get; set; }
 
-		public MapArgumentsToAttribute(Type objectToMapToType)
+		public MapsRouteArgumentsIntoBodyAttribute(Type objectToMapToType)
 		{
 			ObjectToMapToType = objectToMapToType;
 		}

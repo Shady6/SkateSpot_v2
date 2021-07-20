@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using SkateSpot.Application.DTOs.DomainDTOs;
-using SkateSpot.Application.Features.SpotFeatures.Queries;
+﻿using SkateSpot.Application.DTOs.DomainDTOs;
+using System.Collections.Generic;
 
 namespace SkateSpot.Application.Services.Interfaces
 {
 	public interface ISpotsService
 	{
-		List<SpotDto> GetSpots(GetSpotsQuery request);
+		List<SpotDto> GetSpots();
 	}
 }

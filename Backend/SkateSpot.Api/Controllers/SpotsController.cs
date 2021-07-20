@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SkateSpot.Application.Features.SpotFeatures.Queries;
+using SkateSpot.Api.Data;
+using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Services.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SkateSpot.Api.Controllers
@@ -20,9 +22,11 @@ namespace SkateSpot.Api.Controllers
 
 		[HttpGet]
 		[AllowAnonymous]
-		public async Task<ActionResult> GetSpots([FromBody] GetSpotsQuery request)
+		[ProducesResponseType(typeof(ApiResponse<List<SpotDto>>), 200)]
+		public async Task<ActionResult<List<SpotDto>>> GetSpots()
+		//public async Task<ActionResult> GetSpots([FromQuery] GetSpotsQuery request)
 		{
-			var response = _spotsService.GetSpots(request);
+			var response = _spotsService.GetSpots();
 			return Ok(response);
 		}
 	}

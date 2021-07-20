@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.DTOs.SearchFiltering;
-using SkateSpot.Application.Features.SpotFeatures.Queries;
 using SkateSpot.Application.Interfaces.Repositories;
 using SkateSpot.Application.Services.Interfaces;
 using SkateSpot.Domain.Models;
@@ -56,7 +55,7 @@ namespace SkateSpot.Application.Services
 			_mapper = mapper;
 		}
 
-		public List<SpotDto> GetSpots(GetSpotsQuery request)
+		public List<SpotDto> GetSpots()
 		{
 			var spots = _spotRepository.GetSpots();
 

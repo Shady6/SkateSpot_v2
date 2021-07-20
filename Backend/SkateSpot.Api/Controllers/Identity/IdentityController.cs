@@ -27,6 +27,7 @@ namespace SkateSpot.Api.Controllers.Identity
 		}
 
 		[HttpPost("register")]
+		[ProducesResponseType(typeof(ApiResponse<string>), 200)]
 		public async Task<ActionResult<string>> Register([FromBody] RegisterRequest request)
 		{
 			var origin = Request.Headers["origin"];
@@ -34,6 +35,7 @@ namespace SkateSpot.Api.Controllers.Identity
 		}
 
 		[HttpGet("confirm-email")]
+		[ProducesResponseType(typeof(ApiResponse<string>), 200)]
 		public async Task<ActionResult<string>> ConfirmEmail([FromQuery] string userId, [FromQuery] string code)
 		{
 			return Ok(await _identityService.ConfirmEmailAsync(userId, code));
@@ -47,6 +49,7 @@ namespace SkateSpot.Api.Controllers.Identity
 		}
 
 		[HttpPost("reset-password")]
+		[ProducesResponseType(typeof(ApiResponse<string>), 200)]
 		public async Task<ActionResult<string>> ResetPassword([FromBody] ResetPasswordRequest model)
 		{
 			return Ok(await _identityService.ResetPassword(model));

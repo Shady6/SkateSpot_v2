@@ -7,3 +7,4 @@ export const store = createStore(
     reducers,
     composeWithDevTools(applyMiddleware(thunk))
     )
+

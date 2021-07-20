@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SkateSpot.Api.Data;
+using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.TempSpotFeatures.Commands;
 using SkateSpot.Application.Features.TempSpotFeatures.Queries;
 using SkateSpot.Application.Services.Interfaces;
+using System;
 using System.Threading.Tasks;
 
 namespace SkateSpot.Api.Controllers
@@ -20,14 +23,15 @@ namespace SkateSpot.Api.Controllers
 
 		[Authorize]
 		[HttpPost]
-		public async Task<ActionResult> CreateSpot([FromBody] CreateTempSpotCommand request)
+		[ProducesResponseType(typeof(ApiResponse<Guid>), 200)]
+		public async Task<ActionResult<Guid>> CreateSpot([FromBody] CreateTempSpotCommand request)
 		{
-			var spotId = await _tempSpotsService.CreateTempSpot(request);
-			return Ok(new { spotId });
+			return Ok(await _tempSpotsService.CreateTempSpot(request));
 		}
 
 		[HttpGet("{spotId}")]
-		public async Task<ActionResult> GetWithVerification([FromRoute] GetTempSpotWithVerificationQuery request)
+		[ProducesResponseType(typeof(ApiResponse<TempSpotWithVerificationDto>), 200)]
+		public async Task<ActionResult<TempSpotWithVerificationDto>> GetWithVerification([FromRoute] GetTempSpotWithVerificationQuery request)
 		{
 			var spot = await _tempSpotsService.GetTempSpotWithVerification(request);
 			return Ok(spot);
