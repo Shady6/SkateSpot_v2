@@ -1,18 +1,40 @@
-import React, { ChangeEvent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { login as loginAction } from './state/auth/authActions';
-import { RootState } from './state/index';
-import Login from './components/auth/Login';
-import Register from './components/auth/Register';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import routes from "./routes/appRoutes"
+import Navigation from './components/Navigation';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setAuthStateFromLocalStorage } from './state/auth/authActions';
 
-const App = () => {
+
+const App: React.FC = () => {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(setAuthStateFromLocalStorage())
+  }, [])
 
   return (
-    <>
-      <Login />
-      <Register />
-    </>
+    <div>             
+      <BrowserRouter>
+      <Navigation /> 
+        <Switch>
+          {routes.map((route, index) => {
+            return <Route
+              key={index}
+              path={route.path}
+              exact={route.exact}
+              render={() => (
+                <route.component
+                  name={route.name}
+                  {...route.props}
+                />
+              )}
+            />
+          })}
+        </Switch>
+      </BrowserRouter>
+    </div>
   );
 }
 

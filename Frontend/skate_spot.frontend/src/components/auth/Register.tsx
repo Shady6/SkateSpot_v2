@@ -1,14 +1,9 @@
+import React from 'react'
 
-import React, { FC, ReactElement } from 'react'
-
-interface Props {
-    
-}
-
-function Register({}: Props): ReactElement {
+const Register: React.FC = () => {
     return (
         <div>
-            
+            <h1>Register page</h1>          
         </div>
     )
 }

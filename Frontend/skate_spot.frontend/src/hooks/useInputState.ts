@@ -12,4 +12,4 @@ export const useInputState = (initialState: string):
         },
         () => setInput("")
     ]
-}
+} 

@@ -1,37 +1,62 @@
-import React, { ReactElement, useState } from 'react'
+import { Button, Container, FormControl, FormGroup, Input, InputLabel } from '@material-ui/core';
+import Alert from '@material-ui/core/Alert';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useHistory } from 'react-router-dom';
 import { useInputState } from '../../hooks/useInputState';
-import { login as loginAction } from '../../state/auth/authActions';
+import { useRootState } from '../../hooks/useRootState';
+import { login } from '../../state/auth/authActions';
+import { AuthStateEnum } from '../../state/auth/authReducer';
 
-interface Props {
+const Login: React.FC = () => {
 
-}
+    const [email, setInputEmail] = useInputState("")
+    const [password, setInputPassword] = useInputState("")
+    const [usedLoginButton, setUsedLoginButton] = useState(false)
 
-function Login({ }: Props): ReactElement {
+    const authState = useRootState().auth
 
-    const [email, setInputEmail, clearEmail] = useInputState("")
-    const [password, setInputPassword, clearPassword] = useInputState("")
+    const history = useHistory()
 
-    const login = bindActionCreators(loginAction, useDispatch())
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (usedLoginButton && authState.status === AuthStateEnum.OK)
+            history.push("/")
+    }, [authState.status])
 
     return (
-        <div>
-            <label htmlFor="">email</label>
-            <input
-                value={email}
-                type="email"
-                onChange={setInputEmail} name="" id="" />
-            <label htmlFor="">password</label>
-            <input
-                value={password}
-                type="password"
-                onChange={(e) => updateStateFromTextInput(e, setInputPassword)} name="" id="" />
-            <button onClick={() => {
-                login({ email: email, password: password })
-                clearTextStates([setInputEmail, setInputPassword])
-            }}>Login</button>
-        </div>
+        <Container>
+            <FormGroup>
+                <FormControl margin={"dense"}>
+                    <InputLabel htmlFor="email-input">Email address</InputLabel>
+                    <Input
+                        id="email-input"
+                        value={email}
+                        onChange={setInputEmail}
+                    />
+                </FormControl>
+                <FormControl margin={"dense"}>
+                    <InputLabel htmlFor="password-input">Password</InputLabel>
+                    <Input
+                        type={"password"}
+                        id="password-input"
+                        value={password}
+                        onChange={setInputPassword}
+                    />
+                </FormControl>
+                {
+                    authState.status === AuthStateEnum.FAILED &&
+                    <Alert severity="error">{authState.error}</Alert>
+                }
+                <Button onClick={() => {
+                    dispatch(login({ email: email, password: password }))          
+                    setUsedLoginButton(true)
+                }}>
+                    Login
+                </Button>
+            </FormGroup>
+        </Container>
     )
 }
 

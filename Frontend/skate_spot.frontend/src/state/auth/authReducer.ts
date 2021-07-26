@@ -1,13 +1,35 @@
-import { ITokenResponse, TokenResponse } from "../../skate_spot_api/client"
-import { AuthActions, AuthActionTypes } from "./authActionTypes"
+import { ITokenResponse, TokenResponse } from '../../skate_spot_api/client';
+import { AuthActions, AuthActionTypes } from './authActionTypes';
 
+export enum AuthStateEnum{
+    OK,
+    FAILED,
+    NONE
+}
 
-const initialState: ITokenResponse = new TokenResponse()
+interface IAuthState{
+    content?: ITokenResponse,
+    error?: string
+    status: AuthStateEnum
+}
 
-export const authReducer = (state: ITokenResponse = initialState, action: AuthActions) => {
+const initialState: IAuthState = {
+    status: AuthStateEnum.NONE
+};
+
+export const authReducer = (state: IAuthState = initialState, action: AuthActions): IAuthState => {
     switch (action.type) {
         case AuthActionTypes.LOGIN_SUCCESS:
-            return action.payload    
+            return {
+                status: AuthStateEnum.OK,
+                content: action.payload
+            }
+        case AuthActionTypes.LOGIN_FAILURE:
+            return {
+                ...state,
+                status: AuthStateEnum.FAILED,
+                error: action.payload
+            }
         default:
             return state
     }
