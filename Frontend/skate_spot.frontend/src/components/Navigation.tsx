@@ -1,18 +1,19 @@
-import React from 'react'
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Routes } from '../routes/appRoutes';
+import hasRouteAccess from '../functions/hasRouteAccess';
 import { useRootState } from '../hooks/importIndex';
+import routes from '../routes/appRoutes';
 
 const Navigation: React.FC = () => {
 
     const authState = useRootState().auth
 
+    const renderLinks = () => routes.map(r => hasRouteAccess(r, authState) ?
+        <li key={r.linkName}><Link to={r.path}>{r.linkName}</Link></li> : null)
+
     return (
         <ul>
-            <li><Link to={Routes.HOME}>Home</Link></li>
-            <li><Link to={Routes.LOGIN}>Login</Link></li>
-            <li><Link to={Routes.REGISTER}>Register</Link></li>
-            <li><Link to={Routes.ADD_TEMP_SPOT}>Add spot</Link></li>
+            {renderLinks()}
             {authState.content?.userName}
         </ul>
     )

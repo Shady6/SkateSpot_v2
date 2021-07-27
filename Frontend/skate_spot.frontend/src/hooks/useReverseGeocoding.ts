@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { GeoLocation } from '../components/types/inComponentTypes';
 import reverseGeocode from '../functions/reverseGeocode';
+import { GeoLocation } from '../types/types';
 
 export const useReverseGeocoding = (
     marker: L.Marker<any> | null,

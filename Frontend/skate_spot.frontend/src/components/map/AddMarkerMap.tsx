@@ -1,7 +1,7 @@
 import L from 'leaflet';
 import React, { useState } from 'react';
 import { useReverseGeocoding } from '../../hooks/useReverseGeocoding';
-import { GeoLocation } from '../types/inComponentTypes';
+import { GeoLocation } from '../../types/types';
 import Map from './Map';
 
 interface Props {

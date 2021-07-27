@@ -1,10 +1,11 @@
-import { DefaultAddress, Geocode } from '../components/types/inComponentTypes';
+import { DefaultAddress, Geocode } from '../types/types';
 
-const reverseGeocode = async (coords: { lat: number, lng: number }): Promise<DefaultAddress | undefined> => {
+const reverseGeocode = async (coords: { lat: number, lng: number }):
+    Promise<DefaultAddress | undefined> => {
 
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${coords.lat}&lon=${coords.lng}&format=json`;
     let address: DefaultAddress | undefined = undefined;
-
+    
     try {
         const response = await fetch(url)
         const jsonContent: any = await response.json()

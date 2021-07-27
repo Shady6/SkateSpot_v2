@@ -35,3 +35,13 @@ export interface Geocode {
     address: GeocodeAddress;
     boundingbox: string[];
 }
+
+export enum UserRoles {   
+    ALL_ROLES = "All",
+    SIGNED_IN_ROLES = "SignedInRoles",
+    NO_ROLE = "NoRole",
+    BASIC = "Basic",
+    MODERATOR = "Moderator",
+    ADMIN = "Admin",
+    SUPER_ADMIN = "SuperAdmin"
+}

@@ -1,17 +1,19 @@
 import { ITokenResponse } from '../../skate_spot_api/client';
 import { AuthActions, AuthActionTypes } from '../action_types/authActionTypes';
 
-interface IAuthState {
+export interface AuthState {
     content?: ITokenResponse,
     error?: string,
     loading: boolean    
 }
 
-const initialState: IAuthState = {loading: false};
+const initialState: AuthState = {loading: false};
 
-export const authReducer = (state: IAuthState = initialState, action: AuthActions): IAuthState => {
+export const authReducer = (state: AuthState = initialState, action: AuthActions): AuthState => {
     switch (action.type) {
         case AuthActionTypes.LOGIN_SUCCESS:
+            if (!Array.isArray(action.payload.roles))
+                action.payload.roles = [action.payload.roles as unknown as string]
             return {                
                 content: action.payload,
                 loading: false
