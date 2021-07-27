@@ -3,10 +3,8 @@ import Alert from '@material-ui/core/Alert';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { useInputState } from '../../hooks/useInputState';
-import { useRootState } from '../../hooks/useRootState';
-import { login } from '../../state/auth/authActions';
-import { AuthStateEnum } from '../../state/auth/authReducer';
+import { login } from "../../state/import_indexes/authIndex"
+import { useInputState, useRootState } from '../../hooks/importIndex';
 
 const Login: React.FC = () => {
 
@@ -14,16 +12,15 @@ const Login: React.FC = () => {
     const [password, setInputPassword] = useInputState("")
     const [usedLoginButton, setUsedLoginButton] = useState(false)
 
-    const authState = useRootState().auth
-
     const history = useHistory()
 
+    const authState = useRootState().auth
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (usedLoginButton && authState.status === AuthStateEnum.OK)
+        if (usedLoginButton && authState.content)
             history.push("/")
-    }, [authState.status])
+    }, [authState.content])
 
     return (
         <Container>
@@ -46,11 +43,11 @@ const Login: React.FC = () => {
                     />
                 </FormControl>
                 {
-                    authState.status === AuthStateEnum.FAILED &&
+                    authState.error &&
                     <Alert severity="error">{authState.error}</Alert>
                 }
                 <Button onClick={() => {
-                    dispatch(login({ email: email, password: password }))          
+                    dispatch(login({ email: email, password: password }))
                     setUsedLoginButton(true)
                 }}>
                     Login

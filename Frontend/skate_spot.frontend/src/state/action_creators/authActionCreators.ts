@@ -1,10 +1,12 @@
 import { Client, ITokenRequest, TokenRequest, ITokenResponse, ApiException, TokenResponseApiResponse } from '../../skate_spot_api/client';
 import { Dispatch } from "redux"
-import { AuthActions, AuthActionTypes } from './authActionTypes';
+import { AuthActions, AuthActionTypes } from '../action_types/authActionTypes';
+import { JWTPayload } from '../types/authTypes';
 
 
 export const login = (loginData: ITokenRequest) => {
     return async (dispatch: Dispatch<AuthActions>) => {
+        dispatch({ type: AuthActionTypes.LOADING })
         const client = new Client("https://localhost:44309")
         try {
             const response = await client.get_Token(new TokenRequest(loginData))
@@ -24,26 +26,13 @@ export const login = (loginData: ITokenRequest) => {
     }
 }
 
-interface JWTPayload {
-    sub: string,
-    jti: string,
-    email: string,
-    uid: string,
-    ip: string,
-    roles: string[],
-    nbf: number,
-    exp: number,
-    iss: string,
-    aud: string
-}
-
 export const setAuthStateFromLocalStorage = () => {
     return async (dispatch: Dispatch<AuthActions>) => {
         const token = localStorage.getItem("SkateSpotJWT")
         if (token) {
             try {
                 const JWTPayload: JWTPayload = JSON.parse(atob(token.split(".")[1]))
-                if ((new Date()).getTime() < JWTPayload.exp * 1000) {
+                if (isTokenExpired(JWTPayload)) {
                     dispatch({
                         type: AuthActionTypes.LOGIN_SUCCESS,
                         payload: {
@@ -66,4 +55,8 @@ export const setAuthStateFromLocalStorage = () => {
             }
         }
     }
+}
+
+const isTokenExpired = (token: JWTPayload) => {
+    return (new Date()).getTime() < token.exp * 1000
 }

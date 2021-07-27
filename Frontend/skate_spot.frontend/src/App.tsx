@@ -3,7 +3,7 @@ import routes from "./routes/appRoutes"
 import Navigation from './components/Navigation';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setAuthStateFromLocalStorage } from './state/auth/authActions';
+import { setAuthStateFromLocalStorage } from './state/import_indexes/authIndex';
 
 
 const App: React.FC = () => {
@@ -15,9 +15,9 @@ const App: React.FC = () => {
   }, [])
 
   return (
-    <div>             
+    <div>
       <BrowserRouter>
-      <Navigation /> 
+        <Navigation />
         <Switch>
           {routes.map((route, index) => {
             return <Route
