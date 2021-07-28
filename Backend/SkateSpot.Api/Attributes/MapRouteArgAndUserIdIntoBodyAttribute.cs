@@ -1,18 +1,16 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
+using SkateSpot.Api.Extensions;
+using System;
 using System.Linq;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc.Filters;
-using SkateSpot.Api.Extensions;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
 
 namespace SkateSpot.Api.Attributes
 {
-	public class MapsRouteArgumentsIntoBodyAttribute : ActionFilterAttribute
+	public class MapRouteArgAndUserIdIntoBodyAttribute : ActionFilterAttribute
 	{
 		public Type ObjectToMapToType { get; set; }
 
-		public MapsRouteArgumentsIntoBodyAttribute(Type objectToMapToType)
+		public MapRouteArgAndUserIdIntoBodyAttribute(Type objectToMapToType)
 		{
 			ObjectToMapToType = objectToMapToType;
 		}

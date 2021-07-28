@@ -8,13 +8,13 @@ using Microsoft.IdentityModel.Tokens;
 using SkateSpot.Application.DTOs.Settings;
 using SkateSpot.Application.Interfaces;
 using SkateSpot.Application.Interfaces.Shared;
+using SkateSpot.Domain.Common;
 using SkateSpot.Infrastructure.DbContexts;
 using SkateSpot.Infrastructure.Identity.Models;
 using SkateSpot.Infrastructure.Identity.Services;
 using SkateSpot.Infrastructure.Shared.Services;
 using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SkateSpot.Api.Extensions
 {
@@ -28,6 +28,8 @@ namespace SkateSpot.Api.Extensions
 
 		public static void AddContextInfrastructure(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 			services.AddDbContext<IdentityContext>(options =>
 			options.UseNpgsql(configuration.GetConnectionString("IdentityConnection")));
 			services.AddDbContext<ApplicationDbContext>(options =>
@@ -40,6 +42,11 @@ namespace SkateSpot.Api.Extensions
 			}).AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
 			services.AddTransient<IIdentityService, IdentityService>();
+			services.AddTransient<ITokenManager, TokenManager>();
+			services.AddDistributedRedisCache(r =>
+			{
+				r.Configuration = configuration["redis:connectionString"];
+			});
 
 			services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
 			services.AddAuthentication(options =>
@@ -66,31 +73,15 @@ namespace SkateSpot.Api.Extensions
 					{
 						OnAuthenticationFailed = c =>
 						{
-							c.NoResult();
-							c.Response.StatusCode = 500;
-							c.Response.ContentType = "text/plain";
-							return c.Response.WriteAsync(c.Exception.ToString());
+							throw new AppException(ErrorCode.UNAUTHORIZED, "You're unauthorized, please login again.");
 						},
 						OnChallenge = context =>
 						{
-							if (!context.Response.HasStarted)
-							{
-								context.HandleResponse();
-								context.Response.StatusCode = 401;
-								context.Response.ContentType = "application/json";
-								return context.Response.WriteAsync("You are not Authorized");
-							}
-							return Task.CompletedTask;
+							throw new AppException(ErrorCode.UNAUTHORIZED, "You're unauthorized, please login again.");
 						},
 						OnForbidden = context =>
 						{
-							if (!context.Response.HasStarted)
-							{
-								context.Response.StatusCode = 403;
-								context.Response.ContentType = "application/json";
-								return context.Response.WriteAsync("You are not authorized to access this resource");
-							}
-							return Task.CompletedTask;
+							throw new AppException(ErrorCode.FORBIDDEN, "You don't have access rights to this resource.");
 						},
 					};
 				});

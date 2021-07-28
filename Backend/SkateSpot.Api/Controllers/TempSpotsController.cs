@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SkateSpot.Api.Attributes;
 using SkateSpot.Api.Data;
 using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.TempSpotFeatures.Commands;
@@ -24,6 +25,7 @@ namespace SkateSpot.Api.Controllers
 		[Authorize]
 		[HttpPost]
 		[ProducesResponseType(typeof(ApiResponse<Guid>), 200)]
+		[MapRouteArgAndUserIdIntoBody(typeof(CreateTempSpotCommand))]
 		public async Task<ActionResult<Guid>> CreateSpot([FromBody] CreateTempSpotCommand request)
 		{
 			return Ok(await _tempSpotsService.CreateTempSpot(request));

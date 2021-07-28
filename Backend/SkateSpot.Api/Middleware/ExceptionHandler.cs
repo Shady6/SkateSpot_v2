@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace SkateSpot.Api.Middleware
 {
-
 	public class ExceptionHandler
 	{
 		private readonly RequestDelegate next;
@@ -40,14 +39,15 @@ namespace SkateSpot.Api.Middleware
 			{
 				appEx = (AppException)exception;
 				errorCode = appEx.ErrorCode;
-				context.Response.StatusCode = appEx.ErrorCode switch
+				context.Response.StatusCode = (int)(appEx.ErrorCode switch
 				{
-					ErrorCode.CANT_DO_THAT or
-					ErrorCode.NOT_OWNED or
-					ErrorCode.EMAIL_NOT_VERIFIED => (int)HttpStatusCode.Forbidden,
-					ErrorCode.DOESNT_EXIST => (int)HttpStatusCode.NotFound,
-					_ => (int)HttpStatusCode.BadRequest
-				};
+					ErrorCode.CANT_DO_THAT or ErrorCode.NOT_OWNED or
+					ErrorCode.FORBIDDEN or ErrorCode.EMAIL_NOT_VERIFIED
+					 => HttpStatusCode.Forbidden,
+					ErrorCode.UNAUTHORIZED => HttpStatusCode.Unauthorized,
+					ErrorCode.DOESNT_EXIST => HttpStatusCode.NotFound,
+					_ => HttpStatusCode.BadRequest
+				});
 			}
 			else
 				context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

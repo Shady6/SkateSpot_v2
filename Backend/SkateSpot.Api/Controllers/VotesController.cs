@@ -21,7 +21,7 @@ namespace SkateSpot.Api.Controllers
 		}
 
 		[HttpPost]
-		[MapsRouteArgumentsIntoBody(typeof(VoteCommand))]
+		[MapRouteArgAndUserIdIntoBody(typeof(VoteCommand))]
 		public async Task<ActionResult> Vote([FromRoute] Guid tempSpotId, [FromBody] VoteCommand request)
 		{
 			await _votesService.Vote(request);

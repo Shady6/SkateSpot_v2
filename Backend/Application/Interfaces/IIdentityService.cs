@@ -14,5 +14,6 @@ namespace SkateSpot.Application.Interfaces
 		Task ForgotPassword(ForgotPasswordRequest model, string origin);
 
 		Task<string> ResetPassword(ResetPasswordRequest model);
+		Task Logout();
 	}
 }

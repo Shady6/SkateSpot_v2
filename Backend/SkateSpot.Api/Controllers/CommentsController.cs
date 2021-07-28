@@ -22,7 +22,7 @@ namespace SkateSpot.Api.Controllers
 		}
 
 		[HttpPost("{subjectType}/{subjectId}/comments")]
-		[MapsRouteArgumentsIntoBody(typeof(CommentCommand))]
+		[MapRouteArgAndUserIdIntoBody(typeof(CommentCommand))]
 		public async Task<ActionResult> Comment([FromRoute] CommentSubjectType subjectType,
 												[FromRoute] Guid subjectId,
 												[FromBody] CommentCommand request)
@@ -32,7 +32,7 @@ namespace SkateSpot.Api.Controllers
 		}
 
 		[HttpPut("{subjectType}/{subjectId}/comments/{commentId}")]
-		[MapsRouteArgumentsIntoBody(typeof(EditCommentCommand))]
+		[MapRouteArgAndUserIdIntoBody(typeof(EditCommentCommand))]
 		public async Task<ActionResult> EditComment([FromRoute] CommentSubjectType subjectType,
 													[FromRoute] Guid subjectId,
 													[FromRoute] Guid commentId,

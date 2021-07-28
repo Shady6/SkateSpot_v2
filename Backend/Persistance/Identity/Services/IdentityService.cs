@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 
 namespace SkateSpot.Infrastructure.Identity.Services
 {
+
 	public class IdentityService : IIdentityService
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
@@ -31,13 +32,14 @@ namespace SkateSpot.Infrastructure.Identity.Services
 		private readonly JWTSettings _jwtSettings;
 		private readonly IMailService _mailService;
 		private readonly IUserRepository _userRepository;
+		private readonly ITokenManager _tokenManager;
 
 		public IdentityService(UserManager<ApplicationUser> userManager,
 						 RoleManager<IdentityRole> roleManager,
 						 IOptions<JWTSettings> jwtSettings,
 						 SignInManager<ApplicationUser> signInManager,
 						 IMailService mailService,
-						 IUserRepository userRepository)
+						 IUserRepository userRepository, ITokenManager tokenManager)
 		{
 			_userManager = userManager;
 			_roleManager = roleManager;
@@ -45,6 +47,7 @@ namespace SkateSpot.Infrastructure.Identity.Services
 			_signInManager = signInManager;
 			_mailService = mailService;
 			_userRepository = userRepository;
+			_tokenManager = tokenManager;
 		}
 
 		public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress)
@@ -74,6 +77,11 @@ namespace SkateSpot.Infrastructure.Identity.Services
 			response.RefreshToken = refreshToken.Token;
 
 			return response;
+		}
+
+		public async Task Logout()
+		{
+			await _tokenManager.DeactivateCurrentAsync();
 		}
 
 		private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user, string ipAddress)

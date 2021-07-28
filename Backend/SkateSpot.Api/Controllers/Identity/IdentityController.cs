@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SkateSpot.Api.Data;
 using SkateSpot.Application.DTOs.Identity;
 using SkateSpot.Application.Interfaces;
@@ -24,6 +25,15 @@ namespace SkateSpot.Api.Controllers.Identity
 			var ipAddress = GenerateIPAddress();
 			var token = await _identityService.GetTokenAsync(tokenRequest, ipAddress);
 			return Ok(token);
+		}
+
+		[Authorize]
+		[HttpDelete("logout")]
+		[ProducesResponseType(200)]
+		public async Task<ActionResult> Logout()
+		{
+			await _identityService.Logout();
+			return Ok();
 		}
 
 		[HttpPost("register")]
