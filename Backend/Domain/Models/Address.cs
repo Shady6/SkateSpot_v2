@@ -2,8 +2,9 @@
 {
 	public class Address
 	{
-		public string Street { get; protected set; }
-		public string PostalCode { get; protected set; }
+		public string StreetName { get; protected set; }
+		public string StreetNumber { get; protected set; }
+		public string PostCode { get; protected set; }
 		public string City { get; protected set; }
 		public string Country { get; protected set; }
 		public string Latitude { get; protected set; }
@@ -15,8 +16,8 @@
 
 		public Address(string street, string postalCode, string city, string country, string latitude, string longitude)
 		{
-			Street = street;
-			PostalCode = postalCode;
+			StreetName = street;
+			PostCode = postalCode;
 			City = city;
 			Country = country;
 			Latitude = latitude;

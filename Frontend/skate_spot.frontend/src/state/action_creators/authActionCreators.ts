@@ -3,14 +3,16 @@ import { Dispatch } from "redux"
 import { AuthActions, AuthActionTypes } from '../action_types/authActionTypes';
 import { JWTPayload } from '../types/authTypes';
 
+const localStorageJWTKey = "SkateSpotJWT"
+const baseUrl = "https://localhost:44309"
 
 export const login = (loginData: ITokenRequest) => {
     return async (dispatch: Dispatch<AuthActions>) => {
         dispatch({ type: AuthActionTypes.LOADING })
-        const client = new Client("https://localhost:44309")
+        const client = new Client(baseUrl)
         try {
             const response = await client.get_Token(new TokenRequest(loginData))
-            localStorage.setItem("SkateSpotJWT", response!.content!.jwToken as string)
+            localStorage.setItem(localStorageJWTKey, response!.content!.jwToken as string)
             dispatch({ type: AuthActionTypes.LOGIN_SUCCESS, payload: response.content as ITokenResponse })
         }
         catch (error) {
@@ -28,7 +30,7 @@ export const login = (loginData: ITokenRequest) => {
 
 export const setAuthStateFromLocalStorage = () => {
     return async (dispatch: Dispatch<AuthActions>) => {
-        const token = localStorage.getItem("SkateSpotJWT")
+        const token = localStorage.getItem(localStorageJWTKey)
         if (token) {
             try {
                 const JWTPayload: JWTPayload = JSON.parse(atob(token.split(".")[1]))
@@ -51,7 +53,26 @@ export const setAuthStateFromLocalStorage = () => {
                 }
             }
             catch (e) {
-                console.error("Can't set auth state from local storage. Malformed state", e)
+                console.log("Can't set auth state from local storage. Malformed state", e)
+            }
+        }
+    }
+}
+
+export const logout = () => {
+    return async (dispatch: Dispatch<AuthActions>) => {
+        const jwt = localStorage.getItem(localStorageJWTKey)
+        localStorage.removeItem(localStorageJWTKey)
+        dispatch({
+            type: AuthActionTypes.LOGOUT
+        })
+        if (jwt) {
+            try {
+                const client = new Client(baseUrl)
+                await client.logout("Bearer " + jwt)
+            }
+            catch (e){                
+                console.log("Error during logout. Local storagehad been cleared.", e)
             }
         }
     }

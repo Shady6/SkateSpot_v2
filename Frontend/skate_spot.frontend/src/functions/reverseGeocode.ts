@@ -22,7 +22,7 @@ const reverseGeocode = async (coords: { lat: number, lng: number }):
         }
     }
     catch (error) {
-        console.error(error)
+        console.log(error)
     }
     finally {
         return address;

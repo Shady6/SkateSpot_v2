@@ -52,9 +52,9 @@ namespace SkateSpot.Infrastructure.Seed
 
 			var addressFake = new Faker<Address>()
 				.RuleFor(a => a.City, f => f.Address.City())
-				.RuleFor(a => a.Street, f => f.Address.StreetName())
+				.RuleFor(a => a.StreetName, f => f.Address.StreetName())
 				.RuleFor(a => a.Country, f => f.Address.Country())
-				.RuleFor(a => a.PostalCode, f => f.Address.ZipCode())
+				.RuleFor(a => a.PostCode, f => f.Address.ZipCode())
 				.RuleFor(a => a.Latitude, f => f.Address.Latitude().ToString())
 				.RuleFor(a => a.Longitude, f => f.Address.Longitude().ToString());
 

@@ -20,7 +20,7 @@ namespace SkateSpot.Api.Middleware
 
 		public async Task InvokeAsync(HttpContext context)
 		{
-			if (!context.GetEndpoint().Metadata.Any(m => m is AuthorizeAttribute) || await _tokenManager.IsCurrentActiveAsync())
+			if (context.GetEndpoint() == null || !context.GetEndpoint().Metadata.Any(m => m is AuthorizeAttribute) || await _tokenManager.IsCurrentActiveAsync())
 			{
 				await next(context);
 				return;

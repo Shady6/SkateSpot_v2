@@ -27,7 +27,7 @@ namespace SkateSpot.Api.Middleware
 			catch (Exception exception)
 			{
 				await HandleExceptionAsync(context, exception);
-				throw exception;
+				throw;
 			}
 		}
 

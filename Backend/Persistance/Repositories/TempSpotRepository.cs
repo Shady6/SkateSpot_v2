@@ -49,13 +49,18 @@ namespace SkateSpot.Infrastructure.Repositories
 		public async Task<TempSpot> GetWithVerificationVotesAsync(Guid id)
 		{
 			return await TempSpots
-				.Include(s => s.VerificationProcess.Votes)				
+				.Include(s => s.VerificationProcess.Votes)
 				.FirstOrDefaultAsync(s => s.Id == id);
-		}	
+		}
 
 		public async Task<TempSpot> FindByNameAsync(string name)
 		{
 			return await TempSpots.FirstOrDefaultAsync(s => s.Name == name);
+		}
+
+		public IQueryable<TempSpot> GetTempSpots()
+		{
+			return TempSpots;
 		}
 	}
 }

@@ -18,13 +18,19 @@ namespace SkateSpot.Infrastructure.Repositories
 			Spots = _dbContext.Spots;
 		}
 
+		//public IQueryable<Spot> GetSpots()
+		//{
+		//	return Spots.
+		//		Include(s => s.Author)
+		//		.Include(s => s.Likes)
+		//		.Include(s => s.Comments).ThenInclude(c => c.Author)
+		//		.Include(s => s.Comments).ThenInclude(c => c.Likes);
+		//}
+
 		public IQueryable<Spot> GetSpots()
 		{
-			return Spots.
-				Include(s => s.Author)
-				.Include(s => s.Likes)
-				.Include(s => s.Comments).ThenInclude(c => c.Author)
-				.Include(s => s.Comments).ThenInclude(c => c.Likes);
+			return Spots;
+
 		}
 
 		public async Task<Spot> FindByNameAsync(string name)

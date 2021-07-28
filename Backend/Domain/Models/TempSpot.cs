@@ -1,10 +1,10 @@
-﻿using System;
+﻿using SkateSpot.Domain.Common;
+using System;
 using System.Collections.Generic;
-using SkateSpot.Domain.Common;
 
 namespace SkateSpot.Domain.Models
 {
-	public class TempSpot : BaseEntity
+	public class TempSpot : BaseEntity, ISpot
 	{
 		public string Name { get; protected set; }
 		public string Description { get; protected set; }

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using SkateSpot.Domain.Common;
+using SkateSpot.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using SkateSpot.Domain.Common;
-using SkateSpot.Domain.Interfaces;
 
 namespace SkateSpot.Domain.Models
 {
-	public class Spot : EditableEntity, ICommentable, ILikeable
+	public class Spot : EditableEntity, ICommentable, ILikeable, ISpot
 	{
 		public string Name { get; protected set; }
 		public string Description { get; protected set; }
@@ -71,20 +71,20 @@ namespace SkateSpot.Domain.Models
 			var verifiedImages = Images.Count();
 			var freeImageSlots = maxImages - verifiedImages + imagesInVerification;
 			if (freeImageSlots == 0 && imagesInVerification != 0)
-				throw new AppException(ErrorCode.IMAGES_MAXED, 
+				throw new AppException(ErrorCode.IMAGES_MAXED,
 					"The spot already has maximum number of images including images which are currently being verified.");
 			else if (freeImageSlots == 0)
-				throw new AppException(ErrorCode.IMAGES_MAXED, 
+				throw new AppException(ErrorCode.IMAGES_MAXED,
 					"The spot already has maximum number of images.");
 			else if (images.Count() > freeImageSlots)
-				throw new AppException(ErrorCode.TOO_MANY_IMAGES, 
+				throw new AppException(ErrorCode.TOO_MANY_IMAGES,
 					$"There spot has {verifiedImages} images and {imagesInVerification} " +
 					$"are currently in verification. Spot can only have {maxImages} images so you can add maximum of {freeImageSlots}.");
 
 			var spotImageVerification = new SpotImagesVerification(images);
 			spotImageVerification.SetupVerificationProcess(userId);
 		}
-		
+
 		public void HandleImagesVerificationEnd()
 		{
 			var imagesVerification = ImagesVerifications.FirstOrDefault(iv =>
@@ -120,7 +120,7 @@ namespace SkateSpot.Domain.Models
 			else if (foundVideo.AuthorId != userId)
 				throw new AppException(ErrorCode.NOT_OWNED, "You don't own this video.");
 			Videos.Remove(foundVideo);
-		}		
+		}
 
 		public void AddLike(Like like) =>
 			Likeable.AddLike(like);

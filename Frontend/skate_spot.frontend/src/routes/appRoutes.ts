@@ -48,7 +48,7 @@ const routes: IRoute[] = [
         exact: true,
         component: AddTempSpotPage,
         accessedBy: [UserRoles.SIGNED_IN_ROLES]
-    },
+    }
 ]
 
 export default routes;

@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using SkateSpot.Application.DTOs;
 using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Domain.Common;
 using SkateSpot.Domain.Models;
+using System.Linq;
 
 namespace SkateSpot.Application.MappingProfiles
 {
@@ -11,7 +11,16 @@ namespace SkateSpot.Application.MappingProfiles
 	{
 		public ApplicationProfile()
 		{
-			CreateMap<AddressDto, Address>().ReverseMap();
+			CreateMap<AddressDto, Address>()
+				.ForMember(d => d.Latitude, opt => opt.MapFrom(s => s.Coords.Latitude))
+				.ForMember(d => d.Longitude, opt => opt.MapFrom(s => s.Coords.Longitude));
+			CreateMap<Address, AddressDto>()
+				.ForMember(d => d.Coords, opt => opt.MapFrom(s => new CoordsDto
+				{
+					Latitude = s.Latitude,
+					Longitude = s.Longitude
+				}));
+
 			CreateMap<ObstaclesDto, Obstacles>().ReverseMap();
 			CreateMap<Like, LikeDto>();
 			CreateMap<Comment, CommentDto>()
@@ -30,6 +39,9 @@ namespace SkateSpot.Application.MappingProfiles
 
 			CreateMap<CommentSubjectType, SubjectType>();
 			CreateMap<LikeSubjectType, SubjectType>();
+
+			CreateMap<ISpot, SpotMarkerDataDto>()
+				.ForMember(d => d.IsTempSpot, opt => opt.MapFrom(s => s is TempSpot));
 		}
 	}
 }

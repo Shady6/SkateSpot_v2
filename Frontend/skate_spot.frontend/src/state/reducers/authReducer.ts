@@ -29,6 +29,8 @@ export const authReducer = (state: AuthState = initialState, action: AuthActions
                 content: state.content,
                 loading: true
             }
+        case AuthActionTypes.LOGOUT:
+            return initialState
         default:
             return state
     }

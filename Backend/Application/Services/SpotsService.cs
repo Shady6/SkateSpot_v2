@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.DTOs.SearchFiltering;
@@ -8,6 +9,7 @@ using SkateSpot.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Services
 {
@@ -47,12 +49,14 @@ namespace SkateSpot.Application.Services
 	public class SpotsService : ISpotsService
 	{
 		private readonly ISpotRepository _spotRepository;
+		private readonly ITempSpotRepository _tempSpotRepository;
 		private readonly IMapper _mapper;
 
-		public SpotsService(ISpotRepository spotRepository, IMapper mapper)
+		public SpotsService(ISpotRepository spotRepository, IMapper mapper, ITempSpotRepository tempSpotRepository)
 		{
 			_spotRepository = spotRepository;
 			_mapper = mapper;
+			_tempSpotRepository = tempSpotRepository;
 		}
 
 		public List<SpotDto> GetSpots()
@@ -65,6 +69,17 @@ namespace SkateSpot.Application.Services
 
 			var spotsDto = _mapper.ProjectTo<SpotDto>(spots).ToList();
 			return spotsDto;
+		}
+
+		public async Task<List<SpotMarkerDataDto>> GetPermaAndTempSpotsMarkerData()
+		{
+			IQueryable<ISpot> permaSpots = _spotRepository.GetSpots();
+			IQueryable<ISpot> tempSpots = _tempSpotRepository.GetTempSpots();
+
+			var mappedPermaSpots = await _mapper.ProjectTo<SpotMarkerDataDto>(permaSpots).ToListAsync();
+			var mappedTempSpots = await _mapper.ProjectTo<SpotMarkerDataDto>(tempSpots).ToListAsync();
+
+			return mappedPermaSpots.Concat(mappedTempSpots).ToList();
 		}
 
 		private void VerifyImagesOnTimerElapsed(IServiceScope scope, Guid ownerId)

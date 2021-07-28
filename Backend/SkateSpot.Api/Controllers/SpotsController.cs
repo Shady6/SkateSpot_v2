@@ -29,5 +29,14 @@ namespace SkateSpot.Api.Controllers
 			var response = _spotsService.GetSpots();
 			return Ok(response);
 		}
+
+		[HttpGet]
+		[Route("marker")]
+		[Authorize]
+		[ProducesResponseType(typeof(ApiResponse<List<SpotMarkerDataDto>>), 200)]
+		public async Task<ActionResult<List<SpotMarkerDataDto>>> GetPermaAndTempSpotsMarkerData()
+		{
+			return Ok(await _spotsService.GetPermaAndTempSpotsMarkerData());
+		}
 	}
 }
