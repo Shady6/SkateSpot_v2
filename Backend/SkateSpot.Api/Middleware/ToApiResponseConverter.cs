@@ -42,7 +42,16 @@ namespace SkateSpot.Api.Middleware
 					if (isErrorResponse)
 						error = JsonConvert.DeserializeObject<ErrorResponse>(readToEnd);
 					else
-						content = JsonConvert.DeserializeObject(readToEnd);
+					{
+						try
+						{
+							content = JsonConvert.DeserializeObject(readToEnd);
+						}
+						catch
+						{
+							content = readToEnd;
+						}
+					}
 
 					if (!context.Response.Headers.ContainsKey("Content-Type"))
 						context.Response.Headers.Add("Content-Type", "application/json");

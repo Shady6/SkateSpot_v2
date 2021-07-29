@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SkateSpot.Infrastructure.Migrations
 {
-    public partial class AddModel : Migration
+    public partial class Addmodel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,12 +29,13 @@ namespace SkateSpot.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    Address_Street = table.Column<string>(type: "text", nullable: true),
-                    Address_PostalCode = table.Column<string>(type: "text", nullable: true),
+                    Address_StreetName = table.Column<string>(type: "text", nullable: true),
+                    Address_StreetNumber = table.Column<string>(type: "text", nullable: true),
+                    Address_PostCode = table.Column<string>(type: "text", nullable: true),
                     Address_City = table.Column<string>(type: "text", nullable: true),
                     Address_Country = table.Column<string>(type: "text", nullable: true),
-                    Address_Latitude = table.Column<string>(type: "text", nullable: true),
-                    Address_Longitude = table.Column<string>(type: "text", nullable: true),
+                    Address_Latitude = table.Column<double>(type: "double precision", nullable: true),
+                    Address_Longitude = table.Column<double>(type: "double precision", nullable: true),
                     SurfaceScore = table.Column<byte>(type: "smallint", nullable: false),
                     Obstacles_Ledge = table.Column<bool>(type: "boolean", nullable: true),
                     Obstacles_Stairs = table.Column<bool>(type: "boolean", nullable: true),
@@ -68,12 +69,13 @@ namespace SkateSpot.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    Address_Street = table.Column<string>(type: "text", nullable: true),
-                    Address_PostalCode = table.Column<string>(type: "text", nullable: true),
+                    Address_StreetName = table.Column<string>(type: "text", nullable: true),
+                    Address_StreetNumber = table.Column<string>(type: "text", nullable: true),
+                    Address_PostCode = table.Column<string>(type: "text", nullable: true),
                     Address_City = table.Column<string>(type: "text", nullable: true),
                     Address_Country = table.Column<string>(type: "text", nullable: true),
-                    Address_Latitude = table.Column<string>(type: "text", nullable: true),
-                    Address_Longitude = table.Column<string>(type: "text", nullable: true),
+                    Address_Latitude = table.Column<double>(type: "double precision", nullable: true),
+                    Address_Longitude = table.Column<double>(type: "double precision", nullable: true),
                     SurfaceScore = table.Column<byte>(type: "smallint", nullable: false),
                     Obstacles_Ledge = table.Column<bool>(type: "boolean", nullable: true),
                     Obstacles_Stairs = table.Column<bool>(type: "boolean", nullable: true),
@@ -124,7 +126,7 @@ namespace SkateSpot.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Image_Link = table.Column<string>(type: "text", nullable: true),
+                    Image_Url = table.Column<string>(type: "text", nullable: true),
                     SpotId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
@@ -193,7 +195,7 @@ namespace SkateSpot.Infrastructure.Migrations
                     TempSpotId = table.Column<Guid>(type: "uuid", nullable: false),
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Link = table.Column<string>(type: "text", nullable: true)
+                    Url = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -269,7 +271,7 @@ namespace SkateSpot.Infrastructure.Migrations
                     SpotImagesVerificationId = table.Column<Guid>(type: "uuid", nullable: false),
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Link = table.Column<string>(type: "text", nullable: true)
+                    Url = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

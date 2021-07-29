@@ -496,11 +496,11 @@ namespace SkateSpot.Infrastructure.Migrations
                             b1.Property<string>("Country")
                                 .HasColumnType("text");
 
-                            b1.Property<string>("Latitude")
-                                .HasColumnType("text");
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("double precision");
 
-                            b1.Property<string>("Longitude")
-                                .HasColumnType("text");
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("double precision");
 
                             b1.Property<string>("PostCode")
                                 .HasColumnType("text");
@@ -666,11 +666,11 @@ namespace SkateSpot.Infrastructure.Migrations
                             b1.Property<string>("Country")
                                 .HasColumnType("text");
 
-                            b1.Property<string>("Latitude")
-                                .HasColumnType("text");
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("double precision");
 
-                            b1.Property<string>("Longitude")
-                                .HasColumnType("text");
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("double precision");
 
                             b1.Property<string>("PostCode")
                                 .HasColumnType("text");

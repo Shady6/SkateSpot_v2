@@ -2,7 +2,7 @@
 {
 	public class CoordsDto
 	{
-		public string Latitude { get; set; }
-		public string Longitude { get; set; }
+		public double Lat { get; set; }
+		public double Lng { get; set; }
 	}
 }

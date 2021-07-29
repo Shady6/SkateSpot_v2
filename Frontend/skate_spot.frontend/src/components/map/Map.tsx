@@ -1,32 +1,20 @@
-import React, { useRef } from 'react';
-import { useMap } from '../../hooks/importIndex';
+import React from 'react';
+import { MapContainer, TileLayer } from "react-leaflet";
 
 interface Props {
-    mapClickHandler?: (
-        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-        map: L.Map
-    ) => void
+
 }
 
-const Map: React.FC<Props> = ({ mapClickHandler }) => {
-
-    const mapDiv = useRef<HTMLDivElement | null>(null)
-    const [map, isDraggingMap, setIsDraggingMap] = useMap()
-
+const Map: React.FC<Props> = ({ children }) => {
     return (
-        <div
-            onDrag={_ => setIsDraggingMap(true)}
-            onClick={e => {
-                if (!map || isDraggingMap) {
-                    setIsDraggingMap(false)
-                    return
-                }
-                mapClickHandler && mapClickHandler(e, map)
-            }} ref={mapDiv} style={{ height: 600 }} id="map"></div>
+        <MapContainer style={{ height: 600 }} center={{ lat: 12.12, lng: 12.12 }} zoom={2}>
+            <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {children}
+        </MapContainer>
     )
 }
 
 export default Map
-
-
-

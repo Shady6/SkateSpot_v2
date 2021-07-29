@@ -65,8 +65,8 @@ namespace SkateSpot.Application.Services
 				.RuleFor(a => a.StreetNumber, f => f.Address.BuildingNumber())
 				.RuleFor(a => a.Country, f => f.Address.Country())
 				.RuleFor(a => a.PostCode, f => f.Address.ZipCode())
-				.RuleFor(a => a.Latitude, f => f.Address.Latitude().ToString())
-				.RuleFor(a => a.Longitude, f => f.Address.Longitude().ToString());
+				.RuleFor(a => a.Latitude, f => f.Address.Latitude())
+				.RuleFor(a => a.Longitude, f => f.Address.Longitude());
 
 			var spotFake = new Faker<Spot>()
 				.RuleFor(s => s.Id, f => f.Random.Guid())

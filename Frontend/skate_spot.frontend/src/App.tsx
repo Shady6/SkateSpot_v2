@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import hasRouteAccess from './functions/hasRouteAccess';
-import { useRootState } from './hooks/useRootState';
+import { useRootState } from './hooks/importIndex';
 import routes from "./routes/appRoutes";
 import { setAuthStateFromLocalStorage } from './state/import_indexes/authIndex';
 

@@ -2,14 +2,14 @@ import { Client, ITokenRequest, TokenRequest, ITokenResponse, ApiException, Toke
 import { Dispatch } from "redux"
 import { AuthActions, AuthActionTypes } from '../action_types/authActionTypes';
 import { JWTPayload } from '../types/authTypes';
+import { skateSpotApiBaseUrl } from '../../skate_spot_api/constants';
 
 const localStorageJWTKey = "SkateSpotJWT"
-const baseUrl = "https://localhost:44309"
 
 export const login = (loginData: ITokenRequest) => {
     return async (dispatch: Dispatch<AuthActions>) => {
         dispatch({ type: AuthActionTypes.LOADING })
-        const client = new Client(baseUrl)
+        const client = new Client(skateSpotApiBaseUrl)
         try {
             const response = await client.get_Token(new TokenRequest(loginData))
             localStorage.setItem(localStorageJWTKey, response!.content!.jwToken as string)
@@ -68,7 +68,7 @@ export const logout = () => {
         })
         if (jwt) {
             try {
-                const client = new Client(baseUrl)
+                const client = new Client(skateSpotApiBaseUrl)
                 await client.logout("Bearer " + jwt)
             }
             catch (e){                

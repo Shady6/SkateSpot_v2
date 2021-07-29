@@ -32,6 +32,8 @@ export interface GeocodeAddress {
 
 export interface Geocode {
     display_name: string;
+    lat: number,
+    lon: number,
     address: GeocodeAddress;
     boundingbox: string[];
 }

@@ -9,8 +9,6 @@ interface LogoutAction { type: AuthActionTypes.LOGOUT }
 export type AuthActions = LoginSuccessAction | LoginFailureAction | LoginLoadingAction | LogoutAction
 
 
-
-
 export enum AuthActionTypes {
     LOGIN_SUCCESS = "LOGIN_SUCCESS",
     LOGIN_FAILURE = "LOGIN_FAILURE",

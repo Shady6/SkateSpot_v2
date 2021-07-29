@@ -12,13 +12,13 @@ namespace SkateSpot.Application.MappingProfiles
 		public ApplicationProfile()
 		{
 			CreateMap<AddressDto, Address>()
-				.ForMember(d => d.Latitude, opt => opt.MapFrom(s => s.Coords.Latitude))
-				.ForMember(d => d.Longitude, opt => opt.MapFrom(s => s.Coords.Longitude));
+				.ForMember(d => d.Latitude, opt => opt.MapFrom(s => s.Coords.Lat))
+				.ForMember(d => d.Longitude, opt => opt.MapFrom(s => s.Coords.Lng));
 			CreateMap<Address, AddressDto>()
 				.ForMember(d => d.Coords, opt => opt.MapFrom(s => new CoordsDto
 				{
-					Latitude = s.Latitude,
-					Longitude = s.Longitude
+					Lat = s.Latitude,
+					Lng = s.Longitude
 				}));
 
 			CreateMap<ObstaclesDto, Obstacles>().ReverseMap();

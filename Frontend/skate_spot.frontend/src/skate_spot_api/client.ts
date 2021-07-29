@@ -552,6 +552,44 @@ export class Client {
     }
 
     /**
+     * @return Success
+     */
+    get_Perma_And_Temp_Spots_Marker_Data(authorization: string): Promise<SpotMarkerDataDtoListApiResponse> {
+        let url_ = this.baseUrl + "/api/spots/marker";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Perma_And_Temp_Spots_Marker_Data(_response);
+        });
+    }
+
+    protected processGet_Perma_And_Temp_Spots_Marker_Data(response: Response): Promise<SpotMarkerDataDtoListApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SpotMarkerDataDtoListApiResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SpotMarkerDataDtoListApiResponse>(<any>null);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -797,12 +835,12 @@ export class Client {
 }
 
 export class AddressDto implements IAddressDto {
-    street?: string | undefined;
-    postalCode?: string | undefined;
-    city?: string | undefined;
-    country?: string | undefined;
-    latitude?: string | undefined;
-    longitude?: string | undefined;
+    streetName!: string | undefined;
+    streetNumber!: string | undefined;
+    postCode!: string | undefined;
+    city!: string | undefined;
+    country!: string | undefined;
+    coords!: CoordsDto;
 
     constructor(data?: IAddressDto) {
         if (data) {
@@ -815,12 +853,12 @@ export class AddressDto implements IAddressDto {
 
     init(_data?: any) {
         if (_data) {
-            this.street = _data["street"];
-            this.postalCode = _data["postalCode"];
+            this.streetName = _data["streetName"];
+            this.streetNumber = _data["streetNumber"];
+            this.postCode = _data["postCode"];
             this.city = _data["city"];
             this.country = _data["country"];
-            this.latitude = _data["latitude"];
-            this.longitude = _data["longitude"];
+            this.coords = _data["coords"] ? CoordsDto.fromJS(_data["coords"]) : <any>undefined;
         }
     }
 
@@ -833,27 +871,27 @@ export class AddressDto implements IAddressDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["street"] = this.street;
-        data["postalCode"] = this.postalCode;
+        data["streetName"] = this.streetName;
+        data["streetNumber"] = this.streetNumber;
+        data["postCode"] = this.postCode;
         data["city"] = this.city;
         data["country"] = this.country;
-        data["latitude"] = this.latitude;
-        data["longitude"] = this.longitude;
+        data["coords"] = this.coords ? this.coords.toJSON() : <any>undefined;
         return data; 
     }
 }
 
 export interface IAddressDto {
-    street?: string | undefined;
-    postalCode?: string | undefined;
-    city?: string | undefined;
-    country?: string | undefined;
-    latitude?: string | undefined;
-    longitude?: string | undefined;
+    streetName: string | undefined;
+    streetNumber: string | undefined;
+    postCode: string | undefined;
+    city: string | undefined;
+    country: string | undefined;
+    coords: CoordsDto;
 }
 
 export class AddSpotVideoCommand implements IAddSpotVideoCommand {
-    url?: string | undefined;
+    url!: string | undefined;
 
     constructor(data?: IAddSpotVideoCommand) {
         if (data) {
@@ -885,11 +923,11 @@ export class AddSpotVideoCommand implements IAddSpotVideoCommand {
 }
 
 export interface IAddSpotVideoCommand {
-    url?: string | undefined;
+    url: string | undefined;
 }
 
 export class CommentCommand implements ICommentCommand {
-    text?: string | undefined;
+    text!: string | undefined;
 
     constructor(data?: ICommentCommand) {
         if (data) {
@@ -921,18 +959,18 @@ export class CommentCommand implements ICommentCommand {
 }
 
 export interface ICommentCommand {
-    text?: string | undefined;
+    text: string | undefined;
 }
 
 export class CommentDto implements ICommentDto {
-    id?: string;
-    createdAt?: Date;
-    editedAt?: Date;
-    authorId?: string | undefined;
-    author?: SmallUserDto;
-    text?: string | undefined;
-    isDeleted?: boolean;
-    likesCount?: number;
+    id!: string;
+    createdAt!: Date;
+    editedAt!: Date;
+    authorId!: string | undefined;
+    author!: SmallUserDto;
+    text!: string | undefined;
+    isDeleted!: boolean;
+    likesCount!: number;
 
     constructor(data?: ICommentDto) {
         if (data) {
@@ -978,14 +1016,14 @@ export class CommentDto implements ICommentDto {
 }
 
 export interface ICommentDto {
-    id?: string;
-    createdAt?: Date;
-    editedAt?: Date;
-    authorId?: string | undefined;
-    author?: SmallUserDto;
-    text?: string | undefined;
-    isDeleted?: boolean;
-    likesCount?: number;
+    id: string;
+    createdAt: Date;
+    editedAt: Date;
+    authorId: string | undefined;
+    author: SmallUserDto;
+    text: string | undefined;
+    isDeleted: boolean;
+    likesCount: number;
 }
 
 export enum CommentSubjectType {
@@ -994,13 +1032,53 @@ export enum CommentSubjectType {
     _2 = 2,
 }
 
+export class CoordsDto implements ICoordsDto {
+    lat!: number;
+    lng!: number;
+
+    constructor(data?: ICoordsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.lat = _data["lat"];
+            this.lng = _data["lng"];
+        }
+    }
+
+    static fromJS(data: any): CoordsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CoordsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["lat"] = this.lat;
+        data["lng"] = this.lng;
+        return data; 
+    }
+}
+
+export interface ICoordsDto {
+    lat: number;
+    lng: number;
+}
+
 export class CreateTempSpotCommand implements ICreateTempSpotCommand {
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    surfaceScore?: number;
-    obstacles?: ObstaclesDto;
-    images?: Image[] | undefined;
+    name!: string | undefined;
+    description!: string | undefined;
+    address!: AddressDto;
+    surfaceScore!: number;
+    obstacles!: ObstaclesDto;
+    images!: Image[] | undefined;
 
     constructor(data?: ICreateTempSpotCommand) {
         if (data) {
@@ -1050,16 +1128,16 @@ export class CreateTempSpotCommand implements ICreateTempSpotCommand {
 }
 
 export interface ICreateTempSpotCommand {
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    surfaceScore?: number;
-    obstacles?: ObstaclesDto;
-    images?: Image[] | undefined;
+    name: string | undefined;
+    description: string | undefined;
+    address: AddressDto;
+    surfaceScore: number;
+    obstacles: ObstaclesDto;
+    images: Image[] | undefined;
 }
 
 export class EditCommentCommand implements IEditCommentCommand {
-    newText?: string | undefined;
+    newText!: string | undefined;
 
     constructor(data?: IEditCommentCommand) {
         if (data) {
@@ -1091,7 +1169,7 @@ export class EditCommentCommand implements IEditCommentCommand {
 }
 
 export interface IEditCommentCommand {
-    newText?: string | undefined;
+    newText: string | undefined;
 }
 
 export enum ErrorCode {
@@ -1110,10 +1188,10 @@ export enum ErrorCode {
 }
 
 export class ErrorResponse implements IErrorResponse {
-    statusCode?: ErrorCode;
-    message?: string | undefined;
-    developerMessage?: string | undefined;
-    data?: { [key: string]: string; } | undefined;
+    statusCode!: ErrorCode;
+    message!: string | undefined;
+    developerMessage!: string | undefined;
+    data!: { [key: string]: string; } | undefined;
 
     constructor(data?: IErrorResponse) {
         if (data) {
@@ -1163,10 +1241,10 @@ export class ErrorResponse implements IErrorResponse {
 }
 
 export interface IErrorResponse {
-    statusCode?: ErrorCode;
-    message?: string | undefined;
-    developerMessage?: string | undefined;
-    data?: { [key: string]: string; } | undefined;
+    statusCode: ErrorCode;
+    message: string | undefined;
+    developerMessage: string | undefined;
+    data: { [key: string]: string; } | undefined;
 }
 
 export class ForgotPasswordRequest implements IForgotPasswordRequest {
@@ -1206,8 +1284,8 @@ export interface IForgotPasswordRequest {
 }
 
 export class GuidApiResponse implements IGuidApiResponse {
-    content?: string;
-    error?: ErrorResponse;
+    content!: string;
+    error!: ErrorResponse;
 
     constructor(data?: IGuidApiResponse) {
         if (data) {
@@ -1241,12 +1319,12 @@ export class GuidApiResponse implements IGuidApiResponse {
 }
 
 export interface IGuidApiResponse {
-    content?: string;
-    error?: ErrorResponse;
+    content: string;
+    error: ErrorResponse;
 }
 
 export class Image implements IImage {
-    url?: string | undefined;
+    url!: string | undefined;
 
     constructor(data?: IImage) {
         if (data) {
@@ -1278,7 +1356,7 @@ export class Image implements IImage {
 }
 
 export interface IImage {
-    url?: string | undefined;
+    url: string | undefined;
 }
 
 export enum LikeSubjectType {
@@ -1288,16 +1366,16 @@ export enum LikeSubjectType {
 }
 
 export class ObstaclesDto implements IObstaclesDto {
-    ledge?: boolean;
-    stairs?: boolean;
-    quater?: boolean;
-    kicker?: boolean;
-    downhill?: boolean;
-    rail?: boolean;
-    bank?: boolean;
-    flatground?: boolean;
-    manualpad?: boolean;
-    skatepark?: boolean;
+    ledge!: boolean;
+    stairs!: boolean;
+    quater!: boolean;
+    kicker!: boolean;
+    downhill!: boolean;
+    rail!: boolean;
+    bank!: boolean;
+    flatground!: boolean;
+    manualpad!: boolean;
+    skatepark!: boolean;
 
     constructor(data?: IObstaclesDto) {
         if (data) {
@@ -1347,16 +1425,16 @@ export class ObstaclesDto implements IObstaclesDto {
 }
 
 export interface IObstaclesDto {
-    ledge?: boolean;
-    stairs?: boolean;
-    quater?: boolean;
-    kicker?: boolean;
-    downhill?: boolean;
-    rail?: boolean;
-    bank?: boolean;
-    flatground?: boolean;
-    manualpad?: boolean;
-    skatepark?: boolean;
+    ledge: boolean;
+    stairs: boolean;
+    quater: boolean;
+    kicker: boolean;
+    downhill: boolean;
+    rail: boolean;
+    bank: boolean;
+    flatground: boolean;
+    manualpad: boolean;
+    skatepark: boolean;
 }
 
 export class RegisterRequest implements IRegisterRequest {
@@ -1456,8 +1534,8 @@ export interface IResetPasswordRequest {
 }
 
 export class SmallUserDto implements ISmallUserDto {
-    id?: string;
-    userName?: string | undefined;
+    id!: string;
+    userName!: string | undefined;
 
     constructor(data?: ISmallUserDto) {
         if (data) {
@@ -1491,21 +1569,21 @@ export class SmallUserDto implements ISmallUserDto {
 }
 
 export interface ISmallUserDto {
-    id?: string;
-    userName?: string | undefined;
+    id: string;
+    userName: string | undefined;
 }
 
 export class SpotDto implements ISpotDto {
-    id?: string;
-    createdAt?: Date;
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    obstacles?: ObstaclesDto;
-    surfaceScore?: number;
-    author?: SmallUserDto;
-    likesCount?: number;
-    comments?: CommentDto[] | undefined;
+    id!: string;
+    createdAt!: Date;
+    name!: string | undefined;
+    description!: string | undefined;
+    address!: AddressDto;
+    obstacles!: ObstaclesDto;
+    surfaceScore!: number;
+    author!: SmallUserDto;
+    likesCount!: number;
+    comments!: CommentDto[] | undefined;
 
     constructor(data?: ISpotDto) {
         if (data) {
@@ -1563,21 +1641,21 @@ export class SpotDto implements ISpotDto {
 }
 
 export interface ISpotDto {
-    id?: string;
-    createdAt?: Date;
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    obstacles?: ObstaclesDto;
-    surfaceScore?: number;
-    author?: SmallUserDto;
-    likesCount?: number;
-    comments?: CommentDto[] | undefined;
+    id: string;
+    createdAt: Date;
+    name: string | undefined;
+    description: string | undefined;
+    address: AddressDto;
+    obstacles: ObstaclesDto;
+    surfaceScore: number;
+    author: SmallUserDto;
+    likesCount: number;
+    comments: CommentDto[] | undefined;
 }
 
 export class SpotDtoListApiResponse implements ISpotDtoListApiResponse {
-    content?: SpotDto[] | undefined;
-    error?: ErrorResponse;
+    content!: SpotDto[] | undefined;
+    error!: ErrorResponse;
 
     constructor(data?: ISpotDtoListApiResponse) {
         if (data) {
@@ -1619,13 +1697,105 @@ export class SpotDtoListApiResponse implements ISpotDtoListApiResponse {
 }
 
 export interface ISpotDtoListApiResponse {
-    content?: SpotDto[] | undefined;
-    error?: ErrorResponse;
+    content: SpotDto[] | undefined;
+    error: ErrorResponse;
+}
+
+export class SpotMarkerDataDto implements ISpotMarkerDataDto {
+    name!: string | undefined;
+    isTempSpot!: boolean;
+    address!: AddressDto;
+
+    constructor(data?: ISpotMarkerDataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.isTempSpot = _data["isTempSpot"];
+            this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): SpotMarkerDataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SpotMarkerDataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["isTempSpot"] = this.isTempSpot;
+        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface ISpotMarkerDataDto {
+    name: string | undefined;
+    isTempSpot: boolean;
+    address: AddressDto;
+}
+
+export class SpotMarkerDataDtoListApiResponse implements ISpotMarkerDataDtoListApiResponse {
+    content!: SpotMarkerDataDto[] | undefined;
+    error!: ErrorResponse;
+
+    constructor(data?: ISpotMarkerDataDtoListApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["content"])) {
+                this.content = [] as any;
+                for (let item of _data["content"])
+                    this.content!.push(SpotMarkerDataDto.fromJS(item));
+            }
+            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): SpotMarkerDataDtoListApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new SpotMarkerDataDtoListApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.content)) {
+            data["content"] = [];
+            for (let item of this.content)
+                data["content"].push(item.toJSON());
+        }
+        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface ISpotMarkerDataDtoListApiResponse {
+    content: SpotMarkerDataDto[] | undefined;
+    error: ErrorResponse;
 }
 
 export class StringApiResponse implements IStringApiResponse {
-    content?: string | undefined;
-    error?: ErrorResponse;
+    content!: string | undefined;
+    error!: ErrorResponse;
 
     constructor(data?: IStringApiResponse) {
         if (data) {
@@ -1659,20 +1829,20 @@ export class StringApiResponse implements IStringApiResponse {
 }
 
 export interface IStringApiResponse {
-    content?: string | undefined;
-    error?: ErrorResponse;
+    content: string | undefined;
+    error: ErrorResponse;
 }
 
 export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto {
-    id?: string;
-    createdAt?: Date;
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    obstacles?: ObstaclesDto;
-    surfaceScore?: number;
-    author?: SmallUserDto;
-    verificationProcess?: VerificationProcessDto;
+    id!: string;
+    createdAt!: Date;
+    name!: string | undefined;
+    description!: string | undefined;
+    address!: AddressDto;
+    obstacles!: ObstaclesDto;
+    surfaceScore!: number;
+    author!: SmallUserDto;
+    verificationProcess!: VerificationProcessDto;
 
     constructor(data?: ITempSpotWithVerificationDto) {
         if (data) {
@@ -1720,20 +1890,20 @@ export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto
 }
 
 export interface ITempSpotWithVerificationDto {
-    id?: string;
-    createdAt?: Date;
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    obstacles?: ObstaclesDto;
-    surfaceScore?: number;
-    author?: SmallUserDto;
-    verificationProcess?: VerificationProcessDto;
+    id: string;
+    createdAt: Date;
+    name: string | undefined;
+    description: string | undefined;
+    address: AddressDto;
+    obstacles: ObstaclesDto;
+    surfaceScore: number;
+    author: SmallUserDto;
+    verificationProcess: VerificationProcessDto;
 }
 
 export class TempSpotWithVerificationDtoApiResponse implements ITempSpotWithVerificationDtoApiResponse {
-    content?: TempSpotWithVerificationDto;
-    error?: ErrorResponse;
+    content!: TempSpotWithVerificationDto;
+    error!: ErrorResponse;
 
     constructor(data?: ITempSpotWithVerificationDtoApiResponse) {
         if (data) {
@@ -1767,13 +1937,13 @@ export class TempSpotWithVerificationDtoApiResponse implements ITempSpotWithVeri
 }
 
 export interface ITempSpotWithVerificationDtoApiResponse {
-    content?: TempSpotWithVerificationDto;
-    error?: ErrorResponse;
+    content: TempSpotWithVerificationDto;
+    error: ErrorResponse;
 }
 
 export class TokenRequest implements ITokenRequest {
-    email?: string | undefined;
-    password?: string | undefined;
+    email!: string | undefined;
+    password!: string | undefined;
 
     constructor(data?: ITokenRequest) {
         if (data) {
@@ -1807,19 +1977,19 @@ export class TokenRequest implements ITokenRequest {
 }
 
 export interface ITokenRequest {
-    email?: string | undefined;
-    password?: string | undefined;
+    email: string | undefined;
+    password: string | undefined;
 }
 
 export class TokenResponse implements ITokenResponse {
-    id?: string | undefined;
-    userName?: string | undefined;
-    email?: string | undefined;
-    roles?: string[] | undefined;
-    isVerified?: boolean;
-    jwToken?: string | undefined;
-    issuedOn?: Date;
-    expiresOn?: Date;
+    id!: string | undefined;
+    userName!: string | undefined;
+    email!: string | undefined;
+    roles!: string[] | undefined;
+    isVerified!: boolean;
+    jwToken!: string | undefined;
+    issuedOn!: Date;
+    expiresOn!: Date;
 
     constructor(data?: ITokenResponse) {
         if (data) {
@@ -1873,19 +2043,19 @@ export class TokenResponse implements ITokenResponse {
 }
 
 export interface ITokenResponse {
-    id?: string | undefined;
-    userName?: string | undefined;
-    email?: string | undefined;
-    roles?: string[] | undefined;
-    isVerified?: boolean;
-    jwToken?: string | undefined;
-    issuedOn?: Date;
-    expiresOn?: Date;
+    id: string | undefined;
+    userName: string | undefined;
+    email: string | undefined;
+    roles: string[] | undefined;
+    isVerified: boolean;
+    jwToken: string | undefined;
+    issuedOn: Date;
+    expiresOn: Date;
 }
 
 export class TokenResponseApiResponse implements ITokenResponseApiResponse {
-    content?: TokenResponse;
-    error?: ErrorResponse;
+    content!: TokenResponse;
+    error!: ErrorResponse;
 
     constructor(data?: ITokenResponseApiResponse) {
         if (data) {
@@ -1919,16 +2089,16 @@ export class TokenResponseApiResponse implements ITokenResponseApiResponse {
 }
 
 export interface ITokenResponseApiResponse {
-    content?: TokenResponse;
-    error?: ErrorResponse;
+    content: TokenResponse;
+    error: ErrorResponse;
 }
 
 export class VerificationProcessDto implements IVerificationProcessDto {
-    id?: string;
-    votes?: VerificationStatementDto[] | undefined;
-    endDate?: Date;
-    isVerified?: boolean;
-    discussion?: CommentDto[] | undefined;
+    id!: string;
+    votes!: VerificationStatementDto[] | undefined;
+    endDate!: Date;
+    isVerified!: boolean;
+    discussion!: CommentDto[] | undefined;
 
     constructor(data?: IVerificationProcessDto) {
         if (data) {
@@ -1984,16 +2154,16 @@ export class VerificationProcessDto implements IVerificationProcessDto {
 }
 
 export interface IVerificationProcessDto {
-    id?: string;
-    votes?: VerificationStatementDto[] | undefined;
-    endDate?: Date;
-    isVerified?: boolean;
-    discussion?: CommentDto[] | undefined;
+    id: string;
+    votes: VerificationStatementDto[] | undefined;
+    endDate: Date;
+    isVerified: boolean;
+    discussion: CommentDto[] | undefined;
 }
 
 export class VerificationStatementDto implements IVerificationStatementDto {
-    voterId?: string;
-    isReal?: boolean;
+    voterId!: string;
+    isReal!: boolean;
 
     constructor(data?: IVerificationStatementDto) {
         if (data) {
@@ -2027,12 +2197,12 @@ export class VerificationStatementDto implements IVerificationStatementDto {
 }
 
 export interface IVerificationStatementDto {
-    voterId?: string;
-    isReal?: boolean;
+    voterId: string;
+    isReal: boolean;
 }
 
 export class VoteCommand implements IVoteCommand {
-    isReal?: boolean;
+    isReal!: boolean;
 
     constructor(data?: IVoteCommand) {
         if (data) {
@@ -2064,7 +2234,7 @@ export class VoteCommand implements IVoteCommand {
 }
 
 export interface IVoteCommand {
-    isReal?: boolean;
+    isReal: boolean;
 }
 
 export class ApiException extends Error {

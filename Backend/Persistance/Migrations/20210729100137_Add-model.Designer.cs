@@ -10,8 +10,8 @@ using SkateSpot.Infrastructure.DbContexts;
 namespace SkateSpot.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210728153741_Rename-address-columns-add-one-new")]
-    partial class Renameaddresscolumnsaddonenew
+    [Migration("20210729100137_Add-model")]
+    partial class Addmodel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -498,11 +498,11 @@ namespace SkateSpot.Infrastructure.Migrations
                             b1.Property<string>("Country")
                                 .HasColumnType("text");
 
-                            b1.Property<string>("Latitude")
-                                .HasColumnType("text");
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("double precision");
 
-                            b1.Property<string>("Longitude")
-                                .HasColumnType("text");
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("double precision");
 
                             b1.Property<string>("PostCode")
                                 .HasColumnType("text");
@@ -668,11 +668,11 @@ namespace SkateSpot.Infrastructure.Migrations
                             b1.Property<string>("Country")
                                 .HasColumnType("text");
 
-                            b1.Property<string>("Latitude")
-                                .HasColumnType("text");
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("double precision");
 
-                            b1.Property<string>("Longitude")
-                                .HasColumnType("text");
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("double precision");
 
                             b1.Property<string>("PostCode")
                                 .HasColumnType("text");

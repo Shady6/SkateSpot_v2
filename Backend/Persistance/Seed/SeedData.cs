@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoBogus;
+﻿using AutoBogus;
 using Bogus;
 using Bogus.Extensions;
 using SkateSpot.Domain.Common;
 using SkateSpot.Domain.Models;
+using System;
+using System.Collections.Generic;
 
 namespace SkateSpot.Infrastructure.Seed
 {
@@ -55,8 +55,8 @@ namespace SkateSpot.Infrastructure.Seed
 				.RuleFor(a => a.StreetName, f => f.Address.StreetName())
 				.RuleFor(a => a.Country, f => f.Address.Country())
 				.RuleFor(a => a.PostCode, f => f.Address.ZipCode())
-				.RuleFor(a => a.Latitude, f => f.Address.Latitude().ToString())
-				.RuleFor(a => a.Longitude, f => f.Address.Longitude().ToString());
+				.RuleFor(a => a.Latitude, f => f.Address.Latitude())
+				.RuleFor(a => a.Longitude, f => f.Address.Longitude());
 
 			var spotFake = new Faker<Spot>()
 				.RuleFor(s => s.Id, f => f.Random.Guid())
