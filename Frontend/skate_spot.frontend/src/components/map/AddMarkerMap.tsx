@@ -1,16 +1,10 @@
-import React, { Children } from 'react';
-import { Marker, Popup } from 'react-leaflet';
+import React from 'react';
+import { Popup } from 'react-leaflet';
 import MyMarkerClusterGroup from 'react-leaflet-markercluster';
-import { useAddressDataMarkers } from '../../hooks/useAddressDataMarkers';
-import { Coords, GeoLocation } from '../../types/types';
-import Map from './Map';
-import PlacableMarker from './PlacableMarker';
 import addressToHtml from '../../functions/addressToHtml';
-
-// interface Props {
-//     setLocation: React.Dispatch<React.SetStateAction<GeoLocation | null>>
-//     troughGeocodingMarkerData?: Coords
-// }
+import { useAddressDataMarkers } from '../../hooks/useAddressDataMarkers';
+import FaIconMarker from './FaIconMarker';
+import Map from './Map';
 
 const AddMarkerMap: React.FC = ({children}) => {
 
@@ -21,12 +15,12 @@ const AddMarkerMap: React.FC = ({children}) => {
             <Map>
                 <MyMarkerClusterGroup  showCoverageOnHover={false}>
                     {spotMarkerData && spotMarkerData.map(m =>
-                        <Marker key={m.name} position={m.address.coords}>
+                        <FaIconMarker key={m.name} position={m.address.coords}>
                             <Popup>
                                 <b>{m.name}</b>
                                 {addressToHtml(m.address)}
                             </Popup>
-                        </Marker>)}
+                        </FaIconMarker>)}
                 </MyMarkerClusterGroup>
                 {children}               
             </Map>

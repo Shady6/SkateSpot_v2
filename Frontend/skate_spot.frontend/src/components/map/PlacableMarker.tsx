@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Marker, useMapEvents } from "react-leaflet";
+import { useMapEvents } from "react-leaflet";
 import reverseGeocode from '../../functions/reverseGeocode';
 import { ICoordsDto } from '../../skate_spot_api/client';
-import { GeoLocation } from '../../types/types';
+import { IGeoLocation } from '../../types/types';
+import FaIconMarker from './FaIconMarker';
 
 interface Props {
-    setLocation: React.Dispatch<React.SetStateAction<GeoLocation | null>>
+    setLocation: React.Dispatch<React.SetStateAction<IGeoLocation | null>>
     showClickMarker: boolean,
     setShowClickMarker: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -14,18 +15,18 @@ const PlacableMarker: React.FC<Props> = ({ setLocation, showClickMarker, setShow
 
     const [markerPosition, setmarkerPosition] = useState<ICoordsDto | null>(null)
 
-    const map = useMapEvents({
+    useMapEvents({
         click(e) {
             setmarkerPosition(e.latlng)
             setShowClickMarker(true)
-            reverseGeocode(e.latlng).then((res: GeoLocation) => {
+            reverseGeocode(e.latlng).then((res: IGeoLocation) => {
                 setLocation(res)
             })
         },
     })
 
     return (markerPosition && showClickMarker) ?
-        <Marker position={markerPosition} /> : null
+        <FaIconMarker color={"rgb(255,100,10)"} position={markerPosition}/> : null
 }
 
 export default PlacableMarker

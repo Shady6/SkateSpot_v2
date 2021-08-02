@@ -1,8 +1,9 @@
-import { DefaultAddress, Geocode, GeoLocation } from '../types/types';
+import { DefaultAddress, Geocode, IGeoLocation } from '../types/types';
 import geocodeToDefaultAddress from './geocodeToDefaultAddress';
+import { GeoLocation } from '../classes/GeoLocation';
 
 const reverseGeocode = async (coords: { lat: number, lng: number }):
-    Promise<GeoLocation> => {
+    Promise<IGeoLocation> => {
 
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${coords.lat}&lon=${coords.lng}&format=json`;
     let address: DefaultAddress | undefined = undefined;
@@ -13,17 +14,14 @@ const reverseGeocode = async (coords: { lat: number, lng: number }):
 
         if (jsonContent.address) {
             const geocode: Geocode = jsonContent as Geocode
-            address = geocodeToDefaultAddress(geocode.address)
+            address = geocodeToDefaultAddress(geocode)
         }
     }
     catch (error) {
         console.log(error)
     }
     finally {
-        return {
-            coords,
-            address
-        };
+        return new GeoLocation(coords, address)            
     }
 }
 

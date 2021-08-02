@@ -1,6 +1,9 @@
-export interface GeoLocation {
+export interface IGeoLocation {
     coords: Coords,
-    address?: DefaultAddress
+    address?: DefaultAddress,
+    
+    getKey: (i: number) => string,    
+    toString: () => string
 }
 
 export interface Coords {
@@ -9,6 +12,7 @@ export interface Coords {
 }
 
 export interface DefaultAddress {
+    display: string,
     country: string,
     city: string,
     streetName: string,

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { login } from "../../state/import_indexes/authIndex"
 import { useInputState, useRootState } from '../../hooks/importIndex';
+import { Routes } from '../../routes/appRoutes';
 
 const Login: React.FC = () => {
 
@@ -19,7 +20,7 @@ const Login: React.FC = () => {
 
     useEffect(() => {
         if (usedLoginButton && authState.content)
-            history.push("/")
+            history.push(Routes.HOME)
     }, [authState.content])
 
     return (

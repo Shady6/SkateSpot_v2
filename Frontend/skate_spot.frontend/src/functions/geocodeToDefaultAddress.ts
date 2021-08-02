@@ -1,12 +1,13 @@
-import { DefaultAddress, GeocodeAddress } from '../types/types';
+import { DefaultAddress, Geocode } from '../types/types';
 
-const geocodeToDefaultAddress = (g: GeocodeAddress): DefaultAddress => {
+const geocodeToDefaultAddress = (g: Geocode): DefaultAddress => {
     return {
-        city: g.city || g.town || g.village,
-        country: g.country,
-        postCode: g.postcode,
-        streetName: g.road,
-        streetNumber: g.house_number
+        city: g.address.city || g.address.town || g.address.village,
+        country: g.address.country,
+        postCode: g.address.postcode,
+        streetName: g.address.road,
+        streetNumber: g.address.house_number,
+        display: g.display_name
     }
 }
 

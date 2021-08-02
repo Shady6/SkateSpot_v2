@@ -11,7 +11,6 @@ import { setAuthStateFromLocalStorage } from './state/import_indexes/authIndex';
 const App: React.FC = () => {
 
   const authState = useRootState().auth
-
   const dispatch = useDispatch()
 
   useEffect(() => {
