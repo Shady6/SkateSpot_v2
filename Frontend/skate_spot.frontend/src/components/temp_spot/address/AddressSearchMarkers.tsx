@@ -5,20 +5,28 @@ import { IGeoLocation } from '../../../types/types';
 import FaIconMarker from '../../map/FaIconMarker';
 
 interface Props {
-    showClickData: boolean,
-    showMore: boolean,
+    showClickData: boolean
+    showMore: boolean
     fromGeocodeLocations: IGeoLocation[] | null
+    setHoveredAddress: React.Dispatch<React.SetStateAction<number | null>>
+    hoveredAddress: number | null
+    pickAddress: (i: number) => void,
+    location: IGeoLocation | null
 }
 
 const AddressSearchMarkers: React.FC<Props> = ({
     showClickData,
     showMore,
-    fromGeocodeLocations }) => {
+    fromGeocodeLocations,
+    setHoveredAddress,
+    hoveredAddress,
+    pickAddress,
+    location }) => {
 
     const map = useMap()
 
     useEffect(() => {
-        if (showMore && fromGeocodeLocations) {                        
+        if (showMore && fromGeocodeLocations) {
             map.fitBounds(getBoundingBox(fromGeocodeLocations),
                 {
                     animate: true,
@@ -27,28 +35,34 @@ const AddressSearchMarkers: React.FC<Props> = ({
                 })
         }
 
-    }, [showMore, fromGeocodeLocations])    
+    }, [showMore, fromGeocodeLocations])
 
-    const renderMarkers = () => {
+    const render = () => {
         if (!showClickData) {
-            console.log(fromGeocodeLocations?.map(g => g.coords))
             if (showMore)
-                return fromGeocodeLocations?.map((l, i) =>
-                    <FaIconMarker
-                        text={`${(i+1).toString()}`}
-                        color={"rgb(255,100,10)"}
-                        position={l.coords} key={l.getKey(i)} />)
+                return fromGeocodeLocations?.map((l, i) => {
+                    const isHovered = hoveredAddress === i
+                    return <FaIconMarker
+                        size={isHovered ? 40 : 30}
+                        text={`${(i + 1).toString()}`}
+                        color={isHovered ? "red" : "rgb(255,100,10)"}
+                        position={l.coords} key={l.getKey(i)}
+                        onMouseEnter={_ => setHoveredAddress(i)}
+                        onMouseLeave={_ => setHoveredAddress(null)}
+                        onClick={_ => pickAddress(i)} />
+                })
+
             else
                 return <FaIconMarker
                     color={"rgb(255,100,10)"}
-                    position={fromGeocodeLocations![0].coords}
+                    position={location!.coords}
                     flyToMarker={true} />
         }
     }
 
     return (
         <div>
-            {renderMarkers()}
+            {render()}
         </div>
     )
 }

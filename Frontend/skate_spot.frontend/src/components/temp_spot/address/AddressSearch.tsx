@@ -1,15 +1,19 @@
 import { GeoLocation } from '../../../classes/GeoLocation';
-import geocodeToDefaultAddress from '../../../functions/geocodeToDefaultAddress';
 import { useInputState } from '../../../hooks/useInputState';
 import { Geocode, IGeoLocation } from '../../../types/types';
 
 interface Props {
     setGeocodeLocations: React.Dispatch<React.SetStateAction<IGeoLocation[] | null>>,
+    setLocation: React.Dispatch<React.SetStateAction<IGeoLocation | null>>
     setShowClickMarker: React.Dispatch<React.SetStateAction<boolean>>,
     setShowMore: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const AddressSearch: React.FC<Props> = ({ setGeocodeLocations, setShowClickMarker, setShowMore }) => {
+const AddressSearch: React.FC<Props> = ({
+    setGeocodeLocations,
+    setLocation,
+    setShowClickMarker,
+    setShowMore }) => {
     const [addressSearchQuery, setAddressSearchQuery] = useInputState('');
 
     const geocodeAddress = async () => {
@@ -22,10 +26,9 @@ const AddressSearch: React.FC<Props> = ({ setGeocodeLocations, setShowClickMarke
             // TODO flash message can't search by address right now
             return;
         }
-        const geocodes: Geocode[] = await res.json();        
-        setGeocodeLocations(geocodes.map((g) => new GeoLocation(
-            { lat: g.lat, lng: g.lon },
-            geocodeToDefaultAddress(g))));
+        const geocodes: Geocode[] = await res.json();
+        setGeocodeLocations(geocodes.map((g) => GeoLocation.FromGeocode(g)));
+        setLocation(geocodes.length > 0 ? GeoLocation.FromGeocode(geocodes[0]) : null)
         setShowClickMarker(false);
     };
 

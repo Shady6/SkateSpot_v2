@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { IGeoLocation } from '../../../types/types';
 import AddMarkerMap from '../../map/AddMarkerMap';
-import FaIconMarker from '../../map/FaIconMarker';
 import PlacableMarker from '../../map/PlacableMarker';
 import AddressSearch from './AddressSearch';
 import AddressSearchMarkers from './AddressSearchMarkers';
@@ -15,9 +14,14 @@ const MapAddress: React.FC = () => {
     const [showMore, setShowMore] = useState(false)
     const [hoveredAddress, setHoveredAddress] = useState<number | null>(null)
 
+    const pickAddress = (i: number) => {
+        setShowMore(false)
+        setLocation(fromGeocodeLocations![i])
+    }
+
     return (
         <div>
-            <p>Select spot on map</p>            
+            <p>Select spot on map</p>
             <AddMarkerMap >
                 <PlacableMarker
                     showClickMarker={showClickData} setShowClickMarker={setShowClickData}
@@ -25,10 +29,15 @@ const MapAddress: React.FC = () => {
                 <AddressSearchMarkers
                     showClickData={showClickData}
                     showMore={showMore}
-                    fromGeocodeLocations={fromGeocodeLocations} />
+                    fromGeocodeLocations={fromGeocodeLocations}
+                    setHoveredAddress={setHoveredAddress}
+                    hoveredAddress={hoveredAddress}
+                    pickAddress={pickAddress}
+                    location={location} />
             </AddMarkerMap>
             <AddressSearch
                 setGeocodeLocations={setFromGeocodeLocations}
+                setLocation={setLocation}
                 setShowClickMarker={setShowClickData}
                 setShowMore={setShowMore} />
             <ClickSearchResult
@@ -38,7 +47,11 @@ const MapAddress: React.FC = () => {
                 showClickData={showClickData}
                 fromGeocodeLocations={fromGeocodeLocations}
                 showMore={showMore}
-                setShowMore={setShowMore} />
+                setShowMore={setShowMore}
+                hoveredAddress={hoveredAddress}
+                setHoveredAddress={setHoveredAddress}
+                location={location}
+                pickAddress={pickAddress} />
         </div>
     )
 }

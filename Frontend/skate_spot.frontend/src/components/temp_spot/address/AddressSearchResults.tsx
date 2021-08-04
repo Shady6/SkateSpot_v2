@@ -6,22 +6,27 @@ interface Props {
     fromGeocodeLocations: IGeoLocation[] | null
     showMore: boolean,
     setShowMore: React.Dispatch<React.SetStateAction<boolean>>,
+    hoveredAddress: number | null
     setHoveredAddress: React.Dispatch<React.SetStateAction<number | null>>
+    location: IGeoLocation | null
+    pickAddress: (i: number) => void,
 }
 
 const AddressSearchResults: React.FC<Props> = ({
     showClickData,
     fromGeocodeLocations,
     showMore,
-    setShowMore
+    setShowMore,
+    hoveredAddress,
+    setHoveredAddress,
+    location,
+    pickAddress
 }) => {
-
-    // TODO 
-    // - on button hover increase size of respective marker
-    // - on button click collapse addresses 
-
-    const foo = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        console.log(e.currentTarget.getAttribute('key'))
+    
+    const setAddressIndex = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const addressIndex =
+            Number(e.currentTarget.innerText.substr(0, e.currentTarget.innerText.indexOf("."))) - 1
+        setHoveredAddress(addressIndex)
     }
 
     const render = () => {
@@ -30,7 +35,13 @@ const AddressSearchResults: React.FC<Props> = ({
             return fromGeocodeLocations!.map((l, i) =>
             (
                 <div key={l.getKey(i)}>
-                    <button onMouseEnter={foo}>{`${i + 1}. ${l.toString()}`}</button>
+                    <button
+                        style={hoveredAddress === i ? {backgroundColor: "rgb(255,50,0)"} : undefined}
+                        onClick={_ => pickAddress(i)}
+                        onMouseEnter={setAddressIndex}
+                        onMouseLeave={() => setHoveredAddress(null)}>
+                        {`${i + 1}. ${l.toString()}`}
+                    </button>
                 </div>)
             )
 
@@ -38,7 +49,7 @@ const AddressSearchResults: React.FC<Props> = ({
             return (
                 <div>
                     <button>
-                        {fromGeocodeLocations![0].toString()}
+                        {location!.toString()}
                     </button>
                     <button onClick={() => setShowMore(true)}>Show more</button>
                 </div>
