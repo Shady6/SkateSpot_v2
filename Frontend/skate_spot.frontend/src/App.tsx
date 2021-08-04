@@ -1,21 +1,16 @@
-import { ReactNode, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { ReactNode } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import hasRouteAccess from './functions/hasRouteAccess';
-import { useRootState } from './hooks/importIndex';
+import { useAuthFromLocalStorage } from './hooks/useAuthFromLocalStorage';
 import routes from "./routes/appRoutes";
-import { setAuthStateFromLocalStorage } from './state/import_indexes/authIndex';
+import { useRootState } from './state/store';
 
 
 const App: React.FC = () => {
 
   const authState = useRootState().auth
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(setAuthStateFromLocalStorage())
-  }, [])
+  useAuthFromLocalStorage()
 
   const renderRoutes = (): ReactNode => routes.map(r =>
     <Route

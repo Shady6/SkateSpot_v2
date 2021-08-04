@@ -1,5 +1,5 @@
 import { IRoute } from '../routes/appRoutes';
-import { AuthState } from '../state/import_indexes/authIndex';
+import { AuthState } from '../state/reducers/authReducer';
 import { UserRoles } from '../types/types';
 
 const hasRouteAccess = (route: IRoute, authState: AuthState) => {

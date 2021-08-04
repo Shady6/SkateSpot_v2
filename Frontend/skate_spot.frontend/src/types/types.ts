@@ -1,8 +1,8 @@
 export interface IGeoLocation {
     coords: Coords,
     address?: DefaultAddress,
-    
-    getKey: (i: number) => string,    
+
+    getKey: (i: number) => string,
     toString: () => string
 }
 
@@ -42,7 +42,7 @@ export interface Geocode {
     boundingbox: string[];
 }
 
-export enum UserRoles {   
+export enum UserRoles {
     ALL_ROLES = "All",
     SIGNED_IN_ROLES = "SignedInRoles",
     NO_ROLE = "NoRole",
@@ -50,4 +50,17 @@ export enum UserRoles {
     MODERATOR = "Moderator",
     ADMIN = "Admin",
     SUPER_ADMIN = "SuperAdmin"
+}
+
+export interface JWTPayload {
+    sub: string,
+    jti: string,
+    email: string,
+    uid: string,
+    ip: string,
+    roles: string[],
+    nbf: number,
+    exp: number,
+    iss: string,
+    aud: string
 }

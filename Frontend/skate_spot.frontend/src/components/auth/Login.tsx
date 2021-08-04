@@ -1,11 +1,11 @@
 import { Button, Container, FormControl, FormGroup, Input, InputLabel } from '@material-ui/core';
 import Alert from '@material-ui/core/Alert';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { login } from "../../state/import_indexes/authIndex"
-import { useInputState, useRootState } from '../../hooks/importIndex';
+import { useInputState } from '../../hooks/useInputState';
 import { Routes } from '../../routes/appRoutes';
+import { login } from '../../state/actions/authActions';
+import { useAppDispatch, useRootState } from '../../state/store';
 
 const Login: React.FC = () => {
 
@@ -16,7 +16,7 @@ const Login: React.FC = () => {
     const history = useHistory()
 
     const authState = useRootState().auth
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (usedLoginButton && authState.content)
