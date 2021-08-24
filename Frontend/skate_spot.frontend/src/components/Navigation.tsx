@@ -12,16 +12,17 @@ const Navigation: React.FC = () => {
 
 
     const renderLinks = () => routes.map(r => hasRouteAccess(r, authState) ?
-        <li key={r.linkName}><Link to={r.path}>{r.linkName}</Link></li> : null)
+        <li className={"me-5"} key={r.linkName}><Link to={r.path}>{r.linkName}</Link></li> : null)
 
     return (
-        <ul>
+        <ul className={"d-flex"}>
             {renderLinks()}
             {authState.content && 
-            <p 
+            <li 
+            className={"me-5"}
             style={{cursor: "pointer"}}
-            onClick={() => dispatch(logout())}>Logout</p>}
-            {authState.content?.userName}
+            onClick={() => dispatch(logout())}>Logout</li>}
+            <li>{authState.content?.userName}</li>            
         </ul>
     )
 }

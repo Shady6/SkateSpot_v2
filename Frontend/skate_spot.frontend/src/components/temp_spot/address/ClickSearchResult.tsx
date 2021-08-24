@@ -1,17 +1,17 @@
 import { IGeoLocation } from '../../../types/types';
+import NoAddressFound from './NoAddressFound';
 
 interface Props {
-    location: IGeoLocation | null,
-    showClickData: boolean
+    location: IGeoLocation | null,    
 }
 
-const ClickSearchResult: React.FC<Props> = ({ location, showClickData }) => {
+const ClickSearchResult: React.FC<Props> = ({ location }) => {
 
     const render = () => {
-        if (!showClickData) return;
         if (location?.address)
             return location.toString()
-        return <p>No address found for this spot</p>
+        else
+            return <NoAddressFound/>
     }
 
     return (

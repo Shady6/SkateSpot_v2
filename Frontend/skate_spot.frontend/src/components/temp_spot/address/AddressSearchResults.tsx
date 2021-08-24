@@ -1,8 +1,8 @@
 import React from 'react';
 import { IGeoLocation } from '../../../types/types';
+import NoAddressFound from './NoAddressFound';
 
 interface Props {
-    showClickData: boolean,
     fromGeocodeLocations: IGeoLocation[] | null
     showMore: boolean,
     setShowMore: React.Dispatch<React.SetStateAction<boolean>>,
@@ -13,7 +13,6 @@ interface Props {
 }
 
 const AddressSearchResults: React.FC<Props> = ({
-    showClickData,
     fromGeocodeLocations,
     showMore,
     setShowMore,
@@ -22,7 +21,7 @@ const AddressSearchResults: React.FC<Props> = ({
     location,
     pickAddress
 }) => {
-    
+
     const setAddressIndex = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const addressIndex =
             Number(e.currentTarget.innerText.substr(0, e.currentTarget.innerText.indexOf("."))) - 1
@@ -30,13 +29,13 @@ const AddressSearchResults: React.FC<Props> = ({
     }
 
     const render = () => {
-        if (showClickData) return;
+        if (!location) return <NoAddressFound />
         else if (showMore)
             return fromGeocodeLocations!.map((l, i) =>
             (
                 <div key={l.getKey(i)}>
                     <button
-                        style={hoveredAddress === i ? {backgroundColor: "rgb(255,50,0)"} : undefined}
+                        style={hoveredAddress === i ? { backgroundColor: "rgb(255,50,0)" } : undefined}
                         onClick={_ => pickAddress(i)}
                         onMouseEnter={setAddressIndex}
                         onMouseLeave={() => setHoveredAddress(null)}>
@@ -44,7 +43,6 @@ const AddressSearchResults: React.FC<Props> = ({
                     </button>
                 </div>)
             )
-
         else
             return (
                 <div>

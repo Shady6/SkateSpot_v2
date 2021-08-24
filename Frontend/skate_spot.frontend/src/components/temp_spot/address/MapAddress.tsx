@@ -7,8 +7,12 @@ import AddressSearchMarkers from './AddressSearchMarkers';
 import AddressSearchResults from './AddressSearchResults';
 import ClickSearchResult from './ClickSearchResult';
 
-const MapAddress: React.FC = () => {
-    const [location, setLocation] = useState<IGeoLocation | null>(null)
+
+const MapAddress: React.FC<{
+    location: IGeoLocation | null,
+    setLocation: React.Dispatch<React.SetStateAction<IGeoLocation | null>>
+}> = ({ location, setLocation }) => {
+
     const [fromGeocodeLocations, setFromGeocodeLocations] = useState<IGeoLocation[] | null>(null)
     const [showClickData, setShowClickData] = useState<boolean>(true)
     const [showMore, setShowMore] = useState(false)
@@ -26,32 +30,33 @@ const MapAddress: React.FC = () => {
                 <PlacableMarker
                     showClickMarker={showClickData} setShowClickMarker={setShowClickData}
                     setLocation={setLocation} />
-                <AddressSearchMarkers
-                    showClickData={showClickData}
+                {(!showClickData && location) && <AddressSearchMarkers
                     showMore={showMore}
                     fromGeocodeLocations={fromGeocodeLocations}
                     setHoveredAddress={setHoveredAddress}
                     hoveredAddress={hoveredAddress}
                     pickAddress={pickAddress}
-                    location={location} />
+                    location={location} />}
+
             </AddMarkerMap>
-            <AddressSearch
-                setGeocodeLocations={setFromGeocodeLocations}
-                setLocation={setLocation}
-                setShowClickMarker={setShowClickData}
-                setShowMore={setShowMore} />
-            <ClickSearchResult
-                location={location}
-                showClickData={showClickData} />
-            <AddressSearchResults
-                showClickData={showClickData}
+            <div className={"mt-2 mb-5"}>
+                <AddressSearch
+                    setGeocodeLocations={setFromGeocodeLocations}
+                    setLocation={setLocation}
+                    setShowClickMarker={setShowClickData}
+                    setShowMore={setShowMore} />
+            </div>
+            {(showClickData && location) && <ClickSearchResult
+                location={location} />}
+            {!showClickData && <AddressSearchResults
                 fromGeocodeLocations={fromGeocodeLocations}
                 showMore={showMore}
                 setShowMore={setShowMore}
                 hoveredAddress={hoveredAddress}
                 setHoveredAddress={setHoveredAddress}
                 location={location}
-                pickAddress={pickAddress} />
+                pickAddress={pickAddress} />}
+
         </div>
     )
 }

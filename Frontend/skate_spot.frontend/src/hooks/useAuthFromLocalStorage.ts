@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { localStorageJWTKey, setAuthStateFromLocalStorage } from '../state/actions/authActions';
+import { localStorageJWTKey } from '../state/actions/authActions';
+import { setAuthStateFromLocalStorage } from "../state/reducers/authReducer";
 import { useAppDispatch } from '../state/store';
 import { JWTPayload } from "../types/types";
 

@@ -26,19 +26,21 @@ const AddressSearch: React.FC<Props> = ({
             // TODO flash message can't search by address right now
             return;
         }
-        const geocodes: Geocode[] = await res.json();
+        const geocodes: Geocode[] = await res.json() || [];
         setGeocodeLocations(geocodes.map((g) => GeoLocation.FromGeocode(g)));
         setLocation(geocodes.length > 0 ? GeoLocation.FromGeocode(geocodes[0]) : null)
         setShowClickMarker(false);
     };
 
     return (
-        <div>
-            <span>Search by address</span>
-            <input value={addressSearchQuery} onChange={setAddressSearchQuery} type="text"
+        <>
+            <div className={"mb-2"}>Search by address</div>
+            <input 
+            className={"me-1 py-0 input"}
+            value={addressSearchQuery} onChange={setAddressSearchQuery} type="text"
                 onKeyDown={(e) => { if (e.key === "Enter") geocodeAddress() }} />
-            <button onClick={geocodeAddress}>Search</button>
-        </div>
+            <button className={"px-2 btn btn-sm btn-primary"} onClick={geocodeAddress}>Search</button>
+        </>
     );
 };
 

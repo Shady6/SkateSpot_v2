@@ -35,6 +35,4 @@ export const logout = createAsyncThunk(
     }
 )
 
-export const setAuthStateFromLocalStorage = createAction<ITokenResponse>("auth/login/localStorage")
-
 

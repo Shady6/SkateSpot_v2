@@ -4,8 +4,7 @@ import getBoundingBox from '../../../functions/getBoundingBox';
 import { IGeoLocation } from '../../../types/types';
 import FaIconMarker from '../../map/FaIconMarker';
 
-interface Props {
-    showClickData: boolean
+interface Props {    
     showMore: boolean
     fromGeocodeLocations: IGeoLocation[] | null
     setHoveredAddress: React.Dispatch<React.SetStateAction<number | null>>
@@ -14,8 +13,7 @@ interface Props {
     location: IGeoLocation | null
 }
 
-const AddressSearchMarkers: React.FC<Props> = ({
-    showClickData,
+const AddressSearchMarkers: React.FC<Props> = ({    
     showMore,
     fromGeocodeLocations,
     setHoveredAddress,
@@ -38,26 +36,24 @@ const AddressSearchMarkers: React.FC<Props> = ({
     }, [showMore, fromGeocodeLocations])
 
     const render = () => {
-        if (!showClickData) {
-            if (showMore)
-                return fromGeocodeLocations?.map((l, i) => {
-                    const isHovered = hoveredAddress === i
-                    return <FaIconMarker
-                        size={isHovered ? 40 : 30}
-                        text={`${(i + 1).toString()}`}
-                        color={isHovered ? "red" : "rgb(255,100,10)"}
-                        position={l.coords} key={l.getKey(i)}
-                        onMouseEnter={_ => setHoveredAddress(i)}
-                        onMouseLeave={_ => setHoveredAddress(null)}
-                        onClick={_ => pickAddress(i)} />
-                })
-
-            else
+        if (showMore)
+            return fromGeocodeLocations?.map((l, i) => {
+                const isHovered = hoveredAddress === i
                 return <FaIconMarker
-                    color={"rgb(255,100,10)"}
-                    position={location!.coords}
-                    flyToMarker={true} />
-        }
+                    size={isHovered ? 40 : 30}
+                    text={`${(i + 1).toString()}`}
+                    color={isHovered ? "red" : "rgb(255,100,10)"}
+                    position={l.coords} key={l.getKey(i)}
+                    onMouseEnter={_ => setHoveredAddress(i)}
+                    onMouseLeave={_ => setHoveredAddress(null)}
+                    onClick={_ => pickAddress(i)} />
+            })
+
+        else
+            return <FaIconMarker
+                color={"rgb(255,100,10)"}
+                position={location!.coords}
+                flyToMarker={true} />
     }
 
     return (
