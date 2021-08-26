@@ -19,3 +19,7 @@ body {
   background: none !important;
   border: none !important;
 }
+
+.text-sm{
+  font-size: 1rem;
+}
