@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import { GeoLocation } from '../../../classes/GeoLocation';
 import { useInputState } from '../../../hooks/useInputState';
 import { Geocode, IGeoLocation } from '../../../types/types';
@@ -35,11 +36,13 @@ const AddressSearch: React.FC<Props> = ({
     return (
         <>
             <div className={"mb-2"}>Search by address</div>
-            <input 
-            className={"me-1 py-0 input"}
-            value={addressSearchQuery} onChange={setAddressSearchQuery} type="text"
-                onKeyDown={(e) => { if (e.key === "Enter") geocodeAddress() }} />
-            <button className={"px-2 btn btn-sm btn-primary"} onClick={geocodeAddress}>Search</button>
+            <div className="d-flex">
+                <input
+                    className={"me-1"}
+                    value={addressSearchQuery} onChange={setAddressSearchQuery} type="text"
+                    onKeyDown={(e) => { if (e.key === "Enter") geocodeAddress() }} />
+                <Button variant="contained" className={"px-2 py-0"} onClick={geocodeAddress}>Search</Button>
+            </div>
         </>
     );
 };
