@@ -64,7 +64,7 @@ namespace SkateSpot.Infrastructure.Seed
 				.RuleFor(s => s.Name, f => f.Random.Guid().ToString())
 				.RuleFor(s => s.Description, f => f.Lorem.Lines(1))
 				.RuleFor(s => s.Address, _ => addressFake.Generate())
-				.RuleFor(s => s.Obstacles, f => AutoFaker.Generate<Obstacles>())
+				.RuleFor(s => s.Obstacles, f => AutoFaker.Generate<HashSet<ObstacleType>>())
 				.RuleFor(s => s.SurfaceScore, f => (byte)f.Random.Number(0, 10))
 				.RuleFor(s => s.Author, f => f.PickRandom(users))
 				.RuleFor(s => s.Videos, (f, s) =>

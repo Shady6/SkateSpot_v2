@@ -21,7 +21,6 @@ namespace SkateSpot.Application.MappingProfiles
 					Lng = s.Longitude
 				}));
 
-			CreateMap<ObstaclesDto, Obstacles>().ReverseMap();
 			CreateMap<Like, LikeDto>();
 			CreateMap<Comment, CommentDto>()
 				.ForMember(d => d.LikesCount, opt => opt.MapFrom(s => s.Likes.Count()));

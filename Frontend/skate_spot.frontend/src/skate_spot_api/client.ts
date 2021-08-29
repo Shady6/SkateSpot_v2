@@ -835,12 +835,12 @@ export class Client {
 }
 
 export class AddressDto implements IAddressDto {
-    streetName!: string | undefined;
-    streetNumber!: string | undefined;
-    postCode!: string | undefined;
-    city!: string | undefined;
-    country!: string | undefined;
-    coords!: CoordsDto;
+    streetName?: string | undefined;
+    streetNumber?: string | undefined;
+    postCode?: string | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
+    coords?: CoordsDto;
 
     constructor(data?: IAddressDto) {
         if (data) {
@@ -882,16 +882,18 @@ export class AddressDto implements IAddressDto {
 }
 
 export interface IAddressDto {
-    streetName: string | undefined;
-    streetNumber: string | undefined;
-    postCode: string | undefined;
-    city: string | undefined;
-    country: string | undefined;
-    coords: CoordsDto;
+    streetName?: string | undefined;
+    streetNumber?: string | undefined;
+    postCode?: string | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
+    coords?: CoordsDto;
 }
 
 export class AddSpotVideoCommand implements IAddSpotVideoCommand {
-    url!: string | undefined;
+    url?: string | undefined;
+    spotId?: string;
+    userId?: string;
 
     constructor(data?: IAddSpotVideoCommand) {
         if (data) {
@@ -905,6 +907,8 @@ export class AddSpotVideoCommand implements IAddSpotVideoCommand {
     init(_data?: any) {
         if (_data) {
             this.url = _data["url"];
+            this.spotId = _data["spotId"];
+            this.userId = _data["userId"];
         }
     }
 
@@ -918,16 +922,23 @@ export class AddSpotVideoCommand implements IAddSpotVideoCommand {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["url"] = this.url;
+        data["spotId"] = this.spotId;
+        data["userId"] = this.userId;
         return data; 
     }
 }
 
 export interface IAddSpotVideoCommand {
-    url: string | undefined;
+    url?: string | undefined;
+    spotId?: string;
+    userId?: string;
 }
 
 export class CommentCommand implements ICommentCommand {
-    text!: string | undefined;
+    subjectId?: string;
+    text?: string | undefined;
+    subjectType?: CommentSubjectType;
+    userId?: string;
 
     constructor(data?: ICommentCommand) {
         if (data) {
@@ -940,7 +951,10 @@ export class CommentCommand implements ICommentCommand {
 
     init(_data?: any) {
         if (_data) {
+            this.subjectId = _data["subjectId"];
             this.text = _data["text"];
+            this.subjectType = _data["subjectType"];
+            this.userId = _data["userId"];
         }
     }
 
@@ -953,24 +967,30 @@ export class CommentCommand implements ICommentCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["subjectId"] = this.subjectId;
         data["text"] = this.text;
+        data["subjectType"] = this.subjectType;
+        data["userId"] = this.userId;
         return data; 
     }
 }
 
 export interface ICommentCommand {
-    text: string | undefined;
+    subjectId?: string;
+    text?: string | undefined;
+    subjectType?: CommentSubjectType;
+    userId?: string;
 }
 
 export class CommentDto implements ICommentDto {
-    id!: string;
-    createdAt!: Date;
-    editedAt!: Date;
-    authorId!: string | undefined;
-    author!: SmallUserDto;
-    text!: string | undefined;
-    isDeleted!: boolean;
-    likesCount!: number;
+    id?: string;
+    createdAt?: Date;
+    editedAt?: Date;
+    authorId?: string | undefined;
+    author?: SmallUserDto;
+    text?: string | undefined;
+    isDeleted?: boolean;
+    likesCount?: number;
 
     constructor(data?: ICommentDto) {
         if (data) {
@@ -1016,25 +1036,25 @@ export class CommentDto implements ICommentDto {
 }
 
 export interface ICommentDto {
-    id: string;
-    createdAt: Date;
-    editedAt: Date;
-    authorId: string | undefined;
-    author: SmallUserDto;
-    text: string | undefined;
-    isDeleted: boolean;
-    likesCount: number;
+    id?: string;
+    createdAt?: Date;
+    editedAt?: Date;
+    authorId?: string | undefined;
+    author?: SmallUserDto;
+    text?: string | undefined;
+    isDeleted?: boolean;
+    likesCount?: number;
 }
 
 export enum CommentSubjectType {
-    _0 = 0,
-    _1 = 1,
-    _2 = 2,
+    Spots = "Spots",
+    SpotVideos = "SpotVideos",
+    TempSpots = "TempSpots",
 }
 
 export class CoordsDto implements ICoordsDto {
-    lat!: number;
-    lng!: number;
+    lat?: number;
+    lng?: number;
 
     constructor(data?: ICoordsDto) {
         if (data) {
@@ -1068,17 +1088,19 @@ export class CoordsDto implements ICoordsDto {
 }
 
 export interface ICoordsDto {
-    lat: number;
-    lng: number;
+    lat?: number;
+    lng?: number;
 }
 
 export class CreateTempSpotCommand implements ICreateTempSpotCommand {
-    name!: string | undefined;
-    description!: string | undefined;
-    address!: AddressDto;
-    surfaceScore!: number;
-    obstacles!: ObstaclesDto;
-    images!: Image[] | undefined;
+    name?: string | undefined;
+    description?: string | undefined;
+    address?: AddressDto;
+    surfaceScore?: number;
+    obstacles?: ObstacleType[] | undefined;
+    fileImages?: string[] | undefined;
+    linkImages?: string[] | undefined;
+    userId?: string;
 
     constructor(data?: ICreateTempSpotCommand) {
         if (data) {
@@ -1095,12 +1117,22 @@ export class CreateTempSpotCommand implements ICreateTempSpotCommand {
             this.description = _data["description"];
             this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
             this.surfaceScore = _data["surfaceScore"];
-            this.obstacles = _data["obstacles"] ? ObstaclesDto.fromJS(_data["obstacles"]) : <any>undefined;
-            if (Array.isArray(_data["images"])) {
-                this.images = [] as any;
-                for (let item of _data["images"])
-                    this.images!.push(Image.fromJS(item));
+            if (Array.isArray(_data["obstacles"])) {
+                this.obstacles = [] as any;
+                for (let item of _data["obstacles"])
+                    this.obstacles!.push(item);
             }
+            if (Array.isArray(_data["fileImages"])) {
+                this.fileImages = [] as any;
+                for (let item of _data["fileImages"])
+                    this.fileImages!.push(item);
+            }
+            if (Array.isArray(_data["linkImages"])) {
+                this.linkImages = [] as any;
+                for (let item of _data["linkImages"])
+                    this.linkImages!.push(item);
+            }
+            this.userId = _data["userId"];
         }
     }
 
@@ -1117,27 +1149,43 @@ export class CreateTempSpotCommand implements ICreateTempSpotCommand {
         data["description"] = this.description;
         data["address"] = this.address ? this.address.toJSON() : <any>undefined;
         data["surfaceScore"] = this.surfaceScore;
-        data["obstacles"] = this.obstacles ? this.obstacles.toJSON() : <any>undefined;
-        if (Array.isArray(this.images)) {
-            data["images"] = [];
-            for (let item of this.images)
-                data["images"].push(item.toJSON());
+        if (Array.isArray(this.obstacles)) {
+            data["obstacles"] = [];
+            for (let item of this.obstacles)
+                data["obstacles"].push(item);
         }
+        if (Array.isArray(this.fileImages)) {
+            data["fileImages"] = [];
+            for (let item of this.fileImages)
+                data["fileImages"].push(item);
+        }
+        if (Array.isArray(this.linkImages)) {
+            data["linkImages"] = [];
+            for (let item of this.linkImages)
+                data["linkImages"].push(item);
+        }
+        data["userId"] = this.userId;
         return data; 
     }
 }
 
 export interface ICreateTempSpotCommand {
-    name: string | undefined;
-    description: string | undefined;
-    address: AddressDto;
-    surfaceScore: number;
-    obstacles: ObstaclesDto;
-    images: Image[] | undefined;
+    name?: string | undefined;
+    description?: string | undefined;
+    address?: AddressDto;
+    surfaceScore?: number;
+    obstacles?: ObstacleType[] | undefined;
+    fileImages?: string[] | undefined;
+    linkImages?: string[] | undefined;
+    userId?: string;
 }
 
 export class EditCommentCommand implements IEditCommentCommand {
-    newText!: string | undefined;
+    subjectId?: string;
+    subjectType?: CommentSubjectType;
+    commentId?: string;
+    newText?: string | undefined;
+    userId?: string;
 
     constructor(data?: IEditCommentCommand) {
         if (data) {
@@ -1150,7 +1198,11 @@ export class EditCommentCommand implements IEditCommentCommand {
 
     init(_data?: any) {
         if (_data) {
+            this.subjectId = _data["subjectId"];
+            this.subjectType = _data["subjectType"];
+            this.commentId = _data["commentId"];
             this.newText = _data["newText"];
+            this.userId = _data["userId"];
         }
     }
 
@@ -1163,35 +1215,43 @@ export class EditCommentCommand implements IEditCommentCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["subjectId"] = this.subjectId;
+        data["subjectType"] = this.subjectType;
+        data["commentId"] = this.commentId;
         data["newText"] = this.newText;
+        data["userId"] = this.userId;
         return data; 
     }
 }
 
 export interface IEditCommentCommand {
-    newText: string | undefined;
+    subjectId?: string;
+    subjectType?: CommentSubjectType;
+    commentId?: string;
+    newText?: string | undefined;
+    userId?: string;
 }
 
 export enum ErrorCode {
-    _0 = 0,
-    _1 = 1,
-    _2 = 2,
-    _3 = 3,
-    _4 = 4,
-    _5 = 5,
-    _6 = 6,
-    _7 = 7,
-    _8 = 8,
-    _9 = 9,
-    _10 = 10,
-    _11 = 11,
+    DEFAULT_ERROR = "DEFAULT_ERROR",
+    ALREADY_EXISTS = "ALREADY_EXISTS",
+    VOTING_FINISHED = "VOTING_FINISHED",
+    DOESNT_EXIST = "DOESNT_EXIST",
+    NOT_OWNED = "NOT_OWNED",
+    EMAIL_NOT_VERIFIED = "EMAIL_NOT_VERIFIED",
+    CANT_DO_THAT = "CANT_DO_THAT",
+    IMAGES_MAXED = "IMAGES_MAXED",
+    TOO_MANY_IMAGES = "TOO_MANY_IMAGES",
+    BAD_INPUT = "BAD_INPUT",
+    UNAUTHORIZED = "UNAUTHORIZED",
+    FORBIDDEN = "FORBIDDEN",
 }
 
 export class ErrorResponse implements IErrorResponse {
-    statusCode!: ErrorCode;
-    message!: string | undefined;
-    developerMessage!: string | undefined;
-    data!: { [key: string]: string; } | undefined;
+    statusCode?: ErrorCode;
+    message?: string | undefined;
+    developerMessage?: string | undefined;
+    data?: { [key: string]: string; } | undefined;
 
     constructor(data?: IErrorResponse) {
         if (data) {
@@ -1241,10 +1301,10 @@ export class ErrorResponse implements IErrorResponse {
 }
 
 export interface IErrorResponse {
-    statusCode: ErrorCode;
-    message: string | undefined;
-    developerMessage: string | undefined;
-    data: { [key: string]: string; } | undefined;
+    statusCode?: ErrorCode;
+    message?: string | undefined;
+    developerMessage?: string | undefined;
+    data?: { [key: string]: string; } | undefined;
 }
 
 export class ForgotPasswordRequest implements IForgotPasswordRequest {
@@ -1284,8 +1344,8 @@ export interface IForgotPasswordRequest {
 }
 
 export class GuidApiResponse implements IGuidApiResponse {
-    content!: string;
-    error!: ErrorResponse;
+    content?: string;
+    error?: ErrorResponse;
 
     constructor(data?: IGuidApiResponse) {
         if (data) {
@@ -1319,122 +1379,27 @@ export class GuidApiResponse implements IGuidApiResponse {
 }
 
 export interface IGuidApiResponse {
-    content: string;
-    error: ErrorResponse;
-}
-
-export class Image implements IImage {
-    url!: string | undefined;
-
-    constructor(data?: IImage) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.url = _data["url"];
-        }
-    }
-
-    static fromJS(data: any): Image {
-        data = typeof data === 'object' ? data : {};
-        let result = new Image();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["url"] = this.url;
-        return data; 
-    }
-}
-
-export interface IImage {
-    url: string | undefined;
+    content?: string;
+    error?: ErrorResponse;
 }
 
 export enum LikeSubjectType {
-    _0 = 0,
-    _1 = 1,
-    _3 = 3,
+    Spots = "Spots",
+    SpotVideos = "SpotVideos",
+    Comments = "Comments",
 }
 
-export class ObstaclesDto implements IObstaclesDto {
-    ledge!: boolean;
-    stairs!: boolean;
-    quater!: boolean;
-    kicker!: boolean;
-    downhill!: boolean;
-    rail!: boolean;
-    bank!: boolean;
-    flatground!: boolean;
-    manualpad!: boolean;
-    skatepark!: boolean;
-
-    constructor(data?: IObstaclesDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.ledge = _data["ledge"];
-            this.stairs = _data["stairs"];
-            this.quater = _data["quater"];
-            this.kicker = _data["kicker"];
-            this.downhill = _data["downhill"];
-            this.rail = _data["rail"];
-            this.bank = _data["bank"];
-            this.flatground = _data["flatground"];
-            this.manualpad = _data["manualpad"];
-            this.skatepark = _data["skatepark"];
-        }
-    }
-
-    static fromJS(data: any): ObstaclesDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ObstaclesDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["ledge"] = this.ledge;
-        data["stairs"] = this.stairs;
-        data["quater"] = this.quater;
-        data["kicker"] = this.kicker;
-        data["downhill"] = this.downhill;
-        data["rail"] = this.rail;
-        data["bank"] = this.bank;
-        data["flatground"] = this.flatground;
-        data["manualpad"] = this.manualpad;
-        data["skatepark"] = this.skatepark;
-        return data; 
-    }
-}
-
-export interface IObstaclesDto {
-    ledge: boolean;
-    stairs: boolean;
-    quater: boolean;
-    kicker: boolean;
-    downhill: boolean;
-    rail: boolean;
-    bank: boolean;
-    flatground: boolean;
-    manualpad: boolean;
-    skatepark: boolean;
+export enum ObstacleType {
+    Ledge = "Ledge",
+    Stairs = "Stairs",
+    Quater = "Quater",
+    Kicker = "Kicker",
+    Downhill = "Downhill",
+    Rail = "Rail",
+    Bank = "Bank",
+    Flatground = "Flatground",
+    Manualpad = "Manualpad",
+    Skatepark = "Skatepark",
 }
 
 export class RegisterRequest implements IRegisterRequest {
@@ -1534,8 +1499,8 @@ export interface IResetPasswordRequest {
 }
 
 export class SmallUserDto implements ISmallUserDto {
-    id!: string;
-    userName!: string | undefined;
+    id?: string;
+    userName?: string | undefined;
 
     constructor(data?: ISmallUserDto) {
         if (data) {
@@ -1569,21 +1534,21 @@ export class SmallUserDto implements ISmallUserDto {
 }
 
 export interface ISmallUserDto {
-    id: string;
-    userName: string | undefined;
+    id?: string;
+    userName?: string | undefined;
 }
 
 export class SpotDto implements ISpotDto {
-    id!: string;
-    createdAt!: Date;
-    name!: string | undefined;
-    description!: string | undefined;
-    address!: AddressDto;
-    obstacles!: ObstaclesDto;
-    surfaceScore!: number;
-    author!: SmallUserDto;
-    likesCount!: number;
-    comments!: CommentDto[] | undefined;
+    id?: string;
+    createdAt?: Date;
+    name?: string | undefined;
+    description?: string | undefined;
+    address?: AddressDto;
+    obstacles?: ObstacleType[] | undefined;
+    surfaceScore?: number;
+    author?: SmallUserDto;
+    likesCount?: number;
+    comments?: CommentDto[] | undefined;
 
     constructor(data?: ISpotDto) {
         if (data) {
@@ -1601,7 +1566,11 @@ export class SpotDto implements ISpotDto {
             this.name = _data["name"];
             this.description = _data["description"];
             this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
-            this.obstacles = _data["obstacles"] ? ObstaclesDto.fromJS(_data["obstacles"]) : <any>undefined;
+            if (Array.isArray(_data["obstacles"])) {
+                this.obstacles = [] as any;
+                for (let item of _data["obstacles"])
+                    this.obstacles!.push(item);
+            }
             this.surfaceScore = _data["surfaceScore"];
             this.author = _data["author"] ? SmallUserDto.fromJS(_data["author"]) : <any>undefined;
             this.likesCount = _data["likesCount"];
@@ -1627,7 +1596,11 @@ export class SpotDto implements ISpotDto {
         data["name"] = this.name;
         data["description"] = this.description;
         data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        data["obstacles"] = this.obstacles ? this.obstacles.toJSON() : <any>undefined;
+        if (Array.isArray(this.obstacles)) {
+            data["obstacles"] = [];
+            for (let item of this.obstacles)
+                data["obstacles"].push(item);
+        }
         data["surfaceScore"] = this.surfaceScore;
         data["author"] = this.author ? this.author.toJSON() : <any>undefined;
         data["likesCount"] = this.likesCount;
@@ -1641,21 +1614,21 @@ export class SpotDto implements ISpotDto {
 }
 
 export interface ISpotDto {
-    id: string;
-    createdAt: Date;
-    name: string | undefined;
-    description: string | undefined;
-    address: AddressDto;
-    obstacles: ObstaclesDto;
-    surfaceScore: number;
-    author: SmallUserDto;
-    likesCount: number;
-    comments: CommentDto[] | undefined;
+    id?: string;
+    createdAt?: Date;
+    name?: string | undefined;
+    description?: string | undefined;
+    address?: AddressDto;
+    obstacles?: ObstacleType[] | undefined;
+    surfaceScore?: number;
+    author?: SmallUserDto;
+    likesCount?: number;
+    comments?: CommentDto[] | undefined;
 }
 
 export class SpotDtoListApiResponse implements ISpotDtoListApiResponse {
-    content!: SpotDto[] | undefined;
-    error!: ErrorResponse;
+    content?: SpotDto[] | undefined;
+    error?: ErrorResponse;
 
     constructor(data?: ISpotDtoListApiResponse) {
         if (data) {
@@ -1697,14 +1670,14 @@ export class SpotDtoListApiResponse implements ISpotDtoListApiResponse {
 }
 
 export interface ISpotDtoListApiResponse {
-    content: SpotDto[] | undefined;
-    error: ErrorResponse;
+    content?: SpotDto[] | undefined;
+    error?: ErrorResponse;
 }
 
 export class SpotMarkerDataDto implements ISpotMarkerDataDto {
-    name!: string | undefined;
-    isTempSpot!: boolean;
-    address!: AddressDto;
+    name?: string | undefined;
+    isTempSpot?: boolean;
+    address?: AddressDto;
 
     constructor(data?: ISpotMarkerDataDto) {
         if (data) {
@@ -1740,14 +1713,14 @@ export class SpotMarkerDataDto implements ISpotMarkerDataDto {
 }
 
 export interface ISpotMarkerDataDto {
-    name: string | undefined;
-    isTempSpot: boolean;
-    address: AddressDto;
+    name?: string | undefined;
+    isTempSpot?: boolean;
+    address?: AddressDto;
 }
 
 export class SpotMarkerDataDtoListApiResponse implements ISpotMarkerDataDtoListApiResponse {
-    content!: SpotMarkerDataDto[] | undefined;
-    error!: ErrorResponse;
+    content?: SpotMarkerDataDto[] | undefined;
+    error?: ErrorResponse;
 
     constructor(data?: ISpotMarkerDataDtoListApiResponse) {
         if (data) {
@@ -1789,13 +1762,13 @@ export class SpotMarkerDataDtoListApiResponse implements ISpotMarkerDataDtoListA
 }
 
 export interface ISpotMarkerDataDtoListApiResponse {
-    content: SpotMarkerDataDto[] | undefined;
-    error: ErrorResponse;
+    content?: SpotMarkerDataDto[] | undefined;
+    error?: ErrorResponse;
 }
 
 export class StringApiResponse implements IStringApiResponse {
-    content!: string | undefined;
-    error!: ErrorResponse;
+    content?: string | undefined;
+    error?: ErrorResponse;
 
     constructor(data?: IStringApiResponse) {
         if (data) {
@@ -1829,20 +1802,20 @@ export class StringApiResponse implements IStringApiResponse {
 }
 
 export interface IStringApiResponse {
-    content: string | undefined;
-    error: ErrorResponse;
+    content?: string | undefined;
+    error?: ErrorResponse;
 }
 
 export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto {
-    id!: string;
-    createdAt!: Date;
-    name!: string | undefined;
-    description!: string | undefined;
-    address!: AddressDto;
-    obstacles!: ObstaclesDto;
-    surfaceScore!: number;
-    author!: SmallUserDto;
-    verificationProcess!: VerificationProcessDto;
+    id?: string;
+    createdAt?: Date;
+    name?: string | undefined;
+    description?: string | undefined;
+    address?: AddressDto;
+    obstacles?: ObstacleType[] | undefined;
+    surfaceScore?: number;
+    author?: SmallUserDto;
+    verificationProcess?: VerificationProcessDto;
 
     constructor(data?: ITempSpotWithVerificationDto) {
         if (data) {
@@ -1860,7 +1833,11 @@ export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto
             this.name = _data["name"];
             this.description = _data["description"];
             this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
-            this.obstacles = _data["obstacles"] ? ObstaclesDto.fromJS(_data["obstacles"]) : <any>undefined;
+            if (Array.isArray(_data["obstacles"])) {
+                this.obstacles = [] as any;
+                for (let item of _data["obstacles"])
+                    this.obstacles!.push(item);
+            }
             this.surfaceScore = _data["surfaceScore"];
             this.author = _data["author"] ? SmallUserDto.fromJS(_data["author"]) : <any>undefined;
             this.verificationProcess = _data["verificationProcess"] ? VerificationProcessDto.fromJS(_data["verificationProcess"]) : <any>undefined;
@@ -1881,7 +1858,11 @@ export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto
         data["name"] = this.name;
         data["description"] = this.description;
         data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        data["obstacles"] = this.obstacles ? this.obstacles.toJSON() : <any>undefined;
+        if (Array.isArray(this.obstacles)) {
+            data["obstacles"] = [];
+            for (let item of this.obstacles)
+                data["obstacles"].push(item);
+        }
         data["surfaceScore"] = this.surfaceScore;
         data["author"] = this.author ? this.author.toJSON() : <any>undefined;
         data["verificationProcess"] = this.verificationProcess ? this.verificationProcess.toJSON() : <any>undefined;
@@ -1890,20 +1871,20 @@ export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto
 }
 
 export interface ITempSpotWithVerificationDto {
-    id: string;
-    createdAt: Date;
-    name: string | undefined;
-    description: string | undefined;
-    address: AddressDto;
-    obstacles: ObstaclesDto;
-    surfaceScore: number;
-    author: SmallUserDto;
-    verificationProcess: VerificationProcessDto;
+    id?: string;
+    createdAt?: Date;
+    name?: string | undefined;
+    description?: string | undefined;
+    address?: AddressDto;
+    obstacles?: ObstacleType[] | undefined;
+    surfaceScore?: number;
+    author?: SmallUserDto;
+    verificationProcess?: VerificationProcessDto;
 }
 
 export class TempSpotWithVerificationDtoApiResponse implements ITempSpotWithVerificationDtoApiResponse {
-    content!: TempSpotWithVerificationDto;
-    error!: ErrorResponse;
+    content?: TempSpotWithVerificationDto;
+    error?: ErrorResponse;
 
     constructor(data?: ITempSpotWithVerificationDtoApiResponse) {
         if (data) {
@@ -1937,13 +1918,13 @@ export class TempSpotWithVerificationDtoApiResponse implements ITempSpotWithVeri
 }
 
 export interface ITempSpotWithVerificationDtoApiResponse {
-    content: TempSpotWithVerificationDto;
-    error: ErrorResponse;
+    content?: TempSpotWithVerificationDto;
+    error?: ErrorResponse;
 }
 
 export class TokenRequest implements ITokenRequest {
-    email!: string | undefined;
-    password!: string | undefined;
+    email?: string | undefined;
+    password?: string | undefined;
 
     constructor(data?: ITokenRequest) {
         if (data) {
@@ -1977,19 +1958,20 @@ export class TokenRequest implements ITokenRequest {
 }
 
 export interface ITokenRequest {
-    email: string | undefined;
-    password: string | undefined;
+    email?: string | undefined;
+    password?: string | undefined;
 }
 
 export class TokenResponse implements ITokenResponse {
-    id!: string | undefined;
-    userName!: string | undefined;
-    email!: string | undefined;
-    roles!: string[] | undefined;
-    isVerified!: boolean;
-    jwToken!: string | undefined;
-    issuedOn!: Date;
-    expiresOn!: Date;
+    id?: string | undefined;
+    userName?: string | undefined;
+    email?: string | undefined;
+    roles?: string[] | undefined;
+    isVerified?: boolean;
+    jwToken?: string | undefined;
+    issuedOn?: Date;
+    expiresOn?: Date;
+    refreshToken?: string | undefined;
 
     constructor(data?: ITokenResponse) {
         if (data) {
@@ -2014,6 +1996,7 @@ export class TokenResponse implements ITokenResponse {
             this.jwToken = _data["jwToken"];
             this.issuedOn = _data["issuedOn"] ? new Date(_data["issuedOn"].toString()) : <any>undefined;
             this.expiresOn = _data["expiresOn"] ? new Date(_data["expiresOn"].toString()) : <any>undefined;
+            this.refreshToken = _data["refreshToken"];
         }
     }
 
@@ -2038,24 +2021,26 @@ export class TokenResponse implements ITokenResponse {
         data["jwToken"] = this.jwToken;
         data["issuedOn"] = this.issuedOn ? this.issuedOn.toISOString() : <any>undefined;
         data["expiresOn"] = this.expiresOn ? this.expiresOn.toISOString() : <any>undefined;
+        data["refreshToken"] = this.refreshToken;
         return data; 
     }
 }
 
 export interface ITokenResponse {
-    id: string | undefined;
-    userName: string | undefined;
-    email: string | undefined;
-    roles: string[] | undefined;
-    isVerified: boolean;
-    jwToken: string | undefined;
-    issuedOn: Date;
-    expiresOn: Date;
+    id?: string | undefined;
+    userName?: string | undefined;
+    email?: string | undefined;
+    roles?: string[] | undefined;
+    isVerified?: boolean;
+    jwToken?: string | undefined;
+    issuedOn?: Date;
+    expiresOn?: Date;
+    refreshToken?: string | undefined;
 }
 
 export class TokenResponseApiResponse implements ITokenResponseApiResponse {
-    content!: TokenResponse;
-    error!: ErrorResponse;
+    content?: TokenResponse;
+    error?: ErrorResponse;
 
     constructor(data?: ITokenResponseApiResponse) {
         if (data) {
@@ -2089,16 +2074,16 @@ export class TokenResponseApiResponse implements ITokenResponseApiResponse {
 }
 
 export interface ITokenResponseApiResponse {
-    content: TokenResponse;
-    error: ErrorResponse;
+    content?: TokenResponse;
+    error?: ErrorResponse;
 }
 
 export class VerificationProcessDto implements IVerificationProcessDto {
-    id!: string;
-    votes!: VerificationStatementDto[] | undefined;
-    endDate!: Date;
-    isVerified!: boolean;
-    discussion!: CommentDto[] | undefined;
+    id?: string;
+    votes?: VerificationStatementDto[] | undefined;
+    endDate?: Date;
+    isVerified?: boolean;
+    discussion?: CommentDto[] | undefined;
 
     constructor(data?: IVerificationProcessDto) {
         if (data) {
@@ -2154,16 +2139,16 @@ export class VerificationProcessDto implements IVerificationProcessDto {
 }
 
 export interface IVerificationProcessDto {
-    id: string;
-    votes: VerificationStatementDto[] | undefined;
-    endDate: Date;
-    isVerified: boolean;
-    discussion: CommentDto[] | undefined;
+    id?: string;
+    votes?: VerificationStatementDto[] | undefined;
+    endDate?: Date;
+    isVerified?: boolean;
+    discussion?: CommentDto[] | undefined;
 }
 
 export class VerificationStatementDto implements IVerificationStatementDto {
-    voterId!: string;
-    isReal!: boolean;
+    voterId?: string;
+    isReal?: boolean;
 
     constructor(data?: IVerificationStatementDto) {
         if (data) {
@@ -2197,12 +2182,14 @@ export class VerificationStatementDto implements IVerificationStatementDto {
 }
 
 export interface IVerificationStatementDto {
-    voterId: string;
-    isReal: boolean;
+    voterId?: string;
+    isReal?: boolean;
 }
 
 export class VoteCommand implements IVoteCommand {
-    isReal!: boolean;
+    tempSpotId?: string;
+    isReal?: boolean;
+    userId?: string;
 
     constructor(data?: IVoteCommand) {
         if (data) {
@@ -2215,7 +2202,9 @@ export class VoteCommand implements IVoteCommand {
 
     init(_data?: any) {
         if (_data) {
+            this.tempSpotId = _data["tempSpotId"];
             this.isReal = _data["isReal"];
+            this.userId = _data["userId"];
         }
     }
 
@@ -2228,13 +2217,17 @@ export class VoteCommand implements IVoteCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["tempSpotId"] = this.tempSpotId;
         data["isReal"] = this.isReal;
+        data["userId"] = this.userId;
         return data; 
     }
 }
 
 export interface IVoteCommand {
-    isReal: boolean;
+    tempSpotId?: string;
+    isReal?: boolean;
+    userId?: string;
 }
 
 export class ApiException extends Error {

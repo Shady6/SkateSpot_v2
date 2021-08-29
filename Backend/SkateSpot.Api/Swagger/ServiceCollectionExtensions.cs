@@ -51,7 +51,6 @@ namespace SkateSpot.Api.Swagger
 					},
 			});
 			});
-			services.AddSwaggerGenNewtonsoftSupport();
 		}
 	}
 }

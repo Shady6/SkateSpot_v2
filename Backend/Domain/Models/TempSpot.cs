@@ -10,7 +10,7 @@ namespace SkateSpot.Domain.Models
 		public string Description { get; protected set; }
 		public Address Address { get; protected set; }
 		public byte SurfaceScore { get; protected set; }
-		public Obstacles Obstacles { get; protected set; }
+		public HashSet<ObstacleType> Obstacles { get; protected set; }
 		public Guid? AuthorId { get; protected set; }
 		public User Author { get; protected set; }
 		public VerificationProcess VerificationProcess { get; protected set; }
@@ -25,7 +25,7 @@ namespace SkateSpot.Domain.Models
 				  byte surfaceScore,
 				  Guid userId,
 				  Address address,
-				  Obstacles obstacles,
+				  HashSet<ObstacleType> obstacles,
 				  ICollection<Image> images)
 		{
 			Name = name;

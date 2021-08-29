@@ -62,7 +62,7 @@ const AddressSearchResults: React.FC<Props> = ({
     else
       return (
         <div>
-          <button>{location!.toString()}</button>
+          <button>{location.toString()}</button>
           <button onClick={() => setShowMore(true)}>Show more</button>
         </div>
       );

@@ -1,12 +1,22 @@
 import React from "react";
 import Tag from "./Tag";
 
-interface Tag {
-  name: string;
+export interface ITag {
+  name:
+    | "Skatepark"
+    | "Ledge"
+    | "Rail"
+    | "Stairs"
+    | "Bank"
+    | "Kicker"
+    | "Manualpad"
+    | "Flatground"
+    | "Quater"
+    | "Downhill";
   isSelected: boolean;
 }
 
-export const initialTags: Tag[] = [
+export const initialTags: ITag[] = [
   { name: "Skatepark", isSelected: false },
   { name: "Ledge", isSelected: false },
   { name: "Rail", isSelected: false },
@@ -20,12 +30,12 @@ export const initialTags: Tag[] = [
 ];
 
 interface Props {
-  tags: Tag[];
-  setTags: React.Dispatch<React.SetStateAction<Tag[]>>;
+  tags: ITag[];
+  setTags: React.Dispatch<React.SetStateAction<ITag[]>>;
 }
 
 const Tags: React.FC<Props> = ({ tags, setTags }) => {
-  const toggleSelection = (tag: Tag) => {
+  const toggleSelection = (tag: ITag) => {
     setTags(
       tags.map((t) => {
         if (t.name === tag.name) t.isSelected = !t.isSelected;

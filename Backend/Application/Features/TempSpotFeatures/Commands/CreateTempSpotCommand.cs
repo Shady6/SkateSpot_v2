@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SkateSpot.Application.DTOs.DomainDTOs;
+using SkateSpot.Domain.Common;
 using System;
 using System.Collections.Generic;
 
@@ -15,11 +16,11 @@ namespace SkateSpot.Application.Features.TempSpotFeatures.Commands
 
 		public byte SurfaceScore { get; set; }
 
-		public ObstaclesDto Obstacles { get; set; }
+		public HashSet<ObstacleType> Obstacles { get; set; }
 
-		public List<FileImageDto> FileImages { get; set; }
+		public List<string> FileImages { get; set; }
 
-		public List<LinkImageDto> LinkImages { get; set; }
+		public List<string> LinkImages { get; set; }
 
 		[JsonIgnore]
 		public Guid UserId { get; set; }
