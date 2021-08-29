@@ -84,7 +84,7 @@ function Upload<T extends Uploaded>({
         onClick={onUploadBtnClick}
         className={"me-1"}
       >
-        Upload
+        Upload Files
       </Button>
       {uploadedItems.length !== 0 && (
         <Button

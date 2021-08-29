@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SkateSpot.Application.DTOs.DomainDTOs;
-using SkateSpot.Domain.Models;
 using System;
 using System.Collections.Generic;
 
@@ -18,7 +17,9 @@ namespace SkateSpot.Application.Features.TempSpotFeatures.Commands
 
 		public ObstaclesDto Obstacles { get; set; }
 
-		public List<Image> Images { get; set; }
+		public List<FileImageDto> FileImages { get; set; }
+
+		public List<LinkImageDto> LinkImages { get; set; }
 
 		[JsonIgnore]
 		public Guid UserId { get; set; }

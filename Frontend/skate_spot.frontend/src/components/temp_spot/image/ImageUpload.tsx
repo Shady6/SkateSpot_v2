@@ -13,14 +13,14 @@ const ImageUpload: React.FC<Props> = ({ files, setFiles, links, setLinks }) => {
   const imagesLimit = 10;
 
   return (
-    <div>
-      <p className={"h3"}>You can add up to {imagesLimit} images of spot</p>
+    <>
+      <p>You can add up to {imagesLimit} images of spot as files or links</p>
       {files.length + links.length >= imagesLimit && (
         <p className="text-info text-sm">
           You've reached the images upload limit
         </p>
       )}
-      <div className={"mt-4 mb-4"}>
+      <div className={"mt-4 mb-3"}>
         <FileImageUpload
           files={files}
           setFiles={setFiles}
@@ -29,7 +29,6 @@ const ImageUpload: React.FC<Props> = ({ files, setFiles, links, setLinks }) => {
         />
       </div>
       <div>
-        <p>Or by link</p>
         <LinkImageUpload
           links={links}
           setLinks={setLinks}
@@ -37,7 +36,7 @@ const ImageUpload: React.FC<Props> = ({ files, setFiles, links, setLinks }) => {
           otherImagesCount={files.length}
         />
       </div>
-    </div>
+    </>
   );
 };
 

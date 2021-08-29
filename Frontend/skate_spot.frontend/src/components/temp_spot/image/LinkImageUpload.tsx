@@ -1,10 +1,9 @@
-import { Button, Icon, IconButton, TextField } from "@material-ui/core";
+import { Icon, IconButton, TextField } from "@material-ui/core";
 import { useState } from "react";
 import { v4 } from "uuid";
 import { useError } from "../../../hooks/useError";
 import { useInputState } from "../../../hooks/useInputState";
-import Upload from "../../shared/Upload";
-import { Uploaded } from "../../shared/Upload";
+import Upload, { Uploaded } from "../../shared/Upload";
 
 export interface IdLink {
   uuid: string;
