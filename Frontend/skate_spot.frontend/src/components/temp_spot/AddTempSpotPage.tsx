@@ -143,6 +143,11 @@ const AddTempSpotPage: React.FC = () => {
 
   const sendSpotData = () => {
     let base64Images: string[] = [];
+    base64Images.push(
+      ...links
+        .filter((l) => l.item.url.startsWith("data:image"))
+        .map((l) => l.item.url)
+    );
     files.forEach((f) => {
       let fr = new FileReader();
       fr.addEventListener("load", (e) => {
@@ -166,8 +171,10 @@ const AddTempSpotPage: React.FC = () => {
       obstacles: tags
         .filter((t) => t.isSelected)
         .map((t) => ObstacleType[t.name]),
-      linkImages: links.map((l) => l.item.url),
-      fileImages: base64Images,
+      linkImages: links
+        .filter((l) => !l.item.url.startsWith("data:image"))
+        .map((l) => l.item.url),
+      base64Images: base64Images,
     });
     const client = new ApiClient();
     client.create_Spot("Bearer " + authState.content?.jwToken ?? "", command);

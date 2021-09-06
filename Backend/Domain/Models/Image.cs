@@ -2,7 +2,7 @@
 {
 	public class Image
 	{
-		public string Url { get; protected set; }
+		public string Base64 { get; protected set; }
 
 		public Image()
 		{
@@ -10,7 +10,7 @@
 
 		public Image(string url)
 		{
-			Url = url;
+			Base64 = url;
 		}
 	}
 }

@@ -55,7 +55,7 @@ const FileImageUpload: React.FC<Props> = ({
         onChange={handleFileInputChange}
         style={{ display: "none" }}
         type="file"
-        accept="image/jpeg, image/jpg, image/png, image/gif, image/apng, image/tiff"
+        accept="image/jpeg, image/jpg, image/png"
         multiple={true}
       />
     </Upload>
