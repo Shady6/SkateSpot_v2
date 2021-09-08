@@ -42,6 +42,7 @@ namespace SkateSpot.Application.Services
 			if (foundTempSpot != null)
 				throw new AppException(ErrorCode.ALREADY_EXISTS, $"Spot with name {request.Name} is already in verification process.");
 
+			request.RemoveInvalidBase64Images();
 			request.Base64Images.AddRange(await request.ConvertLinkImagesToBase64Images());
 
 			var tempSpot = TempSpotFactory.CreateTempSpotFromCreateCommand(request, _mapper);

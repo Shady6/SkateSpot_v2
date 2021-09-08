@@ -28,7 +28,7 @@ namespace SkateSpot.Application.Features.TempSpotFeatures.Commands
 		[JsonIgnore]
 		public Guid UserId { get; set; }
 
-		private readonly string[] acceptedImageFormats = { ".png", ".jpg", ".jpeg" };
+		private readonly string[] acceptedImageFormats = { "png", "jpg", "jpeg", "webp" };
 
 		public async Task<IEnumerable<string>> ConvertLinkImagesToBase64Images()
 		{
@@ -38,7 +38,7 @@ namespace SkateSpot.Application.Features.TempSpotFeatures.Commands
 				client.ExecuteAsync(
 					new RestRequest(
 						new Uri(l), Method.GET)))))
-				.Where(r => r.ContentType.StartsWith("image/"))
+				.Where(r => r.ContentType.StartsWith("image/") && acceptedImageFormats.Any(f => r.ContentType.EndsWith(f)))
 				.Select(r =>
 				{
 					var b64 = Convert.ToBase64String(r.RawBytes);
@@ -46,6 +46,13 @@ namespace SkateSpot.Application.Features.TempSpotFeatures.Commands
 						return $"data:image/{r.ContentType[(r.ContentType.IndexOf('/') + 1)..]};base64,{b64}";
 					return b64;
 				});
+		}
+
+		public void RemoveInvalidBase64Images()
+		{
+			Base64Images = Base64Images.Where(b64 =>
+				acceptedImageFormats.Any(f =>
+					b64.StartsWith($"data:image/{f};base64"))).ToList();
 		}
 
 		public string[] GetInvalidLinks()

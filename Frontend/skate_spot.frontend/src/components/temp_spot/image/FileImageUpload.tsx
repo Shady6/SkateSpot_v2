@@ -15,6 +15,13 @@ interface Props {
   imagesLimit: number;
 }
 
+export const acceptedFileFormats = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
 const FileImageUpload: React.FC<Props> = ({
   files,
   setFiles,
@@ -55,7 +62,7 @@ const FileImageUpload: React.FC<Props> = ({
         onChange={handleFileInputChange}
         style={{ display: "none" }}
         type="file"
-        accept="image/jpeg, image/jpg, image/png"
+        accept={acceptedFileFormats.join(", ")}
         multiple={true}
       />
     </Upload>
