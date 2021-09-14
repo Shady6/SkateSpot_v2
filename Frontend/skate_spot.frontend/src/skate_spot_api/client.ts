@@ -8,2255 +8,2613 @@
 // ReSharper disable InconsistentNaming
 
 export class Client {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+  private http: {
+    fetch(url: RequestInfo, init?: RequestInit): Promise<Response>;
+  };
+  private baseUrl: string;
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
+    undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+  constructor(
+    baseUrl?: string,
+    http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }
+  ) {
+    this.http = http ? http : <any>window;
+    this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+  }
+
+  /**
+   * @return Success
+   */
+  seed_Fake_Spots(authorization: string): Promise<void> {
+    let url_ = this.baseUrl + "/api/admin/seed";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "POST",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processSeed_Fake_Spots(_response);
+    });
+  }
+
+  protected processSeed_Fake_Spots(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @return Success
-     */
-    seed_Fake_Spots(authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/admin/seed";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "POST",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processSeed_Fake_Spots(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processSeed_Fake_Spots(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @param body (optional)
+   * @return Success
+   */
+  comment(
+    subjectType: CommentSubjectType,
+    subjectId: string,
+    authorization: string,
+    body: CommentCommand | undefined
+  ): Promise<void> {
+    let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/comments";
+    if (subjectType === undefined || subjectType === null)
+      throw new Error("The parameter 'subjectType' must be defined.");
+    url_ = url_.replace("{subjectType}", encodeURIComponent("" + subjectType));
+    if (subjectId === undefined || subjectId === null)
+      throw new Error("The parameter 'subjectId' must be defined.");
+    url_ = url_.replace("{subjectId}", encodeURIComponent("" + subjectId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_ = <RequestInit>{
+      body: content_,
+      method: "POST",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+        "Content-Type": "application/json",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processComment(_response);
+    });
+  }
+
+  protected processComment(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    comment(subjectType: CommentSubjectType, subjectId: string, authorization: string, body: CommentCommand | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/comments";
-        if (subjectType === undefined || subjectType === null)
-            throw new Error("The parameter 'subjectType' must be defined.");
-        url_ = url_.replace("{subjectType}", encodeURIComponent("" + subjectType));
-        if (subjectId === undefined || subjectId === null)
-            throw new Error("The parameter 'subjectId' must be defined.");
-        url_ = url_.replace("{subjectId}", encodeURIComponent("" + subjectId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processComment(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processComment(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @param body (optional)
+   * @return Success
+   */
+  edit_Comment(
+    subjectType: CommentSubjectType,
+    subjectId: string,
+    commentId: string,
+    authorization: string,
+    body: EditCommentCommand | undefined
+  ): Promise<void> {
+    let url_ =
+      this.baseUrl + "/api/{subjectType}/{subjectId}/comments/{commentId}";
+    if (subjectType === undefined || subjectType === null)
+      throw new Error("The parameter 'subjectType' must be defined.");
+    url_ = url_.replace("{subjectType}", encodeURIComponent("" + subjectType));
+    if (subjectId === undefined || subjectId === null)
+      throw new Error("The parameter 'subjectId' must be defined.");
+    url_ = url_.replace("{subjectId}", encodeURIComponent("" + subjectId));
+    if (commentId === undefined || commentId === null)
+      throw new Error("The parameter 'commentId' must be defined.");
+    url_ = url_.replace("{commentId}", encodeURIComponent("" + commentId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_ = <RequestInit>{
+      body: content_,
+      method: "PUT",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+        "Content-Type": "application/json",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processEdit_Comment(_response);
+    });
+  }
+
+  protected processEdit_Comment(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    edit_Comment(subjectType: CommentSubjectType, subjectId: string, commentId: string, authorization: string, body: EditCommentCommand | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/comments/{commentId}";
-        if (subjectType === undefined || subjectType === null)
-            throw new Error("The parameter 'subjectType' must be defined.");
-        url_ = url_.replace("{subjectType}", encodeURIComponent("" + subjectType));
-        if (subjectId === undefined || subjectId === null)
-            throw new Error("The parameter 'subjectId' must be defined.");
-        url_ = url_.replace("{subjectId}", encodeURIComponent("" + subjectId));
-        if (commentId === undefined || commentId === null)
-            throw new Error("The parameter 'commentId' must be defined.");
-        url_ = url_.replace("{commentId}", encodeURIComponent("" + commentId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processEdit_Comment(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processEdit_Comment(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @return Success
+   */
+  delete_Comment(
+    subjectId: string,
+    subjectType: CommentSubjectType,
+    commentId: string,
+    authorization: string
+  ): Promise<void> {
+    let url_ =
+      this.baseUrl + "/api/{subjectType}/{subjectId}/comments/{commentId}";
+    if (subjectId === undefined || subjectId === null)
+      throw new Error("The parameter 'subjectId' must be defined.");
+    url_ = url_.replace("{SubjectId}", encodeURIComponent("" + subjectId));
+    if (subjectType === undefined || subjectType === null)
+      throw new Error("The parameter 'subjectType' must be defined.");
+    url_ = url_.replace("{SubjectType}", encodeURIComponent("" + subjectType));
+    if (commentId === undefined || commentId === null)
+      throw new Error("The parameter 'commentId' must be defined.");
+    url_ = url_.replace("{CommentId}", encodeURIComponent("" + commentId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "DELETE",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processDelete_Comment(_response);
+    });
+  }
+
+  protected processDelete_Comment(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @return Success
-     */
-    delete_Comment(subjectId: string, subjectType: CommentSubjectType, commentId: string, authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/comments/{commentId}";
-        if (subjectId === undefined || subjectId === null)
-            throw new Error("The parameter 'subjectId' must be defined.");
-        url_ = url_.replace("{SubjectId}", encodeURIComponent("" + subjectId));
-        if (subjectType === undefined || subjectType === null)
-            throw new Error("The parameter 'subjectType' must be defined.");
-        url_ = url_.replace("{SubjectType}", encodeURIComponent("" + subjectType));
-        if (commentId === undefined || commentId === null)
-            throw new Error("The parameter 'commentId' must be defined.");
-        url_ = url_.replace("{CommentId}", encodeURIComponent("" + commentId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processDelete_Comment(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processDelete_Comment(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @param body (optional)
+   * @return Success
+   */
+  get_Token(body: TokenRequest | undefined): Promise<TokenResponseApiResponse> {
+    let url_ = this.baseUrl + "/api/identity/token";
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_ = <RequestInit>{
+      body: content_,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "text/plain",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processGet_Token(_response);
+    });
+  }
+
+  protected processGet_Token(
+    response: Response
+  ): Promise<TokenResponseApiResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    get_Token(body: TokenRequest | undefined): Promise<TokenResponseApiResponse> {
-        let url_ = this.baseUrl + "/api/identity/token";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "text/plain"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGet_Token(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        let resultData200 =
+          _responseText === ""
+            ? null
+            : JSON.parse(_responseText, this.jsonParseReviver);
+        result200 = TokenResponseApiResponse.fromJS(resultData200);
+        return result200;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<TokenResponseApiResponse>(<any>null);
+  }
 
-    protected processGet_Token(response: Response): Promise<TokenResponseApiResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TokenResponseApiResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<TokenResponseApiResponse>(<any>null);
+  /**
+   * @return Success
+   */
+  logout(authorization: string): Promise<void> {
+    let url_ = this.baseUrl + "/api/identity/logout";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "DELETE",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processLogout(_response);
+    });
+  }
+
+  protected processLogout(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @return Success
-     */
-    logout(authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/identity/logout";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processLogout(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processLogout(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @param body (optional)
+   * @return Success
+   */
+  register(body: RegisterRequest | undefined): Promise<StringApiResponse> {
+    let url_ = this.baseUrl + "/api/identity/register";
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_ = <RequestInit>{
+      body: content_,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "text/plain",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processRegister(_response);
+    });
+  }
+
+  protected processRegister(response: Response): Promise<StringApiResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    register(body: RegisterRequest | undefined): Promise<StringApiResponse> {
-        let url_ = this.baseUrl + "/api/identity/register";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "text/plain"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processRegister(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        let resultData200 =
+          _responseText === ""
+            ? null
+            : JSON.parse(_responseText, this.jsonParseReviver);
+        result200 = StringApiResponse.fromJS(resultData200);
+        return result200;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<StringApiResponse>(<any>null);
+  }
 
-    protected processRegister(response: Response): Promise<StringApiResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StringApiResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<StringApiResponse>(<any>null);
+  /**
+   * @param userId (optional)
+   * @param code (optional)
+   * @return Success
+   */
+  confirm_Email(
+    userId: string | undefined,
+    code: string | undefined
+  ): Promise<StringApiResponse> {
+    let url_ = this.baseUrl + "/api/identity/confirm-email?";
+    if (userId === null)
+      throw new Error("The parameter 'userId' cannot be null.");
+    else if (userId !== undefined)
+      url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+    if (code === null) throw new Error("The parameter 'code' cannot be null.");
+    else if (code !== undefined)
+      url_ += "code=" + encodeURIComponent("" + code) + "&";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "GET",
+      headers: {
+        Accept: "text/plain",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processConfirm_Email(_response);
+    });
+  }
+
+  protected processConfirm_Email(
+    response: Response
+  ): Promise<StringApiResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param userId (optional) 
-     * @param code (optional) 
-     * @return Success
-     */
-    confirm_Email(userId: string | undefined, code: string | undefined): Promise<StringApiResponse> {
-        let url_ = this.baseUrl + "/api/identity/confirm-email?";
-        if (userId === null)
-            throw new Error("The parameter 'userId' cannot be null.");
-        else if (userId !== undefined)
-            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
-        if (code === null)
-            throw new Error("The parameter 'code' cannot be null.");
-        else if (code !== undefined)
-            url_ += "code=" + encodeURIComponent("" + code) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "text/plain"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processConfirm_Email(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        let resultData200 =
+          _responseText === ""
+            ? null
+            : JSON.parse(_responseText, this.jsonParseReviver);
+        result200 = StringApiResponse.fromJS(resultData200);
+        return result200;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<StringApiResponse>(<any>null);
+  }
 
-    protected processConfirm_Email(response: Response): Promise<StringApiResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StringApiResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<StringApiResponse>(<any>null);
+  /**
+   * @param body (optional)
+   * @return Success
+   */
+  forgot_Password(body: ForgotPasswordRequest | undefined): Promise<void> {
+    let url_ = this.baseUrl + "/api/identity/forgot-password";
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_ = <RequestInit>{
+      body: content_,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processForgot_Password(_response);
+    });
+  }
+
+  protected processForgot_Password(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    forgot_Password(body: ForgotPasswordRequest | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/identity/forgot-password";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processForgot_Password(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processForgot_Password(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @param body (optional)
+   * @return Success
+   */
+  reset_Password(
+    body: ResetPasswordRequest | undefined
+  ): Promise<StringApiResponse> {
+    let url_ = this.baseUrl + "/api/identity/reset-password";
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_ = <RequestInit>{
+      body: content_,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "text/plain",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processReset_Password(_response);
+    });
+  }
+
+  protected processReset_Password(
+    response: Response
+  ): Promise<StringApiResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    reset_Password(body: ResetPasswordRequest | undefined): Promise<StringApiResponse> {
-        let url_ = this.baseUrl + "/api/identity/reset-password";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "text/plain"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processReset_Password(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        let resultData200 =
+          _responseText === ""
+            ? null
+            : JSON.parse(_responseText, this.jsonParseReviver);
+        result200 = StringApiResponse.fromJS(resultData200);
+        return result200;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<StringApiResponse>(<any>null);
+  }
 
-    protected processReset_Password(response: Response): Promise<StringApiResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StringApiResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<StringApiResponse>(<any>null);
+  /**
+   * @return Success
+   */
+  like(
+    subjectId: string,
+    subjectType: LikeSubjectType,
+    authorization: string
+  ): Promise<void> {
+    let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/Likes";
+    if (subjectId === undefined || subjectId === null)
+      throw new Error("The parameter 'subjectId' must be defined.");
+    url_ = url_.replace("{SubjectId}", encodeURIComponent("" + subjectId));
+    if (subjectType === undefined || subjectType === null)
+      throw new Error("The parameter 'subjectType' must be defined.");
+    url_ = url_.replace("{SubjectType}", encodeURIComponent("" + subjectType));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "POST",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processLike(_response);
+    });
+  }
+
+  protected processLike(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @return Success
-     */
-    like(subjectId: string, subjectType: LikeSubjectType, authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/Likes";
-        if (subjectId === undefined || subjectId === null)
-            throw new Error("The parameter 'subjectId' must be defined.");
-        url_ = url_.replace("{SubjectId}", encodeURIComponent("" + subjectId));
-        if (subjectType === undefined || subjectType === null)
-            throw new Error("The parameter 'subjectType' must be defined.");
-        url_ = url_.replace("{SubjectType}", encodeURIComponent("" + subjectType));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "POST",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processLike(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processLike(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @return Success
+   */
+  delete_Like(
+    subjectId: string,
+    subjectType: LikeSubjectType,
+    authorization: string
+  ): Promise<void> {
+    let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/Likes";
+    if (subjectId === undefined || subjectId === null)
+      throw new Error("The parameter 'subjectId' must be defined.");
+    url_ = url_.replace("{SubjectId}", encodeURIComponent("" + subjectId));
+    if (subjectType === undefined || subjectType === null)
+      throw new Error("The parameter 'subjectType' must be defined.");
+    url_ = url_.replace("{SubjectType}", encodeURIComponent("" + subjectType));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "DELETE",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processDelete_Like(_response);
+    });
+  }
+
+  protected processDelete_Like(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @return Success
-     */
-    delete_Like(subjectId: string, subjectType: LikeSubjectType, authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/Likes";
-        if (subjectId === undefined || subjectId === null)
-            throw new Error("The parameter 'subjectId' must be defined.");
-        url_ = url_.replace("{SubjectId}", encodeURIComponent("" + subjectId));
-        if (subjectType === undefined || subjectType === null)
-            throw new Error("The parameter 'subjectType' must be defined.");
-        url_ = url_.replace("{SubjectType}", encodeURIComponent("" + subjectType));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processDelete_Like(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processDelete_Like(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @param authorization (optional)
+   * @return Success
+   */
+  get_Spots(
+    authorization: string | undefined
+  ): Promise<SpotDtoListApiResponse> {
+    let url_ = this.baseUrl + "/api/spots";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "GET",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+        Accept: "text/plain",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processGet_Spots(_response);
+    });
+  }
+
+  protected processGet_Spots(
+    response: Response
+  ): Promise<SpotDtoListApiResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param authorization (optional) 
-     * @return Success
-     */
-    get_Spots(authorization: string | undefined): Promise<SpotDtoListApiResponse> {
-        let url_ = this.baseUrl + "/api/spots";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-                "Accept": "text/plain"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGet_Spots(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        let resultData200 =
+          _responseText === ""
+            ? null
+            : JSON.parse(_responseText, this.jsonParseReviver);
+        result200 = SpotDtoListApiResponse.fromJS(resultData200);
+        return result200;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<SpotDtoListApiResponse>(<any>null);
+  }
 
-    protected processGet_Spots(response: Response): Promise<SpotDtoListApiResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SpotDtoListApiResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SpotDtoListApiResponse>(<any>null);
+  /**
+   * @return Success
+   */
+  get_Perma_And_Temp_Spots_Marker_Data(
+    authorization: string
+  ): Promise<SpotMarkerDataDtoListApiResponse> {
+    let url_ = this.baseUrl + "/api/spots/marker";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "GET",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+        Accept: "text/plain",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processGet_Perma_And_Temp_Spots_Marker_Data(_response);
+    });
+  }
+
+  protected processGet_Perma_And_Temp_Spots_Marker_Data(
+    response: Response
+  ): Promise<SpotMarkerDataDtoListApiResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @return Success
-     */
-    get_Perma_And_Temp_Spots_Marker_Data(authorization: string): Promise<SpotMarkerDataDtoListApiResponse> {
-        let url_ = this.baseUrl + "/api/spots/marker";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-                "Accept": "text/plain"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGet_Perma_And_Temp_Spots_Marker_Data(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        let resultData200 =
+          _responseText === ""
+            ? null
+            : JSON.parse(_responseText, this.jsonParseReviver);
+        result200 = SpotMarkerDataDtoListApiResponse.fromJS(resultData200);
+        return result200;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<SpotMarkerDataDtoListApiResponse>(<any>null);
+  }
 
-    protected processGet_Perma_And_Temp_Spots_Marker_Data(response: Response): Promise<SpotMarkerDataDtoListApiResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SpotMarkerDataDtoListApiResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SpotMarkerDataDtoListApiResponse>(<any>null);
+  /**
+   * @param body (optional)
+   * @return Success
+   */
+  add_Spot_Video(
+    spotId: string,
+    authorization: string,
+    body: AddSpotVideoCommand | undefined
+  ): Promise<void> {
+    let url_ = this.baseUrl + "/api/spots/{spotId}/spotVideos";
+    if (spotId === undefined || spotId === null)
+      throw new Error("The parameter 'spotId' must be defined.");
+    url_ = url_.replace("{spotId}", encodeURIComponent("" + spotId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_ = <RequestInit>{
+      body: content_,
+      method: "POST",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+        "Content-Type": "application/json",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processAdd_Spot_Video(_response);
+    });
+  }
+
+  protected processAdd_Spot_Video(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    add_Spot_Video(spotId: string, authorization: string, body: AddSpotVideoCommand | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/spots/{spotId}/spotVideos";
-        if (spotId === undefined || spotId === null)
-            throw new Error("The parameter 'spotId' must be defined.");
-        url_ = url_.replace("{spotId}", encodeURIComponent("" + spotId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processAdd_Spot_Video(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processAdd_Spot_Video(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @return Success
+   */
+  delete_Spot_Video(
+    spotId: string,
+    spotVideoId: string,
+    authorization: string
+  ): Promise<void> {
+    let url_ = this.baseUrl + "/api/spots/{spotId}/spotVideos/{spotVideoId}";
+    if (spotId === undefined || spotId === null)
+      throw new Error("The parameter 'spotId' must be defined.");
+    url_ = url_.replace("{SpotId}", encodeURIComponent("" + spotId));
+    if (spotVideoId === undefined || spotVideoId === null)
+      throw new Error("The parameter 'spotVideoId' must be defined.");
+    url_ = url_.replace("{SpotVideoId}", encodeURIComponent("" + spotVideoId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "DELETE",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processDelete_Spot_Video(_response);
+    });
+  }
+
+  protected processDelete_Spot_Video(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @return Success
-     */
-    delete_Spot_Video(spotId: string, spotVideoId: string, authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/spots/{spotId}/spotVideos/{spotVideoId}";
-        if (spotId === undefined || spotId === null)
-            throw new Error("The parameter 'spotId' must be defined.");
-        url_ = url_.replace("{SpotId}", encodeURIComponent("" + spotId));
-        if (spotVideoId === undefined || spotVideoId === null)
-            throw new Error("The parameter 'spotVideoId' must be defined.");
-        url_ = url_.replace("{SpotVideoId}", encodeURIComponent("" + spotVideoId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processDelete_Spot_Video(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processDelete_Spot_Video(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @param body (optional)
+   * @return Success
+   */
+  create_Spot(
+    authorization: string,
+    body: CreateTempSpotCommand | undefined
+  ): Promise<GuidApiResponse> {
+    let url_ = this.baseUrl + "/api/TempSpots";
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+    let options_ = <RequestInit>{
+      body: content_,
+      method: "POST",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+        "Content-Type": "application/json",
+        Accept: "text/plain",
+      },
+    };
+    console.log(options_);
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processCreate_Spot(_response);
+    });
+  }
+
+  protected processCreate_Spot(response: Response): Promise<GuidApiResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    create_Spot(authorization: string, body: CreateTempSpotCommand | undefined): Promise<GuidApiResponse> {
-        let url_ = this.baseUrl + "/api/TempSpots";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-                "Content-Type": "application/json",
-                "Accept": "text/plain"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processCreate_Spot(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        let resultData200 =
+          _responseText === ""
+            ? null
+            : JSON.parse(_responseText, this.jsonParseReviver);
+        result200 = GuidApiResponse.fromJS(resultData200);
+        return result200;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<GuidApiResponse>(<any>null);
+  }
 
-    protected processCreate_Spot(response: Response): Promise<GuidApiResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GuidApiResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<GuidApiResponse>(<any>null);
+  /**
+   * @return Success
+   */
+  get_With_Verification(
+    spotId: string
+  ): Promise<TempSpotWithVerificationDtoApiResponse> {
+    let url_ = this.baseUrl + "/api/TempSpots/{spotId}";
+    if (spotId === undefined || spotId === null)
+      throw new Error("The parameter 'spotId' must be defined.");
+    url_ = url_.replace("{SpotId}", encodeURIComponent("" + spotId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "GET",
+      headers: {
+        Accept: "text/plain",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processGet_With_Verification(_response);
+    });
+  }
+
+  protected processGet_With_Verification(
+    response: Response
+  ): Promise<TempSpotWithVerificationDtoApiResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @return Success
-     */
-    get_With_Verification(spotId: string): Promise<TempSpotWithVerificationDtoApiResponse> {
-        let url_ = this.baseUrl + "/api/TempSpots/{spotId}";
-        if (spotId === undefined || spotId === null)
-            throw new Error("The parameter 'spotId' must be defined.");
-        url_ = url_.replace("{SpotId}", encodeURIComponent("" + spotId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "text/plain"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGet_With_Verification(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        let resultData200 =
+          _responseText === ""
+            ? null
+            : JSON.parse(_responseText, this.jsonParseReviver);
+        result200 =
+          TempSpotWithVerificationDtoApiResponse.fromJS(resultData200);
+        return result200;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<TempSpotWithVerificationDtoApiResponse>(<any>null);
+  }
 
-    protected processGet_With_Verification(response: Response): Promise<TempSpotWithVerificationDtoApiResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TempSpotWithVerificationDtoApiResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<TempSpotWithVerificationDtoApiResponse>(<any>null);
+  /**
+   * @param body (optional)
+   * @return Success
+   */
+  vote(
+    tempSpotId: string,
+    authorization: string,
+    body: VoteCommand | undefined
+  ): Promise<void> {
+    let url_ = this.baseUrl + "/api/tempSpots/{tempSpotId}/vote";
+    if (tempSpotId === undefined || tempSpotId === null)
+      throw new Error("The parameter 'tempSpotId' must be defined.");
+    url_ = url_.replace("{tempSpotId}", encodeURIComponent("" + tempSpotId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_ = <RequestInit>{
+      body: content_,
+      method: "POST",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+        "Content-Type": "application/json",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processVote(_response);
+    });
+  }
+
+  protected processVote(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    vote(tempSpotId: string, authorization: string, body: VoteCommand | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/tempSpots/{tempSpotId}/vote";
-        if (tempSpotId === undefined || tempSpotId === null)
-            throw new Error("The parameter 'tempSpotId' must be defined.");
-        url_ = url_.replace("{tempSpotId}", encodeURIComponent("" + tempSpotId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processVote(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
+    return Promise.resolve<void>(<any>null);
+  }
 
-    protected processVote(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
+  /**
+   * @return Success
+   */
+  delete_Vote(tempSpotId: string, authorization: string): Promise<void> {
+    let url_ = this.baseUrl + "/api/tempSpots/{tempSpotId}/vote";
+    if (tempSpotId === undefined || tempSpotId === null)
+      throw new Error("The parameter 'tempSpotId' must be defined.");
+    url_ = url_.replace("{TempSpotId}", encodeURIComponent("" + tempSpotId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <RequestInit>{
+      method: "DELETE",
+      headers: {
+        Authorization:
+          authorization !== undefined && authorization !== null
+            ? "" + authorization
+            : "",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processDelete_Vote(_response);
+    });
+  }
+
+  protected processDelete_Vote(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * @return Success
-     */
-    delete_Vote(tempSpotId: string, authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/tempSpots/{tempSpotId}/vote";
-        if (tempSpotId === undefined || tempSpotId === null)
-            throw new Error("The parameter 'tempSpotId' must be defined.");
-        url_ = url_.replace("{TempSpotId}", encodeURIComponent("" + tempSpotId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processDelete_Vote(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
     }
-
-    protected processDelete_Vote(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
-    }
+    return Promise.resolve<void>(<any>null);
+  }
 }
 
 export class AddressDto implements IAddressDto {
-    streetName?: string | undefined;
-    streetNumber?: string | undefined;
-    postCode?: string | undefined;
-    city?: string | undefined;
-    country?: string | undefined;
-    coords?: CoordsDto;
+  streetName?: string | undefined;
+  streetNumber?: string | undefined;
+  postCode?: string | undefined;
+  city?: string | undefined;
+  country?: string | undefined;
+  coords?: CoordsDto;
 
-    constructor(data?: IAddressDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IAddressDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.streetName = _data["streetName"];
-            this.streetNumber = _data["streetNumber"];
-            this.postCode = _data["postCode"];
-            this.city = _data["city"];
-            this.country = _data["country"];
-            this.coords = _data["coords"] ? CoordsDto.fromJS(_data["coords"]) : <any>undefined;
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.streetName = _data["streetName"];
+      this.streetNumber = _data["streetNumber"];
+      this.postCode = _data["postCode"];
+      this.city = _data["city"];
+      this.country = _data["country"];
+      this.coords = _data["coords"]
+        ? CoordsDto.fromJS(_data["coords"])
+        : <any>undefined;
     }
+  }
 
-    static fromJS(data: any): AddressDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new AddressDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): AddressDto {
+    data = typeof data === "object" ? data : {};
+    let result = new AddressDto();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["streetName"] = this.streetName;
-        data["streetNumber"] = this.streetNumber;
-        data["postCode"] = this.postCode;
-        data["city"] = this.city;
-        data["country"] = this.country;
-        data["coords"] = this.coords ? this.coords.toJSON() : <any>undefined;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["streetName"] = this.streetName;
+    data["streetNumber"] = this.streetNumber;
+    data["postCode"] = this.postCode;
+    data["city"] = this.city;
+    data["country"] = this.country;
+    data["coords"] = this.coords ? this.coords.toJSON() : <any>undefined;
+    return data;
+  }
 }
 
 export interface IAddressDto {
-    streetName?: string | undefined;
-    streetNumber?: string | undefined;
-    postCode?: string | undefined;
-    city?: string | undefined;
-    country?: string | undefined;
-    coords?: CoordsDto;
+  streetName?: string | undefined;
+  streetNumber?: string | undefined;
+  postCode?: string | undefined;
+  city?: string | undefined;
+  country?: string | undefined;
+  coords?: CoordsDto;
 }
 
 export class AddSpotVideoCommand implements IAddSpotVideoCommand {
-    url?: string | undefined;
-    spotId?: string;
-    userId?: string;
+  url?: string | undefined;
+  spotId?: string;
+  userId?: string;
 
-    constructor(data?: IAddSpotVideoCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IAddSpotVideoCommand) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.url = _data["url"];
-            this.spotId = _data["spotId"];
-            this.userId = _data["userId"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.url = _data["url"];
+      this.spotId = _data["spotId"];
+      this.userId = _data["userId"];
     }
+  }
 
-    static fromJS(data: any): AddSpotVideoCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new AddSpotVideoCommand();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): AddSpotVideoCommand {
+    data = typeof data === "object" ? data : {};
+    let result = new AddSpotVideoCommand();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["url"] = this.url;
-        data["spotId"] = this.spotId;
-        data["userId"] = this.userId;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["url"] = this.url;
+    data["spotId"] = this.spotId;
+    data["userId"] = this.userId;
+    return data;
+  }
 }
 
 export interface IAddSpotVideoCommand {
-    url?: string | undefined;
-    spotId?: string;
-    userId?: string;
+  url?: string | undefined;
+  spotId?: string;
+  userId?: string;
 }
 
 export class CommentCommand implements ICommentCommand {
-    subjectId?: string;
-    text?: string | undefined;
-    subjectType?: CommentSubjectType;
-    userId?: string;
+  subjectId?: string;
+  text?: string | undefined;
+  subjectType?: CommentSubjectType;
+  userId?: string;
 
-    constructor(data?: ICommentCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ICommentCommand) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.subjectId = _data["subjectId"];
-            this.text = _data["text"];
-            this.subjectType = _data["subjectType"];
-            this.userId = _data["userId"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.subjectId = _data["subjectId"];
+      this.text = _data["text"];
+      this.subjectType = _data["subjectType"];
+      this.userId = _data["userId"];
     }
+  }
 
-    static fromJS(data: any): CommentCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new CommentCommand();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): CommentCommand {
+    data = typeof data === "object" ? data : {};
+    let result = new CommentCommand();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["subjectId"] = this.subjectId;
-        data["text"] = this.text;
-        data["subjectType"] = this.subjectType;
-        data["userId"] = this.userId;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["subjectId"] = this.subjectId;
+    data["text"] = this.text;
+    data["subjectType"] = this.subjectType;
+    data["userId"] = this.userId;
+    return data;
+  }
 }
 
 export interface ICommentCommand {
-    subjectId?: string;
-    text?: string | undefined;
-    subjectType?: CommentSubjectType;
-    userId?: string;
+  subjectId?: string;
+  text?: string | undefined;
+  subjectType?: CommentSubjectType;
+  userId?: string;
 }
 
 export class CommentDto implements ICommentDto {
-    id?: string;
-    createdAt?: Date;
-    editedAt?: Date;
-    authorId?: string | undefined;
-    author?: SmallUserDto;
-    text?: string | undefined;
-    isDeleted?: boolean;
-    likesCount?: number;
+  id?: string;
+  createdAt?: Date;
+  editedAt?: Date;
+  authorId?: string | undefined;
+  author?: SmallUserDto;
+  text?: string | undefined;
+  isDeleted?: boolean;
+  likesCount?: number;
 
-    constructor(data?: ICommentDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ICommentDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
-            this.editedAt = _data["editedAt"] ? new Date(_data["editedAt"].toString()) : <any>undefined;
-            this.authorId = _data["authorId"];
-            this.author = _data["author"] ? SmallUserDto.fromJS(_data["author"]) : <any>undefined;
-            this.text = _data["text"];
-            this.isDeleted = _data["isDeleted"];
-            this.likesCount = _data["likesCount"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.id = _data["id"];
+      this.createdAt = _data["createdAt"]
+        ? new Date(_data["createdAt"].toString())
+        : <any>undefined;
+      this.editedAt = _data["editedAt"]
+        ? new Date(_data["editedAt"].toString())
+        : <any>undefined;
+      this.authorId = _data["authorId"];
+      this.author = _data["author"]
+        ? SmallUserDto.fromJS(_data["author"])
+        : <any>undefined;
+      this.text = _data["text"];
+      this.isDeleted = _data["isDeleted"];
+      this.likesCount = _data["likesCount"];
     }
+  }
 
-    static fromJS(data: any): CommentDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CommentDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): CommentDto {
+    data = typeof data === "object" ? data : {};
+    let result = new CommentDto();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["editedAt"] = this.editedAt ? this.editedAt.toISOString() : <any>undefined;
-        data["authorId"] = this.authorId;
-        data["author"] = this.author ? this.author.toJSON() : <any>undefined;
-        data["text"] = this.text;
-        data["isDeleted"] = this.isDeleted;
-        data["likesCount"] = this.likesCount;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["id"] = this.id;
+    data["createdAt"] = this.createdAt
+      ? this.createdAt.toISOString()
+      : <any>undefined;
+    data["editedAt"] = this.editedAt
+      ? this.editedAt.toISOString()
+      : <any>undefined;
+    data["authorId"] = this.authorId;
+    data["author"] = this.author ? this.author.toJSON() : <any>undefined;
+    data["text"] = this.text;
+    data["isDeleted"] = this.isDeleted;
+    data["likesCount"] = this.likesCount;
+    return data;
+  }
 }
 
 export interface ICommentDto {
-    id?: string;
-    createdAt?: Date;
-    editedAt?: Date;
-    authorId?: string | undefined;
-    author?: SmallUserDto;
-    text?: string | undefined;
-    isDeleted?: boolean;
-    likesCount?: number;
+  id?: string;
+  createdAt?: Date;
+  editedAt?: Date;
+  authorId?: string | undefined;
+  author?: SmallUserDto;
+  text?: string | undefined;
+  isDeleted?: boolean;
+  likesCount?: number;
 }
 
 export enum CommentSubjectType {
-    Spots = "Spots",
-    SpotVideos = "SpotVideos",
-    TempSpots = "TempSpots",
+  Spots = "Spots",
+  SpotVideos = "SpotVideos",
+  TempSpots = "TempSpots",
 }
 
 export class CoordsDto implements ICoordsDto {
-    lat?: number;
-    lng?: number;
+  lat?: number;
+  lng?: number;
 
-    constructor(data?: ICoordsDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ICoordsDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.lat = _data["lat"];
-            this.lng = _data["lng"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.lat = _data["lat"];
+      this.lng = _data["lng"];
     }
+  }
 
-    static fromJS(data: any): CoordsDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CoordsDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): CoordsDto {
+    data = typeof data === "object" ? data : {};
+    let result = new CoordsDto();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["lat"] = this.lat;
-        data["lng"] = this.lng;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["lat"] = this.lat;
+    data["lng"] = this.lng;
+    return data;
+  }
 }
 
 export interface ICoordsDto {
-    lat?: number;
-    lng?: number;
+  lat?: number;
+  lng?: number;
 }
 
 export class CreateTempSpotCommand implements ICreateTempSpotCommand {
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    surfaceScore?: number;
-    obstacles?: ObstacleType[] | undefined;
-    linkImages?: string[] | undefined;
-    base64Images?: string[] | undefined;
-    userId?: string;
+  name?: string | undefined;
+  description?: string | undefined;
+  address?: AddressDto;
+  surfaceScore?: number;
+  obstacles?: ObstacleType[] | undefined;
+  linkImages?: string[] | undefined;
+  base64Images?: string[] | undefined;
+  userId?: string;
 
-    constructor(data?: ICreateTempSpotCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ICreateTempSpotCommand) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
-            this.surfaceScore = _data["surfaceScore"];
-            if (Array.isArray(_data["obstacles"])) {
-                this.obstacles = [] as any;
-                for (let item of _data["obstacles"])
-                    this.obstacles!.push(item);
-            }
-            if (Array.isArray(_data["linkImages"])) {
-                this.linkImages = [] as any;
-                for (let item of _data["linkImages"])
-                    this.linkImages!.push(item);
-            }
-            if (Array.isArray(_data["base64Images"])) {
-                this.base64Images = [] as any;
-                for (let item of _data["base64Images"])
-                    this.base64Images!.push(item);
-            }
-            this.userId = _data["userId"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.name = _data["name"];
+      this.description = _data["description"];
+      this.address = _data["address"]
+        ? AddressDto.fromJS(_data["address"])
+        : <any>undefined;
+      this.surfaceScore = _data["surfaceScore"];
+      if (Array.isArray(_data["obstacles"])) {
+        this.obstacles = [] as any;
+        for (let item of _data["obstacles"]) this.obstacles!.push(item);
+      }
+      if (Array.isArray(_data["linkImages"])) {
+        this.linkImages = [] as any;
+        for (let item of _data["linkImages"]) this.linkImages!.push(item);
+      }
+      if (Array.isArray(_data["base64Images"])) {
+        this.base64Images = [] as any;
+        for (let item of _data["base64Images"]) this.base64Images!.push(item);
+      }
+      this.userId = _data["userId"];
     }
+  }
 
-    static fromJS(data: any): CreateTempSpotCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateTempSpotCommand();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): CreateTempSpotCommand {
+    data = typeof data === "object" ? data : {};
+    let result = new CreateTempSpotCommand();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        data["surfaceScore"] = this.surfaceScore;
-        if (Array.isArray(this.obstacles)) {
-            data["obstacles"] = [];
-            for (let item of this.obstacles)
-                data["obstacles"].push(item);
-        }
-        if (Array.isArray(this.linkImages)) {
-            data["linkImages"] = [];
-            for (let item of this.linkImages)
-                data["linkImages"].push(item);
-        }
-        if (Array.isArray(this.base64Images)) {
-            data["base64Images"] = [];
-            for (let item of this.base64Images)
-                data["base64Images"].push(item);
-        }
-        data["userId"] = this.userId;
-        return data; 
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["name"] = this.name;
+    data["description"] = this.description;
+    data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+    data["surfaceScore"] = this.surfaceScore;
+    if (Array.isArray(this.obstacles)) {
+      data["obstacles"] = [];
+      for (let item of this.obstacles) data["obstacles"].push(item);
     }
+    if (Array.isArray(this.linkImages)) {
+      data["linkImages"] = [];
+      for (let item of this.linkImages) data["linkImages"].push(item);
+    }
+    if (Array.isArray(this.base64Images)) {
+      data["base64Images"] = [];
+      for (let item of this.base64Images) data["base64Images"].push(item);
+    }
+    data["userId"] = this.userId;
+    return data;
+  }
 }
 
 export interface ICreateTempSpotCommand {
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    surfaceScore?: number;
-    obstacles?: ObstacleType[] | undefined;
-    linkImages?: string[] | undefined;
-    base64Images?: string[] | undefined;
-    userId?: string;
+  name?: string | undefined;
+  description?: string | undefined;
+  address?: AddressDto;
+  surfaceScore?: number;
+  obstacles?: ObstacleType[] | undefined;
+  linkImages?: string[] | undefined;
+  base64Images?: string[] | undefined;
+  userId?: string;
 }
 
 export class EditCommentCommand implements IEditCommentCommand {
-    subjectId?: string;
-    subjectType?: CommentSubjectType;
-    commentId?: string;
-    newText?: string | undefined;
-    userId?: string;
+  subjectId?: string;
+  subjectType?: CommentSubjectType;
+  commentId?: string;
+  newText?: string | undefined;
+  userId?: string;
 
-    constructor(data?: IEditCommentCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IEditCommentCommand) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.subjectId = _data["subjectId"];
-            this.subjectType = _data["subjectType"];
-            this.commentId = _data["commentId"];
-            this.newText = _data["newText"];
-            this.userId = _data["userId"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.subjectId = _data["subjectId"];
+      this.subjectType = _data["subjectType"];
+      this.commentId = _data["commentId"];
+      this.newText = _data["newText"];
+      this.userId = _data["userId"];
     }
+  }
 
-    static fromJS(data: any): EditCommentCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new EditCommentCommand();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): EditCommentCommand {
+    data = typeof data === "object" ? data : {};
+    let result = new EditCommentCommand();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["subjectId"] = this.subjectId;
-        data["subjectType"] = this.subjectType;
-        data["commentId"] = this.commentId;
-        data["newText"] = this.newText;
-        data["userId"] = this.userId;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["subjectId"] = this.subjectId;
+    data["subjectType"] = this.subjectType;
+    data["commentId"] = this.commentId;
+    data["newText"] = this.newText;
+    data["userId"] = this.userId;
+    return data;
+  }
 }
 
 export interface IEditCommentCommand {
-    subjectId?: string;
-    subjectType?: CommentSubjectType;
-    commentId?: string;
-    newText?: string | undefined;
-    userId?: string;
+  subjectId?: string;
+  subjectType?: CommentSubjectType;
+  commentId?: string;
+  newText?: string | undefined;
+  userId?: string;
 }
 
 export enum ErrorCode {
-    DEFAULT_ERROR = "DEFAULT_ERROR",
-    ALREADY_EXISTS = "ALREADY_EXISTS",
-    VOTING_FINISHED = "VOTING_FINISHED",
-    DOESNT_EXIST = "DOESNT_EXIST",
-    NOT_OWNED = "NOT_OWNED",
-    EMAIL_NOT_VERIFIED = "EMAIL_NOT_VERIFIED",
-    CANT_DO_THAT = "CANT_DO_THAT",
-    IMAGES_MAXED = "IMAGES_MAXED",
-    TOO_MANY_IMAGES = "TOO_MANY_IMAGES",
-    BAD_INPUT = "BAD_INPUT",
-    UNAUTHORIZED = "UNAUTHORIZED",
-    FORBIDDEN = "FORBIDDEN",
+  DEFAULT_ERROR = "DEFAULT_ERROR",
+  ALREADY_EXISTS = "ALREADY_EXISTS",
+  VOTING_FINISHED = "VOTING_FINISHED",
+  DOESNT_EXIST = "DOESNT_EXIST",
+  NOT_OWNED = "NOT_OWNED",
+  EMAIL_NOT_VERIFIED = "EMAIL_NOT_VERIFIED",
+  CANT_DO_THAT = "CANT_DO_THAT",
+  IMAGES_MAXED = "IMAGES_MAXED",
+  TOO_MANY_IMAGES = "TOO_MANY_IMAGES",
+  BAD_INPUT = "BAD_INPUT",
+  UNAUTHORIZED = "UNAUTHORIZED",
+  FORBIDDEN = "FORBIDDEN",
 }
 
 export class ErrorResponse implements IErrorResponse {
-    statusCode?: ErrorCode;
-    message?: string | undefined;
-    developerMessage?: string | undefined;
-    data?: { [key: string]: string; } | undefined;
+  statusCode?: ErrorCode;
+  message?: string | undefined;
+  developerMessage?: string | undefined;
+  data?: { [key: string]: string } | undefined;
 
-    constructor(data?: IErrorResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
+  constructor(data?: IErrorResponse) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
+    }
+  }
+
+  init(_data?: any) {
+    if (_data) {
+      this.statusCode = _data["statusCode"];
+      this.message = _data["message"];
+      this.developerMessage = _data["developerMessage"];
+      if (_data["data"]) {
+        this.data = {} as any;
+        for (let key in _data["data"]) {
+          if (_data["data"].hasOwnProperty(key))
+            (<any>this.data)![key] = _data["data"][key];
         }
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.statusCode = _data["statusCode"];
-            this.message = _data["message"];
-            this.developerMessage = _data["developerMessage"];
-            if (_data["data"]) {
-                this.data = {} as any;
-                for (let key in _data["data"]) {
-                    if (_data["data"].hasOwnProperty(key))
-                        (<any>this.data)![key] = _data["data"][key];
-                }
-            }
-        }
-    }
+  static fromJS(data: any): ErrorResponse {
+    data = typeof data === "object" ? data : {};
+    let result = new ErrorResponse();
+    result.init(data);
+    return result;
+  }
 
-    static fromJS(data: any): ErrorResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new ErrorResponse();
-        result.init(data);
-        return result;
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["statusCode"] = this.statusCode;
+    data["message"] = this.message;
+    data["developerMessage"] = this.developerMessage;
+    if (this.data) {
+      data["data"] = {};
+      for (let key in this.data) {
+        if (this.data.hasOwnProperty(key))
+          (<any>data["data"])[key] = this.data[key];
+      }
     }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["statusCode"] = this.statusCode;
-        data["message"] = this.message;
-        data["developerMessage"] = this.developerMessage;
-        if (this.data) {
-            data["data"] = {};
-            for (let key in this.data) {
-                if (this.data.hasOwnProperty(key))
-                    (<any>data["data"])[key] = this.data[key];
-            }
-        }
-        return data; 
-    }
+    return data;
+  }
 }
 
 export interface IErrorResponse {
-    statusCode?: ErrorCode;
-    message?: string | undefined;
-    developerMessage?: string | undefined;
-    data?: { [key: string]: string; } | undefined;
+  statusCode?: ErrorCode;
+  message?: string | undefined;
+  developerMessage?: string | undefined;
+  data?: { [key: string]: string } | undefined;
 }
 
 export class ForgotPasswordRequest implements IForgotPasswordRequest {
-    email!: string;
+  email!: string;
 
-    constructor(data?: IForgotPasswordRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IForgotPasswordRequest) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.email = _data["email"];
     }
+  }
 
-    static fromJS(data: any): ForgotPasswordRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new ForgotPasswordRequest();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): ForgotPasswordRequest {
+    data = typeof data === "object" ? data : {};
+    let result = new ForgotPasswordRequest();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["email"] = this.email;
+    return data;
+  }
 }
 
 export interface IForgotPasswordRequest {
-    email: string;
+  email: string;
 }
 
 export class GuidApiResponse implements IGuidApiResponse {
-    content?: string;
-    error?: ErrorResponse;
+  content?: string;
+  error?: ErrorResponse;
 
-    constructor(data?: IGuidApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IGuidApiResponse) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.content = _data["content"];
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.content = _data["content"];
+      this.error = _data["error"]
+        ? ErrorResponse.fromJS(_data["error"])
+        : <any>undefined;
     }
+  }
 
-    static fromJS(data: any): GuidApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new GuidApiResponse();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): GuidApiResponse {
+    data = typeof data === "object" ? data : {};
+    let result = new GuidApiResponse();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["content"] = this.content;
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["content"] = this.content;
+    data["error"] = this.error ? this.error.toJSON() : <any>undefined;
+    return data;
+  }
 }
 
 export interface IGuidApiResponse {
-    content?: string;
-    error?: ErrorResponse;
+  content?: string;
+  error?: ErrorResponse;
 }
 
 export enum LikeSubjectType {
-    Spots = "Spots",
-    SpotVideos = "SpotVideos",
-    Comments = "Comments",
+  Spots = "Spots",
+  SpotVideos = "SpotVideos",
+  Comments = "Comments",
 }
 
 export enum ObstacleType {
-    Ledge = "Ledge",
-    Stairs = "Stairs",
-    Quater = "Quater",
-    Kicker = "Kicker",
-    Downhill = "Downhill",
-    Rail = "Rail",
-    Bank = "Bank",
-    Flatground = "Flatground",
-    Manualpad = "Manualpad",
-    Skatepark = "Skatepark",
+  Ledge = "Ledge",
+  Stairs = "Stairs",
+  Quater = "Quater",
+  Kicker = "Kicker",
+  Downhill = "Downhill",
+  Rail = "Rail",
+  Bank = "Bank",
+  Flatground = "Flatground",
+  Manualpad = "Manualpad",
+  Skatepark = "Skatepark",
 }
 
 export class RegisterRequest implements IRegisterRequest {
-    email!: string;
-    userName!: string;
-    password!: string;
-    confirmPassword!: string;
+  email!: string;
+  userName!: string;
+  password!: string;
+  confirmPassword!: string;
 
-    constructor(data?: IRegisterRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IRegisterRequest) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.userName = _data["userName"];
-            this.password = _data["password"];
-            this.confirmPassword = _data["confirmPassword"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.email = _data["email"];
+      this.userName = _data["userName"];
+      this.password = _data["password"];
+      this.confirmPassword = _data["confirmPassword"];
     }
+  }
 
-    static fromJS(data: any): RegisterRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegisterRequest();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): RegisterRequest {
+    data = typeof data === "object" ? data : {};
+    let result = new RegisterRequest();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["userName"] = this.userName;
-        data["password"] = this.password;
-        data["confirmPassword"] = this.confirmPassword;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["email"] = this.email;
+    data["userName"] = this.userName;
+    data["password"] = this.password;
+    data["confirmPassword"] = this.confirmPassword;
+    return data;
+  }
 }
 
 export interface IRegisterRequest {
-    email: string;
-    userName: string;
-    password: string;
-    confirmPassword: string;
+  email: string;
+  userName: string;
+  password: string;
+  confirmPassword: string;
 }
 
 export class ResetPasswordRequest implements IResetPasswordRequest {
-    email!: string;
-    token!: string;
-    password!: string;
-    confirmPassword!: string;
+  email!: string;
+  token!: string;
+  password!: string;
+  confirmPassword!: string;
 
-    constructor(data?: IResetPasswordRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IResetPasswordRequest) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.token = _data["token"];
-            this.password = _data["password"];
-            this.confirmPassword = _data["confirmPassword"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.email = _data["email"];
+      this.token = _data["token"];
+      this.password = _data["password"];
+      this.confirmPassword = _data["confirmPassword"];
     }
+  }
 
-    static fromJS(data: any): ResetPasswordRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new ResetPasswordRequest();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): ResetPasswordRequest {
+    data = typeof data === "object" ? data : {};
+    let result = new ResetPasswordRequest();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["token"] = this.token;
-        data["password"] = this.password;
-        data["confirmPassword"] = this.confirmPassword;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["email"] = this.email;
+    data["token"] = this.token;
+    data["password"] = this.password;
+    data["confirmPassword"] = this.confirmPassword;
+    return data;
+  }
 }
 
 export interface IResetPasswordRequest {
-    email: string;
-    token: string;
-    password: string;
-    confirmPassword: string;
+  email: string;
+  token: string;
+  password: string;
+  confirmPassword: string;
 }
 
 export class SmallUserDto implements ISmallUserDto {
-    id?: string;
-    userName?: string | undefined;
+  id?: string;
+  userName?: string | undefined;
 
-    constructor(data?: ISmallUserDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ISmallUserDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.userName = _data["userName"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.id = _data["id"];
+      this.userName = _data["userName"];
     }
+  }
 
-    static fromJS(data: any): SmallUserDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new SmallUserDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): SmallUserDto {
+    data = typeof data === "object" ? data : {};
+    let result = new SmallUserDto();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["userName"] = this.userName;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["id"] = this.id;
+    data["userName"] = this.userName;
+    return data;
+  }
 }
 
 export interface ISmallUserDto {
-    id?: string;
-    userName?: string | undefined;
+  id?: string;
+  userName?: string | undefined;
 }
 
 export class SpotDto implements ISpotDto {
-    id?: string;
-    createdAt?: Date;
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    obstacles?: ObstacleType[] | undefined;
-    surfaceScore?: number;
-    author?: SmallUserDto;
-    likesCount?: number;
-    comments?: CommentDto[] | undefined;
+  id?: string;
+  createdAt?: Date;
+  name?: string | undefined;
+  description?: string | undefined;
+  address?: AddressDto;
+  obstacles?: ObstacleType[] | undefined;
+  surfaceScore?: number;
+  author?: SmallUserDto;
+  likesCount?: number;
+  comments?: CommentDto[] | undefined;
 
-    constructor(data?: ISpotDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ISpotDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
-            if (Array.isArray(_data["obstacles"])) {
-                this.obstacles = [] as any;
-                for (let item of _data["obstacles"])
-                    this.obstacles!.push(item);
-            }
-            this.surfaceScore = _data["surfaceScore"];
-            this.author = _data["author"] ? SmallUserDto.fromJS(_data["author"]) : <any>undefined;
-            this.likesCount = _data["likesCount"];
-            if (Array.isArray(_data["comments"])) {
-                this.comments = [] as any;
-                for (let item of _data["comments"])
-                    this.comments!.push(CommentDto.fromJS(item));
-            }
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.id = _data["id"];
+      this.createdAt = _data["createdAt"]
+        ? new Date(_data["createdAt"].toString())
+        : <any>undefined;
+      this.name = _data["name"];
+      this.description = _data["description"];
+      this.address = _data["address"]
+        ? AddressDto.fromJS(_data["address"])
+        : <any>undefined;
+      if (Array.isArray(_data["obstacles"])) {
+        this.obstacles = [] as any;
+        for (let item of _data["obstacles"]) this.obstacles!.push(item);
+      }
+      this.surfaceScore = _data["surfaceScore"];
+      this.author = _data["author"]
+        ? SmallUserDto.fromJS(_data["author"])
+        : <any>undefined;
+      this.likesCount = _data["likesCount"];
+      if (Array.isArray(_data["comments"])) {
+        this.comments = [] as any;
+        for (let item of _data["comments"])
+          this.comments!.push(CommentDto.fromJS(item));
+      }
     }
+  }
 
-    static fromJS(data: any): SpotDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new SpotDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): SpotDto {
+    data = typeof data === "object" ? data : {};
+    let result = new SpotDto();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        if (Array.isArray(this.obstacles)) {
-            data["obstacles"] = [];
-            for (let item of this.obstacles)
-                data["obstacles"].push(item);
-        }
-        data["surfaceScore"] = this.surfaceScore;
-        data["author"] = this.author ? this.author.toJSON() : <any>undefined;
-        data["likesCount"] = this.likesCount;
-        if (Array.isArray(this.comments)) {
-            data["comments"] = [];
-            for (let item of this.comments)
-                data["comments"].push(item.toJSON());
-        }
-        return data; 
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["id"] = this.id;
+    data["createdAt"] = this.createdAt
+      ? this.createdAt.toISOString()
+      : <any>undefined;
+    data["name"] = this.name;
+    data["description"] = this.description;
+    data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+    if (Array.isArray(this.obstacles)) {
+      data["obstacles"] = [];
+      for (let item of this.obstacles) data["obstacles"].push(item);
     }
+    data["surfaceScore"] = this.surfaceScore;
+    data["author"] = this.author ? this.author.toJSON() : <any>undefined;
+    data["likesCount"] = this.likesCount;
+    if (Array.isArray(this.comments)) {
+      data["comments"] = [];
+      for (let item of this.comments) data["comments"].push(item.toJSON());
+    }
+    return data;
+  }
 }
 
 export interface ISpotDto {
-    id?: string;
-    createdAt?: Date;
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    obstacles?: ObstacleType[] | undefined;
-    surfaceScore?: number;
-    author?: SmallUserDto;
-    likesCount?: number;
-    comments?: CommentDto[] | undefined;
+  id?: string;
+  createdAt?: Date;
+  name?: string | undefined;
+  description?: string | undefined;
+  address?: AddressDto;
+  obstacles?: ObstacleType[] | undefined;
+  surfaceScore?: number;
+  author?: SmallUserDto;
+  likesCount?: number;
+  comments?: CommentDto[] | undefined;
 }
 
 export class SpotDtoListApiResponse implements ISpotDtoListApiResponse {
-    content?: SpotDto[] | undefined;
-    error?: ErrorResponse;
+  content?: SpotDto[] | undefined;
+  error?: ErrorResponse;
 
-    constructor(data?: ISpotDtoListApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ISpotDtoListApiResponse) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["content"])) {
-                this.content = [] as any;
-                for (let item of _data["content"])
-                    this.content!.push(SpotDto.fromJS(item));
-            }
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
+  init(_data?: any) {
+    if (_data) {
+      if (Array.isArray(_data["content"])) {
+        this.content = [] as any;
+        for (let item of _data["content"])
+          this.content!.push(SpotDto.fromJS(item));
+      }
+      this.error = _data["error"]
+        ? ErrorResponse.fromJS(_data["error"])
+        : <any>undefined;
     }
+  }
 
-    static fromJS(data: any): SpotDtoListApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new SpotDtoListApiResponse();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): SpotDtoListApiResponse {
+    data = typeof data === "object" ? data : {};
+    let result = new SpotDtoListApiResponse();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.content)) {
-            data["content"] = [];
-            for (let item of this.content)
-                data["content"].push(item.toJSON());
-        }
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    if (Array.isArray(this.content)) {
+      data["content"] = [];
+      for (let item of this.content) data["content"].push(item.toJSON());
     }
+    data["error"] = this.error ? this.error.toJSON() : <any>undefined;
+    return data;
+  }
 }
 
 export interface ISpotDtoListApiResponse {
-    content?: SpotDto[] | undefined;
-    error?: ErrorResponse;
+  content?: SpotDto[] | undefined;
+  error?: ErrorResponse;
 }
 
 export class SpotMarkerDataDto implements ISpotMarkerDataDto {
-    name?: string | undefined;
-    isTempSpot?: boolean;
-    address?: AddressDto;
+  name?: string | undefined;
+  isTempSpot?: boolean;
+  address?: AddressDto;
 
-    constructor(data?: ISpotMarkerDataDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ISpotMarkerDataDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.isTempSpot = _data["isTempSpot"];
-            this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.name = _data["name"];
+      this.isTempSpot = _data["isTempSpot"];
+      this.address = _data["address"]
+        ? AddressDto.fromJS(_data["address"])
+        : <any>undefined;
     }
+  }
 
-    static fromJS(data: any): SpotMarkerDataDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new SpotMarkerDataDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): SpotMarkerDataDto {
+    data = typeof data === "object" ? data : {};
+    let result = new SpotMarkerDataDto();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["isTempSpot"] = this.isTempSpot;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["name"] = this.name;
+    data["isTempSpot"] = this.isTempSpot;
+    data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+    return data;
+  }
 }
 
 export interface ISpotMarkerDataDto {
-    name?: string | undefined;
-    isTempSpot?: boolean;
-    address?: AddressDto;
+  name?: string | undefined;
+  isTempSpot?: boolean;
+  address?: AddressDto;
 }
 
-export class SpotMarkerDataDtoListApiResponse implements ISpotMarkerDataDtoListApiResponse {
-    content?: SpotMarkerDataDto[] | undefined;
-    error?: ErrorResponse;
+export class SpotMarkerDataDtoListApiResponse
+  implements ISpotMarkerDataDtoListApiResponse
+{
+  content?: SpotMarkerDataDto[] | undefined;
+  error?: ErrorResponse;
 
-    constructor(data?: ISpotMarkerDataDtoListApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ISpotMarkerDataDtoListApiResponse) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["content"])) {
-                this.content = [] as any;
-                for (let item of _data["content"])
-                    this.content!.push(SpotMarkerDataDto.fromJS(item));
-            }
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
+  init(_data?: any) {
+    if (_data) {
+      if (Array.isArray(_data["content"])) {
+        this.content = [] as any;
+        for (let item of _data["content"])
+          this.content!.push(SpotMarkerDataDto.fromJS(item));
+      }
+      this.error = _data["error"]
+        ? ErrorResponse.fromJS(_data["error"])
+        : <any>undefined;
     }
+  }
 
-    static fromJS(data: any): SpotMarkerDataDtoListApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new SpotMarkerDataDtoListApiResponse();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): SpotMarkerDataDtoListApiResponse {
+    data = typeof data === "object" ? data : {};
+    let result = new SpotMarkerDataDtoListApiResponse();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.content)) {
-            data["content"] = [];
-            for (let item of this.content)
-                data["content"].push(item.toJSON());
-        }
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    if (Array.isArray(this.content)) {
+      data["content"] = [];
+      for (let item of this.content) data["content"].push(item.toJSON());
     }
+    data["error"] = this.error ? this.error.toJSON() : <any>undefined;
+    return data;
+  }
 }
 
 export interface ISpotMarkerDataDtoListApiResponse {
-    content?: SpotMarkerDataDto[] | undefined;
-    error?: ErrorResponse;
+  content?: SpotMarkerDataDto[] | undefined;
+  error?: ErrorResponse;
 }
 
 export class StringApiResponse implements IStringApiResponse {
-    content?: string | undefined;
-    error?: ErrorResponse;
+  content?: string | undefined;
+  error?: ErrorResponse;
 
-    constructor(data?: IStringApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IStringApiResponse) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.content = _data["content"];
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.content = _data["content"];
+      this.error = _data["error"]
+        ? ErrorResponse.fromJS(_data["error"])
+        : <any>undefined;
     }
+  }
 
-    static fromJS(data: any): StringApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new StringApiResponse();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): StringApiResponse {
+    data = typeof data === "object" ? data : {};
+    let result = new StringApiResponse();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["content"] = this.content;
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["content"] = this.content;
+    data["error"] = this.error ? this.error.toJSON() : <any>undefined;
+    return data;
+  }
 }
 
 export interface IStringApiResponse {
-    content?: string | undefined;
-    error?: ErrorResponse;
+  content?: string | undefined;
+  error?: ErrorResponse;
 }
 
-export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto {
-    id?: string;
-    createdAt?: Date;
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    obstacles?: ObstacleType[] | undefined;
-    surfaceScore?: number;
-    author?: SmallUserDto;
-    verificationProcess?: VerificationProcessDto;
+export class TempSpotWithVerificationDto
+  implements ITempSpotWithVerificationDto
+{
+  id?: string;
+  createdAt?: Date;
+  name?: string | undefined;
+  description?: string | undefined;
+  address?: AddressDto;
+  obstacles?: ObstacleType[] | undefined;
+  surfaceScore?: number;
+  author?: SmallUserDto;
+  verificationProcess?: VerificationProcessDto;
 
-    constructor(data?: ITempSpotWithVerificationDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ITempSpotWithVerificationDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
-            if (Array.isArray(_data["obstacles"])) {
-                this.obstacles = [] as any;
-                for (let item of _data["obstacles"])
-                    this.obstacles!.push(item);
-            }
-            this.surfaceScore = _data["surfaceScore"];
-            this.author = _data["author"] ? SmallUserDto.fromJS(_data["author"]) : <any>undefined;
-            this.verificationProcess = _data["verificationProcess"] ? VerificationProcessDto.fromJS(_data["verificationProcess"]) : <any>undefined;
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.id = _data["id"];
+      this.createdAt = _data["createdAt"]
+        ? new Date(_data["createdAt"].toString())
+        : <any>undefined;
+      this.name = _data["name"];
+      this.description = _data["description"];
+      this.address = _data["address"]
+        ? AddressDto.fromJS(_data["address"])
+        : <any>undefined;
+      if (Array.isArray(_data["obstacles"])) {
+        this.obstacles = [] as any;
+        for (let item of _data["obstacles"]) this.obstacles!.push(item);
+      }
+      this.surfaceScore = _data["surfaceScore"];
+      this.author = _data["author"]
+        ? SmallUserDto.fromJS(_data["author"])
+        : <any>undefined;
+      this.verificationProcess = _data["verificationProcess"]
+        ? VerificationProcessDto.fromJS(_data["verificationProcess"])
+        : <any>undefined;
     }
+  }
 
-    static fromJS(data: any): TempSpotWithVerificationDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TempSpotWithVerificationDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): TempSpotWithVerificationDto {
+    data = typeof data === "object" ? data : {};
+    let result = new TempSpotWithVerificationDto();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        if (Array.isArray(this.obstacles)) {
-            data["obstacles"] = [];
-            for (let item of this.obstacles)
-                data["obstacles"].push(item);
-        }
-        data["surfaceScore"] = this.surfaceScore;
-        data["author"] = this.author ? this.author.toJSON() : <any>undefined;
-        data["verificationProcess"] = this.verificationProcess ? this.verificationProcess.toJSON() : <any>undefined;
-        return data; 
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["id"] = this.id;
+    data["createdAt"] = this.createdAt
+      ? this.createdAt.toISOString()
+      : <any>undefined;
+    data["name"] = this.name;
+    data["description"] = this.description;
+    data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+    if (Array.isArray(this.obstacles)) {
+      data["obstacles"] = [];
+      for (let item of this.obstacles) data["obstacles"].push(item);
     }
+    data["surfaceScore"] = this.surfaceScore;
+    data["author"] = this.author ? this.author.toJSON() : <any>undefined;
+    data["verificationProcess"] = this.verificationProcess
+      ? this.verificationProcess.toJSON()
+      : <any>undefined;
+    return data;
+  }
 }
 
 export interface ITempSpotWithVerificationDto {
-    id?: string;
-    createdAt?: Date;
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    obstacles?: ObstacleType[] | undefined;
-    surfaceScore?: number;
-    author?: SmallUserDto;
-    verificationProcess?: VerificationProcessDto;
+  id?: string;
+  createdAt?: Date;
+  name?: string | undefined;
+  description?: string | undefined;
+  address?: AddressDto;
+  obstacles?: ObstacleType[] | undefined;
+  surfaceScore?: number;
+  author?: SmallUserDto;
+  verificationProcess?: VerificationProcessDto;
 }
 
-export class TempSpotWithVerificationDtoApiResponse implements ITempSpotWithVerificationDtoApiResponse {
-    content?: TempSpotWithVerificationDto;
-    error?: ErrorResponse;
+export class TempSpotWithVerificationDtoApiResponse
+  implements ITempSpotWithVerificationDtoApiResponse
+{
+  content?: TempSpotWithVerificationDto;
+  error?: ErrorResponse;
 
-    constructor(data?: ITempSpotWithVerificationDtoApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ITempSpotWithVerificationDtoApiResponse) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.content = _data["content"] ? TempSpotWithVerificationDto.fromJS(_data["content"]) : <any>undefined;
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.content = _data["content"]
+        ? TempSpotWithVerificationDto.fromJS(_data["content"])
+        : <any>undefined;
+      this.error = _data["error"]
+        ? ErrorResponse.fromJS(_data["error"])
+        : <any>undefined;
     }
+  }
 
-    static fromJS(data: any): TempSpotWithVerificationDtoApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new TempSpotWithVerificationDtoApiResponse();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): TempSpotWithVerificationDtoApiResponse {
+    data = typeof data === "object" ? data : {};
+    let result = new TempSpotWithVerificationDtoApiResponse();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["content"] = this.content ? this.content.toJSON() : <any>undefined;
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["content"] = this.content ? this.content.toJSON() : <any>undefined;
+    data["error"] = this.error ? this.error.toJSON() : <any>undefined;
+    return data;
+  }
 }
 
 export interface ITempSpotWithVerificationDtoApiResponse {
-    content?: TempSpotWithVerificationDto;
-    error?: ErrorResponse;
+  content?: TempSpotWithVerificationDto;
+  error?: ErrorResponse;
 }
 
 export class TokenRequest implements ITokenRequest {
-    email?: string | undefined;
-    password?: string | undefined;
+  email?: string | undefined;
+  password?: string | undefined;
 
-    constructor(data?: ITokenRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ITokenRequest) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.password = _data["password"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.email = _data["email"];
+      this.password = _data["password"];
     }
+  }
 
-    static fromJS(data: any): TokenRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new TokenRequest();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): TokenRequest {
+    data = typeof data === "object" ? data : {};
+    let result = new TokenRequest();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["password"] = this.password;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["email"] = this.email;
+    data["password"] = this.password;
+    return data;
+  }
 }
 
 export interface ITokenRequest {
-    email?: string | undefined;
-    password?: string | undefined;
+  email?: string | undefined;
+  password?: string | undefined;
 }
 
 export class TokenResponse implements ITokenResponse {
-    id?: string | undefined;
-    userName?: string | undefined;
-    email?: string | undefined;
-    roles?: string[] | undefined;
-    isVerified?: boolean;
-    jwToken?: string | undefined;
-    issuedOn?: Date;
-    expiresOn?: Date;
-    refreshToken?: string | undefined;
+  id?: string | undefined;
+  userName?: string | undefined;
+  email?: string | undefined;
+  roles?: string[] | undefined;
+  isVerified?: boolean;
+  jwToken?: string | undefined;
+  issuedOn?: Date;
+  expiresOn?: Date;
+  refreshToken?: string | undefined;
 
-    constructor(data?: ITokenResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ITokenResponse) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.userName = _data["userName"];
-            this.email = _data["email"];
-            if (Array.isArray(_data["roles"])) {
-                this.roles = [] as any;
-                for (let item of _data["roles"])
-                    this.roles!.push(item);
-            }
-            this.isVerified = _data["isVerified"];
-            this.jwToken = _data["jwToken"];
-            this.issuedOn = _data["issuedOn"] ? new Date(_data["issuedOn"].toString()) : <any>undefined;
-            this.expiresOn = _data["expiresOn"] ? new Date(_data["expiresOn"].toString()) : <any>undefined;
-            this.refreshToken = _data["refreshToken"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.id = _data["id"];
+      this.userName = _data["userName"];
+      this.email = _data["email"];
+      if (Array.isArray(_data["roles"])) {
+        this.roles = [] as any;
+        for (let item of _data["roles"]) this.roles!.push(item);
+      }
+      this.isVerified = _data["isVerified"];
+      this.jwToken = _data["jwToken"];
+      this.issuedOn = _data["issuedOn"]
+        ? new Date(_data["issuedOn"].toString())
+        : <any>undefined;
+      this.expiresOn = _data["expiresOn"]
+        ? new Date(_data["expiresOn"].toString())
+        : <any>undefined;
+      this.refreshToken = _data["refreshToken"];
     }
+  }
 
-    static fromJS(data: any): TokenResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new TokenResponse();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): TokenResponse {
+    data = typeof data === "object" ? data : {};
+    let result = new TokenResponse();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["userName"] = this.userName;
-        data["email"] = this.email;
-        if (Array.isArray(this.roles)) {
-            data["roles"] = [];
-            for (let item of this.roles)
-                data["roles"].push(item);
-        }
-        data["isVerified"] = this.isVerified;
-        data["jwToken"] = this.jwToken;
-        data["issuedOn"] = this.issuedOn ? this.issuedOn.toISOString() : <any>undefined;
-        data["expiresOn"] = this.expiresOn ? this.expiresOn.toISOString() : <any>undefined;
-        data["refreshToken"] = this.refreshToken;
-        return data; 
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["id"] = this.id;
+    data["userName"] = this.userName;
+    data["email"] = this.email;
+    if (Array.isArray(this.roles)) {
+      data["roles"] = [];
+      for (let item of this.roles) data["roles"].push(item);
     }
+    data["isVerified"] = this.isVerified;
+    data["jwToken"] = this.jwToken;
+    data["issuedOn"] = this.issuedOn
+      ? this.issuedOn.toISOString()
+      : <any>undefined;
+    data["expiresOn"] = this.expiresOn
+      ? this.expiresOn.toISOString()
+      : <any>undefined;
+    data["refreshToken"] = this.refreshToken;
+    return data;
+  }
 }
 
 export interface ITokenResponse {
-    id?: string | undefined;
-    userName?: string | undefined;
-    email?: string | undefined;
-    roles?: string[] | undefined;
-    isVerified?: boolean;
-    jwToken?: string | undefined;
-    issuedOn?: Date;
-    expiresOn?: Date;
-    refreshToken?: string | undefined;
+  id?: string | undefined;
+  userName?: string | undefined;
+  email?: string | undefined;
+  roles?: string[] | undefined;
+  isVerified?: boolean;
+  jwToken?: string | undefined;
+  issuedOn?: Date;
+  expiresOn?: Date;
+  refreshToken?: string | undefined;
 }
 
 export class TokenResponseApiResponse implements ITokenResponseApiResponse {
-    content?: TokenResponse;
-    error?: ErrorResponse;
+  content?: TokenResponse;
+  error?: ErrorResponse;
 
-    constructor(data?: ITokenResponseApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ITokenResponseApiResponse) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.content = _data["content"] ? TokenResponse.fromJS(_data["content"]) : <any>undefined;
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.content = _data["content"]
+        ? TokenResponse.fromJS(_data["content"])
+        : <any>undefined;
+      this.error = _data["error"]
+        ? ErrorResponse.fromJS(_data["error"])
+        : <any>undefined;
     }
+  }
 
-    static fromJS(data: any): TokenResponseApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new TokenResponseApiResponse();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): TokenResponseApiResponse {
+    data = typeof data === "object" ? data : {};
+    let result = new TokenResponseApiResponse();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["content"] = this.content ? this.content.toJSON() : <any>undefined;
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["content"] = this.content ? this.content.toJSON() : <any>undefined;
+    data["error"] = this.error ? this.error.toJSON() : <any>undefined;
+    return data;
+  }
 }
 
 export interface ITokenResponseApiResponse {
-    content?: TokenResponse;
-    error?: ErrorResponse;
+  content?: TokenResponse;
+  error?: ErrorResponse;
 }
 
 export class VerificationProcessDto implements IVerificationProcessDto {
-    id?: string;
-    votes?: VerificationStatementDto[] | undefined;
-    endDate?: Date;
-    isVerified?: boolean;
-    discussion?: CommentDto[] | undefined;
+  id?: string;
+  votes?: VerificationStatementDto[] | undefined;
+  endDate?: Date;
+  isVerified?: boolean;
+  discussion?: CommentDto[] | undefined;
 
-    constructor(data?: IVerificationProcessDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IVerificationProcessDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            if (Array.isArray(_data["votes"])) {
-                this.votes = [] as any;
-                for (let item of _data["votes"])
-                    this.votes!.push(VerificationStatementDto.fromJS(item));
-            }
-            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
-            this.isVerified = _data["isVerified"];
-            if (Array.isArray(_data["discussion"])) {
-                this.discussion = [] as any;
-                for (let item of _data["discussion"])
-                    this.discussion!.push(CommentDto.fromJS(item));
-            }
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.id = _data["id"];
+      if (Array.isArray(_data["votes"])) {
+        this.votes = [] as any;
+        for (let item of _data["votes"])
+          this.votes!.push(VerificationStatementDto.fromJS(item));
+      }
+      this.endDate = _data["endDate"]
+        ? new Date(_data["endDate"].toString())
+        : <any>undefined;
+      this.isVerified = _data["isVerified"];
+      if (Array.isArray(_data["discussion"])) {
+        this.discussion = [] as any;
+        for (let item of _data["discussion"])
+          this.discussion!.push(CommentDto.fromJS(item));
+      }
     }
+  }
 
-    static fromJS(data: any): VerificationProcessDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new VerificationProcessDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): VerificationProcessDto {
+    data = typeof data === "object" ? data : {};
+    let result = new VerificationProcessDto();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        if (Array.isArray(this.votes)) {
-            data["votes"] = [];
-            for (let item of this.votes)
-                data["votes"].push(item.toJSON());
-        }
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["isVerified"] = this.isVerified;
-        if (Array.isArray(this.discussion)) {
-            data["discussion"] = [];
-            for (let item of this.discussion)
-                data["discussion"].push(item.toJSON());
-        }
-        return data; 
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["id"] = this.id;
+    if (Array.isArray(this.votes)) {
+      data["votes"] = [];
+      for (let item of this.votes) data["votes"].push(item.toJSON());
     }
+    data["endDate"] = this.endDate
+      ? this.endDate.toISOString()
+      : <any>undefined;
+    data["isVerified"] = this.isVerified;
+    if (Array.isArray(this.discussion)) {
+      data["discussion"] = [];
+      for (let item of this.discussion) data["discussion"].push(item.toJSON());
+    }
+    return data;
+  }
 }
 
 export interface IVerificationProcessDto {
-    id?: string;
-    votes?: VerificationStatementDto[] | undefined;
-    endDate?: Date;
-    isVerified?: boolean;
-    discussion?: CommentDto[] | undefined;
+  id?: string;
+  votes?: VerificationStatementDto[] | undefined;
+  endDate?: Date;
+  isVerified?: boolean;
+  discussion?: CommentDto[] | undefined;
 }
 
 export class VerificationStatementDto implements IVerificationStatementDto {
-    voterId?: string;
-    isReal?: boolean;
+  voterId?: string;
+  isReal?: boolean;
 
-    constructor(data?: IVerificationStatementDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IVerificationStatementDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.voterId = _data["voterId"];
-            this.isReal = _data["isReal"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.voterId = _data["voterId"];
+      this.isReal = _data["isReal"];
     }
+  }
 
-    static fromJS(data: any): VerificationStatementDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new VerificationStatementDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): VerificationStatementDto {
+    data = typeof data === "object" ? data : {};
+    let result = new VerificationStatementDto();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["voterId"] = this.voterId;
-        data["isReal"] = this.isReal;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["voterId"] = this.voterId;
+    data["isReal"] = this.isReal;
+    return data;
+  }
 }
 
 export interface IVerificationStatementDto {
-    voterId?: string;
-    isReal?: boolean;
+  voterId?: string;
+  isReal?: boolean;
 }
 
 export class VoteCommand implements IVoteCommand {
-    tempSpotId?: string;
-    isReal?: boolean;
-    userId?: string;
+  tempSpotId?: string;
+  isReal?: boolean;
+  userId?: string;
 
-    constructor(data?: IVoteCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IVoteCommand) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.tempSpotId = _data["tempSpotId"];
-            this.isReal = _data["isReal"];
-            this.userId = _data["userId"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.tempSpotId = _data["tempSpotId"];
+      this.isReal = _data["isReal"];
+      this.userId = _data["userId"];
     }
+  }
 
-    static fromJS(data: any): VoteCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new VoteCommand();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): VoteCommand {
+    data = typeof data === "object" ? data : {};
+    let result = new VoteCommand();
+    result.init(data);
+    return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["tempSpotId"] = this.tempSpotId;
-        data["isReal"] = this.isReal;
-        data["userId"] = this.userId;
-        return data; 
-    }
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["tempSpotId"] = this.tempSpotId;
+    data["isReal"] = this.isReal;
+    data["userId"] = this.userId;
+    return data;
+  }
 }
 
 export interface IVoteCommand {
-    tempSpotId?: string;
-    isReal?: boolean;
-    userId?: string;
+  tempSpotId?: string;
+  isReal?: boolean;
+  userId?: string;
 }
 
 export class ApiException extends Error {
-    message: string;
-    status: number;
-    response: string;
-    headers: { [key: string]: any; };
-    result: any;
+  message: string;
+  status: number;
+  response: string;
+  headers: { [key: string]: any };
+  result: any;
 
-    constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
-        super();
+  constructor(
+    message: string,
+    status: number,
+    response: string,
+    headers: { [key: string]: any },
+    result: any
+  ) {
+    super();
 
-        this.message = message;
-        this.status = status;
-        this.response = response;
-        this.headers = headers;
-        this.result = result;
-    }
+    this.message = message;
+    this.status = status;
+    this.response = response;
+    this.headers = headers;
+    this.result = result;
+  }
 
-    protected isApiException = true;
+  protected isApiException = true;
 
-    static isApiException(obj: any): obj is ApiException {
-        return obj.isApiException === true;
-    }
+  static isApiException(obj: any): obj is ApiException {
+    return obj.isApiException === true;
+  }
 }
 
-function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
-    if (result !== null && result !== undefined)
-        throw result;
-    else
-        throw new ApiException(message, status, response, headers, null);
+function throwException(
+  message: string,
+  status: number,
+  response: string,
+  headers: { [key: string]: any },
+  result?: any
+): any {
+  if (result !== null && result !== undefined) throw result;
+  else throw new ApiException(message, status, response, headers, null);
 }

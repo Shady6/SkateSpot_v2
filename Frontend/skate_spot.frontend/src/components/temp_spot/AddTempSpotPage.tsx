@@ -11,6 +11,7 @@ import { IdFile } from "./image/FileImageUpload";
 import ImageUpload from "./image/ImageUpload";
 import { IdLink } from "./image/LinkImageUpload";
 import Tags, { ITag } from "./tags/Tags";
+import { useDispatch } from "react-redux";
 
 const spotMinNameLength = 3;
 
@@ -85,6 +86,7 @@ const AddTempSpotPage: React.FC = () => {
 
   const [errors, setErrors] = useState<string[]>([]);
   const authState = useRootState().auth;
+  const dispatch = useDispatch();
 
   const validationRules = [
     {
@@ -123,6 +125,7 @@ const AddTempSpotPage: React.FC = () => {
     if (validationErrors.length !== 0) return;
 
     sendSpotData(
+      dispatch,
       links,
       files,
       name,
