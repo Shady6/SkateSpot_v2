@@ -11,7 +11,7 @@ export const useError = (
     setError(error);
 
     if (error) {
-      const timeout = setTimeout(() => setError(""), 6000);
+      const timeout = setTimeout(() => setError(""), 10000);
       return () => clearTimeout(timeout);
     }
   }, dependencyArray);

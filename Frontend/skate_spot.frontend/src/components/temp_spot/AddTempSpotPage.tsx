@@ -58,6 +58,8 @@ const AddTempSpotPage: React.FC = () => {
       item: {
         name: "img2",
         url: "https://bi.im-g.pl/im/dd/c5/17/z24928221V,Ewolucje-skaterskie-pod-pomnikiem-Wincentego-Witos.jpg",
+        b64: "f",
+        sizeInMB: 1,
       },
     },
     {
@@ -65,6 +67,8 @@ const AddTempSpotPage: React.FC = () => {
       item: {
         name: "img3",
         url: "https://play-lh.googleusercontent.com/MFcmDsDGgSXwft_c4ryKi6RV11MNjF2CRSsWHEqwYnjKPOQa5CPfysSPTVWQBat1EKxD",
+        b64: "f",
+        sizeInMB: 1,
       },
     },
     {
@@ -72,6 +76,8 @@ const AddTempSpotPage: React.FC = () => {
       item: {
         name: "img4",
         url: "https://filesamples.com/samples/image/webp/sample1.webp",
+        b64: "f",
+        sizeInMB: 1,
       },
     },
   ]);

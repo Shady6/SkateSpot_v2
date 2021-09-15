@@ -1,4 +1,6 @@
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import { TypographyStyleOptions } from "@material-ui/core/styles/createTypography";
 import React from "react";
 import { useError } from "../../hooks/useError";
 
@@ -20,6 +22,7 @@ interface Props<T extends Uploaded> {
   setUploadedCount: React.Dispatch<React.SetStateAction<number>>;
   showUploadButton: boolean;
   renderItem: (item: T) => JSX.Element;
+  buttonStyles?: TypographyStyleOptions;
 }
 
 function Upload<T extends Uploaded>({
@@ -34,6 +37,7 @@ function Upload<T extends Uploaded>({
   setUploadedCount,
   showUploadButton = true,
   renderItem,
+  buttonStyles,
 }: React.PropsWithChildren<Props<T>>) {
   const renderError = useError(() => {
     const totalUploads = uploadedCount + otherUploadedItemsCount;
@@ -67,7 +71,9 @@ function Upload<T extends Uploaded>({
                   ])
                 }
               >
-                {renderItem(x)}
+                <Typography style={{ textTransform: "none" }}>
+                  {renderItem(x)}
+                </Typography>
                 <i className="fa fa-times-circle ms-2" aria-hidden="true"></i>
               </Button>
             ))}

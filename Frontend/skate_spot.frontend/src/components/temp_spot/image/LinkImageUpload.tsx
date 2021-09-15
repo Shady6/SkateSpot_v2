@@ -1,8 +1,11 @@
 import { Icon, IconButton, TextField } from "@material-ui/core";
+import { linkSync } from "fs";
 import { useState } from "react";
 import { v4 } from "uuid";
 import { useError } from "../../../hooks/useError";
 import { useInputState } from "../../../hooks/useInputState";
+import { ApiClient } from "../../../skate_spot_api/apiClient";
+import { useRootState } from "../../../state/store";
 import Upload, { Uploaded } from "../../shared/Upload";
 
 export interface IdLink {
@@ -10,6 +13,8 @@ export interface IdLink {
   item: {
     name: string;
     url: string;
+    b64: string;
+    sizeInMB: number;
   };
 }
 
@@ -32,53 +37,97 @@ const LinkImageUpload: React.FC<Props> = ({
   const [url, setUrl] = useState("");
 
   const renderError = useError(() => error, [url, error]);
+  const authState = useRootState().auth;
 
   const canUploadImage = () =>
-    links.length + otherImagesCount < imagesLimit && input;
+    links.length + otherImagesCount < imagesLimit && input !== "";
+
+  const addLinkToState = (b64: string) => {
+    setLinks([
+      ...links,
+      {
+        uuid: v4(),
+        item: {
+          name: "",
+          url: input,
+          b64: b64,
+          sizeInMB:
+            Math.round(
+              (new TextEncoder().encode(b64).length / 1024 / 1024) * 100
+            ) / 100,
+        },
+      },
+    ]);
+  };
 
   const addImage = async () => {
     if (!canUploadImage()) return;
 
     setUrl(input);
     setError("");
-    try {
-      const url = new URL(input);
-      let img = new Image();
-      img.onload = () => {
-        setLinks([
-          ...links,
-          {
-            uuid: v4(),
-            item: {
-              name: "",
-              url: input,
-            },
-          },
-        ]);
-        setImagesUploadedCount(links.length + 1);
-        resetInput();
-      };
-      img.onerror = () => {
-        setError(`Url contains invalid image - ${input}`);
-      };
-      img.src = url.toString();
-    } catch {
-      setError(`The url is not valid - ${input}`);
+
+    if (input.startsWith("data:image")) {
+      addLinkToState(input);
+      resetInput();
     }
+
+    try {
+      const res = await new ApiClient().get_Base64_Images(
+        [input],
+        "Bearer " + authState?.content?.jwToken ?? ""
+      );
+      if (res!.content![0]!.success) {
+        addLinkToState(res!.content![0]!.base64 as string);
+        resetInput();
+      } else setError(`The url contains invalid image - ${input}`);
+    } catch {
+      setError("Couldn't load your image now, try later.");
+    }
+
+    // try {
+    //   const url = new URL(input);
+    //   let img = new Image();
+    //   img.onload = (i) => {
+    //     // @ts-ignore
+    //     console.log(i.path[0]);
+    //     setLinks([
+    //       ...links,
+    //       {
+    //         uuid: v4(),
+    //         item: {
+    //           name: "",
+    //           url: input,
+    //           size: 1,
+    //         },
+    //       },
+    //     ]);
+    //     setImagesUploadedCount(links.length + 1);
+    //     resetInput();
+    //   };
+    //   img.onerror = () => {
+    //     setError(`Url contains invalid image - ${input}`);
+    //   };
+    //   img.src = url.toString();
+    // } catch {
+    //   setError(`The url is not valid - ${input}`);
+    // }
   };
 
-  const renderImage = (link: Uploaded) => {
+  const renderImageWithInfo = (link: IdLink) => {
     return (
-      <img
-        alt="Your uploaded spot img"
-        style={{
-          maxWidth: 100,
-          maxHeight: 100,
-          width: "auto",
-          height: "auto",
-        }}
-        src={(link as unknown as IdLink).item.url}
-      />
+      <>
+        <img
+          alt="Your uploaded spot img"
+          style={{
+            maxWidth: 100,
+            maxHeight: 100,
+            width: "auto",
+            height: "auto",
+          }}
+          src={link.item.b64}
+        />
+        <span> {link.item.sizeInMB}MBs</span>
+      </>
     );
   };
 
@@ -94,7 +143,7 @@ const LinkImageUpload: React.FC<Props> = ({
       uploadedCount={uploadedImagesCount}
       setUploadedCount={setImagesUploadedCount}
       showUploadButton={false}
-      renderItem={renderImage}
+      renderItem={renderImageWithInfo}
     >
       <>
         <div className="mt-2 d-flex mb-1">

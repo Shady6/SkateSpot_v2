@@ -55,7 +55,13 @@ const FileImageUpload: React.FC<Props> = ({
       onUploadBtnClick={() => fileInput.current?.click()}
       uploadedCount={uploadedImagesCount}
       setUploadedCount={setImagesUploadedCount}
-      renderItem={(file) => <span>{file.item.name}</span>}
+      renderItem={(file) => (
+        <span>
+          {file.item.name} -{" "}
+          {Math.round(((file as IdFile).item.size / 1024 / 1024) * 100) / 100}
+          MBs
+        </span>
+      )}
     >
       <input
         ref={fileInput}
