@@ -1,12 +1,13 @@
 import React from "react";
-import FileImageUpload, { IdFile } from "./FileImageUpload";
-import LinkImageUpload, { IdLink } from "./LinkImageUpload";
+import FileImageUpload from "./FileImageUpload";
+import LinkImageUpload from "./LinkImageUpload";
+import { LinkImage } from "./LinkImageUpload";
 
 interface Props {
-  files: IdFile[];
-  setFiles: React.Dispatch<React.SetStateAction<IdFile[]>>;
-  links: IdLink[];
-  setLinks: React.Dispatch<React.SetStateAction<IdLink[]>>;
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  links: LinkImage[];
+  setLinks: React.Dispatch<React.SetStateAction<LinkImage[]>>;
 }
 
 const ImageUpload: React.FC<Props> = ({ files, setFiles, links, setLinks }) => {

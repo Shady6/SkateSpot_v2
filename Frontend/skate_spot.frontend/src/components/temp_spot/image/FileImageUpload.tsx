@@ -1,24 +1,18 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { take } from "../../../functions/take";
 import Upload from "../../shared/Upload";
-import { v4 } from "uuid";
-
-export interface IdFile {
-  uuid: string;
-  item: File;
-}
 
 interface Props {
-  files: IdFile[];
-  setFiles: React.Dispatch<React.SetStateAction<IdFile[]>>;
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   otherImagesCount: number;
   imagesLimit: number;
 }
 
 export const acceptedFileFormats = [
-  "image/jpeg",
-  "image/jpg",
   "image/png",
+  "image/jpg",
+  "image/jpeg",
   "image/webp",
 ];
 
@@ -33,12 +27,8 @@ const FileImageUpload: React.FC<Props> = ({
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const fileImagesToTake = imagesLimit - otherImagesCount;
-    setFiles(
-      take(Array.from(e.target.files ?? []), fileImagesToTake).map((f) => ({
-        uuid: v4(),
-        item: f,
-      }))
-    );
+    setFiles(take(Array.from(e.target.files ?? []), fileImagesToTake));
+
     setImagesUploadedCount(e.target.files?.length ?? 0);
     //@ts-ignore
     e.target.value = null;
@@ -47,7 +37,6 @@ const FileImageUpload: React.FC<Props> = ({
   return (
     <Upload
       uploadedItems={files}
-      // @ts-ignore
       setUploadedItems={setFiles}
       otherUploadedItemsCount={otherImagesCount}
       uploadLimit={imagesLimit}
@@ -55,10 +44,9 @@ const FileImageUpload: React.FC<Props> = ({
       onUploadBtnClick={() => fileInput.current?.click()}
       uploadedCount={uploadedImagesCount}
       setUploadedCount={setImagesUploadedCount}
-      renderItem={(file) => (
+      renderItem={(file: File) => (
         <span>
-          {file.item.name} -{" "}
-          {Math.round(((file as IdFile).item.size / 1024 / 1024) * 100) / 100}
+          {file.name} - {Math.round((file.size / 1024 / 1024) * 100) / 100}
           MBs
         </span>
       )}

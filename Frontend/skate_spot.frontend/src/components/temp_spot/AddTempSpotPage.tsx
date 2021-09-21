@@ -1,17 +1,15 @@
 import { Button, Slider, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { v4 } from "uuid";
+import { useDispatch } from "react-redux";
 import { GeoLocation } from "../../classes/GeoLocation";
 import { sendSpotData } from "../../functions/sendSpotData";
 import { useInputState } from "../../hooks/useInputState";
 import { useRootState } from "../../state/store";
 import { IGeoLocation } from "../../types/types";
 import MapAddress from "./address/MapAddress";
-import { IdFile } from "./image/FileImageUpload";
 import ImageUpload from "./image/ImageUpload";
-import { IdLink } from "./image/LinkImageUpload";
+import { LinkImage } from "./image/LinkImageUpload";
 import Tags, { ITag } from "./tags/Tags";
-import { useDispatch } from "react-redux";
 
 const spotMinNameLength = 3;
 
@@ -51,34 +49,25 @@ const AddTempSpotPage: React.FC = () => {
     { name: "Quater", isSelected: false },
     { name: "Downhill", isSelected: false },
   ]);
-  const [files, setFiles] = useState<IdFile[]>([]);
-  const [links, setLinks] = useState<IdLink[]>([
+  const [files, setFiles] = useState<File[]>([]);
+  const [links, setLinks] = useState<LinkImage[]>([
     {
-      uuid: v4(),
-      item: {
-        name: "img2",
-        url: "https://bi.im-g.pl/im/dd/c5/17/z24928221V,Ewolucje-skaterskie-pod-pomnikiem-Wincentego-Witos.jpg",
-        b64: "f",
-        sizeInMB: 1,
-      },
+      name: "img2",
+      url: "https://bi.im-g.pl/im/dd/c5/17/z24928221V,Ewolucje-skaterskie-pod-pomnikiem-Wincentego-Witos.jpg",
+      b64: "f",
+      sizeInMB: 1,
     },
     {
-      uuid: v4(),
-      item: {
-        name: "img3",
-        url: "https://play-lh.googleusercontent.com/MFcmDsDGgSXwft_c4ryKi6RV11MNjF2CRSsWHEqwYnjKPOQa5CPfysSPTVWQBat1EKxD",
-        b64: "f",
-        sizeInMB: 1,
-      },
+      name: "img3",
+      url: "https://play-lh.googleusercontent.com/MFcmDsDGgSXwft_c4ryKi6RV11MNjF2CRSsWHEqwYnjKPOQa5CPfysSPTVWQBat1EKxD",
+      b64: "f",
+      sizeInMB: 1,
     },
     {
-      uuid: v4(),
-      item: {
-        name: "img4",
-        url: "https://filesamples.com/samples/image/webp/sample1.webp",
-        b64: "f",
-        sizeInMB: 1,
-      },
+      name: "img4",
+      url: "https://filesamples.com/samples/image/webp/sample1.webp",
+      b64: "f",
+      sizeInMB: 1,
     },
   ]);
 
@@ -87,8 +76,8 @@ const AddTempSpotPage: React.FC = () => {
   // const [surfaceScore, setSurfaceScore] = useState(5);
   // const [location, setLocation] = useState<IGeoLocation | null>(null);
   // const [tags, setTags] = useState(initialTags);
-  // const [files, setFiles] = useState<IdFile[]>([]);
-  // const [links, setLinks] = useState<IdLink[]>([]);
+  // const [files, setFiles] = useState<File[]>([]);
+  // const [links, setLinks] = useState<LinkImage[]>([]);
 
   const [errors, setErrors] = useState<string[]>([]);
   const authState = useRootState().auth;

@@ -1,9 +1,7 @@
+import moment from "moment";
 import { Dispatch } from "react";
-import {
-  acceptedFileFormats,
-  IdFile,
-} from "../components/temp_spot/image/FileImageUpload";
-import { IdLink } from "../components/temp_spot/image/LinkImageUpload";
+import { acceptedFileFormats } from "../components/temp_spot/image/FileImageUpload";
+import { LinkImage } from "../components/temp_spot/image/LinkImageUpload";
 import { ITag } from "../components/temp_spot/tags/Tags";
 import { sendRequestWithErrorHandling } from "../hooks/useSendRequestWithErrorHandling";
 import { ApiClient } from "../skate_spot_api/apiClient";
@@ -11,17 +9,16 @@ import {
   AddressDto,
   CoordsDto,
   CreateTempSpotCommand,
+  GuidApiResponse,
   ObstacleType,
 } from "../skate_spot_api/client";
 import { AuthState } from "../state/reducers/authReducer";
 import { IGeoLocation } from "../types/types";
-import { GuidApiResponse } from "../skate_spot_api/client";
-import moment from "moment";
 
 export const sendSpotData = async (
   dispatch: Dispatch<any>,
-  links: IdLink[],
-  files: IdFile[],
+  links: LinkImage[],
+  files: File[],
   name: string,
   description: string,
   location: IGeoLocation | null,
@@ -31,9 +28,7 @@ export const sendSpotData = async (
 ) => {
   let base64Images: string[] = [];
   base64Images.push(
-    ...links
-      .filter((l) => l.item.url.startsWith("data:image"))
-      .map((l) => l.item.url)
+    ...links.filter((l) => l.url.startsWith("data:image")).map((l) => l.url)
   );
 
   const sendCommand = async () => {
@@ -53,8 +48,8 @@ export const sendSpotData = async (
         .filter((t) => t.isSelected)
         .map((t) => ObstacleType[t.name]),
       linkImages: links
-        .filter((l) => !l.item.url.startsWith("data:image"))
-        .map((l) => l.item.url),
+        .filter((l) => !l.url.startsWith("data:image"))
+        .map((l) => l.url),
       base64Images: base64Images,
     });
     // TODO
@@ -93,7 +88,7 @@ export const sendSpotData = async (
       console.log("File loaded");
       filesLoaded++;
       base64Images.push(
-        `data:image/${f.item.type.slice(f.item.type.indexOf("/") + 1)};base64,${
+        `data:image/${f.type.slice(f.type.indexOf("/") + 1)};base64,${
           e!.target!.result as string
         }`
       );
@@ -103,8 +98,7 @@ export const sendSpotData = async (
       filesErrored++;
     });
 
-    if (acceptedFileFormats.indexOf(f.item.type) !== -1)
-      fr.readAsDataURL(f.item);
+    if (acceptedFileFormats.indexOf(f.type) !== -1) fr.readAsDataURL(f);
   });
 
   const preLoad = moment.now();

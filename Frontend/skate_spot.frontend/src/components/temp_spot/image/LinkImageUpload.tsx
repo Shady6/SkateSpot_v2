@@ -1,26 +1,21 @@
 import { Icon, IconButton, TextField } from "@material-ui/core";
-import { linkSync } from "fs";
 import { useState } from "react";
-import { v4 } from "uuid";
 import { useError } from "../../../hooks/useError";
 import { useInputState } from "../../../hooks/useInputState";
 import { ApiClient } from "../../../skate_spot_api/apiClient";
 import { useRootState } from "../../../state/store";
-import Upload, { Uploaded } from "../../shared/Upload";
+import Upload from "../../shared/Upload";
 
-export interface IdLink {
-  uuid: string;
-  item: {
-    name: string;
-    url: string;
-    b64: string;
-    sizeInMB: number;
-  };
+export interface LinkImage {
+  name: string;
+  url: string;
+  b64: string;
+  sizeInMB: number;
 }
 
 interface Props {
-  links: IdLink[];
-  setLinks: React.Dispatch<React.SetStateAction<IdLink[]>>;
+  links: LinkImage[];
+  setLinks: React.Dispatch<React.SetStateAction<LinkImage[]>>;
   otherImagesCount: number;
   imagesLimit: number;
 }
@@ -46,16 +41,13 @@ const LinkImageUpload: React.FC<Props> = ({
     setLinks([
       ...links,
       {
-        uuid: v4(),
-        item: {
-          name: "",
-          url: input,
-          b64: b64,
-          sizeInMB:
-            Math.round(
-              (new TextEncoder().encode(b64).length / 1024 / 1024) * 100
-            ) / 100,
-        },
+        name: "",
+        url: input,
+        b64: b64,
+        sizeInMB:
+          Math.round(
+            (new TextEncoder().encode(b64).length / 1024 / 1024) * 100
+          ) / 100,
       },
     ]);
   };
@@ -69,51 +61,23 @@ const LinkImageUpload: React.FC<Props> = ({
     if (input.startsWith("data:image")) {
       addLinkToState(input);
       resetInput();
+    } else {
+      try {
+        const res = await new ApiClient().get_Base64_Images(
+          [input],
+          "Bearer " + authState?.content?.jwToken ?? ""
+        );
+        if (res!.content![0]!.success) {
+          addLinkToState(res!.content![0]!.base64 as string);
+          resetInput();
+        } else setError(`The url contains invalid image - ${input}`);
+      } catch {
+        setError("Couldn't load your image now, try later.");
+      }
     }
-
-    try {
-      const res = await new ApiClient().get_Base64_Images(
-        [input],
-        "Bearer " + authState?.content?.jwToken ?? ""
-      );
-      if (res!.content![0]!.success) {
-        addLinkToState(res!.content![0]!.base64 as string);
-        resetInput();
-      } else setError(`The url contains invalid image - ${input}`);
-    } catch {
-      setError("Couldn't load your image now, try later.");
-    }
-
-    // try {
-    //   const url = new URL(input);
-    //   let img = new Image();
-    //   img.onload = (i) => {
-    //     // @ts-ignore
-    //     console.log(i.path[0]);
-    //     setLinks([
-    //       ...links,
-    //       {
-    //         uuid: v4(),
-    //         item: {
-    //           name: "",
-    //           url: input,
-    //           size: 1,
-    //         },
-    //       },
-    //     ]);
-    //     setImagesUploadedCount(links.length + 1);
-    //     resetInput();
-    //   };
-    //   img.onerror = () => {
-    //     setError(`Url contains invalid image - ${input}`);
-    //   };
-    //   img.src = url.toString();
-    // } catch {
-    //   setError(`The url is not valid - ${input}`);
-    // }
   };
 
-  const renderImageWithInfo = (link: IdLink) => {
+  const renderImageWithInfo = (linkImage: LinkImage) => {
     return (
       <>
         <img
@@ -124,9 +88,9 @@ const LinkImageUpload: React.FC<Props> = ({
             width: "auto",
             height: "auto",
           }}
-          src={link.item.b64}
+          src={linkImage.b64}
         />
-        <span> {link.item.sizeInMB}MBs</span>
+        <span> {linkImage.sizeInMB}MBs</span>
       </>
     );
   };

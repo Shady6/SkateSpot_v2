@@ -1,31 +1,22 @@
 import { Button, Typography } from "@material-ui/core";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import { TypographyStyleOptions } from "@material-ui/core/styles/createTypography";
 import React from "react";
+import { v4 as uuid } from "uuid";
 import { useError } from "../../hooks/useError";
 
-export interface Uploaded {
-  uuid: string;
-  item: {
-    name: string;
-  };
-}
-
-interface Props<T extends Uploaded> {
-  uploadedItems: Array<T>;
-  setUploadedItems: React.Dispatch<React.SetStateAction<Array<T>>>;
+interface Props {
+  uploadedItems: any[];
+  setUploadedItems: React.Dispatch<React.SetStateAction<any[]>>;
   otherUploadedItemsCount: number;
   uploadLimit: number;
   uploadedItemPluralized: string;
   onUploadBtnClick: () => void;
   uploadedCount: number;
   setUploadedCount: React.Dispatch<React.SetStateAction<number>>;
-  showUploadButton: boolean;
-  renderItem: (item: T) => JSX.Element;
-  buttonStyles?: TypographyStyleOptions;
+  showUploadButton?: boolean;
+  renderItem: (item: any) => JSX.Element;
 }
 
-function Upload<T extends Uploaded>({
+const Upload: React.FC<Props> = ({
   children,
   uploadedItems,
   setUploadedItems,
@@ -37,8 +28,7 @@ function Upload<T extends Uploaded>({
   setUploadedCount,
   showUploadButton = true,
   renderItem,
-  buttonStyles,
-}: React.PropsWithChildren<Props<T>>) {
+}) => {
   const renderError = useError(() => {
     const totalUploads = uploadedCount + otherUploadedItemsCount;
     let error = "";
@@ -61,18 +51,21 @@ function Upload<T extends Uploaded>({
             Uploaded {uploadedItemPluralized}: {uploadedItems!.length}
           </p>
           <div className={"d-flex flex-wrap"}>
-            {uploadedItems!.map((x) => (
+            {uploadedItems!.map((item, currentIndex) => (
               <Button
                 className={"p-1 me-3 mb-2 text-sm"}
-                key={x.uuid}
+                key={uuid()}
                 onClick={(_) =>
                   setUploadedItems([
-                    ...uploadedItems.filter((stateU) => stateU.uuid !== x.uuid),
+                    ...uploadedItems.filter(
+                      (_, fromStateItemIndex) =>
+                        fromStateItemIndex !== currentIndex
+                    ),
                   ])
                 }
               >
                 <Typography style={{ textTransform: "none" }}>
-                  {renderItem(x)}
+                  {renderItem(item)}
                 </Typography>
                 <i className="fa fa-times-circle ms-2" aria-hidden="true"></i>
               </Button>
@@ -109,6 +102,6 @@ function Upload<T extends Uploaded>({
       {renderUploadedItemsData()}
     </div>
   );
-}
+};
 
 export default Upload;
