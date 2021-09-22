@@ -19,8 +19,6 @@ namespace SkateSpot.Application.Features.TempSpotFeatures.Commands
 
 		public HashSet<ObstacleType> Obstacles { get; set; }
 
-		public List<string> LinkImages { get; set; }
-
 		public List<string> Base64Images { get; set; }
 
 		[JsonIgnore]
@@ -33,11 +31,6 @@ namespace SkateSpot.Application.Features.TempSpotFeatures.Commands
 			Base64Images = Base64Images.Where(b64 =>
 				acceptedImageFormats.Any(f =>
 					b64.StartsWith($"data:image/{f};base64"))).ToList();
-		}
-
-		public string[] GetInvalidLinks()
-		{
-			return new[] { "a" };
 		}
 	}
 }

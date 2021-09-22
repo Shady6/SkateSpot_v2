@@ -1,61 +1,41 @@
 import { Icon, IconButton, TextField } from "@material-ui/core";
 import { useState } from "react";
+import { renderImageWithSizeInfo } from "../../../functions/renderImageWithSizeInfo";
 import { useError } from "../../../hooks/useError";
 import { useInputState } from "../../../hooks/useInputState";
 import { ApiClient } from "../../../skate_spot_api/apiClient";
 import { useRootState } from "../../../state/store";
 import Upload from "../../shared/Upload";
 
-export interface LinkImage {
-  name: string;
-  url: string;
-  b64: string;
-  sizeInMB: number;
-}
-
 interface Props {
-  links: LinkImage[];
-  setLinks: React.Dispatch<React.SetStateAction<LinkImage[]>>;
+  images: string[];
+  setImages: React.Dispatch<React.SetStateAction<string[]>>;
   otherImagesCount: number;
   imagesLimit: number;
 }
 
 const LinkImageUpload: React.FC<Props> = ({
-  links,
-  setLinks,
+  images,
+  setImages,
   otherImagesCount,
   imagesLimit,
 }) => {
   const [uploadedImagesCount, setImagesUploadedCount] = useState(0);
   const [input, setInput, resetInput] = useInputState("");
   const [error, setError] = useState("");
-  const [url, setUrl] = useState("");
 
-  const renderError = useError(() => error, [url, error]);
+  const renderError = useError(() => error, [error]);
   const authState = useRootState().auth;
 
-  const canUploadImage = () =>
-    links.length + otherImagesCount < imagesLimit && input !== "";
+  const canUploadImage = () => images.length < imagesLimit && input !== "";
 
   const addLinkToState = (b64: string) => {
-    setLinks([
-      ...links,
-      {
-        name: "",
-        url: input,
-        b64: b64,
-        sizeInMB:
-          Math.round(
-            (new TextEncoder().encode(b64).length / 1024 / 1024) * 100
-          ) / 100,
-      },
-    ]);
+    setImages([...images, b64]);
   };
 
   const addImage = async () => {
     if (!canUploadImage()) return;
 
-    setUrl(input);
     setError("");
 
     if (input.startsWith("data:image")) {
@@ -77,29 +57,10 @@ const LinkImageUpload: React.FC<Props> = ({
     }
   };
 
-  const renderImageWithInfo = (linkImage: LinkImage) => {
-    return (
-      <>
-        <img
-          alt="Your uploaded spot img"
-          style={{
-            maxWidth: 100,
-            maxHeight: 100,
-            width: "auto",
-            height: "auto",
-          }}
-          src={linkImage.b64}
-        />
-        <span> {linkImage.sizeInMB}MBs</span>
-      </>
-    );
-  };
-
   return (
     <Upload
-      uploadedItems={links}
-      // @ts-ignore
-      setUploadedItems={setLinks}
+      uploadedItems={images}
+      setUploadedItems={setImages}
       otherUploadedItemsCount={otherImagesCount}
       uploadLimit={imagesLimit}
       uploadedItemPluralized={"images"}
@@ -107,7 +68,7 @@ const LinkImageUpload: React.FC<Props> = ({
       uploadedCount={uploadedImagesCount}
       setUploadedCount={setImagesUploadedCount}
       showUploadButton={false}
-      renderItem={renderImageWithInfo}
+      renderItem={renderImageWithSizeInfo}
     >
       <>
         <div className="mt-2 d-flex mb-1">

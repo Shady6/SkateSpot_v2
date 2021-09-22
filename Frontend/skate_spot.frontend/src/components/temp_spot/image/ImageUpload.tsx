@@ -1,40 +1,44 @@
 import React from "react";
 import FileImageUpload from "./FileImageUpload";
 import LinkImageUpload from "./LinkImageUpload";
-import { LinkImage } from "./LinkImageUpload";
 
 interface Props {
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  links: LinkImage[];
-  setLinks: React.Dispatch<React.SetStateAction<LinkImage[]>>;
+  fromLinkImages: string[];
+  setFromLinkImages: React.Dispatch<React.SetStateAction<string[]>>;
+  fromFileImages: string[];
+  setFromFileImages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const ImageUpload: React.FC<Props> = ({ files, setFiles, links, setLinks }) => {
+const ImageUpload: React.FC<Props> = ({
+  fromLinkImages,
+  setFromLinkImages,
+  fromFileImages,
+  setFromFileImages,
+}) => {
   const imagesLimit = 10;
 
   return (
     <>
-      <p>You can add up to {imagesLimit} images of spot as files or links</p>
-      {files.length + links.length >= imagesLimit && (
+      <p>You can add up to {imagesLimit} images of spot as images or links</p>
+      {fromLinkImages.length + fromFileImages.length >= imagesLimit && (
         <p className="text-info text-sm">
           You've reached the images upload limit
         </p>
       )}
       <div className={"mt-4 mb-3"}>
         <FileImageUpload
-          files={files}
-          setFiles={setFiles}
+          images={fromFileImages}
+          setImages={setFromFileImages}
           imagesLimit={imagesLimit}
-          otherImagesCount={links.length}
+          otherImagesCount={fromLinkImages.length}
         />
       </div>
       <div>
         <LinkImageUpload
-          links={links}
-          setLinks={setLinks}
+          images={fromLinkImages}
+          setImages={setFromLinkImages}
           imagesLimit={imagesLimit}
-          otherImagesCount={files.length}
+          otherImagesCount={fromFileImages.length}
         />
       </div>
     </>

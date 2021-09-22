@@ -8,7 +8,6 @@ import { useRootState } from "../../state/store";
 import { IGeoLocation } from "../../types/types";
 import MapAddress from "./address/MapAddress";
 import ImageUpload from "./image/ImageUpload";
-import { LinkImage } from "./image/LinkImageUpload";
 import Tags, { ITag } from "./tags/Tags";
 
 const spotMinNameLength = 3;
@@ -49,27 +48,8 @@ const AddTempSpotPage: React.FC = () => {
     { name: "Quater", isSelected: false },
     { name: "Downhill", isSelected: false },
   ]);
-  const [files, setFiles] = useState<File[]>([]);
-  const [links, setLinks] = useState<LinkImage[]>([
-    {
-      name: "img2",
-      url: "https://bi.im-g.pl/im/dd/c5/17/z24928221V,Ewolucje-skaterskie-pod-pomnikiem-Wincentego-Witos.jpg",
-      b64: "f",
-      sizeInMB: 1,
-    },
-    {
-      name: "img3",
-      url: "https://play-lh.googleusercontent.com/MFcmDsDGgSXwft_c4ryKi6RV11MNjF2CRSsWHEqwYnjKPOQa5CPfysSPTVWQBat1EKxD",
-      b64: "f",
-      sizeInMB: 1,
-    },
-    {
-      name: "img4",
-      url: "https://filesamples.com/samples/image/webp/sample1.webp",
-      b64: "f",
-      sizeInMB: 1,
-    },
-  ]);
+  const [fromFileImages, setFromFileImages] = useState<string[]>([]);
+  const [fromLinkImages, setFromLinkImages] = useState<string[]>([]);
 
   // const [name, setName] = useInputState("");
   // const [description, setDescription] = useInputState("");
@@ -121,8 +101,7 @@ const AddTempSpotPage: React.FC = () => {
 
     sendSpotData(
       dispatch,
-      links,
-      files,
+      fromFileImages.concat(fromLinkImages),
       name,
       description,
       location,
@@ -190,10 +169,10 @@ const AddTempSpotPage: React.FC = () => {
       </div>
       <div className="mb-5">
         <ImageUpload
-          files={files}
-          setFiles={setFiles}
-          links={links}
-          setLinks={setLinks}
+          fromLinkImages={fromLinkImages}
+          setFromLinkImages={setFromLinkImages}
+          fromFileImages={fromFileImages}
+          setFromFileImages={setFromFileImages}
         />
       </div>
       {errors.map((e) => (
