@@ -1,4 +1,3 @@
-import { Dispatch } from "react";
 import { ITag } from "../components/temp_spot/tags/Tags";
 import { ApiClient } from "../skate_spot_api/apiClient";
 import {
@@ -9,7 +8,7 @@ import {
 } from "../skate_spot_api/client";
 import { AuthState } from "../state/reducers/authReducer";
 import { IGeoLocation } from "../types/types";
-import { sendRequestAndGetResponse } from "./sendRequestWithFlashMsgOnError";
+import { sendRequestAndGetResponse } from "./sendRequestAndGetResponse";
 
 export const sendSpotData = async (
   images: string[],

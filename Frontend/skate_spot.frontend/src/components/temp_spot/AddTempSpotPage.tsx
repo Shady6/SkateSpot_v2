@@ -51,8 +51,9 @@ const AddTempSpotPage: React.FC = () => {
     );
     setSendingSpot(false);
 
-    if (response.error) setError(response.error.message as string);
-    else {
+    if (response.error) {
+      setError(response.error.message as string);
+    } else {
       setError("");
       dispatch(
         createFlashMsgWithTimeout({

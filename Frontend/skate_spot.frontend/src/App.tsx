@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Navigation from "./components/Navigation";
-import FlashMsg from "./components/shared/FlashMsg";
+import FlashMsgs from "./components/shared/FlashMsgs";
 import hasRouteAccess from "./functions/hasRouteAccess";
 import { useAuthFromLocalStorage } from "./hooks/useAuthFromLocalStorage";
 import routes from "./routes/appRoutes";
@@ -29,7 +29,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <FlashMsg />
+      <FlashMsgs />
       <BrowserRouter>
         <Navigation />
         <Switch>{renderRoutes()}</Switch>

@@ -6,7 +6,7 @@ import flashMsgReducer from "./reducers/flashMsgReducer";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    flashMsg: flashMsgReducer,
+    flashMsgs: flashMsgReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
