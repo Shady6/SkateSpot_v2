@@ -2,12 +2,13 @@ import { Button, Slider, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { GeoLocation } from "../../classes/GeoLocation";
+import { getAnyDimStringArrSizeInMb } from "../../functions/getAnyDimStringArrSizeInMb";
 import { sendSpotData } from "../../functions/sendSpotData";
 import { useInputState } from "../../hooks/useInputState";
 import { useRootState } from "../../state/store";
 import { IGeoLocation } from "../../types/types";
 import MapAddress from "./address/MapAddress";
-import ImageUpload from "./image/ImageUpload";
+import ImageUpload, { sizeMbLimit } from "./image/ImageUpload";
 import Tags, { ITag } from "./tags/Tags";
 
 const spotMinNameLength = 3;
@@ -79,6 +80,13 @@ const AddTempSpotPage: React.FC = () => {
       isValid: () =>
         tags.map((t) => Number(t.isSelected)).reduce((p, c) => p + c) > 0,
       errorMsg: `You need to select at least one tag`,
+    },
+    {
+      refersTo: getAnyDimStringArrSizeInMb([fromLinkImages, fromFileImages]),
+      isValid: () =>
+        getAnyDimStringArrSizeInMb([fromLinkImages, fromFileImages]) <=
+        sizeMbLimit,
+      errorMsg: `Total size of images has to be less than or equal to ${sizeMbLimit}MBs`,
     },
   ];
 

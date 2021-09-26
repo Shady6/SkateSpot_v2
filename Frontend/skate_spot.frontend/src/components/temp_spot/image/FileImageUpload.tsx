@@ -6,6 +6,7 @@ interface Props {
   images: string[];
   setImages: React.Dispatch<React.SetStateAction<string[]>>;
   imagesLimit: number;
+  otherImagesCount: number;
 }
 
 export const acceptedFileFormats = [
@@ -19,25 +20,43 @@ const FileImageUpload: React.FC<Props> = ({
   images,
   setImages,
   imagesLimit,
+  otherImagesCount,
 }) => {
-  const [uploadedImagesCount, setImagesUploadedCount] = useState(0);
+  const [uploadedImagesCount, setUploadedImagesCount] = useState(0);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const fileImagesToTake = imagesLimit - images.length;
+    const imagesToTakeMax = imagesLimit - otherImagesCount;
+    const uploadedFilesCount = e.target.files?.length ?? 0;
+    let loadedImages: string[] = [];
+    let imagesProcessed = 0;
 
     Array.from(e.target.files || []).forEach((f, i) => {
-      const fr = new FileReader();
-      if (i + 1 > fileImagesToTake) return;
+      if (i + 1 > imagesToTakeMax) return;
 
+      const fr = new FileReader();
       fr.addEventListener("load", (e) => {
-        setImages([...images, e!.target!.result as string]);
+        loadedImages.push(e!.target!.result as string);
+        imagesProcessed++;
       });
+      fr.addEventListener("error", () => imagesProcessed++);
+      fr.addEventListener("abort", () => imagesProcessed++);
 
       fr.readAsDataURL(f);
     });
 
-    setImagesUploadedCount(e.target.files?.length ?? 0);
+    const interval = setInterval(() => {
+      if (
+        imagesProcessed === uploadedFilesCount ||
+        (uploadedFilesCount > imagesToTakeMax &&
+          imagesProcessed === imagesToTakeMax)
+      ) {
+        setUploadedImagesCount(uploadedFilesCount);
+        setImages(loadedImages);
+        clearInterval(interval);
+      }
+    }, 100);
+
     //@ts-ignore
     e.target.value = null;
   };
@@ -50,8 +69,9 @@ const FileImageUpload: React.FC<Props> = ({
       uploadedItemPluralized={"images"}
       onUploadBtnClick={() => fileInput.current?.click()}
       uploadedCount={uploadedImagesCount}
-      setUploadedCount={setImagesUploadedCount}
+      setUploadedCount={setUploadedImagesCount}
       renderItem={renderImageWithSizeInfo}
+      otherUploadedItemsCount={otherImagesCount}
     >
       <input
         ref={fileInput}

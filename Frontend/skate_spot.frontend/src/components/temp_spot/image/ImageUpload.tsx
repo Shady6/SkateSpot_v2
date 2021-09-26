@@ -1,6 +1,10 @@
 import React from "react";
+import { getAnyDimStringArrSizeInMb } from "../../../functions/getAnyDimStringArrSizeInMb";
 import FileImageUpload from "./FileImageUpload";
 import LinkImageUpload from "./LinkImageUpload";
+
+export const imagesLimit = 10;
+export const sizeMbLimit = 20;
 
 interface Props {
   fromLinkImages: string[];
@@ -15,16 +19,29 @@ const ImageUpload: React.FC<Props> = ({
   fromFileImages,
   setFromFileImages,
 }) => {
-  const imagesLimit = 10;
+  const renderImageStats = () => {
+    const uploadsTotal = fromLinkImages.length + fromFileImages.length;
+    const uploadsSize = getAnyDimStringArrSizeInMb([
+      fromLinkImages,
+      fromFileImages,
+    ]);
+
+    return (
+      <p className="text-info text-sm">
+        {`Uploaded ${uploadsTotal}/${imagesLimit}, `}
+        <span className={uploadsSize > sizeMbLimit ? "text-danger" : ""}>
+          {`Size ${uploadsSize}/${sizeMbLimit}MBs`}
+        </span>
+      </p>
+    );
+  };
 
   return (
     <>
-      <p>You can add up to {imagesLimit} images of spot as images or links</p>
-      {fromLinkImages.length + fromFileImages.length >= imagesLimit && (
-        <p className="text-info text-sm">
-          You've reached the images upload limit
-        </p>
-      )}
+      <p>Upload spot images</p>
+
+      {renderImageStats()}
+
       <div className={"mt-4 mb-3"}>
         <FileImageUpload
           images={fromFileImages}

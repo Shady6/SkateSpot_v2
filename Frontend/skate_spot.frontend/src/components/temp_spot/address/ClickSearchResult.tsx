@@ -7,7 +7,6 @@ interface Props {
 
 const ClickSearchResult: React.FC<Props> = ({ location }) => {
   const renderError = useInfo(() => {
-    console.log(location);
     if (!location?.address)
       return "No address found but location of spot has been saved";
     return "";

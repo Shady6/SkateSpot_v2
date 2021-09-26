@@ -77,28 +77,32 @@ const Upload: React.FC<Props> = ({
 
   return (
     <div className="mb-2">
-      <Button
-        hidden={!showUploadButton}
-        variant="contained"
-        onClick={onUploadBtnClick}
-        className={"me-1"}
-      >
-        Upload Files
-      </Button>
-      {uploadedItems.length !== 0 && (
-        <Button
-          variant="contained"
-          color="warning"
-          onClick={(_) => {
-            setUploadedItems([]);
-            setUploadedCount(0);
-          }}
-        >
-          Remove all
-        </Button>
-      )}
+      <div className="d-flex">
+        <div className="order-2">
+          <Button
+            hidden={!showUploadButton}
+            variant="contained"
+            onClick={onUploadBtnClick}
+            className={"me-1"}
+          >
+            Upload Files
+          </Button>
+          {uploadedItems.length !== 0 && (
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={(_) => {
+                setUploadedItems([]);
+                setUploadedCount(0);
+              }}
+            >
+              Remove all
+            </Button>
+          )}
+        </div>
+        {children}
+      </div>
       {renderError()}
-      {children}
       {renderUploadedItemsData()}
     </div>
   );

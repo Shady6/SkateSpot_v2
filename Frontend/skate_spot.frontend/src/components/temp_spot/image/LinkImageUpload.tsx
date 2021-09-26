@@ -27,13 +27,15 @@ const LinkImageUpload: React.FC<Props> = ({
   const renderError = useError(() => error, [error]);
   const authState = useRootState().auth;
 
-  const canUploadImage = () => images.length < imagesLimit && input !== "";
+  const canUploadImage = () =>
+    images.length + otherImagesCount < imagesLimit && input !== "";
 
   const addLinkToState = (b64: string) => {
     setImages([...images, b64]);
   };
 
   const addImage = async () => {
+    console.log(otherImagesCount);
     if (!canUploadImage()) return;
 
     setError("");
@@ -71,7 +73,7 @@ const LinkImageUpload: React.FC<Props> = ({
       renderItem={renderImageWithSizeInfo}
     >
       <>
-        <div className="mt-2 d-flex mb-1">
+        <div className="order-1">
           <TextField
             value={input}
             onKeyDown={(e) => {
