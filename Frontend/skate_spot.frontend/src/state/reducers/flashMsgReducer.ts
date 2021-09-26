@@ -1,33 +1,42 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
-export interface FlashMsgState {
+export interface FlashMsg {
   message: string;
-  level: "error" | "warning" | "info" | "success";
-  clearsAfter: number;
+  severity: "error" | "warning" | "info" | "success";
+  clearAtDate: Date;
 }
 
-const initialState: Partial<FlashMsgState> = {};
+export type FlashMsgState = FlashMsg | null;
 
 const flashMsgSlice = createSlice({
   name: "flashMsg",
-  initialState,
+  initialState: null as FlashMsgState,
   reducers: {
-    setFlashMsg: (state, action: PayloadAction<FlashMsgState>) => {
-      state = action.payload;
+    setFlashMsg: (state, action: PayloadAction<FlashMsg>) => {
+      return action.payload;
     },
     clearFlashMsg: (state) => {
-      state = initialState;
+      return null;
     },
   },
 });
 
-export const createFlashMsgWithTimeout = createAsyncThunk<void, FlashMsgState>(
+export const createFlashMsgWithTimeout = createAsyncThunk<void, FlashMsg>(
   "flashMsg/createFlashMsgWithTimeout",
-  async (flashMsg: FlashMsgState, { dispatch }) => {
+  async (flashMsg: FlashMsg, { dispatch, getState }) => {
     dispatch(flashMsgSlice.actions.setFlashMsg(flashMsg));
 
-    setTimeout(() => {
-      dispatch(flashMsgSlice.actions.clearFlashMsg());
-    }, flashMsg.clearsAfter);
+    const timeout = setTimeout(() => {
+      const state = (getState() as RootState).flashMsg;
+
+      if (state === null || state.clearAtDate === flashMsg.clearAtDate)
+        dispatch(flashMsgSlice.actions.clearFlashMsg());
+
+      clearTimeout(timeout);
+    }, flashMsg.clearAtDate.getTime() - Date.now());
   }
 );
+
+export const { clearFlashMsg } = flashMsgSlice.actions;
+export default flashMsgSlice.reducer;

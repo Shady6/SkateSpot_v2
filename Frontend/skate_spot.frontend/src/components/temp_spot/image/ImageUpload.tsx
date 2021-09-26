@@ -13,53 +13,55 @@ interface Props {
   setFromFileImages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const ImageUpload: React.FC<Props> = ({
-  fromLinkImages,
-  setFromLinkImages,
-  fromFileImages,
-  setFromFileImages,
-}) => {
-  const renderImageStats = () => {
-    const uploadsTotal = fromLinkImages.length + fromFileImages.length;
-    const uploadsSize = getAnyDimStringArrSizeInMb([
-      fromLinkImages,
-      fromFileImages,
-    ]);
+const ImageUpload = React.memo(
+  ({
+    fromLinkImages,
+    setFromLinkImages,
+    fromFileImages,
+    setFromFileImages,
+  }: Props) => {
+    const renderImageStats = () => {
+      const uploadsTotal = fromLinkImages.length + fromFileImages.length;
+      const uploadsSize = getAnyDimStringArrSizeInMb([
+        fromLinkImages,
+        fromFileImages,
+      ]);
+
+      return (
+        <p className="text-info text-sm">
+          {`Uploaded ${uploadsTotal}/${imagesLimit}, `}
+          <span className={uploadsSize > sizeMbLimit ? "text-danger" : ""}>
+            {`Size ${uploadsSize}/${sizeMbLimit}MBs`}
+          </span>
+        </p>
+      );
+    };
 
     return (
-      <p className="text-info text-sm">
-        {`Uploaded ${uploadsTotal}/${imagesLimit}, `}
-        <span className={uploadsSize > sizeMbLimit ? "text-danger" : ""}>
-          {`Size ${uploadsSize}/${sizeMbLimit}MBs`}
-        </span>
-      </p>
+      <>
+        <p>Upload spot images</p>
+
+        {renderImageStats()}
+
+        <div className={"mt-4 mb-3"}>
+          <FileImageUpload
+            images={fromFileImages}
+            setImages={setFromFileImages}
+            imagesLimit={imagesLimit}
+            otherImagesCount={fromLinkImages.length}
+          />
+        </div>
+        <div>
+          <LinkImageUpload
+            images={fromLinkImages}
+            setImages={setFromLinkImages}
+            imagesLimit={imagesLimit}
+            otherImagesCount={fromFileImages.length}
+          />
+        </div>
+      </>
     );
-  };
-
-  return (
-    <>
-      <p>Upload spot images</p>
-
-      {renderImageStats()}
-
-      <div className={"mt-4 mb-3"}>
-        <FileImageUpload
-          images={fromFileImages}
-          setImages={setFromFileImages}
-          imagesLimit={imagesLimit}
-          otherImagesCount={fromLinkImages.length}
-        />
-      </div>
-      <div>
-        <LinkImageUpload
-          images={fromLinkImages}
-          setImages={setFromLinkImages}
-          imagesLimit={imagesLimit}
-          otherImagesCount={fromFileImages.length}
-        />
-      </div>
-    </>
-  );
-};
+  }
+);
 
 export default ImageUpload;

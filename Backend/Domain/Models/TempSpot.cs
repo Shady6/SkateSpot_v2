@@ -1,6 +1,8 @@
 ﻿using SkateSpot.Domain.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace SkateSpot.Domain.Models
 {
@@ -16,6 +18,8 @@ namespace SkateSpot.Domain.Models
 		public VerificationProcess VerificationProcess { get; protected set; }
 		public ICollection<Image> Images { get; protected set; } = new List<Image>();
 
+		private readonly int MaxImagesSizeInMb = 20;
+
 		public TempSpot()
 		{
 		}
@@ -28,6 +32,7 @@ namespace SkateSpot.Domain.Models
 				  HashSet<ObstacleType> obstacles,
 				  ICollection<Image> images)
 		{
+			Validate(name, description, address, obstacles, images);
 			Name = name;
 			Description = description;
 			SurfaceScore = surfaceScore;
@@ -38,6 +43,27 @@ namespace SkateSpot.Domain.Models
 
 			VerificationProcess = new VerificationProcess();
 			VerificationProcess.Vote(userId, true);
+		}
+
+		private void Validate(string name,
+				  string description,
+				  Address address,
+				  HashSet<ObstacleType> obstacles,
+				  ICollection<Image> images)
+		{
+			var sb = new StringBuilder();
+
+			if (string.IsNullOrEmpty(name)) sb.Append("Name of the spot cannot be empty.\n");
+			if (description.Length > 400) sb.Append("Name of the spot cannot be empty.\n");
+			if (address == null) sb.Append("Address cannot be empty.\n");
+			if (obstacles.Count == 0) sb.Append("List of obstacles cannot be empty.\n");
+			if (images
+				.Select(i => Encoding.ASCII.GetByteCount(i.Base64))
+				.Sum() / 1024 / 1024 > MaxImagesSizeInMb)
+				sb.Append($"Images total size has to be less than or equal to {MaxImagesSizeInMb}Mbs.\n");
+
+			var error = sb.ToString();
+			if (!string.IsNullOrEmpty(error)) throw new AppException(ErrorCode.BAD_INPUT, error);
 		}
 	}
 }

@@ -1,114 +1,46 @@
-import { Button, Slider, TextField } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import { Button, CircularProgress, Slider, TextField } from "@material-ui/core";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { GeoLocation } from "../../classes/GeoLocation";
-import { getAnyDimStringArrSizeInMb } from "../../functions/getAnyDimStringArrSizeInMb";
 import { sendSpotData } from "../../functions/sendSpotData";
 import { useInputState } from "../../hooks/useInputState";
 import { useRootState } from "../../state/store";
 import { IGeoLocation } from "../../types/types";
 import MapAddress from "./address/MapAddress";
-import ImageUpload, { sizeMbLimit } from "./image/ImageUpload";
+import ImageUpload from "./image/ImageUpload";
 import Tags, { ITag } from "./tags/Tags";
-
-const spotMinNameLength = 3;
+import { createFlashMsgWithTimeout } from "../../state/reducers/flashMsgReducer";
+import { v4 } from "uuid";
 
 const AddTempSpotPage: React.FC = () => {
-  // DEBUG
-  const [name, setName] = useInputState("Plac trzech krzyży");
-  const [description, setDescription] = useInputState(
-    "Tzw. Witos, fajny klimat. Polecam serdecznie."
-  );
-  const [surfaceScore, setSurfaceScore] = useState(7);
-  const [location, setLocation] = useState<IGeoLocation | null>(
-    new GeoLocation(
-      {
-        lat: 52.2276649,
-        lng: 21.0235786,
-      },
-      {
-        city: "Warsaw",
-        country: "Poland",
-        postCode: "00-535",
-        streetName: "Plac Trzech Krzyży",
-        streetNumber: "1",
-        display:
-          "Witos, Plac Trzech Krzyży, Śródmieście Południowe, Śródmieście, Warsaw, Masovian Voivodeship, 00-535, Poland",
-      }
-    )
-  );
+  const [name, setName] = useInputState("");
+  const [description, setDescription] = useInputState("");
+  const [surfaceScore, setSurfaceScore] = useState(5);
+  const [location, setLocation] = useState<IGeoLocation | null>(null);
+  const [fromFileImages, setFromFileImages] = useState<string[]>([]);
+  const [fromLinkImages, setFromLinkImages] = useState<string[]>([]);
+  const [error, setError] = useState("");
   const [tags, setTags] = useState<ITag[]>([
     { name: "Skatepark", isSelected: false },
-    { name: "Ledge", isSelected: true },
+    { name: "Ledge", isSelected: false },
     { name: "Rail", isSelected: false },
-    { name: "Stairs", isSelected: true },
+    { name: "Stairs", isSelected: false },
     { name: "Bank", isSelected: false },
     { name: "Kicker", isSelected: false },
     { name: "Manualpad", isSelected: false },
-    { name: "Flatground", isSelected: true },
+    { name: "Flatground", isSelected: false },
     { name: "Quater", isSelected: false },
     { name: "Downhill", isSelected: false },
   ]);
-  const [fromFileImages, setFromFileImages] = useState<string[]>([]);
-  const [fromLinkImages, setFromLinkImages] = useState<string[]>([]);
+  const [sendingSpot, setSendingSpot] = useState(false);
 
-  // const [name, setName] = useInputState("");
-  // const [description, setDescription] = useInputState("");
-  // const [surfaceScore, setSurfaceScore] = useState(5);
-  // const [location, setLocation] = useState<IGeoLocation | null>(null);
-  // const [tags, setTags] = useState(initialTags);
-  // const [files, setFiles] = useState<File[]>([]);
-  // const [links, setLinks] = useState<LinkImage[]>([]);
-
-  const [errors, setErrors] = useState<string[]>([]);
   const authState = useRootState().auth;
   const dispatch = useDispatch();
 
-  const validationRules = [
-    {
-      refersTo: name,
-      isValid: () => name && name.length >= spotMinNameLength,
-      errorMsg: `Name needs to be at least ${spotMinNameLength} letters long`,
-    },
-    {
-      refersTo: location,
-      isValid: () => !!location,
-      errorMsg: `You need to select location`,
-    },
-    {
-      refersTo: tags,
-      isValid: () =>
-        tags.map((t) => Number(t.isSelected)).reduce((p, c) => p + c) > 0,
-      errorMsg: `You need to select at least one tag`,
-    },
-    {
-      refersTo: getAnyDimStringArrSizeInMb([fromLinkImages, fromFileImages]),
-      isValid: () =>
-        getAnyDimStringArrSizeInMb([fromLinkImages, fromFileImages]) <=
-        sizeMbLimit,
-      errorMsg: `Total size of images has to be less than or equal to ${sizeMbLimit}MBs`,
-    },
-  ];
+  const submitSpot = async () => {
+    if (sendingSpot) return;
 
-  useEffect(
-    () => {
-      if (errors === []) return;
-
-      let errorsToRemove: string[] = [];
-      validationRules.forEach((r) => {
-        if (r.isValid()) errorsToRemove.push(r.errorMsg);
-      });
-      setErrors(errors.filter((e) => errorsToRemove.indexOf(e) === -1));
-    },
-    validationRules.map((r) => r.refersTo)
-  );
-
-  const submitSpot = () => {
-    let validationErrors: string[] = validateInputs();
-    if (validationErrors.length !== 0) return;
-
-    sendSpotData(
-      dispatch,
+    setSendingSpot(true);
+    const response = await sendSpotData(
       fromFileImages.concat(fromLinkImages),
       name,
       description,
@@ -117,15 +49,19 @@ const AddTempSpotPage: React.FC = () => {
       tags,
       authState
     );
-  };
+    setSendingSpot(false);
 
-  const validateInputs = () => {
-    let validationErrors: string[] = [];
-    validationRules.forEach((r) => {
-      if (!r.isValid()) validationErrors.push(r.errorMsg);
-    });
-    setErrors(validationErrors);
-    return validationErrors;
+    if (response.error) setError(response.error.message as string);
+    else {
+      setError("");
+      dispatch(
+        createFlashMsgWithTimeout({
+          clearAtDate: new Date(Date.now() + 10000),
+          message: "Thank you! Your spot has been added to verification.",
+          severity: "success",
+        })
+      );
+    }
   };
 
   return (
@@ -183,13 +119,15 @@ const AddTempSpotPage: React.FC = () => {
           setFromFileImages={setFromFileImages}
         />
       </div>
-      {errors.map((e) => (
-        <p key={e} className="text-sm text-danger">
-          {e}
+      {error !== "" && (
+        <p className="text-sm text-danger">
+          {error.split("\n").map((e) => (
+            <p key={v4()}>{e}</p>
+          ))}
         </p>
-      ))}
+      )}
       <Button onClick={submitSpot} size="large" variant="contained">
-        Submit
+        {sendingSpot ? <CircularProgress color="secondary" /> : "Submit"}
       </Button>
     </div>
   );
