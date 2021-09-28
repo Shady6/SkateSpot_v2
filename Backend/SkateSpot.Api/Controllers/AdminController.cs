@@ -17,10 +17,17 @@ namespace SkateSpot.Api.Controllers
 			_adminService = adminService;
 		}
 
-		[HttpPost("seed")]
-		public async Task<ActionResult> SeedFakeSpots()
+		[HttpPost("seed/spots")]
+		public async Task<ActionResult> SeedFakeSpots([FromQuery] int count = 5)
 		{
-			await _adminService.SeedFakeSpots();
+			await _adminService.SeedFakeSpots(count);
+			return Ok();
+		}
+
+		[HttpPost("seed/tempSpots")]
+		public async Task<ActionResult> SeedFakeTempSpots([FromQuery] int count = 5)
+		{
+			await _adminService.SeedFakeTempSpots(count);
 			return Ok();
 		}
 	}

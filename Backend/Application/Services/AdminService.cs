@@ -1,12 +1,15 @@
 ﻿using AutoBogus;
 using Bogus;
 using Bogus.Extensions;
+using SkateSpot.Application.DTOs.DomainDTOs;
+using SkateSpot.Application.Features.TempSpotFeatures.Commands;
 using SkateSpot.Application.Interfaces.Repositories;
 using SkateSpot.Application.Services.Interfaces;
 using SkateSpot.Domain.Common;
 using SkateSpot.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Services
@@ -14,21 +17,57 @@ namespace SkateSpot.Application.Services
 	public class AdminService : Service, IAdminService
 	{
 		private readonly ISpotRepository _spotRepository;
+		private readonly IUserRepository _userRepository;
+		private readonly ITempSpotsService _tempSpotService;
+		private readonly IImageProxyService _imageProxyService;
 
-		public AdminService(ISpotRepository spotRepository)
+		public AdminService(
+			ISpotRepository spotRepository,
+			IUserRepository userRepository,
+			IImageProxyService imageProxyService,
+			ITempSpotsService tempSpotService)
 		{
 			_spotRepository = spotRepository;
+			_userRepository = userRepository;
+			_imageProxyService = imageProxyService;
+			_tempSpotService = tempSpotService;
 		}
 
-		public async Task SeedFakeSpots()
+		public async Task SeedFakeTempSpots(int count)
 		{
-			var userFake = new Faker<User>()
-				.RuleFor(u => u.Id, f => f.Random.Guid())
-				.RuleFor(u => u.CreatedAt, f => f.Date.Between(DateTime.Now.AddYears(-2), DateTime.Now))
-				.RuleFor(u => u.Email, f => f.Internet.Email())
-				.RuleFor(u => u.UserName, f => f.Name.FirstName() + f.Random.Number(1000000000));
+			var users = makeUserFake().Generate(5);
 
-			var users = userFake.Generate(100);
+			_userRepository.AddRange(users.ToArray());
+			await _userRepository.SaveChangesAsync();
+
+			var tempSpotFakeCommand = new Faker<CreateTempSpotCommand>()
+				.RuleFor(s => s.Name, f => f.Random.Guid().ToString())
+				.RuleFor(s => s.Description, f => f.Lorem.Lines(1))
+				.RuleFor(s => s.Address, _ => makeAddressDtoFake().Generate())
+				.RuleFor(s => s.Obstacles, f => AutoFaker.Generate<HashSet<ObstacleType>>())
+				.RuleFor(s => s.SurfaceScore, f => (byte)f.Random.Number(0, 10))
+				.RuleFor(s => s.UserId, f => f.PickRandom(users).Id)
+				.RuleFor(s => s.Base64Images, f =>
+				{
+					var imagesUrls = Enumerable.Range(0, f.Random.Number(5))
+					.Select(_ => f.Image.PicsumUrl(
+						f.Random.Number(200, 2560),
+						f.Random.Number(200, 2560)))
+					.ToArray();
+					var b64s = _imageProxyService.GetBase64OfImagesUrls(imagesUrls).Result;
+					return b64s.Where(b => b.Success).Select(b => b.Base64).ToList();
+				}
+				);
+
+			foreach (var tempSpotCommand in tempSpotFakeCommand.Generate(count))
+			{
+				await _tempSpotService.CreateTempSpot(tempSpotCommand);
+			}
+		}
+
+		public async Task SeedFakeSpots(int count)
+		{
+			List<User> users = makeUserFake().Generate(5);
 
 			var likeFake = new Faker<Like>()
 				.RuleFor(l => l.Giver, f => f.PickRandom(users));
@@ -60,14 +99,7 @@ namespace SkateSpot.Application.Services
 					return likeFake.GenerateBetween(0, 8);
 				});
 
-			var addressFake = new Faker<Address>()
-				.RuleFor(a => a.City, f => f.Address.City())
-				.RuleFor(a => a.StreetName, f => f.Address.StreetName())
-				.RuleFor(a => a.StreetNumber, f => f.Address.BuildingNumber())
-				.RuleFor(a => a.Country, f => f.Address.Country())
-				.RuleFor(a => a.PostCode, f => f.Address.ZipCode())
-				.RuleFor(a => a.Latitude, f => f.Address.Latitude())
-				.RuleFor(a => a.Longitude, f => f.Address.Longitude());
+			Faker<Address> addressFake = makeAddressFake();
 
 			var spotFake = new Faker<Spot>()
 				.RuleFor(s => s.Id, f => f.Random.Guid())
@@ -97,10 +129,42 @@ namespace SkateSpot.Application.Services
 					commentFake.RuleFor(l => l.CreatedAt, f => f.Date.Between(s.CreatedAt, DateTime.Now));
 					return likeFake.GenerateBetween(0, 14);
 				});
-			var fakeSpots = spotFake.Generate(100);
+			var fakeSpots = spotFake.Generate(count);
 
 			_spotRepository.AddRange(fakeSpots.ToArray());
 			await _spotRepository.SaveChangesAsync();
 		}
+
+		private static Faker<Address> makeAddressFake() =>
+			 new Faker<Address>()
+							.RuleFor(a => a.City, f => f.Address.City())
+							.RuleFor(a => a.StreetName, f => f.Address.StreetName())
+							.RuleFor(a => a.StreetNumber, f => f.Address.BuildingNumber())
+							.RuleFor(a => a.Country, f => f.Address.Country())
+							.RuleFor(a => a.PostCode, f => f.Address.ZipCode())
+							.RuleFor(a => a.Latitude, f => f.Address.Latitude())
+							.RuleFor(a => a.Longitude, f => f.Address.Longitude());
+
+
+		private static Faker<AddressDto> makeAddressDtoFake() =>
+			 new Faker<AddressDto>()
+							.RuleFor(a => a.City, f => f.Address.City())
+							.RuleFor(a => a.StreetName, f => f.Address.StreetName())
+							.RuleFor(a => a.StreetNumber, f => f.Address.BuildingNumber())
+							.RuleFor(a => a.Country, f => f.Address.Country())
+							.RuleFor(a => a.PostCode, f => f.Address.ZipCode())
+							.RuleFor(a => a.Coords, f => new CoordsDto
+							{
+								Lat = f.Address.Latitude(),
+								Lng = f.Address.Longitude()
+							});
+
+		private static Faker<User> makeUserFake() =>
+						new Faker<User>()
+							.RuleFor(u => u.Id, f => f.Random.Guid())
+							.RuleFor(u => u.CreatedAt, f => f.Date.Between(DateTime.Now.AddYears(-2), DateTime.Now))
+							.RuleFor(u => u.Email, f => f.Internet.Email())
+							.RuleFor(u => u.UserName, f => f.Name.FirstName() + f.Random.Number(1000000000));
+
 	}
 }

@@ -49,12 +49,14 @@ namespace SkateSpot.Application.Services
 			await _tempSpotRepository.AddAsync(tempSpot);
 			await _tempSpotRepository.SaveChangesAsync();
 
-			VerificationTimer.StartNewVerificationTimer(tempSpot.VerificationProcess.VerificationDuration.TotalMilliseconds, tempSpot.Id, VerifySpotOnTimerElapsed, _scopeFactory);
+			VerificationTimer.StartNewVerificationTimer(
+				tempSpot.VerificationProcess.VerificationDuration.TotalMilliseconds,
+				tempSpot.Id,
+				VerifySpotOnTimerElapsed,
+				_scopeFactory);
 
 			return tempSpot.Id;
 		}
-
-
 
 		public async Task<TempSpotWithVerificationDto> GetTempSpotWithVerification(GetTempSpotWithVerificationQuery request)
 		{
