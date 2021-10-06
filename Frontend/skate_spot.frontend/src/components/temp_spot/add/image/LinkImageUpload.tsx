@@ -1,11 +1,11 @@
 import { Icon, IconButton, TextField } from "@material-ui/core";
 import { useState } from "react";
-import { renderImageWithSizeInfo } from "../../../functions/renderImageWithSizeInfo";
-import { useError } from "../../../hooks/useError";
-import { useInputState } from "../../../hooks/useInputState";
-import { ApiClient } from "../../../skate_spot_api/apiClient";
-import { useRootState } from "../../../state/store";
-import Upload from "../../shared/Upload";
+import { renderImageWithSizeInfo } from "../../../../functions/renderImageWithSizeInfo";
+import { useError } from "../../../../hooks/useError";
+import { useInputState } from "../../../../hooks/useInputState";
+import { ApiClient } from "../../../../skate_spot_api/apiClient";
+import { useRootState } from "../../../../state/store";
+import Upload from "../../../shared/Upload";
 
 interface Props {
   images: string[];

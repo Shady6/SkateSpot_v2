@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { IGeoLocation } from "../../../types/types";
-import AddMarkerMap from "../../map/AddMarkerMap";
-import PlacableMarker from "../../map/PlacableMarker";
+import { IGeoLocation } from "../../../../types/types";
+import AddMarkerMap from "../../../map/AddMarkerMap";
+import PlacableMarker from "../../../map/PlacableMarker";
 import AddressSearch from "./AddressSearch";
 import AddressSearchMarkers from "./AddressSearchMarkers";
 import AddressSearchResults from "./AddressSearchResults";

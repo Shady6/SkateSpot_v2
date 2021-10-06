@@ -1,14 +1,15 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SkateSpot.Application.Interfaces.Repositories;
 using SkateSpot.Domain.Common;
 using SkateSpot.Domain.Models;
 using SkateSpot.Infrastructure.DbContexts;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SkateSpot.Infrastructure.Repositories
 {
+
 	public class CommentRepository : Repository<Comment>, ICommentRepository
 	{
 		public CommentRepository(ApplicationDbContext dbContext)
@@ -25,7 +26,7 @@ namespace SkateSpot.Infrastructure.Repositories
 
 				case SubjectType.SpotVideo:
 					return await _dbContext.SpotVideos.FindAsync(subjectId);
-				
+
 				case SubjectType.TempSpot:
 					return await _dbContext.VerificationProcesses
 						.Where(v => EF.Property<Guid>(v, "TempSpotId") == subjectId)
@@ -48,13 +49,13 @@ namespace SkateSpot.Infrastructure.Repositories
 					return await _dbContext.SpotVideos
 						.Include(s => s.Comments)
 						.FirstOrDefaultAsync(s => s.Id == subjectId);
-				
+
 				case SubjectType.TempSpot:
 					return await _dbContext.VerificationProcesses
 						.Include(t => t.Discussion)
 						.Where(v => EF.Property<Guid>(v, "TempSpotId") == subjectId)
 						.FirstOrDefaultAsync();
-						
+
 			}
 
 			return null;

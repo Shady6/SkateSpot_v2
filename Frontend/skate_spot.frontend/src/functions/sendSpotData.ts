@@ -1,4 +1,4 @@
-import { ITag } from "../components/temp_spot/tags/Tags";
+import { ITag } from "../components/temp_spot/add/tags/Tags";
 import { ApiClient } from "../skate_spot_api/apiClient";
 import {
   AddressDto,
@@ -8,7 +8,7 @@ import {
 } from "../skate_spot_api/client";
 import { AuthState } from "../state/reducers/authReducer";
 import { IGeoLocation } from "../types/types";
-import { sendRequestAndGetResponse } from "./sendRequestAndGetResponse";
+import { request } from "./request";
 
 export const sendSpotData = async (
   images: string[],
@@ -39,8 +39,8 @@ export const sendSpotData = async (
         .map((t) => ObstacleType[t.name]),
       base64Images: images,
     });
-    return await sendRequestAndGetResponse<string>(
-      (token) => new ApiClient().create_Spot(token, command),
+    return await request<string>(
+      (client, token) => client.create_Spot(token, command),
       authState.content
     );
   };

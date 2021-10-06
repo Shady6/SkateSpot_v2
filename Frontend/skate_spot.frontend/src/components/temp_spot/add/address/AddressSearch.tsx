@@ -1,7 +1,7 @@
 import { Button, TextField } from "@material-ui/core";
-import { GeoLocation } from "../../../classes/GeoLocation";
-import { useInputState } from "../../../hooks/useInputState";
-import { Geocode, IGeoLocation } from "../../../types/types";
+import { GeoLocation } from "../../../../classes/GeoLocation";
+import { useInputState } from "../../../../hooks/useInputState";
+import { Geocode, IGeoLocation } from "../../../../types/types";
 
 interface Props {
   setGeocodeLocations: React.Dispatch<

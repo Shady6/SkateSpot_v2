@@ -30,7 +30,6 @@ namespace SkateSpot.Application.MappingProfiles
 
 			CreateMap<HistoricalVerificationStatement, VerificationStatementDto>();
 			CreateMap<HistoricalVerificationProcess, VerificationProcessDto>();
-			CreateMap<Spot, TempSpotWithVerificationDto>();
 
 			CreateMap<VerificationStatement, VerificationStatementDto>();
 			CreateMap<VerificationProcess, VerificationProcessDto>();
@@ -41,6 +40,8 @@ namespace SkateSpot.Application.MappingProfiles
 
 			CreateMap<ISpot, SpotMarkerDataDto>()
 				.ForMember(d => d.IsTempSpot, opt => opt.MapFrom(s => s is TempSpot));
+
+			CreateMap<Image, ImageDto>();
 		}
 	}
 }

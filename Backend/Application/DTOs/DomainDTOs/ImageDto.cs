@@ -1,6 +1,6 @@
 ﻿namespace SkateSpot.Application.DTOs.DomainDTOs
 {
-	public class FileImageDto
+	public class ImageDto
 	{
 		public string Base64 { get; set; }
 	}

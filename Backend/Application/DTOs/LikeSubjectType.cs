@@ -3,7 +3,7 @@
 	public enum LikeSubjectType
 	{
 		Spots = 0,
-		SpotVideos = 1,		
+		SpotVideos = 1,
 		Comments = 3
 	}
 }

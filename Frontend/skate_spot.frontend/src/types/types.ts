@@ -43,9 +43,9 @@ export interface Geocode {
 }
 
 export enum UserRoles {
-  ALL_ROLES = "All",
-  SIGNED_IN_ROLES = "SignedInRoles",
-  NO_ROLE = "NoRole",
+  ALL = "All",
+  SIGNED_IN = "SignedInRoles",
+  NOT_SIGNED_IN = "NoRole",
   BASIC = "Basic",
   MODERATOR = "Moderator",
   ADMIN = "Admin",

@@ -15,5 +15,6 @@ namespace SkateSpot.Application.DTOs.DomainDTOs
 		public byte SurfaceScore { get; set; }
 		public SmallUserDto Author { get; set; }
 		public VerificationProcessDto VerificationProcess { get; set; }
+		public ImageDto[] Images { get; set; }
 	}
 }

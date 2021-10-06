@@ -1,7 +1,7 @@
 import React from "react";
-import { IGeoLocation } from "../../../types/types";
+import { IGeoLocation } from "../../../../types/types";
 import NoAddressFound from "./NoAddressFound";
-import { useError } from "../../../hooks/useError";
+import { useError } from "../../../../hooks/useError";
 
 interface Props {
   fromGeocodeLocations: IGeoLocation[] | null;

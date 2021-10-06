@@ -1,5 +1,5 @@
 import React from "react";
-import { getAnyDimStringArrSizeInMb } from "../../../functions/getAnyDimStringArrSizeInMb";
+import { getAnyDimStringArrSizeInMb } from "../../../../functions/getAnyDimStringArrSizeInMb";
 import FileImageUpload from "./FileImageUpload";
 import LinkImageUpload from "./LinkImageUpload";
 

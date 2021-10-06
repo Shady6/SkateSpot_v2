@@ -1,15 +1,15 @@
 import { Button, CircularProgress, Slider, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { sendSpotData } from "../../functions/sendSpotData";
-import { useInputState } from "../../hooks/useInputState";
-import { useRootState } from "../../state/store";
-import { IGeoLocation } from "../../types/types";
+import { v4 } from "uuid";
+import { useInputState } from "../../../hooks/useInputState";
+import { createFlashMsgWithTimeout } from "../../../state/reducers/flashMsgReducer";
+import { useRootState } from "../../../state/store";
+import { IGeoLocation } from "../../../types/types";
 import MapAddress from "./address/MapAddress";
 import ImageUpload from "./image/ImageUpload";
 import Tags, { ITag } from "./tags/Tags";
-import { createFlashMsgWithTimeout } from "../../state/reducers/flashMsgReducer";
-import { v4 } from "uuid";
+import { sendSpotData } from "../../../functions/sendSpotData";
 
 const AddTempSpotPage: React.FC = () => {
   const [name, setName] = useInputState("");

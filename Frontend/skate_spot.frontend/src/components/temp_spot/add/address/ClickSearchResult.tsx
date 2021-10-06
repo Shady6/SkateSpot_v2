@@ -1,5 +1,5 @@
-import { useInfo } from "../../../hooks/useInfo";
-import { IGeoLocation } from "../../../types/types";
+import { useInfo } from "../../../../hooks/useInfo";
+import { IGeoLocation } from "../../../../types/types";
 
 interface Props {
   location: IGeoLocation | null;

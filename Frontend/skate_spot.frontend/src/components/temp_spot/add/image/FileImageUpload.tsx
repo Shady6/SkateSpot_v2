@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef, useState } from "react";
-import { renderImageWithSizeInfo } from "../../../functions/renderImageWithSizeInfo";
-import Upload from "../../shared/Upload";
+import { renderImageWithSizeInfo } from "../../../../functions/renderImageWithSizeInfo";
+import Upload from "../../../shared/Upload";
 
 interface Props {
   images: string[];

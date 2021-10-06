@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useMap } from "react-leaflet";
-import getBoundingBox from "../../../functions/getBoundingBox";
-import { IGeoLocation } from "../../../types/types";
-import FaIconMarker from "../../map/FaIconMarker";
+import getBoundingBox from "../../../../functions/getBoundingBox";
+import { IGeoLocation } from "../../../../types/types";
+import FaIconMarker from "../../../map/FaIconMarker";
 
 interface Props {
   showMore: boolean;
