@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using SkateSpot.Api.Attributes;
 using SkateSpot.Api.Data;
+using SkateSpot.Application.DTOs;
 using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.TempSpotFeatures.Commands;
 using SkateSpot.Application.Features.TempSpotFeatures.Queries;
 using SkateSpot.Application.Services.Interfaces;
+using SkateSpot.Domain.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -16,10 +18,12 @@ namespace SkateSpot.Api.Controllers
 	public class TempSpotsController : ControllerBase
 	{
 		private readonly ITempSpotsService _tempSpotsService;
+		private readonly IGetterService<TempSpot> _getterService;
 
-		public TempSpotsController(ITempSpotsService tempSpotsService)
+		public TempSpotsController(ITempSpotsService tempSpotsService, IGetterService<TempSpot> getterService)
 		{
 			_tempSpotsService = tempSpotsService;
+			_getterService = getterService;
 		}
 
 		[Authorize]
@@ -37,6 +41,14 @@ namespace SkateSpot.Api.Controllers
 		{
 			var spot = await _tempSpotsService.GetTempSpotWithVerification(request);
 			return Ok(spot);
+		}
+
+		[HttpGet]
+		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<TempSpotWithVerificationDto>>), 200)]
+		public async Task<ActionResult<TempSpotWithVerificationDto>> GetTempSpots([FromQuery] int take, [FromQuery] int offset)
+		{
+			var spots = await _getterService.Get<TempSpotWithVerificationDto>(take, offset);
+			return Ok(spots);
 		}
 	}
 }

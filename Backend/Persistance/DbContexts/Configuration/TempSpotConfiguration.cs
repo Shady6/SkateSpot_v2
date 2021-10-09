@@ -11,12 +11,12 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 			builder.ToTable("TempSpots");
 
 			builder.OwnsOne(s => s.Address);
-			builder.OwnsOne(s => s.Obstacles);
-			builder.OwnsMany(t => t.Images);
+			builder.OwnsMany(s => s.Obstacles);
+			builder.OwnsMany(s => s.Images);
 
 			builder.HasOne(s => s.Author)
 				.WithMany(a => a.CurrentAddedTempSpots)
-				.OnDelete(DeleteBehavior.SetNull);			
+				.OnDelete(DeleteBehavior.SetNull);
 
 			builder.HasOne(s => s.VerificationProcess)
 				.WithOne()

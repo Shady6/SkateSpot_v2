@@ -7,13 +7,13 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 	public class SpotConfiguration : BaseEntityTypeConfiguration<Spot>
 	{
 		public override void Configure(EntityTypeBuilder<Spot> builder)
-		{			
+		{
 			builder.OwnsOne(s => s.Address);
-			builder.OwnsOne(s => s.Obstacles);
+			builder.OwnsMany(s => s.Obstacles);
 
 			builder.HasOne(s => s.Author)
 				.WithMany(a => a.AddedSpots)
-				.OnDelete(DeleteBehavior.SetNull);			
+				.OnDelete(DeleteBehavior.SetNull);
 
 			builder.HasMany(s => s.Comments)
 				.WithOne()
@@ -23,7 +23,7 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 			builder.HasMany(s => s.Likes)
 				.WithOne()
 				.HasForeignKey("SpotId")
-				.OnDelete(DeleteBehavior.Cascade);			
+				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasOne(s => s.VerificationHistory)
 				.WithOne()

@@ -6,21 +6,22 @@ using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Services
 {
-	public class GetterService : IGetterService
+	public class GetterService<TEntity> : IGetterService<TEntity>
+		where TEntity : class
 	{
-		private readonly IGetterRepository _getterRepo;
+		private readonly IGetListRepo<TEntity> _getterRepo;
 		private readonly IMapper _mapper;
 
-		public GetterService(IGetterRepository getterRepo)
+		public GetterService(IMapper mapper, IGetListRepo<TEntity> getterRepo)
 		{
+			_mapper = mapper;
 			_getterRepo = getterRepo;
 		}
 
-		public async Task<WithTotalCount<TDto>> Get<TDto, TEntity>(int take, int offset)
+		public async Task<WithTotalCount<TDto>> Get<TDto>(int take, int offset)
 			where TDto : class
-			where TEntity : class
 		{
-			var result = await _getterRepo.Get<TEntity>(take, offset);
+			var result = await _getterRepo.GetList(take, offset);
 
 			return new WithTotalCount<TDto>
 			{

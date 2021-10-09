@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Services.Interfaces
 {
-	public interface IGetterService
+	public interface IGetterService<TEntity> where TEntity : class
 	{
-		Task<WithTotalCount<TDto>> Get<TDto, TEntity>(int take, int offset)
-			where TDto : class
-			where TEntity : class;
+		Task<WithTotalCount<TDto>> Get<TDto>(int take, int offset)
+			where TDto : class;
 	}
 }

@@ -1,5 +1,4 @@
-﻿using SkateSpot.Domain.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SkateSpot.Domain.Models
@@ -11,7 +10,7 @@ namespace SkateSpot.Domain.Models
 		Guid? AuthorId { get; }
 		string Description { get; }
 		string Name { get; }
-		HashSet<ObstacleType> Obstacles { get; }
+		ICollection<ObstacleTypeObj> Obstacles { get; }
 		byte SurfaceScore { get; }
 	}
 }

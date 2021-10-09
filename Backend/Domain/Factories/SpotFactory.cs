@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using SkateSpot.Domain.Models;
+﻿using SkateSpot.Domain.Models;
+using System.Linq;
 
 namespace SkateSpot.Domain.Factories
 {
@@ -28,7 +28,7 @@ namespace SkateSpot.Domain.Factories
 					   tempSpot.SurfaceScore,
 					   tempSpot.AuthorId,
 					   tempSpot.Address,
-					   tempSpot.Obstacles,
+					   tempSpot.Obstacles.Select(o => o.ObstacleType).ToHashSet(),
 					   historicalVerificationProcess,
 					   spotImages
 					   );

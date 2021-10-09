@@ -17,7 +17,8 @@ namespace SkateSpot.Infrastructure.Extensions
 			services.Scan(scan =>
 			scan.FromCallingAssembly()
 			.AddClasses(filter => filter.InNamespaceOf<SpotRepository>())
-			.AsMatchingInterface());
+			.AsImplementedInterfaces()
+			);
 		}
 	}
 }

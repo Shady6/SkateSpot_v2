@@ -1,5 +1,4 @@
-﻿using AutoBogus;
-using Bogus;
+﻿using Bogus;
 using Bogus.Extensions;
 using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.TempSpotFeatures.Commands;
@@ -44,7 +43,7 @@ namespace SkateSpot.Application.Services
 				.RuleFor(s => s.Name, f => f.Random.Guid().ToString())
 				.RuleFor(s => s.Description, f => f.Lorem.Lines(1))
 				.RuleFor(s => s.Address, _ => makeAddressDtoFake().Generate())
-				.RuleFor(s => s.Obstacles, f => AutoFaker.Generate<HashSet<ObstacleType>>())
+				.RuleFor(s => s.Obstacles, f => GenerateObstacles(f))
 				.RuleFor(s => s.SurfaceScore, f => (byte)f.Random.Number(0, 10))
 				.RuleFor(s => s.UserId, f => f.PickRandom(users).Id)
 				.RuleFor(s => s.Base64Images, f =>
@@ -107,7 +106,8 @@ namespace SkateSpot.Application.Services
 				.RuleFor(s => s.Name, f => f.Random.Guid().ToString())
 				.RuleFor(s => s.Description, f => f.Lorem.Lines(1))
 				.RuleFor(s => s.Address, _ => addressFake.Generate())
-				.RuleFor(s => s.Obstacles, f => AutoFaker.Generate<HashSet<ObstacleType>>())
+				.RuleFor(s => s.Obstacles, f =>
+				GenerateObstacles(f).Select(o => new ObstacleTypeObj(o)))
 				.RuleFor(s => s.SurfaceScore, f => (byte)f.Random.Number(0, 10))
 				.RuleFor(s => s.Author, f => f.PickRandom(users))
 				.RuleFor(s => s.Videos, (f, s) =>
@@ -134,6 +134,19 @@ namespace SkateSpot.Application.Services
 			_spotRepository.AddRange(fakeSpots.ToArray());
 			await _spotRepository.SaveChangesAsync();
 		}
+
+		private static HashSet<ObstacleType> GenerateObstacles(Faker f, int tryAddTimes = 5)
+		{
+			var obstacles = new HashSet<ObstacleType>();
+			for (int i = 0; i < tryAddTimes; i++)
+			{
+				var newObstacle = f.PickRandom<ObstacleType>();
+				if (!obstacles.Contains(newObstacle))
+					obstacles.Add(newObstacle);
+			}
+			return obstacles;
+		}
+
 
 		private static Faker<Address> makeAddressFake() =>
 			 new Faker<Address>()

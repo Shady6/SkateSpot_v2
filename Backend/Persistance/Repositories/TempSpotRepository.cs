@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SkateSpot.Application.DTOs;
 using SkateSpot.Application.Interfaces.Repositories;
 using SkateSpot.Domain.Models;
 using SkateSpot.Infrastructure.DbContexts;
@@ -8,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace SkateSpot.Infrastructure.Repositories
 {
-	public class TempSpotRepository : Repository<TempSpot>, ITempSpotRepository
+	public class TempSpotRepository :
+		Repository<TempSpot>,
+		ITempSpotRepository,
+		IGetListRepo<TempSpot>
 	{
 		private readonly DbSet<TempSpot> TempSpots;
 
@@ -61,6 +65,22 @@ namespace SkateSpot.Infrastructure.Repositories
 		public IQueryable<TempSpot> GetTempSpots()
 		{
 			return TempSpots;
+		}
+
+		public async Task<WithTotalCount<TempSpot>> GetList(int take, int skip)
+		{
+			return new WithTotalCount<TempSpot>
+			{
+				Data = await TempSpots
+					.Skip(skip)
+					.Take(take)
+					.Include(s => s.Author)
+					.Include(s => s.VerificationProcess).ThenInclude(v => v.Votes)
+					.Include(s => s.Images)
+					.ToArrayAsync(),
+
+				TotalCount = await TempSpots.CountAsync()
+			};
 		}
 	}
 }

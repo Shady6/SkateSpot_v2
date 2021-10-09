@@ -12,7 +12,7 @@ namespace SkateSpot.Domain.Models
 		public string Description { get; protected set; }
 		public Address Address { get; protected set; }
 		public byte SurfaceScore { get; protected set; }
-		public HashSet<ObstacleType> Obstacles { get; protected set; }
+		public ICollection<ObstacleTypeObj> Obstacles { get; protected set; }
 		public Guid? AuthorId { get; protected set; }
 		public User Author { get; protected set; }
 		public HistoricalVerificationProcess VerificationHistory { get; protected set; }
@@ -60,7 +60,7 @@ namespace SkateSpot.Domain.Models
 			SurfaceScore = surfaceScore;
 			AuthorId = authorId;
 			Address = address;
-			Obstacles = obstacles;
+			Obstacles = obstacles.Select(o => new ObstacleTypeObj(o)).ToArray();
 			VerificationHistory = verificationHistory;
 			Images = images;
 		}

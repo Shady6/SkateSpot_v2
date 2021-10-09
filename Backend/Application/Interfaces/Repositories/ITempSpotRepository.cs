@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SkateSpot.Domain.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SkateSpot.Domain.Models;
 
 namespace SkateSpot.Application.Interfaces.Repositories
 {
