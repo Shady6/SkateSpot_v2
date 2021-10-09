@@ -18,10 +18,15 @@ export class Client {
     }
 
     /**
+     * @param count (optional) 
      * @return Success
      */
-    seed_Fake_Spots(authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/admin/seed";
+    seed_Fake_Spots(count: number | undefined, authorization: string): Promise<void> {
+        let url_ = this.baseUrl + "/api/admin/seed/spots?";
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -37,6 +42,45 @@ export class Client {
     }
 
     protected processSeed_Fake_Spots(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * @param count (optional) 
+     * @return Success
+     */
+    seed_Fake_Temp_Spots(count: number | undefined, authorization: string): Promise<void> {
+        let url_ = this.baseUrl + "/api/admin/seed/tempSpots?";
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "POST",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSeed_Fake_Temp_Spots(_response);
+        });
+    }
+
+    protected processSeed_Fake_Temp_Spots(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -433,15 +477,15 @@ export class Client {
     }
 
     /**
-     * @param imageUrl (optional) 
+     * @param imagesUrls (optional) 
      * @return Success
      */
-    get_Base64_Images(imageUrl: string[] | undefined, authorization: string): Promise<Base64FetchResultArrayApiResponse> {
+    get_Base64_Images(imagesUrls: string[] | undefined, authorization: string): Promise<Base64FetchResultArrayApiResponse> {
         let url_ = this.baseUrl + "/api/ImageProxy/base64?";
-        if (imageUrl === null)
-            throw new Error("The parameter 'imageUrl' cannot be null.");
-        else if (imageUrl !== undefined)
-            imageUrl && imageUrl.forEach(item => { url_ += "imageUrl=" + encodeURIComponent("" + item) + "&"; });
+        if (imagesUrls === null)
+            throw new Error("The parameter 'imagesUrls' cannot be null.");
+        else if (imagesUrls !== undefined)
+            imagesUrls && imagesUrls.forEach(item => { url_ += "imagesUrls=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -758,6 +802,53 @@ export class Client {
     }
 
     /**
+     * @param take (optional) 
+     * @param offset (optional) 
+     * @return Success
+     */
+    get_Temp_Spots(take: number | undefined, offset: number | undefined): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
+        let url_ = this.baseUrl + "/api/TempSpots?";
+        if (take === null)
+            throw new Error("The parameter 'take' cannot be null.");
+        else if (take !== undefined)
+            url_ += "take=" + encodeURIComponent("" + take) + "&";
+        if (offset === null)
+            throw new Error("The parameter 'offset' cannot be null.");
+        else if (offset !== undefined)
+            url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Temp_Spots(_response);
+        });
+    }
+
+    protected processGet_Temp_Spots(response: Response): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TempSpotWithVerificationDtoWithTotalCountApiResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TempSpotWithVerificationDtoWithTotalCountApiResponse>(<any>null);
+    }
+
+    /**
      * @return Success
      */
     get_With_Verification(spotId: string): Promise<TempSpotWithVerificationDtoApiResponse> {
@@ -979,7 +1070,6 @@ export interface IAddSpotVideoCommand {
 
 export class Base64FetchResult implements IBase64FetchResult {
     success?: boolean;
-    url?: string | undefined;
     base64?: string | undefined;
 
     constructor(data?: IBase64FetchResult) {
@@ -994,7 +1084,6 @@ export class Base64FetchResult implements IBase64FetchResult {
     init(_data?: any) {
         if (_data) {
             this.success = _data["success"];
-            this.url = _data["url"];
             this.base64 = _data["base64"];
         }
     }
@@ -1009,7 +1098,6 @@ export class Base64FetchResult implements IBase64FetchResult {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["success"] = this.success;
-        data["url"] = this.url;
         data["base64"] = this.base64;
         return data; 
     }
@@ -1017,7 +1105,6 @@ export class Base64FetchResult implements IBase64FetchResult {
 
 export interface IBase64FetchResult {
     success?: boolean;
-    url?: string | undefined;
     base64?: string | undefined;
 }
 
@@ -1233,7 +1320,6 @@ export class CreateTempSpotCommand implements ICreateTempSpotCommand {
     address?: AddressDto;
     surfaceScore?: number;
     obstacles?: ObstacleType[] | undefined;
-    linkImages?: string[] | undefined;
     base64Images?: string[] | undefined;
     userId?: string;
 
@@ -1256,11 +1342,6 @@ export class CreateTempSpotCommand implements ICreateTempSpotCommand {
                 this.obstacles = [] as any;
                 for (let item of _data["obstacles"])
                     this.obstacles!.push(item);
-            }
-            if (Array.isArray(_data["linkImages"])) {
-                this.linkImages = [] as any;
-                for (let item of _data["linkImages"])
-                    this.linkImages!.push(item);
             }
             if (Array.isArray(_data["base64Images"])) {
                 this.base64Images = [] as any;
@@ -1289,11 +1370,6 @@ export class CreateTempSpotCommand implements ICreateTempSpotCommand {
             for (let item of this.obstacles)
                 data["obstacles"].push(item);
         }
-        if (Array.isArray(this.linkImages)) {
-            data["linkImages"] = [];
-            for (let item of this.linkImages)
-                data["linkImages"].push(item);
-        }
         if (Array.isArray(this.base64Images)) {
             data["base64Images"] = [];
             for (let item of this.base64Images)
@@ -1310,7 +1386,6 @@ export interface ICreateTempSpotCommand {
     address?: AddressDto;
     surfaceScore?: number;
     obstacles?: ObstacleType[] | undefined;
-    linkImages?: string[] | undefined;
     base64Images?: string[] | undefined;
     userId?: string;
 }
@@ -1516,6 +1591,42 @@ export class GuidApiResponse implements IGuidApiResponse {
 export interface IGuidApiResponse {
     content?: string;
     error?: ErrorResponse;
+}
+
+export class ImageDto implements IImageDto {
+    base64?: string | undefined;
+
+    constructor(data?: IImageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.base64 = _data["base64"];
+        }
+    }
+
+    static fromJS(data: any): ImageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ImageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["base64"] = this.base64;
+        return data; 
+    }
+}
+
+export interface IImageDto {
+    base64?: string | undefined;
 }
 
 export enum LikeSubjectType {
@@ -1951,6 +2062,7 @@ export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto
     surfaceScore?: number;
     author?: SmallUserDto;
     verificationProcess?: VerificationProcessDto;
+    images?: ImageDto[] | undefined;
 
     constructor(data?: ITempSpotWithVerificationDto) {
         if (data) {
@@ -1976,6 +2088,11 @@ export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto
             this.surfaceScore = _data["surfaceScore"];
             this.author = _data["author"] ? SmallUserDto.fromJS(_data["author"]) : <any>undefined;
             this.verificationProcess = _data["verificationProcess"] ? VerificationProcessDto.fromJS(_data["verificationProcess"]) : <any>undefined;
+            if (Array.isArray(_data["images"])) {
+                this.images = [] as any;
+                for (let item of _data["images"])
+                    this.images!.push(ImageDto.fromJS(item));
+            }
         }
     }
 
@@ -2001,6 +2118,11 @@ export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto
         data["surfaceScore"] = this.surfaceScore;
         data["author"] = this.author ? this.author.toJSON() : <any>undefined;
         data["verificationProcess"] = this.verificationProcess ? this.verificationProcess.toJSON() : <any>undefined;
+        if (Array.isArray(this.images)) {
+            data["images"] = [];
+            for (let item of this.images)
+                data["images"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -2015,6 +2137,7 @@ export interface ITempSpotWithVerificationDto {
     surfaceScore?: number;
     author?: SmallUserDto;
     verificationProcess?: VerificationProcessDto;
+    images?: ImageDto[] | undefined;
 }
 
 export class TempSpotWithVerificationDtoApiResponse implements ITempSpotWithVerificationDtoApiResponse {
@@ -2054,6 +2177,94 @@ export class TempSpotWithVerificationDtoApiResponse implements ITempSpotWithVeri
 
 export interface ITempSpotWithVerificationDtoApiResponse {
     content?: TempSpotWithVerificationDto;
+    error?: ErrorResponse;
+}
+
+export class TempSpotWithVerificationDtoWithTotalCount implements ITempSpotWithVerificationDtoWithTotalCount {
+    data?: TempSpotWithVerificationDto[] | undefined;
+    totalCount?: number;
+
+    constructor(data?: ITempSpotWithVerificationDtoWithTotalCount) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(TempSpotWithVerificationDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): TempSpotWithVerificationDtoWithTotalCount {
+        data = typeof data === 'object' ? data : {};
+        let result = new TempSpotWithVerificationDtoWithTotalCount();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        return data; 
+    }
+}
+
+export interface ITempSpotWithVerificationDtoWithTotalCount {
+    data?: TempSpotWithVerificationDto[] | undefined;
+    totalCount?: number;
+}
+
+export class TempSpotWithVerificationDtoWithTotalCountApiResponse implements ITempSpotWithVerificationDtoWithTotalCountApiResponse {
+    content?: TempSpotWithVerificationDtoWithTotalCount;
+    error?: ErrorResponse;
+
+    constructor(data?: ITempSpotWithVerificationDtoWithTotalCountApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.content = _data["content"] ? TempSpotWithVerificationDtoWithTotalCount.fromJS(_data["content"]) : <any>undefined;
+            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): TempSpotWithVerificationDtoWithTotalCountApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new TempSpotWithVerificationDtoWithTotalCountApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["content"] = this.content ? this.content.toJSON() : <any>undefined;
+        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface ITempSpotWithVerificationDtoWithTotalCountApiResponse {
+    content?: TempSpotWithVerificationDtoWithTotalCount;
     error?: ErrorResponse;
 }
 

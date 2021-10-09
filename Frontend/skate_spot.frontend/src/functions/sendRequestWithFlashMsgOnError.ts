@@ -8,6 +8,7 @@ export const sendRequestWithFlashMsgOnError = async <TReturn>(
   dispatch: Dispatch<any>,
   auth: ITokenResponse | undefined,
   reqFunc: (client: ApiClient, token: string) => Promise<ApiResponse<TReturn>>,
+  customErrorMessage?: string,
   clearAfterMs: number = 10000
 ): Promise<ApiResponse<TReturn>> => {
   const response = await request(reqFunc, auth);
@@ -16,7 +17,7 @@ export const sendRequestWithFlashMsgOnError = async <TReturn>(
 
   dispatch(
     createFlashMsgWithTimeout({
-      message: response.error!.message as string,
+      message: customErrorMessage || (response.error!.message as string),
       severity: "error",
       clearAtDate: new Date(Date.now() + clearAfterMs),
     })
