@@ -77,9 +77,12 @@ namespace SkateSpot.Infrastructure.Repositories
 					.Include(s => s.Author)
 					.Include(s => s.VerificationProcess).ThenInclude(v => v.Votes)
 					.Include(s => s.Images)
+					.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
 					.ToArrayAsync(),
 
-				TotalCount = await TempSpots.CountAsync()
+				TotalCount = await TempSpots
+				.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
+				.CountAsync()
 			};
 		}
 	}

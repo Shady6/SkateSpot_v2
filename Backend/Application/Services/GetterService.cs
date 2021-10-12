@@ -2,12 +2,14 @@
 using SkateSpot.Application.DTOs;
 using SkateSpot.Application.Interfaces.Repositories;
 using SkateSpot.Application.Services.Interfaces;
+using SkateSpot.Domain.Common;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Services
 {
 	public class GetterService<TEntity> : IGetterService<TEntity>
-		where TEntity : class
+		where TEntity : BaseEntity
 	{
 		private readonly IGetListRepo<TEntity> _getterRepo;
 		private readonly IMapper _mapper;
@@ -25,7 +27,7 @@ namespace SkateSpot.Application.Services
 
 			return new WithTotalCount<TDto>
 			{
-				Data = _mapper.Map<TDto[]>(result.Data),
+				Data = _mapper.Map<TDto[]>(result.Data.OrderBy(e => e.CreatedAt)),
 				TotalCount = result.TotalCount
 			};
 		}

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SkateSpot.Api.Data;
 using SkateSpot.Application.DTOs;
-using SkateSpot.Application.Services;
+using SkateSpot.Application.Services.Interfaces;
 using System.Threading.Tasks;
 
 namespace SkateSpot.Api.Controllers
@@ -12,9 +12,9 @@ namespace SkateSpot.Api.Controllers
 	[Authorize]
 	public class ImageProxyController : ControllerBase
 	{
-		private readonly ImageProxyService _imageProxyService;
+		private readonly IImageProxyService _imageProxyService;
 
-		public ImageProxyController(ImageProxyService imageProxyService)
+		public ImageProxyController(IImageProxyService imageProxyService)
 		{
 			_imageProxyService = imageProxyService;
 		}

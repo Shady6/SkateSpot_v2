@@ -1,12 +1,20 @@
-import { Button, CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useRootState } from "../../../state/store";
-import ImageGallery from "react-image-gallery";
-import Countdown from "react-countdown";
-import { v4 } from "uuid";
+import {
+  ObstacleType,
+  SmallUserDto,
+  VerificationStatementDto,
+} from "../../../skate_spot_api/client";
 import { fetchNewTempSpots } from "../../../state/actions/tempSpotActions";
+import { useRootState } from "../../../state/store";
+import { Obstacles } from "./Obstacles";
+import { SpotAuthor } from "./SpotAuthor";
+import { SpotImages } from "./SpotImages";
 import "./styles.scss";
+import { SurfaceScore } from "./SurfaceScore";
+import { TempSpotDetailsBtn } from "./TempSpotDetailsBtn";
+import { VerificationButtons } from "./VerificationButtons";
 
 interface Props {}
 
@@ -19,78 +27,24 @@ const TempSpots: React.FC<Props> = () => {
   }, []);
 
   return (
-    <div>
-      {state.tempSpots.tempSpots.data.map((t) => {
+    <div className="container mt-5" style={{ fontSize: "1rem" }}>
+      {state.tempSpots.tempSpots.data.map((t, i) => {
         return (
-          <div key={t.name} className="container">
-            <h3>{t.name}</h3>
-            <div className="d-flex">
-              <span className="me-2">Verification ends in:</span>
-              <Countdown
-                renderer={(p) => (
-                  <div>
-                    {p.hours < 10 && "0"}
-                    {p.hours}:{p.minutes < 10 && "0"}
-                    {p.minutes}:{p.seconds < 10 && "0"}
-                    {p.seconds}
-                  </div>
-                )}
-                zeroPadDays={0}
-                date={
-                  Date.now() +
-                  t.verificationProcess!.endDate!.getTime() -
-                  Date.now()
+          <div key={t.name} className="mb-4">
+            <h4>{t.name}</h4>
+            <SpotImages tempSpot={t} />
+            <div className="d-flex mt-2">
+              <VerificationButtons
+                votes={
+                  t!.verificationProcess!.votes as VerificationStatementDto[]
                 }
-              >
-                <p>The verification has ended</p>
-              </Countdown>
-            </div>
-            <div className="d-flex">
-              <Button variant="contained" color="success" className="me-2">
-                <div>
-                  <p>Legit</p>
-                  <p>
-                    {t.verificationProcess?.votes?.reduce(
-                      (prev, curr) => prev + Number(curr.isReal),
-                      0
-                    )}
-                  </p>
-                </div>
-              </Button>
-              <Button variant="contained" color="warning">
-                <div>
-                  <p>Fake</p>
-                  <p>
-                    {t.verificationProcess?.votes?.reduce(
-                      (prev, curr) => prev + Number(!curr.isReal),
-                      0
-                    )}
-                  </p>
-                </div>
-              </Button>
-            </div>
-            {t.images && t.images.length ? (
-              <ImageGallery
-                showThumbnails={false}
-                items={t.images!.map((i) => ({
-                  original: i.base64 as string,
-                  originalWidth: 800,
-                  originalHeight: 600,
-                }))}
               />
-            ) : (
-              <div>No images were added for this temp spot.</div>
-            )}
-            <div className="d-flex">
-              <p>Surf {t.surfaceScore} / 10</p>
-              <p>
-                {t.obstacles?.map((o) => (
-                  <span key={v4()}>{o}</span>
-                ))}
-              </p>
-              <p>Details</p>
-              <p>Added by: {t.author?.userName}</p>
+              <SurfaceScore surfaceScore={t.surfaceScore as number} />
+              <Obstacles obstacles={t.obstacles as ObstacleType[]} />
+              <TempSpotDetailsBtn />
+              <SpotAuthor author={t.author as SmallUserDto} />
             </div>
+            <hr />
           </div>
         );
       })}
