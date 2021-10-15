@@ -1,11 +1,5 @@
 import { ITag } from "../components/temp_spot/add/tags/Tags";
-import { ApiClient } from "../skate_spot_api/apiClient";
-import {
-  AddressDto,
-  CoordsDto,
-  CreateTempSpotCommand,
-  ObstacleType,
-} from "../skate_spot_api/client";
+import { ObstacleType } from "../skate_spot_api/client";
 import { AuthState } from "../state/reducers/authReducer";
 import { IGeoLocation } from "../types/types";
 import { request } from "./request";
@@ -20,25 +14,25 @@ export const sendSpotData = async (
   authState: AuthState
 ) => {
   const sendCommand = async () => {
-    let command = new CreateTempSpotCommand({
+    let command = {
       name: name,
       description: description,
       address: location?.coords
-        ? new AddressDto({
+        ? {
             streetName: location?.address?.streetName,
             streetNumber: location?.address?.streetNumber,
             postCode: location?.address?.postCode,
             city: location?.address?.city,
             country: location?.address?.country,
-            coords: new CoordsDto(location?.coords),
-          })
+            coords: location?.coords,
+          }
         : undefined,
       surfaceScore: surfaceScore,
       obstacles: tags
         .filter((t) => t.isSelected)
         .map((t) => ObstacleType[t.name]),
       base64Images: images,
-    });
+    };
     return await request<string>(
       (client, token) => client.create_Spot(token, command),
       authState.content

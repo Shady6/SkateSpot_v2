@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkateSpot.Api.Attributes;
+using SkateSpot.Api.Data;
+using SkateSpot.Api.Extensions;
+using SkateSpot.Application.DTOs;
 using SkateSpot.Application.Features.TempSpotFeatures.Commands;
 using SkateSpot.Application.Services.Interfaces;
 using System;
@@ -22,17 +25,18 @@ namespace SkateSpot.Api.Controllers
 
 		[HttpPost]
 		[MapRouteArgAndUserIdIntoBody(typeof(VoteCommand))]
+		[ProducesResponseType(typeof(ApiResponse<OnVoteVerified>), 200)]
 		public async Task<ActionResult> Vote([FromRoute] Guid tempSpotId, [FromBody] VoteCommand request)
 		{
-			await _votesService.Vote(request);
-			return Ok();
+			return Ok(await _votesService.Vote(request));
 		}
 
 		[HttpDelete]
+		[ProducesResponseType(typeof(ApiResponse<OnVoteVerified>), 200)]
 		public async Task<ActionResult> DeleteVote([FromRoute] DeleteVoteCommand request)
 		{
-			await _votesService.DeleteVote(request);
-			return Ok();
+			request.UserId = User.GetUserId();
+			return Ok(await _votesService.DeleteVote(request));
 		}
 	}
 }

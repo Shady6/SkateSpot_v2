@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { sendRequestWithFlashMsgOnError } from "../../functions/sendRequestWithFlashMsgOnError";
-import { ITempSpotWithVerificationDtoWithTotalCount } from "../../skate_spot_api/client";
+import { TempSpotWithVerificationDtoWithTotalCount } from "../../skate_spot_api/client";
 import { RootState } from "../store";
 
 export const fetchNewTempSpots = createAsyncThunk(
@@ -19,6 +19,6 @@ export const fetchNewTempSpots = createAsyncThunk(
     );
 
     if (res.error) return rejectWithValue(null);
-    return res.content as ITempSpotWithVerificationDtoWithTotalCount;
+    return res.content as TempSpotWithVerificationDtoWithTotalCount;
   }
 );

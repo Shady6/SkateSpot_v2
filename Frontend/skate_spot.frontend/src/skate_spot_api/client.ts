@@ -261,8 +261,7 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TokenResponseApiResponse.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <TokenResponseApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -337,8 +336,7 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StringApiResponse.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <StringApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -384,8 +382,7 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StringApiResponse.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <StringApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -464,8 +461,7 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StringApiResponse.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <StringApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -507,8 +503,7 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Base64FetchResultArrayApiResponse.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <Base64FetchResultArrayApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -626,8 +621,7 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SpotDtoListApiResponse.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <SpotDtoListApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -664,8 +658,7 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SpotMarkerDataDtoListApiResponse.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <SpotMarkerDataDtoListApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -789,8 +782,7 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GuidApiResponse.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <GuidApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -836,8 +828,7 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TempSpotWithVerificationDtoWithTotalCountApiResponse.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <TempSpotWithVerificationDtoWithTotalCountApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -876,8 +867,7 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TempSpotWithVerificationDtoApiResponse.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <TempSpotWithVerificationDtoApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -892,7 +882,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    vote(tempSpotId: string, authorization: string, body: VoteCommand | undefined): Promise<void> {
+    vote(tempSpotId: string, authorization: string, body: VoteCommand | undefined): Promise<OnVoteVerifiedApiResponse> {
         let url_ = this.baseUrl + "/api/tempSpots/{tempSpotId}/vote";
         if (tempSpotId === undefined || tempSpotId === null)
             throw new Error("The parameter 'tempSpotId' must be defined.");
@@ -907,6 +897,7 @@ export class Client {
             headers: {
                 "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
                 "Content-Type": "application/json",
+                "Accept": "text/plain"
             }
         };
 
@@ -915,25 +906,27 @@ export class Client {
         });
     }
 
-    protected processVote(response: Response): Promise<void> {
+    protected processVote(response: Response): Promise<OnVoteVerifiedApiResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <OnVoteVerifiedApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<void>(<any>null);
+        return Promise.resolve<OnVoteVerifiedApiResponse>(<any>null);
     }
 
     /**
      * @return Success
      */
-    delete_Vote(tempSpotId: string, authorization: string): Promise<void> {
+    delete_Vote(tempSpotId: string, authorization: string): Promise<OnVoteVerifiedApiResponse> {
         let url_ = this.baseUrl + "/api/tempSpots/{tempSpotId}/vote";
         if (tempSpotId === undefined || tempSpotId === null)
             throw new Error("The parameter 'tempSpotId' must be defined.");
@@ -944,6 +937,7 @@ export class Client {
             method: "DELETE",
             headers: {
                 "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Accept": "text/plain"
             }
         };
 
@@ -952,70 +946,25 @@ export class Client {
         });
     }
 
-    protected processDelete_Vote(response: Response): Promise<void> {
+    protected processDelete_Vote(response: Response): Promise<OnVoteVerifiedApiResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <OnVoteVerifiedApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<void>(<any>null);
+        return Promise.resolve<OnVoteVerifiedApiResponse>(<any>null);
     }
 }
 
-export class AddressDto implements IAddressDto {
-    streetName?: string | undefined;
-    streetNumber?: string | undefined;
-    postCode?: string | undefined;
-    city?: string | undefined;
-    country?: string | undefined;
-    coords?: CoordsDto;
-
-    constructor(data?: IAddressDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.streetName = _data["streetName"];
-            this.streetNumber = _data["streetNumber"];
-            this.postCode = _data["postCode"];
-            this.city = _data["city"];
-            this.country = _data["country"];
-            this.coords = _data["coords"] ? CoordsDto.fromJS(_data["coords"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): AddressDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new AddressDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["streetName"] = this.streetName;
-        data["streetNumber"] = this.streetNumber;
-        data["postCode"] = this.postCode;
-        data["city"] = this.city;
-        data["country"] = this.country;
-        data["coords"] = this.coords ? this.coords.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface IAddressDto {
+export interface AddressDto {
     streetName?: string | undefined;
     streetNumber?: string | undefined;
     postCode?: string | undefined;
@@ -1024,240 +973,30 @@ export interface IAddressDto {
     coords?: CoordsDto;
 }
 
-export class AddSpotVideoCommand implements IAddSpotVideoCommand {
-    url?: string | undefined;
-    spotId?: string;
-    userId?: string;
-
-    constructor(data?: IAddSpotVideoCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.url = _data["url"];
-            this.spotId = _data["spotId"];
-            this.userId = _data["userId"];
-        }
-    }
-
-    static fromJS(data: any): AddSpotVideoCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new AddSpotVideoCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["url"] = this.url;
-        data["spotId"] = this.spotId;
-        data["userId"] = this.userId;
-        return data; 
-    }
-}
-
-export interface IAddSpotVideoCommand {
+export interface AddSpotVideoCommand {
     url?: string | undefined;
     spotId?: string;
     userId?: string;
 }
 
-export class Base64FetchResult implements IBase64FetchResult {
-    success?: boolean;
-    base64?: string | undefined;
-
-    constructor(data?: IBase64FetchResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.success = _data["success"];
-            this.base64 = _data["base64"];
-        }
-    }
-
-    static fromJS(data: any): Base64FetchResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new Base64FetchResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["success"] = this.success;
-        data["base64"] = this.base64;
-        return data; 
-    }
-}
-
-export interface IBase64FetchResult {
+export interface Base64FetchResult {
     success?: boolean;
     base64?: string | undefined;
 }
 
-export class Base64FetchResultArrayApiResponse implements IBase64FetchResultArrayApiResponse {
-    content?: Base64FetchResult[] | undefined;
-    error?: ErrorResponse;
-
-    constructor(data?: IBase64FetchResultArrayApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["content"])) {
-                this.content = [] as any;
-                for (let item of _data["content"])
-                    this.content!.push(Base64FetchResult.fromJS(item));
-            }
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): Base64FetchResultArrayApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new Base64FetchResultArrayApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.content)) {
-            data["content"] = [];
-            for (let item of this.content)
-                data["content"].push(item.toJSON());
-        }
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface IBase64FetchResultArrayApiResponse {
+export interface Base64FetchResultArrayApiResponse {
     content?: Base64FetchResult[] | undefined;
     error?: ErrorResponse;
 }
 
-export class CommentCommand implements ICommentCommand {
-    subjectId?: string;
-    text?: string | undefined;
-    subjectType?: CommentSubjectType;
-    userId?: string;
-
-    constructor(data?: ICommentCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.subjectId = _data["subjectId"];
-            this.text = _data["text"];
-            this.subjectType = _data["subjectType"];
-            this.userId = _data["userId"];
-        }
-    }
-
-    static fromJS(data: any): CommentCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new CommentCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["subjectId"] = this.subjectId;
-        data["text"] = this.text;
-        data["subjectType"] = this.subjectType;
-        data["userId"] = this.userId;
-        return data; 
-    }
-}
-
-export interface ICommentCommand {
+export interface CommentCommand {
     subjectId?: string;
     text?: string | undefined;
     subjectType?: CommentSubjectType;
     userId?: string;
 }
 
-export class CommentDto implements ICommentDto {
-    id?: string;
-    createdAt?: Date;
-    editedAt?: Date;
-    authorId?: string | undefined;
-    author?: SmallUserDto;
-    text?: string | undefined;
-    isDeleted?: boolean;
-    likesCount?: number;
-
-    constructor(data?: ICommentDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
-            this.editedAt = _data["editedAt"] ? new Date(_data["editedAt"].toString()) : <any>undefined;
-            this.authorId = _data["authorId"];
-            this.author = _data["author"] ? SmallUserDto.fromJS(_data["author"]) : <any>undefined;
-            this.text = _data["text"];
-            this.isDeleted = _data["isDeleted"];
-            this.likesCount = _data["likesCount"];
-        }
-    }
-
-    static fromJS(data: any): CommentDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CommentDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["editedAt"] = this.editedAt ? this.editedAt.toISOString() : <any>undefined;
-        data["authorId"] = this.authorId;
-        data["author"] = this.author ? this.author.toJSON() : <any>undefined;
-        data["text"] = this.text;
-        data["isDeleted"] = this.isDeleted;
-        data["likesCount"] = this.likesCount;
-        return data; 
-    }
-}
-
-export interface ICommentDto {
+export interface CommentDto {
     id?: string;
     createdAt?: Date;
     editedAt?: Date;
@@ -1274,113 +1013,12 @@ export enum CommentSubjectType {
     TempSpots = "TempSpots",
 }
 
-export class CoordsDto implements ICoordsDto {
-    lat?: number;
-    lng?: number;
-
-    constructor(data?: ICoordsDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.lat = _data["lat"];
-            this.lng = _data["lng"];
-        }
-    }
-
-    static fromJS(data: any): CoordsDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CoordsDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["lat"] = this.lat;
-        data["lng"] = this.lng;
-        return data; 
-    }
-}
-
-export interface ICoordsDto {
+export interface CoordsDto {
     lat?: number;
     lng?: number;
 }
 
-export class CreateTempSpotCommand implements ICreateTempSpotCommand {
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    surfaceScore?: number;
-    obstacles?: ObstacleType[] | undefined;
-    base64Images?: string[] | undefined;
-    userId?: string;
-
-    constructor(data?: ICreateTempSpotCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
-            this.surfaceScore = _data["surfaceScore"];
-            if (Array.isArray(_data["obstacles"])) {
-                this.obstacles = [] as any;
-                for (let item of _data["obstacles"])
-                    this.obstacles!.push(item);
-            }
-            if (Array.isArray(_data["base64Images"])) {
-                this.base64Images = [] as any;
-                for (let item of _data["base64Images"])
-                    this.base64Images!.push(item);
-            }
-            this.userId = _data["userId"];
-        }
-    }
-
-    static fromJS(data: any): CreateTempSpotCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateTempSpotCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        data["surfaceScore"] = this.surfaceScore;
-        if (Array.isArray(this.obstacles)) {
-            data["obstacles"] = [];
-            for (let item of this.obstacles)
-                data["obstacles"].push(item);
-        }
-        if (Array.isArray(this.base64Images)) {
-            data["base64Images"] = [];
-            for (let item of this.base64Images)
-                data["base64Images"].push(item);
-        }
-        data["userId"] = this.userId;
-        return data; 
-    }
-}
-
-export interface ICreateTempSpotCommand {
+export interface CreateTempSpotCommand {
     name?: string | undefined;
     description?: string | undefined;
     address?: AddressDto;
@@ -1390,51 +1028,7 @@ export interface ICreateTempSpotCommand {
     userId?: string;
 }
 
-export class EditCommentCommand implements IEditCommentCommand {
-    subjectId?: string;
-    subjectType?: CommentSubjectType;
-    commentId?: string;
-    newText?: string | undefined;
-    userId?: string;
-
-    constructor(data?: IEditCommentCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.subjectId = _data["subjectId"];
-            this.subjectType = _data["subjectType"];
-            this.commentId = _data["commentId"];
-            this.newText = _data["newText"];
-            this.userId = _data["userId"];
-        }
-    }
-
-    static fromJS(data: any): EditCommentCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new EditCommentCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["subjectId"] = this.subjectId;
-        data["subjectType"] = this.subjectType;
-        data["commentId"] = this.commentId;
-        data["newText"] = this.newText;
-        data["userId"] = this.userId;
-        return data; 
-    }
-}
-
-export interface IEditCommentCommand {
+export interface EditCommentCommand {
     subjectId?: string;
     subjectType?: CommentSubjectType;
     commentId?: string;
@@ -1457,175 +1051,23 @@ export enum ErrorCode {
     FORBIDDEN = "FORBIDDEN",
 }
 
-export class ErrorResponse implements IErrorResponse {
-    statusCode?: ErrorCode;
-    message?: string | undefined;
-    developerMessage?: string | undefined;
-    data?: { [key: string]: string; } | undefined;
-
-    constructor(data?: IErrorResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.statusCode = _data["statusCode"];
-            this.message = _data["message"];
-            this.developerMessage = _data["developerMessage"];
-            if (_data["data"]) {
-                this.data = {} as any;
-                for (let key in _data["data"]) {
-                    if (_data["data"].hasOwnProperty(key))
-                        (<any>this.data)![key] = _data["data"][key];
-                }
-            }
-        }
-    }
-
-    static fromJS(data: any): ErrorResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new ErrorResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["statusCode"] = this.statusCode;
-        data["message"] = this.message;
-        data["developerMessage"] = this.developerMessage;
-        if (this.data) {
-            data["data"] = {};
-            for (let key in this.data) {
-                if (this.data.hasOwnProperty(key))
-                    (<any>data["data"])[key] = this.data[key];
-            }
-        }
-        return data; 
-    }
-}
-
-export interface IErrorResponse {
+export interface ErrorResponse {
     statusCode?: ErrorCode;
     message?: string | undefined;
     developerMessage?: string | undefined;
     data?: { [key: string]: string; } | undefined;
 }
 
-export class ForgotPasswordRequest implements IForgotPasswordRequest {
-    email!: string;
-
-    constructor(data?: IForgotPasswordRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-        }
-    }
-
-    static fromJS(data: any): ForgotPasswordRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new ForgotPasswordRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        return data; 
-    }
-}
-
-export interface IForgotPasswordRequest {
+export interface ForgotPasswordRequest {
     email: string;
 }
 
-export class GuidApiResponse implements IGuidApiResponse {
-    content?: string;
-    error?: ErrorResponse;
-
-    constructor(data?: IGuidApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.content = _data["content"];
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): GuidApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new GuidApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["content"] = this.content;
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface IGuidApiResponse {
+export interface GuidApiResponse {
     content?: string;
     error?: ErrorResponse;
 }
 
-export class ImageDto implements IImageDto {
-    base64?: string | undefined;
-
-    constructor(data?: IImageDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.base64 = _data["base64"];
-        }
-    }
-
-    static fromJS(data: any): ImageDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ImageDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["base64"] = this.base64;
-        return data; 
-    }
-}
-
-export interface IImageDto {
+export interface ImageDto {
     base64?: string | undefined;
 }
 
@@ -1648,218 +1090,35 @@ export enum ObstacleType {
     Skatepark = "Skatepark",
 }
 
-export class RegisterRequest implements IRegisterRequest {
-    email!: string;
-    userName!: string;
-    password!: string;
-    confirmPassword!: string;
-
-    constructor(data?: IRegisterRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.userName = _data["userName"];
-            this.password = _data["password"];
-            this.confirmPassword = _data["confirmPassword"];
-        }
-    }
-
-    static fromJS(data: any): RegisterRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegisterRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["userName"] = this.userName;
-        data["password"] = this.password;
-        data["confirmPassword"] = this.confirmPassword;
-        return data; 
-    }
+export interface OnVoteVerified {
+    verified?: boolean;
 }
 
-export interface IRegisterRequest {
+export interface OnVoteVerifiedApiResponse {
+    content?: OnVoteVerified;
+    error?: ErrorResponse;
+}
+
+export interface RegisterRequest {
     email: string;
     userName: string;
     password: string;
     confirmPassword: string;
 }
 
-export class ResetPasswordRequest implements IResetPasswordRequest {
-    email!: string;
-    token!: string;
-    password!: string;
-    confirmPassword!: string;
-
-    constructor(data?: IResetPasswordRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.token = _data["token"];
-            this.password = _data["password"];
-            this.confirmPassword = _data["confirmPassword"];
-        }
-    }
-
-    static fromJS(data: any): ResetPasswordRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new ResetPasswordRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["token"] = this.token;
-        data["password"] = this.password;
-        data["confirmPassword"] = this.confirmPassword;
-        return data; 
-    }
-}
-
-export interface IResetPasswordRequest {
+export interface ResetPasswordRequest {
     email: string;
     token: string;
     password: string;
     confirmPassword: string;
 }
 
-export class SmallUserDto implements ISmallUserDto {
-    id?: string;
-    userName?: string | undefined;
-
-    constructor(data?: ISmallUserDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.userName = _data["userName"];
-        }
-    }
-
-    static fromJS(data: any): SmallUserDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new SmallUserDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["userName"] = this.userName;
-        return data; 
-    }
-}
-
-export interface ISmallUserDto {
+export interface SmallUserDto {
     id?: string;
     userName?: string | undefined;
 }
 
-export class SpotDto implements ISpotDto {
-    id?: string;
-    createdAt?: Date;
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    obstacles?: ObstacleType[] | undefined;
-    surfaceScore?: number;
-    author?: SmallUserDto;
-    likesCount?: number;
-    comments?: CommentDto[] | undefined;
-
-    constructor(data?: ISpotDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
-            if (Array.isArray(_data["obstacles"])) {
-                this.obstacles = [] as any;
-                for (let item of _data["obstacles"])
-                    this.obstacles!.push(item);
-            }
-            this.surfaceScore = _data["surfaceScore"];
-            this.author = _data["author"] ? SmallUserDto.fromJS(_data["author"]) : <any>undefined;
-            this.likesCount = _data["likesCount"];
-            if (Array.isArray(_data["comments"])) {
-                this.comments = [] as any;
-                for (let item of _data["comments"])
-                    this.comments!.push(CommentDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): SpotDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new SpotDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        if (Array.isArray(this.obstacles)) {
-            data["obstacles"] = [];
-            for (let item of this.obstacles)
-                data["obstacles"].push(item);
-        }
-        data["surfaceScore"] = this.surfaceScore;
-        data["author"] = this.author ? this.author.toJSON() : <any>undefined;
-        data["likesCount"] = this.likesCount;
-        if (Array.isArray(this.comments)) {
-            data["comments"] = [];
-            for (let item of this.comments)
-                data["comments"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface ISpotDto {
+export interface SpotDto {
     id?: string;
     createdAt?: Date;
     name?: string | undefined;
@@ -1872,262 +1131,28 @@ export interface ISpotDto {
     comments?: CommentDto[] | undefined;
 }
 
-export class SpotDtoListApiResponse implements ISpotDtoListApiResponse {
-    content?: SpotDto[] | undefined;
-    error?: ErrorResponse;
-
-    constructor(data?: ISpotDtoListApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["content"])) {
-                this.content = [] as any;
-                for (let item of _data["content"])
-                    this.content!.push(SpotDto.fromJS(item));
-            }
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): SpotDtoListApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new SpotDtoListApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.content)) {
-            data["content"] = [];
-            for (let item of this.content)
-                data["content"].push(item.toJSON());
-        }
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface ISpotDtoListApiResponse {
+export interface SpotDtoListApiResponse {
     content?: SpotDto[] | undefined;
     error?: ErrorResponse;
 }
 
-export class SpotMarkerDataDto implements ISpotMarkerDataDto {
-    name?: string | undefined;
-    isTempSpot?: boolean;
-    address?: AddressDto;
-
-    constructor(data?: ISpotMarkerDataDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.isTempSpot = _data["isTempSpot"];
-            this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): SpotMarkerDataDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new SpotMarkerDataDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["isTempSpot"] = this.isTempSpot;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface ISpotMarkerDataDto {
+export interface SpotMarkerDataDto {
     name?: string | undefined;
     isTempSpot?: boolean;
     address?: AddressDto;
 }
 
-export class SpotMarkerDataDtoListApiResponse implements ISpotMarkerDataDtoListApiResponse {
-    content?: SpotMarkerDataDto[] | undefined;
-    error?: ErrorResponse;
-
-    constructor(data?: ISpotMarkerDataDtoListApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["content"])) {
-                this.content = [] as any;
-                for (let item of _data["content"])
-                    this.content!.push(SpotMarkerDataDto.fromJS(item));
-            }
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): SpotMarkerDataDtoListApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new SpotMarkerDataDtoListApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.content)) {
-            data["content"] = [];
-            for (let item of this.content)
-                data["content"].push(item.toJSON());
-        }
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface ISpotMarkerDataDtoListApiResponse {
+export interface SpotMarkerDataDtoListApiResponse {
     content?: SpotMarkerDataDto[] | undefined;
     error?: ErrorResponse;
 }
 
-export class StringApiResponse implements IStringApiResponse {
-    content?: string | undefined;
-    error?: ErrorResponse;
-
-    constructor(data?: IStringApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.content = _data["content"];
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): StringApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new StringApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["content"] = this.content;
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface IStringApiResponse {
+export interface StringApiResponse {
     content?: string | undefined;
     error?: ErrorResponse;
 }
 
-export class TempSpotWithVerificationDto implements ITempSpotWithVerificationDto {
-    id?: string;
-    createdAt?: Date;
-    name?: string | undefined;
-    description?: string | undefined;
-    address?: AddressDto;
-    obstacles?: ObstacleType[] | undefined;
-    surfaceScore?: number;
-    author?: SmallUserDto;
-    verificationProcess?: VerificationProcessDto;
-    images?: ImageDto[] | undefined;
-
-    constructor(data?: ITempSpotWithVerificationDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.address = _data["address"] ? AddressDto.fromJS(_data["address"]) : <any>undefined;
-            if (Array.isArray(_data["obstacles"])) {
-                this.obstacles = [] as any;
-                for (let item of _data["obstacles"])
-                    this.obstacles!.push(item);
-            }
-            this.surfaceScore = _data["surfaceScore"];
-            this.author = _data["author"] ? SmallUserDto.fromJS(_data["author"]) : <any>undefined;
-            this.verificationProcess = _data["verificationProcess"] ? VerificationProcessDto.fromJS(_data["verificationProcess"]) : <any>undefined;
-            if (Array.isArray(_data["images"])) {
-                this.images = [] as any;
-                for (let item of _data["images"])
-                    this.images!.push(ImageDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): TempSpotWithVerificationDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TempSpotWithVerificationDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        if (Array.isArray(this.obstacles)) {
-            data["obstacles"] = [];
-            for (let item of this.obstacles)
-                data["obstacles"].push(item);
-        }
-        data["surfaceScore"] = this.surfaceScore;
-        data["author"] = this.author ? this.author.toJSON() : <any>undefined;
-        data["verificationProcess"] = this.verificationProcess ? this.verificationProcess.toJSON() : <any>undefined;
-        if (Array.isArray(this.images)) {
-            data["images"] = [];
-            for (let item of this.images)
-                data["images"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface ITempSpotWithVerificationDto {
+export interface TempSpotWithVerificationDto {
     id?: string;
     createdAt?: Date;
     name?: string | undefined;
@@ -2140,239 +1165,27 @@ export interface ITempSpotWithVerificationDto {
     images?: ImageDto[] | undefined;
 }
 
-export class TempSpotWithVerificationDtoApiResponse implements ITempSpotWithVerificationDtoApiResponse {
-    content?: TempSpotWithVerificationDto;
-    error?: ErrorResponse;
-
-    constructor(data?: ITempSpotWithVerificationDtoApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.content = _data["content"] ? TempSpotWithVerificationDto.fromJS(_data["content"]) : <any>undefined;
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): TempSpotWithVerificationDtoApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new TempSpotWithVerificationDtoApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["content"] = this.content ? this.content.toJSON() : <any>undefined;
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface ITempSpotWithVerificationDtoApiResponse {
+export interface TempSpotWithVerificationDtoApiResponse {
     content?: TempSpotWithVerificationDto;
     error?: ErrorResponse;
 }
 
-export class TempSpotWithVerificationDtoWithTotalCount implements ITempSpotWithVerificationDtoWithTotalCount {
-    data?: TempSpotWithVerificationDto[] | undefined;
-    totalCount?: number;
-
-    constructor(data?: ITempSpotWithVerificationDtoWithTotalCount) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data!.push(TempSpotWithVerificationDto.fromJS(item));
-            }
-            this.totalCount = _data["totalCount"];
-        }
-    }
-
-    static fromJS(data: any): TempSpotWithVerificationDtoWithTotalCount {
-        data = typeof data === 'object' ? data : {};
-        let result = new TempSpotWithVerificationDtoWithTotalCount();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["totalCount"] = this.totalCount;
-        return data; 
-    }
-}
-
-export interface ITempSpotWithVerificationDtoWithTotalCount {
+export interface TempSpotWithVerificationDtoWithTotalCount {
     data?: TempSpotWithVerificationDto[] | undefined;
     totalCount?: number;
 }
 
-export class TempSpotWithVerificationDtoWithTotalCountApiResponse implements ITempSpotWithVerificationDtoWithTotalCountApiResponse {
-    content?: TempSpotWithVerificationDtoWithTotalCount;
-    error?: ErrorResponse;
-
-    constructor(data?: ITempSpotWithVerificationDtoWithTotalCountApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.content = _data["content"] ? TempSpotWithVerificationDtoWithTotalCount.fromJS(_data["content"]) : <any>undefined;
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): TempSpotWithVerificationDtoWithTotalCountApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new TempSpotWithVerificationDtoWithTotalCountApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["content"] = this.content ? this.content.toJSON() : <any>undefined;
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface ITempSpotWithVerificationDtoWithTotalCountApiResponse {
+export interface TempSpotWithVerificationDtoWithTotalCountApiResponse {
     content?: TempSpotWithVerificationDtoWithTotalCount;
     error?: ErrorResponse;
 }
 
-export class TokenRequest implements ITokenRequest {
-    email?: string | undefined;
-    password?: string | undefined;
-
-    constructor(data?: ITokenRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.password = _data["password"];
-        }
-    }
-
-    static fromJS(data: any): TokenRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new TokenRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["password"] = this.password;
-        return data; 
-    }
-}
-
-export interface ITokenRequest {
+export interface TokenRequest {
     email?: string | undefined;
     password?: string | undefined;
 }
 
-export class TokenResponse implements ITokenResponse {
-    id?: string | undefined;
-    userName?: string | undefined;
-    email?: string | undefined;
-    roles?: string[] | undefined;
-    isVerified?: boolean;
-    jwToken?: string | undefined;
-    issuedOn?: Date;
-    expiresOn?: Date;
-    refreshToken?: string | undefined;
-
-    constructor(data?: ITokenResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.userName = _data["userName"];
-            this.email = _data["email"];
-            if (Array.isArray(_data["roles"])) {
-                this.roles = [] as any;
-                for (let item of _data["roles"])
-                    this.roles!.push(item);
-            }
-            this.isVerified = _data["isVerified"];
-            this.jwToken = _data["jwToken"];
-            this.issuedOn = _data["issuedOn"] ? new Date(_data["issuedOn"].toString()) : <any>undefined;
-            this.expiresOn = _data["expiresOn"] ? new Date(_data["expiresOn"].toString()) : <any>undefined;
-            this.refreshToken = _data["refreshToken"];
-        }
-    }
-
-    static fromJS(data: any): TokenResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new TokenResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["userName"] = this.userName;
-        data["email"] = this.email;
-        if (Array.isArray(this.roles)) {
-            data["roles"] = [];
-            for (let item of this.roles)
-                data["roles"].push(item);
-        }
-        data["isVerified"] = this.isVerified;
-        data["jwToken"] = this.jwToken;
-        data["issuedOn"] = this.issuedOn ? this.issuedOn.toISOString() : <any>undefined;
-        data["expiresOn"] = this.expiresOn ? this.expiresOn.toISOString() : <any>undefined;
-        data["refreshToken"] = this.refreshToken;
-        return data; 
-    }
-}
-
-export interface ITokenResponse {
+export interface TokenResponse {
     id?: string | undefined;
     userName?: string | undefined;
     email?: string | undefined;
@@ -2384,107 +1197,12 @@ export interface ITokenResponse {
     refreshToken?: string | undefined;
 }
 
-export class TokenResponseApiResponse implements ITokenResponseApiResponse {
-    content?: TokenResponse;
-    error?: ErrorResponse;
-
-    constructor(data?: ITokenResponseApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.content = _data["content"] ? TokenResponse.fromJS(_data["content"]) : <any>undefined;
-            this.error = _data["error"] ? ErrorResponse.fromJS(_data["error"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): TokenResponseApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new TokenResponseApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["content"] = this.content ? this.content.toJSON() : <any>undefined;
-        data["error"] = this.error ? this.error.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface ITokenResponseApiResponse {
+export interface TokenResponseApiResponse {
     content?: TokenResponse;
     error?: ErrorResponse;
 }
 
-export class VerificationProcessDto implements IVerificationProcessDto {
-    id?: string;
-    votes?: VerificationStatementDto[] | undefined;
-    endDate?: Date;
-    isVerified?: boolean;
-    discussion?: CommentDto[] | undefined;
-
-    constructor(data?: IVerificationProcessDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            if (Array.isArray(_data["votes"])) {
-                this.votes = [] as any;
-                for (let item of _data["votes"])
-                    this.votes!.push(VerificationStatementDto.fromJS(item));
-            }
-            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
-            this.isVerified = _data["isVerified"];
-            if (Array.isArray(_data["discussion"])) {
-                this.discussion = [] as any;
-                for (let item of _data["discussion"])
-                    this.discussion!.push(CommentDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): VerificationProcessDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new VerificationProcessDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        if (Array.isArray(this.votes)) {
-            data["votes"] = [];
-            for (let item of this.votes)
-                data["votes"].push(item.toJSON());
-        }
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["isVerified"] = this.isVerified;
-        if (Array.isArray(this.discussion)) {
-            data["discussion"] = [];
-            for (let item of this.discussion)
-                data["discussion"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IVerificationProcessDto {
+export interface VerificationProcessDto {
     id?: string;
     votes?: VerificationStatementDto[] | undefined;
     endDate?: Date;
@@ -2492,85 +1210,12 @@ export interface IVerificationProcessDto {
     discussion?: CommentDto[] | undefined;
 }
 
-export class VerificationStatementDto implements IVerificationStatementDto {
-    voterId?: string;
-    isReal?: boolean;
-
-    constructor(data?: IVerificationStatementDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.voterId = _data["voterId"];
-            this.isReal = _data["isReal"];
-        }
-    }
-
-    static fromJS(data: any): VerificationStatementDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new VerificationStatementDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["voterId"] = this.voterId;
-        data["isReal"] = this.isReal;
-        return data; 
-    }
-}
-
-export interface IVerificationStatementDto {
+export interface VerificationStatementDto {
     voterId?: string;
     isReal?: boolean;
 }
 
-export class VoteCommand implements IVoteCommand {
-    tempSpotId?: string;
-    isReal?: boolean;
-    userId?: string;
-
-    constructor(data?: IVoteCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.tempSpotId = _data["tempSpotId"];
-            this.isReal = _data["isReal"];
-            this.userId = _data["userId"];
-        }
-    }
-
-    static fromJS(data: any): VoteCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new VoteCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["tempSpotId"] = this.tempSpotId;
-        data["isReal"] = this.isReal;
-        data["userId"] = this.userId;
-        return data; 
-    }
-}
-
-export interface IVoteCommand {
+export interface VoteCommand {
     tempSpotId?: string;
     isReal?: boolean;
     userId?: string;

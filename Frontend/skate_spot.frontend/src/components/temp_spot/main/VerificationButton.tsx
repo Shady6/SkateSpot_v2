@@ -6,12 +6,15 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 export function VerificationButton({
   votesCount,
   votingReal,
+  onClick,
 }: {
   votesCount: number;
   votingReal: boolean;
+  onClick: () => void;
 }) {
   return (
     <Button
+      onClick={async () => await onClick()}
       size="small"
       variant="contained"
       color={votingReal ? "success" : "warning"}

@@ -2,26 +2,25 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiClient } from "../../skate_spot_api/apiClient";
 import {
   ApiException,
-  ITokenRequest,
-  ITokenResponse,
   TokenRequest,
+  TokenResponse,
 } from "../../skate_spot_api/client";
 
 export const localStorageJWTKey = "SkateSpotJWT";
 
 export const login = createAsyncThunk<
-  ITokenResponse,
-  ITokenRequest,
+  TokenResponse,
+  TokenRequest,
   { rejectValue: string }
->("auth/login", async (loginData: ITokenRequest, { rejectWithValue }) => {
+>("auth/login", async (loginData: TokenRequest, { rejectWithValue }) => {
   try {
     const client = new ApiClient();
-    const response = await client.get_Token(new TokenRequest(loginData));
+    const response = await client.get_Token(loginData);
     localStorage.setItem(
       localStorageJWTKey,
       response!.content!.jwToken as string
     );
-    return response.content as ITokenResponse;
+    return response.content as TokenResponse;
   } catch (e) {
     if (e instanceof ApiException)
       return rejectWithValue(JSON.parse(e.response).error.message as string);

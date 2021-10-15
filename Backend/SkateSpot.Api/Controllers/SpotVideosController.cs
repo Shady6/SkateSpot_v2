@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkateSpot.Api.Attributes;
+using SkateSpot.Api.Extensions;
 using SkateSpot.Application.Features.SpotVideoFeatures.Commands;
 using SkateSpot.Application.Services.Interfaces;
 using System;
@@ -31,6 +32,7 @@ namespace SkateSpot.Api.Controllers
 		[HttpDelete("spots/{spotId}/spotVideos/{spotVideoId}")]
 		public async Task<ActionResult> DeleteSpotVideo([FromRoute] DeleteSpotVideoCommand request)
 		{
+			request.UserId = User.GetUserId();
 			await _spotVideosService.DeleteSpotVideo(request);
 			return Ok();
 		}

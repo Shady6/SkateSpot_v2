@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { ITempSpotWithVerificationDto } from "../../skate_spot_api/client";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { TempSpotWithVerificationDto } from "../../skate_spot_api/client";
 import { fetchNewTempSpots } from "../actions/tempSpotActions";
 
 export interface TempSpotsState {
   tempSpots: {
-    data: ITempSpotWithVerificationDto[];
+    data: TempSpotWithVerificationDto[];
     totalCount: number;
   };
   paging: {
@@ -31,7 +31,26 @@ const initialState: TempSpotsState = {
 const tempSpotsSlice = createSlice({
   name: "tempSpots",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    updateVotes: (
+      state,
+      action: PayloadAction<{
+        tempSpotId: string;
+        voterId: string;
+        deletedVote: boolean;
+        isReal: boolean;
+      }>
+    ) => {
+      const { tempSpotId, voterId, deletedVote, isReal } = action.payload;
+      const t = state.tempSpots.data.find((t) => t.id === tempSpotId);
+
+      t!.verificationProcess!.votes = t!.verificationProcess!.votes!.filter(
+        (v) => v.voterId !== voterId
+      );
+      if (!deletedVote)
+        t!.verificationProcess!.votes!.push({ isReal, voterId });
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchNewTempSpots.pending, (state) => {
@@ -44,7 +63,7 @@ const tempSpotsSlice = createSlice({
 
         if (action.payload.data?.length !== 0) {
           state.tempSpots.data.push(
-            ...(action.payload.data as ITempSpotWithVerificationDto[])
+            ...(action.payload.data as TempSpotWithVerificationDto[])
           );
           state.tempSpots.totalCount = action.payload.totalCount as number;
           state.paging.skip += state.paging.take;
@@ -58,3 +77,4 @@ const tempSpotsSlice = createSlice({
 });
 
 export default tempSpotsSlice.reducer;
+export const { updateVotes } = tempSpotsSlice.actions;

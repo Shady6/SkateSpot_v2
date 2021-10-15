@@ -1,7 +1,7 @@
 import { Box, Modal } from "@material-ui/core";
 import React from "react";
 import {
-  ITempSpotWithVerificationDto,
+  TempSpotWithVerificationDto,
   AddressDto,
 } from "../../../skate_spot_api/client";
 import DisplaySpotMap from "../../map/DisplaySpotMap";
@@ -20,7 +20,7 @@ const style = {
 };
 
 interface Props {
-  tempSpot: ITempSpotWithVerificationDto;
+  tempSpot: TempSpotWithVerificationDto;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

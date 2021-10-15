@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMapEvents } from "react-leaflet";
 import reverseGeocode from "../../functions/reverseGeocode";
-import { ICoordsDto } from "../../skate_spot_api/client";
+import { CoordsDto } from "../../skate_spot_api/client";
 import { Coords, IGeoLocation } from "../../types/types";
 import IconMarker from "./IconMarker";
 
@@ -16,7 +16,7 @@ const PlacableMarker: React.FC<Props> = ({
   showClickMarker,
   setShowClickMarker,
 }) => {
-  const [markerPosition, setmarkerPosition] = useState<ICoordsDto | null>(null);
+  const [markerPosition, setmarkerPosition] = useState<CoordsDto | null>(null);
 
   useMapEvents({
     click(e) {

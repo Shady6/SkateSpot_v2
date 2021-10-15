@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkateSpot.Api.Attributes;
+using SkateSpot.Api.Extensions;
 using SkateSpot.Application.DTOs;
 using SkateSpot.Application.Features.CommentFeatures.Commands;
 using SkateSpot.Application.Services.Interfaces;
@@ -45,6 +46,7 @@ namespace SkateSpot.Api.Controllers
 		[HttpDelete("{subjectType}/{subjectId}/comments/{commentId}")]
 		public async Task<ActionResult> DeleteComment([FromRoute] DeleteCommentCommand request)
 		{
+			request.UserId = User.GetUserId();
 			await _commentsService.DeleteComment(request);
 			return Ok();
 		}

@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface FlashMsg {
   message: string;
   severity: "error" | "warning" | "info" | "success";
-  clearAtDate: Date;
+  clearAtDate?: Date;
 }
 
 const flashMsgSlice = createSlice({
@@ -24,11 +24,12 @@ export const createFlashMsgWithTimeout = createAsyncThunk<void, FlashMsg>(
   async (flashMsg: FlashMsg, { dispatch }) => {
     dispatch(flashMsgSlice.actions.setFlashMsg(flashMsg));
 
+    const clearAtDate = flashMsg.clearAtDate || new Date(Date.now() + 10000);
     const timeout = setTimeout(() => {
-      dispatch(flashMsgSlice.actions.clearFlashMsg(flashMsg.clearAtDate));
+      dispatch(flashMsgSlice.actions.clearFlashMsg(clearAtDate));
 
       clearTimeout(timeout);
-    }, flashMsg.clearAtDate.getTime() - Date.now());
+    }, clearAtDate.getTime() - Date.now());
   }
 );
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SkateSpot.Api.Extensions;
 using SkateSpot.Application.Features.LikeFeatures.Commands;
 using SkateSpot.Application.Services.Interfaces;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace SkateSpot.Api.Controllers
 		[HttpDelete("{subjectType}/{subjectId}/Likes")]
 		public async Task<ActionResult> DeleteLike([FromRoute] DeleteLikeCommand request)
 		{
+			request.UserId = User.GetUserId();
 			await _likesService.DeleteLike(request);
 			return Ok();
 		}

@@ -1,12 +1,12 @@
 import { Dispatch } from "react";
 import { ApiClient, ApiResponse } from "../skate_spot_api/apiClient";
-import { ITokenResponse } from "../skate_spot_api/client";
+import { TokenResponse } from "../skate_spot_api/client";
 import { createFlashMsgWithTimeout } from "../state/reducers/flashMsgReducer";
 import { request } from "./request";
 
 export const sendRequestWithFlashMsgOnError = async <TReturn>(
   dispatch: Dispatch<any>,
-  auth: ITokenResponse | undefined,
+  auth: TokenResponse | undefined,
   reqFunc: (client: ApiClient, token: string) => Promise<ApiResponse<TReturn>>,
   customErrorMessage?: string,
   clearAfterMs: number = 10000
