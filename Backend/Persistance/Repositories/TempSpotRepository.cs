@@ -72,12 +72,12 @@ namespace SkateSpot.Infrastructure.Repositories
 			return new WithTotalCount<TempSpot>
 			{
 				Data = await TempSpots
+					.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
 					.Skip(skip)
 					.Take(take)
 					.Include(s => s.Author)
 					.Include(s => s.VerificationProcess).ThenInclude(v => v.Votes)
 					.Include(s => s.Images)
-					.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
 					.ToArrayAsync(),
 
 				TotalCount = await TempSpots

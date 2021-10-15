@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import getBoundingBox from "../../../../functions/getBoundingBox";
 import { IGeoLocation } from "../../../../types/types";
-import FaIconMarker from "../../../map/FaIconMarker";
+import IconMarker from "../../../map/IconMarker";
 
 interface Props {
   showMore: boolean;
@@ -38,7 +38,7 @@ const AddressSearchMarkers: React.FC<Props> = ({
       return fromGeocodeLocations?.map((l, i) => {
         const isHovered = hoveredAddress === i;
         return (
-          <FaIconMarker
+          <IconMarker
             size={isHovered ? 40 : 30}
             text={`${(i + 1).toString()}`}
             color={isHovered ? "red" : "rgb(255,100,10)"}
@@ -52,10 +52,10 @@ const AddressSearchMarkers: React.FC<Props> = ({
       });
     else
       return (
-        <FaIconMarker
+        <IconMarker
           color={"rgb(255,100,10)"}
           position={location!.coords}
-          flyToMarker={true}
+          flyToMarkerZoom={12}
         />
       );
   };

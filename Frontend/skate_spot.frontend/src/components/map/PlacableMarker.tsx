@@ -3,7 +3,7 @@ import { useMapEvents } from "react-leaflet";
 import reverseGeocode from "../../functions/reverseGeocode";
 import { ICoordsDto } from "../../skate_spot_api/client";
 import { Coords, IGeoLocation } from "../../types/types";
-import FaIconMarker from "./FaIconMarker";
+import IconMarker from "./IconMarker";
 
 interface Props {
   setLocation: React.Dispatch<React.SetStateAction<IGeoLocation | null>>;
@@ -29,10 +29,7 @@ const PlacableMarker: React.FC<Props> = ({
   });
 
   return markerPosition && showClickMarker ? (
-    <FaIconMarker
-      color={"rgb(255,100,10)"}
-      position={markerPosition as Coords}
-    />
+    <IconMarker color={"rgb(255,100,10)"} position={markerPosition as Coords} />
   ) : null;
 };
 
