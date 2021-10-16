@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SkateSpot.Domain.Interfaces;
+using SkateSpot.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using SkateSpot.Domain.Models;
-using SkateSpot.Domain.Interfaces;
 
 namespace SkateSpot.Domain.Common
 {
@@ -15,20 +15,22 @@ namespace SkateSpot.Domain.Common
 			Likes = likes;
 		}
 
-		public void AddLike(Like like)
+		public void Like(Like like)
 		{
 			var foundLike = Likes.FirstOrDefault(c => c.GiverId == like.GiverId);
-			if (foundLike != null)
-				throw new AppException(ErrorCode.ALREADY_EXISTS, "You've already liked this.");
 
-			Likes.Add(like);
+			if (foundLike != null)
+				foundLike.SetIsPositive(like.Positive);
+			else
+				Likes.Add(like);
+
 		}
 
 		public void DeleteLike(Guid userId)
 		{
 			var foundLike = Likes.FirstOrDefault(c => c.GiverId == userId);
 			if (foundLike == null)
-				throw new AppException(ErrorCode.DOESNT_EXIST, "You have no like to delete.");
+				throw new AppException(ErrorCode.DOESNT_EXIST, "You don't have a like to delete.");
 
 			Likes.Remove(foundLike);
 		}

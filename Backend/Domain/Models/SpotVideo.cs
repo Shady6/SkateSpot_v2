@@ -39,8 +39,8 @@ namespace SkateSpot.Domain.Models
 			AuthorId = userId;
 		}
 
-		public void AddLike(Like like) =>
-			Likeable.AddLike(like);
+		public void Like(Like like) =>
+			Likeable.Like(like);
 
 		public void DeleteLike(Guid userId) =>
 			Likeable.DeleteLike(userId);

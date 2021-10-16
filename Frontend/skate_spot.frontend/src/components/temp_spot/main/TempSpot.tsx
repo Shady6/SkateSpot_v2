@@ -12,6 +12,8 @@ import { SpotImages } from "./SpotImages";
 import { SurfaceScore } from "./SurfaceScore";
 import { TempSpotDetailsBtn as ShowOnMapBtn } from "./TempSpotDetailsBtn";
 import { VerificationButtons } from "./VerificationButtons";
+import CommentBtn from "./CommentBtn";
+import Comments from "./Comments";
 
 interface Props {
   tempSpot: TempSpotWithVerificationDto;
@@ -20,6 +22,8 @@ interface Props {
 export const TempSpot = React.memo(
   ({ tempSpot }: Props) => {
     const [isMapModalOpen, setIsMapModalOpen] = useState(false);
+    const [commentsOpen, setCommentsOpen] = useState(false);
+
     return (
       <div className="mb-4">
         <h4>{tempSpot.name}</h4>
@@ -32,11 +36,21 @@ export const TempSpot = React.memo(
               tempSpot!.verificationProcess!.votes as VerificationStatementDto[]
             }
           />
+          <CommentBtn
+            onClick={() => setCommentsOpen(!commentsOpen)}
+            commentsCount={tempSpot.verificationProcess?.discussion?.length}
+          />
           <SurfaceScore surfaceScore={tempSpot.surfaceScore as number} />
           <Obstacles obstacles={tempSpot.obstacles as ObstacleType[]} />
           <ShowOnMapBtn onClick={() => setIsMapModalOpen(true)} />
           <SpotAuthor author={tempSpot.author as SmallUserDto} />
         </div>
+        {commentsOpen && (
+          <Comments
+            tempSpotId={tempSpot.id as string}
+            comments={tempSpot.verificationProcess?.discussion}
+          />
+        )}
         <hr />
         <MapModal
           tempSpot={tempSpot}
@@ -47,6 +61,6 @@ export const TempSpot = React.memo(
     );
   },
   (p, n) =>
-    JSON.stringify(p.tempSpot.verificationProcess?.votes) ===
-    JSON.stringify(n.tempSpot.verificationProcess?.votes)
+    JSON.stringify(p.tempSpot.verificationProcess) ===
+    JSON.stringify(n.tempSpot.verificationProcess)
 );

@@ -1,13 +1,15 @@
-﻿using System;
+﻿using SkateSpot.Domain.Models;
+using System;
 using System.Collections.Generic;
-using SkateSpot.Domain.Models;
 
 namespace SkateSpot.Domain.Interfaces
 {
 	public interface ILikeable
-	{ 
-		void AddLike(Like like);
+	{
+		void Like(Like like);
 
 		void DeleteLike(Guid userId);
+
+		public ICollection<Like> Likes { get; }
 	}
 }

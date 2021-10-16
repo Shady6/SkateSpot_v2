@@ -1,22 +1,26 @@
 import { Button } from "@material-ui/core";
-import React from "react";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import React from "react";
+
+export interface LikeButtonProps {
+  likesCount: number;
+  isPositive: boolean;
+  onClick: () => void;
+  highlited?: boolean;
+}
 
 export function VerificationButton({
-  votesCount,
-  votingReal,
+  likesCount: votesCount,
+  isPositive: votingReal,
   onClick,
-}: {
-  votesCount: number;
-  votingReal: boolean;
-  onClick: () => void;
-}) {
+  highlited = false,
+}: LikeButtonProps) {
   return (
     <Button
       onClick={async () => await onClick()}
       size="small"
-      variant="contained"
+      variant={highlited ? "contained" : "outlined"}
       color={votingReal ? "success" : "warning"}
       className="me-1"
     >

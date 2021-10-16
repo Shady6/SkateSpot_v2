@@ -8,7 +8,7 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     flashMsgs: flashMsgReducer,
-    tempSpots: tempSpotsReducer,
+    tempSpotsState: tempSpotsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

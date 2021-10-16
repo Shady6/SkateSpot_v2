@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TempSpotWithVerificationDto } from "../../skate_spot_api/client";
-import { fetchNewTempSpots, vote } from "../actions/tempSpotActions";
+import { comment, fetchNewTempSpots, vote } from "../actions/tempSpotActions";
 
 export interface TempSpotsState {
   tempSpots: {
@@ -59,6 +59,11 @@ const tempSpotsSlice = createSlice({
         const tempSpot = state.tempSpots.data.find((t) => t.id === tempSpotId);
         tempSpot!.verificationProcess!.votes = voteResult.votes;
         tempSpot!.verificationProcess!.isVerified = voteResult.verified;
+      })
+      .addCase(comment.fulfilled, (state, action) => {
+        const { comment, tempSpotId } = action.payload;
+        const tempSpot = state.tempSpots.data.find((t) => t.id === tempSpotId);
+        tempSpot?.verificationProcess?.discussion?.push(comment);
       });
   },
 });

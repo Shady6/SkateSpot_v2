@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.CommentFeatures.Commands;
 using SkateSpot.Application.Interfaces.Repositories;
-using SkateSpot.Domain.Common;
-using SkateSpot.Domain.Models;
-using SkateSpot.Domain.Interfaces;
 using SkateSpot.Application.Services.Interfaces;
+using SkateSpot.Domain.Common;
+using SkateSpot.Domain.Interfaces;
+using SkateSpot.Domain.Models;
+using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Services
 {
@@ -20,7 +21,7 @@ namespace SkateSpot.Application.Services
 			_mapper = mapper;
 		}
 
-		public async Task Comment(CommentCommand request)
+		public async Task<CommentDto> Comment(CommentCommand request)
 		{
 			var subjectType = _mapper.Map<SubjectType>(request.SubjectType);
 			var foundSubject = await ThrowOnNullAsync(() => _commentRepository.GetSubjectAsync(subjectType, request.SubjectId));
@@ -29,6 +30,7 @@ namespace SkateSpot.Application.Services
 			(foundSubject as ICommentable).AddComment(comment);
 
 			await _commentRepository.SaveChangesAsync();
+			return _mapper.Map<CommentDto>(comment);
 		}
 
 		public async Task EditComment(EditCommentCommand request)

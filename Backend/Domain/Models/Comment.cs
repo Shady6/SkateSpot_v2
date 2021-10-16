@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using SkateSpot.Domain.Common;
+﻿using SkateSpot.Domain.Common;
 using SkateSpot.Domain.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace SkateSpot.Domain.Models
 {
@@ -41,8 +41,8 @@ namespace SkateSpot.Domain.Models
 			UpdateEditedAt();
 		}
 
-		public void AddLike(Like like) =>
-			Likeable.AddLike(like);
+		public void Like(Like like) =>
+			Likeable.Like(like);
 
 		public void DeleteLike(Guid userId) =>
 			Likeable.DeleteLike(userId);

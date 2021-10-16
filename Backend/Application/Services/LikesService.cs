@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.LikeFeatures.Commands;
 using SkateSpot.Application.Interfaces.Repositories;
-using SkateSpot.Domain.Common;
-using SkateSpot.Domain.Models;
-using SkateSpot.Domain.Interfaces;
 using SkateSpot.Application.Services.Interfaces;
+using SkateSpot.Domain.Common;
+using SkateSpot.Domain.Interfaces;
+using SkateSpot.Domain.Models;
+using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Services
 {
@@ -20,25 +21,29 @@ namespace SkateSpot.Application.Services
 			_mapper = mapper;
 		}
 
-		public async Task Like(LikeCommand request)
+		public async Task<LikeDto[]> Like(LikeCommand request)
 		{
 			var subjectType = _mapper.Map<SubjectType>(request.SubjectType);
-			var foundSubject = await ThrowOnNullAsync(() => _likeRepository.GetSubjectWithLikesAsync(subjectType, request.SubjectId));
+			var foundSubject = await ThrowOnNullAsync(() => _likeRepository.GetSubjectWithLikesAsync(subjectType, request.SubjectId)) as ILikeable;
 
-			var like = new Like(request.UserId, subjectType);
-			(foundSubject as ILikeable).AddLike(like);
+			var like = new Like(request.UserId, subjectType, request.Positive);
+			foundSubject.Like(like);
 
 			await _likeRepository.SaveChangesAsync();
+
+			return _mapper.Map<LikeDto[]>(foundSubject.Likes);
 		}
 
-		public async Task DeleteLike(DeleteLikeCommand request)
+		public async Task<LikeDto[]> DeleteLike(DeleteLikeCommand request)
 		{
 			var subjectType = _mapper.Map<SubjectType>(request.SubjectType);
-			var foundSubject = await ThrowOnNullAsync(() => _likeRepository.GetSubjectWithLikesAsync(subjectType, request.SubjectId));
+			var foundSubject = await ThrowOnNullAsync(() => _likeRepository.GetSubjectWithLikesAsync(subjectType, request.SubjectId)) as ILikeable;
 
-			(foundSubject as ILikeable).DeleteLike(request.UserId);
+			foundSubject.DeleteLike(request.UserId);
 
 			await _likeRepository.SaveChangesAsync();
+
+			return _mapper.Map<LikeDto[]>(foundSubject.Likes);
 		}
 	}
 }

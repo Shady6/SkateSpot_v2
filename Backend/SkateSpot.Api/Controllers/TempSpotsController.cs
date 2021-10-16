@@ -62,6 +62,7 @@ namespace SkateSpot.Api.Controllers
 					.Take(take)
 					.Include(s => s.Author)
 					.Include(s => s.VerificationProcess).ThenInclude(v => v.Votes)
+					.Include(s => s.VerificationProcess).ThenInclude(v => v.Discussion).ThenInclude(c => c.Author)
 					.Include(s => s.Images)
 					.ToArrayAsync()),
 

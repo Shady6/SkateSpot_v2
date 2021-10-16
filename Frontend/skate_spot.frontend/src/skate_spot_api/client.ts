@@ -138,7 +138,7 @@ export class Client {
     subjectId: string,
     authorization: string,
     body: CommentCommand | undefined
-  ): Promise<void> {
+  ): Promise<CommentDtoApiResponse> {
     let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/comments";
     if (subjectType === undefined || subjectType === null)
       throw new Error("The parameter 'subjectType' must be defined.");
@@ -159,6 +159,7 @@ export class Client {
             ? "" + authorization
             : "",
         "Content-Type": "application/json",
+        Accept: "text/plain",
       },
     };
 
@@ -167,7 +168,7 @@ export class Client {
     });
   }
 
-  protected processComment(response: Response): Promise<void> {
+  protected processComment(response: Response): Promise<CommentDtoApiResponse> {
     const status = response.status;
     let _headers: any = {};
     if (response.headers && response.headers.forEach) {
@@ -175,7 +176,14 @@ export class Client {
     }
     if (status === 200) {
       return response.text().then((_responseText) => {
-        return;
+        let result200: any = null;
+        result200 =
+          _responseText === ""
+            ? null
+            : <CommentDtoApiResponse>(
+                JSON.parse(_responseText, this.jsonParseReviver)
+              );
+        return result200;
       });
     } else if (status !== 200 && status !== 204) {
       return response.text().then((_responseText) => {
@@ -187,7 +195,7 @@ export class Client {
         );
       });
     }
-    return Promise.resolve<void>(<any>null);
+    return Promise.resolve<CommentDtoApiResponse>(<any>null);
   }
 
   /**
@@ -705,29 +713,36 @@ export class Client {
   }
 
   /**
+   * @param body (optional)
    * @return Success
    */
   like(
-    subjectId: string,
     subjectType: LikeSubjectType,
-    authorization: string
-  ): Promise<void> {
+    subjectId: string,
+    authorization: string,
+    body: LikeCommand | undefined
+  ): Promise<LikeDtoArrayApiResponse> {
     let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/Likes";
-    if (subjectId === undefined || subjectId === null)
-      throw new Error("The parameter 'subjectId' must be defined.");
-    url_ = url_.replace("{SubjectId}", encodeURIComponent("" + subjectId));
     if (subjectType === undefined || subjectType === null)
       throw new Error("The parameter 'subjectType' must be defined.");
     url_ = url_.replace("{SubjectType}", encodeURIComponent("" + subjectType));
+    if (subjectId === undefined || subjectId === null)
+      throw new Error("The parameter 'subjectId' must be defined.");
+    url_ = url_.replace("{SubjectId}", encodeURIComponent("" + subjectId));
     url_ = url_.replace(/[?&]$/, "");
 
+    const content_ = JSON.stringify(body);
+
     let options_ = <RequestInit>{
+      body: content_,
       method: "POST",
       headers: {
         Authorization:
           authorization !== undefined && authorization !== null
             ? "" + authorization
             : "",
+        "Content-Type": "application/json",
+        Accept: "text/plain",
       },
     };
 
@@ -736,7 +751,7 @@ export class Client {
     });
   }
 
-  protected processLike(response: Response): Promise<void> {
+  protected processLike(response: Response): Promise<LikeDtoArrayApiResponse> {
     const status = response.status;
     let _headers: any = {};
     if (response.headers && response.headers.forEach) {
@@ -744,7 +759,14 @@ export class Client {
     }
     if (status === 200) {
       return response.text().then((_responseText) => {
-        return;
+        let result200: any = null;
+        result200 =
+          _responseText === ""
+            ? null
+            : <LikeDtoArrayApiResponse>(
+                JSON.parse(_responseText, this.jsonParseReviver)
+              );
+        return result200;
       });
     } else if (status !== 200 && status !== 204) {
       return response.text().then((_responseText) => {
@@ -756,7 +778,7 @@ export class Client {
         );
       });
     }
-    return Promise.resolve<void>(<any>null);
+    return Promise.resolve<LikeDtoArrayApiResponse>(<any>null);
   }
 
   /**
@@ -766,7 +788,7 @@ export class Client {
     subjectId: string,
     subjectType: LikeSubjectType,
     authorization: string
-  ): Promise<void> {
+  ): Promise<LikeDtoArrayApiResponse> {
     let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/Likes";
     if (subjectId === undefined || subjectId === null)
       throw new Error("The parameter 'subjectId' must be defined.");
@@ -783,6 +805,7 @@ export class Client {
           authorization !== undefined && authorization !== null
             ? "" + authorization
             : "",
+        Accept: "text/plain",
       },
     };
 
@@ -791,7 +814,9 @@ export class Client {
     });
   }
 
-  protected processDelete_Like(response: Response): Promise<void> {
+  protected processDelete_Like(
+    response: Response
+  ): Promise<LikeDtoArrayApiResponse> {
     const status = response.status;
     let _headers: any = {};
     if (response.headers && response.headers.forEach) {
@@ -799,7 +824,14 @@ export class Client {
     }
     if (status === 200) {
       return response.text().then((_responseText) => {
-        return;
+        let result200: any = null;
+        result200 =
+          _responseText === ""
+            ? null
+            : <LikeDtoArrayApiResponse>(
+                JSON.parse(_responseText, this.jsonParseReviver)
+              );
+        return result200;
       });
     } else if (status !== 200 && status !== 204) {
       return response.text().then((_responseText) => {
@@ -811,7 +843,7 @@ export class Client {
         );
       });
     }
-    return Promise.resolve<void>(<any>null);
+    return Promise.resolve<LikeDtoArrayApiResponse>(<any>null);
   }
 
   /**
@@ -1391,6 +1423,11 @@ export interface CommentDto {
   likesCount?: number;
 }
 
+export interface CommentDtoApiResponse {
+  content?: CommentDto;
+  error?: ErrorResponse;
+}
+
 export enum CommentSubjectType {
   Spots = "Spots",
   SpotVideos = "SpotVideos",
@@ -1453,6 +1490,20 @@ export interface GuidApiResponse {
 
 export interface ImageDto {
   base64?: string | undefined;
+}
+
+export interface LikeCommand {
+  userId?: string;
+  positive?: boolean;
+}
+
+export interface LikeDto {
+  positive?: boolean;
+}
+
+export interface LikeDtoArrayApiResponse {
+  content?: LikeDto[] | undefined;
+  error?: ErrorResponse;
 }
 
 export enum LikeSubjectType {

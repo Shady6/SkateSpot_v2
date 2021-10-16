@@ -122,8 +122,8 @@ namespace SkateSpot.Domain.Models
 			Videos.Remove(foundVideo);
 		}
 
-		public void AddLike(Like like) =>
-			Likeable.AddLike(like);
+		public void Like(Like like) =>
+			Likeable.Like(like);
 
 		public void DeleteLike(Guid userId) =>
 			Likeable.DeleteLike(userId);

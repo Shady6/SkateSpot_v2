@@ -1,8 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SkateSpot.Api.Attributes;
+using SkateSpot.Api.Data;
 using SkateSpot.Api.Extensions;
+using SkateSpot.Application.DTOs;
+using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.LikeFeatures.Commands;
+using SkateSpot.Application.Features.TempSpotFeatures.Commands;
 using SkateSpot.Application.Services.Interfaces;
+using System;
 using System.Threading.Tasks;
 
 namespace SkateSpot.Api.Controllers
@@ -20,18 +26,21 @@ namespace SkateSpot.Api.Controllers
 		}
 
 		[HttpPost("{subjectType}/{subjectId}/Likes")]
-		public async Task<ActionResult> Like([FromRoute] LikeCommand request)
+		[MapRouteArgAndUserIdIntoBody(typeof(VoteCommand))]
+		[ProducesResponseType(typeof(ApiResponse<LikeDto[]>), 200)]
+		public async Task<ActionResult> Like([FromRoute] LikeSubjectType SubjectType,
+									   [FromRoute] Guid SubjectId,
+									   [FromBody] LikeCommand request)
 		{
-			await _likesService.Like(request);
-			return Ok();
+			return Ok(await _likesService.Like(request));
 		}
 
 		[HttpDelete("{subjectType}/{subjectId}/Likes")]
+		[ProducesResponseType(typeof(ApiResponse<LikeDto[]>), 200)]
 		public async Task<ActionResult> DeleteLike([FromRoute] DeleteLikeCommand request)
 		{
 			request.UserId = User.GetUserId();
-			await _likesService.DeleteLike(request);
-			return Ok();
+			return Ok(await _likesService.DeleteLike(request));
 		}
 	}
 }
