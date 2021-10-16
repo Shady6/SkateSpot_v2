@@ -1,9 +1,9 @@
 import React from "react";
 import ImageGallery from "react-image-gallery";
-import { ITempSpotWithVerificationDto } from "../../../skate_spot_api/client";
+import { TempSpotWithVerificationDto } from "../../../skate_spot_api/client";
 
 interface SpotImagesProps {
-  tempSpot: ITempSpotWithVerificationDto;
+  tempSpot: TempSpotWithVerificationDto;
 }
 export const SpotImages = ({ tempSpot }: SpotImagesProps) => {
   return tempSpot.images && tempSpot.images.length ? (

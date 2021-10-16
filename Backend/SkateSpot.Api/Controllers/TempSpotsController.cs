@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SkateSpot.Api.Attributes;
 using SkateSpot.Api.Data;
 using SkateSpot.Application.DTOs;
@@ -7,8 +9,9 @@ using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.TempSpotFeatures.Commands;
 using SkateSpot.Application.Features.TempSpotFeatures.Queries;
 using SkateSpot.Application.Services.Interfaces;
-using SkateSpot.Domain.Models;
+using SkateSpot.Infrastructure.DbContexts;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SkateSpot.Api.Controllers
@@ -18,12 +21,16 @@ namespace SkateSpot.Api.Controllers
 	public class TempSpotsController : ControllerBase
 	{
 		private readonly ITempSpotsService _tempSpotsService;
-		private readonly IGetterService<TempSpot> _getterService;
+		private readonly ApplicationDbContext _dbContext;
+		private readonly IMapper _mapper;
 
-		public TempSpotsController(ITempSpotsService tempSpotsService, IGetterService<TempSpot> getterService)
+		public TempSpotsController(ITempSpotsService tempSpotsService,
+							 ApplicationDbContext dbContext,
+							 IMapper mapper)
 		{
 			_tempSpotsService = tempSpotsService;
-			_getterService = getterService;
+			_dbContext = dbContext;
+			_mapper = mapper;
 		}
 
 		[Authorize]
@@ -47,8 +54,21 @@ namespace SkateSpot.Api.Controllers
 		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<TempSpotWithVerificationDto>>), 200)]
 		public async Task<ActionResult<TempSpotWithVerificationDto>> GetTempSpots([FromQuery] int take, [FromQuery] int offset)
 		{
-			var spots = await _getterService.Get<TempSpotWithVerificationDto>(take, offset);
-			return Ok(spots);
+			return Ok(new WithTotalCount<TempSpotWithVerificationDto>
+			{
+				Data = _mapper.Map<TempSpotWithVerificationDto[]>(await _dbContext.TempSpots
+					.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
+					.Skip(offset)
+					.Take(take)
+					.Include(s => s.Author)
+					.Include(s => s.VerificationProcess).ThenInclude(v => v.Votes)
+					.Include(s => s.Images)
+					.ToArrayAsync()),
+
+				TotalCount = await _dbContext.TempSpots
+				.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
+				.CountAsync()
+			});
 		}
 	}
 }

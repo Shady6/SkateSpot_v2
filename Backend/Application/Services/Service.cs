@@ -7,7 +7,7 @@ namespace SkateSpot.Application.Services
 {
 	public abstract class Service : IService
 	{
-		protected async Task<TResult> ThrowOnNullAsync<TResult>(Func<Task<TResult>> func)
+		public static async Task<TResult> ThrowOnNullAsync<TResult>(Func<Task<TResult>> func)
 		{
 			var result = await func();
 			if (result == null)

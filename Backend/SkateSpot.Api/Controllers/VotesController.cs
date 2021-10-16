@@ -25,14 +25,14 @@ namespace SkateSpot.Api.Controllers
 
 		[HttpPost]
 		[MapRouteArgAndUserIdIntoBody(typeof(VoteCommand))]
-		[ProducesResponseType(typeof(ApiResponse<OnVoteVerified>), 200)]
+		[ProducesResponseType(typeof(ApiResponse<VoteResult>), 200)]
 		public async Task<ActionResult> Vote([FromRoute] Guid tempSpotId, [FromBody] VoteCommand request)
 		{
 			return Ok(await _votesService.Vote(request));
 		}
 
 		[HttpDelete]
-		[ProducesResponseType(typeof(ApiResponse<OnVoteVerified>), 200)]
+		[ProducesResponseType(typeof(ApiResponse<VoteResult>), 200)]
 		public async Task<ActionResult> DeleteVote([FromRoute] DeleteVoteCommand request)
 		{
 			request.UserId = User.GetUserId();

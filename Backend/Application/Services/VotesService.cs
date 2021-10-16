@@ -1,4 +1,6 @@
-﻿using SkateSpot.Application.DTOs;
+﻿using AutoMapper;
+using SkateSpot.Application.DTOs;
+using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.TempSpotFeatures.Commands;
 using SkateSpot.Application.Interfaces.Repositories;
 using SkateSpot.Application.Services.Interfaces;
@@ -13,14 +15,16 @@ namespace SkateSpot.Application.Services
 	{
 		private readonly ITempSpotRepository _tempSpotRepository;
 		private readonly ISpotRepository _spotRepository;
+		private readonly IMapper _mapper;
 
-		public VotesService(ITempSpotRepository tempSpotRepository, ISpotRepository spotRepository)
+		public VotesService(ITempSpotRepository tempSpotRepository, ISpotRepository spotRepository, IMapper mapper)
 		{
 			_tempSpotRepository = tempSpotRepository;
 			_spotRepository = spotRepository;
+			_mapper = mapper;
 		}
 
-		public async Task<OnVoteVerified> Vote(VoteCommand request)
+		public async Task<VoteResult> Vote(VoteCommand request)
 		{
 			var tempSpot = await ThrowOnNullAsync(() => _tempSpotRepository.GetWithVerificationVotesAsync(request.TempSpotId));
 
@@ -32,10 +36,14 @@ namespace SkateSpot.Application.Services
 			else if (voteChanged)
 				await _tempSpotRepository.SaveChangesAsync();
 
-			return new OnVoteVerified { Verified = tempSpot.VerificationProcess.IsVerified };
+			return new VoteResult
+			{
+				Verified = tempSpot.VerificationProcess.IsVerified,
+				Votes = _mapper.Map<VerificationStatementDto[]>(tempSpot.VerificationProcess.Votes)
+			};
 		}
 
-		public async Task<OnVoteVerified> DeleteVote(DeleteVoteCommand request)
+		public async Task<VoteResult> DeleteVote(DeleteVoteCommand request)
 		{
 			var tempSpot = await ThrowOnNullAsync(() => _tempSpotRepository.GetWithVerificationVotesAsync(request.TempSpotId));
 
@@ -46,7 +54,11 @@ namespace SkateSpot.Application.Services
 			else
 				await _tempSpotRepository.SaveChangesAsync();
 
-			return new OnVoteVerified { Verified = tempSpot.VerificationProcess.IsVerified };
+			return new VoteResult
+			{
+				Verified = tempSpot.VerificationProcess.IsVerified,
+				Votes = _mapper.Map<VerificationStatementDto[]>(tempSpot.VerificationProcess.Votes)
+			};
 		}
 
 		private async Task MoveTempSpotToSpot(TempSpot tempSpot)

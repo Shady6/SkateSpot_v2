@@ -1,4 +1,4 @@
-import { Client, IErrorResponse } from "./client";
+import { Client, ErrorResponse } from "./client";
 import { skateSpotApiBaseUrl } from "./constants";
 
 export class ApiClient extends Client {
@@ -9,5 +9,5 @@ export class ApiClient extends Client {
 
 export type ApiResponse<T> = {
   content?: T;
-  error?: IErrorResponse;
+  error?: ErrorResponse;
 };

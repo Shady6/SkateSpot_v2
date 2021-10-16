@@ -1,6 +1,6 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { TempSpotWithVerificationDto } from "../../skate_spot_api/client";
-import { fetchNewTempSpots } from "../actions/tempSpotActions";
+import { fetchNewTempSpots, vote } from "../actions/tempSpotActions";
 
 export interface TempSpotsState {
   tempSpots: {
@@ -31,26 +31,7 @@ const initialState: TempSpotsState = {
 const tempSpotsSlice = createSlice({
   name: "tempSpots",
   initialState: initialState,
-  reducers: {
-    updateVotes: (
-      state,
-      action: PayloadAction<{
-        tempSpotId: string;
-        voterId: string;
-        deletedVote: boolean;
-        isReal: boolean;
-      }>
-    ) => {
-      const { tempSpotId, voterId, deletedVote, isReal } = action.payload;
-      const t = state.tempSpots.data.find((t) => t.id === tempSpotId);
-
-      t!.verificationProcess!.votes = t!.verificationProcess!.votes!.filter(
-        (v) => v.voterId !== voterId
-      );
-      if (!deletedVote)
-        t!.verificationProcess!.votes!.push({ isReal, voterId });
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchNewTempSpots.pending, (state) => {
@@ -72,9 +53,14 @@ const tempSpotsSlice = createSlice({
       .addCase(fetchNewTempSpots.rejected, (state) => {
         state.error = true;
         state.loading = false;
+      })
+      .addCase(vote.fulfilled, (state, action) => {
+        const { voteResult, tempSpotId } = action.payload;
+        const tempSpot = state.tempSpots.data.find((t) => t.id === tempSpotId);
+        tempSpot!.verificationProcess!.votes = voteResult.votes;
+        tempSpot!.verificationProcess!.isVerified = voteResult.verified;
       });
   },
 });
 
 export default tempSpotsSlice.reducer;
-export const { updateVotes } = tempSpotsSlice.actions;

@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface FlashMsg {
   message: string;
   severity: "error" | "warning" | "info" | "success";
-  clearAtDate?: Date;
+  clearAtDate: Date;
 }
 
 const flashMsgSlice = createSlice({
@@ -19,17 +19,26 @@ const flashMsgSlice = createSlice({
   },
 });
 
-export const createFlashMsgWithTimeout = createAsyncThunk<void, FlashMsg>(
+export const createFlashMsgWithTimeout = createAsyncThunk(
   "flashMsg/createFlashMsgWithTimeout",
-  async (flashMsg: FlashMsg, { dispatch }) => {
-    dispatch(flashMsgSlice.actions.setFlashMsg(flashMsg));
+  async (
+    flashMsg: {
+      message: string;
+      severity: "error" | "warning" | "info" | "success";
+      clearAtDate?: Date;
+    },
+    { dispatch }
+  ) => {
+    flashMsg.clearAtDate ??= new Date(Date.now() + 10000);
 
-    const clearAtDate = flashMsg.clearAtDate || new Date(Date.now() + 10000);
+    dispatch(flashMsgSlice.actions.setFlashMsg(flashMsg as FlashMsg));
     const timeout = setTimeout(() => {
-      dispatch(flashMsgSlice.actions.clearFlashMsg(clearAtDate));
+      dispatch(
+        flashMsgSlice.actions.clearFlashMsg(flashMsg.clearAtDate as Date)
+      );
 
       clearTimeout(timeout);
-    }, clearAtDate.getTime() - Date.now());
+    }, flashMsg.clearAtDate.getTime() - Date.now());
   }
 );
 

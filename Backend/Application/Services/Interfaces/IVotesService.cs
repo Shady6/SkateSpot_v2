@@ -6,7 +6,7 @@ namespace SkateSpot.Application.Services.Interfaces
 {
 	public interface IVotesService
 	{
-		Task<OnVoteVerified> DeleteVote(DeleteVoteCommand request);
-		Task<OnVoteVerified> Vote(VoteCommand request);
+		Task<VoteResult> DeleteVote(DeleteVoteCommand request);
+		Task<VoteResult> Vote(VoteCommand request);
 	}
 }
