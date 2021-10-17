@@ -609,17 +609,25 @@ export class Client {
     }
 
     /**
-     * @param authorization (optional) 
+     * @param take (optional) 
+     * @param offset (optional) 
      * @return Success
      */
-    get_Spots(authorization: string | undefined): Promise<SpotDtoListApiResponse> {
-        let url_ = this.baseUrl + "/api/spots";
+    get_Spots(take: number | undefined, offset: number | undefined): Promise<SpotDtoWithTotalCountApiResponse> {
+        let url_ = this.baseUrl + "/api/spots?";
+        if (take === null)
+            throw new Error("The parameter 'take' cannot be null.");
+        else if (take !== undefined)
+            url_ += "take=" + encodeURIComponent("" + take) + "&";
+        if (offset === null)
+            throw new Error("The parameter 'offset' cannot be null.");
+        else if (offset !== undefined)
+            url_ += "offset=" + encodeURIComponent("" + offset) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
             method: "GET",
             headers: {
-                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
                 "Accept": "text/plain"
             }
         };
@@ -629,13 +637,13 @@ export class Client {
         });
     }
 
-    protected processGet_Spots(response: Response): Promise<SpotDtoListApiResponse> {
+    protected processGet_Spots(response: Response): Promise<SpotDtoWithTotalCountApiResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <SpotDtoListApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <SpotDtoWithTotalCountApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -643,7 +651,7 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<SpotDtoListApiResponse>(<any>null);
+        return Promise.resolve<SpotDtoWithTotalCountApiResponse>(<any>null);
     }
 
     /**
@@ -1145,8 +1153,13 @@ export interface SpotDto {
     comments: CommentDto[] | undefined;
 }
 
-export interface SpotDtoListApiResponse {
-    content: SpotDto[] | undefined;
+export interface SpotDtoWithTotalCount {
+    data: SpotDto[] | undefined;
+    totalCount: number;
+}
+
+export interface SpotDtoWithTotalCountApiResponse {
+    content: SpotDtoWithTotalCount;
     error: ErrorResponse;
 }
 

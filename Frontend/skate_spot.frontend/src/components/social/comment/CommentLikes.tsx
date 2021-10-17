@@ -1,7 +1,7 @@
 import React from "react";
 import { useLikes } from "../../../hooks/useLikes";
 import { LikeDto } from "../../../skate_spot_api/client";
-import { likeComment } from "../../../state/actions/tempSpotActions";
+import { tempSpotLikeComment } from "../../../state/actions/tempSpotActions";
 import LikeIconBtn from "../like/LikeIconBtn";
 
 interface Props {
@@ -21,7 +21,7 @@ const CommentLikes: React.FC<Props> = ({ commentId, likes, tempSpotId }) => {
             userId: l.userId as string,
           })),
     likeAction: (subjectId, isPositive, deletedLike) =>
-      likeComment({
+      tempSpotLikeComment({
         isPositive,
         deletedLike,
         subjectId,

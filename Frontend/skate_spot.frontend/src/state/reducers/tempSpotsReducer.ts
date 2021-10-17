@@ -1,12 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TempSpotWithVerificationDto } from "../../skate_spot_api/client";
 import {
-  comment,
-  fetchNewTempSpots,
-  likeComment,
+  tempSpotComment,
+  tempSpotFetch,
+  tempSpotLikeComment,
   vote,
 } from "../actions/tempSpotActions";
-import { ListViewState } from "./genericListViewReducer";
+import {
+  listViewReducerHandlers,
+  ListViewState,
+} from "./genericListViewReducer";
 
 export type TempSpotState = ListViewState<TempSpotWithVerificationDto>;
 
@@ -29,48 +32,29 @@ const tempSpotsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchNewTempSpots.pending, (state) => {
-        state.loading = true;
-        state.error = false;
+      .addCase(tempSpotFetch.pending, (state) => {
+        listViewReducerHandlers.fetchListItems.pending(state);
       })
-      .addCase(fetchNewTempSpots.fulfilled, (state: TempSpotState, action) => {
-        state.loading = false;
-        state.error = false;
-
-        if (action.payload?.data?.length !== 0) {
-          state?.listWithCount?.data?.push(...action!.payload!.data);
-          state.listWithCount.totalCount = action!.payload!.totalCount;
-          state.paging.skip += state.paging.take;
-        }
+      .addCase(tempSpotFetch.fulfilled, (state: TempSpotState, action) => {
+        listViewReducerHandlers.fetchListItems.fulfilled(state, action.payload);
       })
-      .addCase(fetchNewTempSpots.rejected, (state) => {
-        state.error = true;
-        state.loading = false;
+      .addCase(tempSpotFetch.rejected, (state) => {
+        listViewReducerHandlers.fetchListItems.pending(state);
       })
       .addCase(vote.fulfilled, (state, action) => {
-        const { result, tempSpotId } = action.payload;
-        const tempSpot = state.listWithCount.data?.find(
-          (t) => t.id === tempSpotId
-        );
-        tempSpot!.verificationProcess!.votes = result!.votes;
-        tempSpot!.verificationProcess!.isVerified = result!.verified;
+        const tempSpot = listViewReducerHandlers.like.fulfilled(state, {
+          listItemId: action.payload.tempSpotId,
+          result: action.payload.result?.votes,
+        }) as TempSpotWithVerificationDto;
+
+        tempSpot!.verificationProcess!.isVerified =
+          action.payload.result!.verified;
       })
-      .addCase(comment.fulfilled, (state, action) => {
-        const { comment, listItemId: tempSpotId } = action.payload;
-        const tempSpot = state.listWithCount.data?.find(
-          (t) => t.id === tempSpotId
-        );
-        tempSpot?.verificationProcess?.discussion?.unshift(comment);
+      .addCase(tempSpotComment.fulfilled, (state, action) => {
+        listViewReducerHandlers.comment.fulfilled(state, action.payload);
       })
-      .addCase(likeComment.fulfilled, (state, action) => {
-        const { result, subjectId, parentId } = action.payload;
-        const tempSpot = state.listWithCount.data?.find(
-          (t) => t.id === parentId
-        );
-        const comment = tempSpot!.verificationProcess!.discussion?.find(
-          (c) => c.id === subjectId
-        );
-        comment!.likes = result;
+      .addCase(tempSpotLikeComment.fulfilled, (state, action) => {
+        listViewReducerHandlers.likeComment.fulfilled(state, action.payload);
       });
   },
 });

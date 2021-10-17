@@ -2,11 +2,13 @@ import { ApiClient, ApiResponse } from "../../skate_spot_api/apiClient";
 import {
   CommentDto,
   CommentSubjectType,
+  SpotDto,
   TempSpotWithVerificationDto,
 } from "../../skate_spot_api/client";
 import {
   ListViewState,
   ListWithCount,
+  WithSocial,
 } from "../reducers/genericListViewReducer";
 import { RootState } from "../store";
 export interface IListViewSpecifics {
@@ -20,15 +22,22 @@ export interface ListViewSpecification {
     client: ApiClient,
     take: number,
     skip: number
-  ) => Promise<ApiResponse<ListWithCount<any>>>;
-  getSpecificState: (state: RootState) => ListViewState<any>;
+  ) => Promise<ApiResponse<ListWithCount<WithSocial>>>;
+  getSpecificState: (state: RootState) => ListViewState<WithSocial>;
   name: string;
   commentSubjectType: CommentSubjectType;
 }
 
 export const listViewSpecifics: IListViewSpecifics = {
-  // @ts-ignore
-  spots: undefined,
+  spots: {
+    fetchListItems: (client: ApiClient, take: number, skip: number) =>
+      client.get_Spots(take, skip) as Promise<
+        ApiResponse<ListWithCount<SpotDto>>
+      >,
+    getSpecificState: (state: RootState) => state.spotsState,
+    name: "spots",
+    commentSubjectType: CommentSubjectType.Spots,
+  },
   tempSpots: {
     fetchListItems: (client: ApiClient, take: number, skip: number) =>
       client.get_Temp_Spots(take, skip) as Promise<

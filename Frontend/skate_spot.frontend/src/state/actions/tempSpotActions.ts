@@ -9,13 +9,13 @@ import {
   likeThunkCreator,
 } from "./genericListViewActions";
 
-export const fetchNewTempSpots = fetchlistItemsThunkCreator(
+export const tempSpotFetch = fetchlistItemsThunkCreator(
   ListViewTypes.TEMP_SPOTS
 );
 
-export const comment = commentThunkCreator(ListViewTypes.TEMP_SPOTS);
+export const tempSpotComment = commentThunkCreator(ListViewTypes.TEMP_SPOTS);
 
-export const likeComment = likeThunkCreator(
+export const tempSpotLikeComment = likeThunkCreator(
   ListViewTypes.TEMP_SPOTS,
   LikeSubjectType.Comments
 );

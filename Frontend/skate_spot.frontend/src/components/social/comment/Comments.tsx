@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { v4 } from "uuid";
 import { useInputState } from "../../../hooks/useInputState";
 import { CommentDto } from "../../../skate_spot_api/client";
-import { comment as commentAction } from "../../../state/actions/tempSpotActions";
+import { tempSpotComment as commentAction } from "../../../state/actions/tempSpotActions";
 import Comment from "./Comment";
 
 interface Props {

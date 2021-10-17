@@ -52,7 +52,7 @@ namespace SkateSpot.Api.Controllers
 
 		[HttpGet]
 		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<TempSpotWithVerificationDto>>), 200)]
-		public async Task<ActionResult<TempSpotWithVerificationDto>> GetTempSpots([FromQuery] int take, [FromQuery] int offset)
+		public async Task<ActionResult> GetTempSpots([FromQuery] int take, [FromQuery] int offset)
 		{
 			return Ok(new WithTotalCount<TempSpotWithVerificationDto>
 			{

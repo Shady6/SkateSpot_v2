@@ -6,6 +6,7 @@ import {
   listViewSpecifics,
   ListViewTypes,
 } from "../generic/listViewGenerics";
+import { ListWithCount, WithSocial } from "../reducers/genericListViewReducer";
 import { RootState } from "../store";
 
 export const fetchlistItemsThunkCreator = (listType: ListViewTypes) => {
@@ -28,7 +29,7 @@ export const fetchlistItemsThunkCreator = (listType: ListViewTypes) => {
       );
 
       if (res.error) return rejectWithValue(null);
-      return res.content;
+      return res.content as ListWithCount<WithSocial>;
     }
   );
 };

@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import authReducer from "./reducers/authReducer";
 import flashMsgReducer from "./reducers/flashMsgReducer";
 import tempSpotsReducer from "./reducers/tempSpotsReducer";
+import spotsReducer from "./reducers/spotReducer";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     flashMsgs: flashMsgReducer,
     tempSpotsState: tempSpotsReducer,
+    spotsState: spotsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
