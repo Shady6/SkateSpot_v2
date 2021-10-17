@@ -1,5 +1,5 @@
 import { ITag } from "../components/temp_spot/add/tags/Tags";
-import { ObstacleType } from "../skate_spot_api/client";
+import { ObstacleType, CreateTempSpotCommand } from "../skate_spot_api/client";
 import { AuthState } from "../state/reducers/authReducer";
 import { IGeoLocation } from "../types/types";
 import { request } from "./request";
@@ -34,7 +34,8 @@ export const sendSpotData = async (
       base64Images: images,
     };
     return await request<string>(
-      (client, token) => client.create_Spot(token, command),
+      (client, token) =>
+        client.create_Spot(token, command as CreateTempSpotCommand),
       authState.content
     );
   };

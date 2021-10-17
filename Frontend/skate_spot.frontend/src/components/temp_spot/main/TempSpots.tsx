@@ -28,8 +28,8 @@ const TempSpots: React.FC<Props> = () => {
   useEffect(() => {
     if (
       !state.tempSpotsState.loading &&
-      state.tempSpotsState.tempSpots.data.length <
-        state.tempSpotsState.tempSpots.totalCount &&
+      state?.tempSpotsState?.listWithCount?.data?.length <
+        state.tempSpotsState.listWithCount.totalCount &&
       scrolled >= 0.8 &&
       scrolled <= 1
     )
@@ -39,7 +39,7 @@ const TempSpots: React.FC<Props> = () => {
   return (
     <>
       <div className="container mt-5" style={{ fontSize: "1rem" }}>
-        {state.tempSpotsState.tempSpots.data.map((t) => {
+        {state.tempSpotsState.listWithCount?.data?.map((t) => {
           return <TempSpot key={t.name} tempSpot={t} />;
         })}
         {state.tempSpotsState.loading && <CircularProgress color="secondary" />}

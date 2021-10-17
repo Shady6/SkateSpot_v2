@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { TokenResponse } from "../skate_spot_api/client";
 import { localStorageJWTKey } from "../state/actions/authActions";
 import { setAuthStateFromLocalStorage } from "../state/reducers/authReducer";
 import { useAppDispatch } from "../state/store";
@@ -25,7 +26,7 @@ export const useAuthFromLocalStorage = () => {
               jwToken: token,
               issuedOn: new Date(JWTPayload.nbf * 1000),
               expiresOn: new Date(JWTPayload.exp * 1000),
-            })
+            } as TokenResponse)
           );
       } catch (e) {
         console.log(

@@ -1,27 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TempSpotWithVerificationDto } from "../../skate_spot_api/client";
-import { comment, fetchNewTempSpots, vote } from "../actions/tempSpotActions";
+import {
+  comment,
+  fetchNewTempSpots,
+  likeComment,
+  vote,
+} from "../actions/tempSpotActions";
+import { ListViewState } from "./genericListViewReducer";
 
-export interface TempSpotsState {
-  tempSpots: {
-    data: TempSpotWithVerificationDto[];
-    totalCount: number;
-  };
-  paging: {
-    take: number;
-    skip: number;
-  };
-  loading: boolean;
-  error: boolean;
-}
+export type TempSpotState = ListViewState<TempSpotWithVerificationDto>;
 
-const initialState: TempSpotsState = {
-  tempSpots: {
+const initialState: TempSpotState = {
+  listWithCount: {
     data: [],
     totalCount: 0,
   },
   paging: {
-    take: 10,
+    take: 5,
     skip: 0,
   },
   loading: false,
@@ -38,15 +33,13 @@ const tempSpotsSlice = createSlice({
         state.loading = true;
         state.error = false;
       })
-      .addCase(fetchNewTempSpots.fulfilled, (state: TempSpotsState, action) => {
+      .addCase(fetchNewTempSpots.fulfilled, (state: TempSpotState, action) => {
         state.loading = false;
         state.error = false;
 
-        if (action.payload.data?.length !== 0) {
-          state.tempSpots.data.push(
-            ...(action.payload.data as TempSpotWithVerificationDto[])
-          );
-          state.tempSpots.totalCount = action.payload.totalCount as number;
+        if (action.payload?.data?.length !== 0) {
+          state?.listWithCount?.data?.push(...action!.payload!.data);
+          state.listWithCount.totalCount = action!.payload!.totalCount;
           state.paging.skip += state.paging.take;
         }
       })
@@ -55,15 +48,29 @@ const tempSpotsSlice = createSlice({
         state.loading = false;
       })
       .addCase(vote.fulfilled, (state, action) => {
-        const { voteResult, tempSpotId } = action.payload;
-        const tempSpot = state.tempSpots.data.find((t) => t.id === tempSpotId);
-        tempSpot!.verificationProcess!.votes = voteResult.votes;
-        tempSpot!.verificationProcess!.isVerified = voteResult.verified;
+        const { result, tempSpotId } = action.payload;
+        const tempSpot = state.listWithCount.data?.find(
+          (t) => t.id === tempSpotId
+        );
+        tempSpot!.verificationProcess!.votes = result!.votes;
+        tempSpot!.verificationProcess!.isVerified = result!.verified;
       })
       .addCase(comment.fulfilled, (state, action) => {
-        const { comment, tempSpotId } = action.payload;
-        const tempSpot = state.tempSpots.data.find((t) => t.id === tempSpotId);
-        tempSpot?.verificationProcess?.discussion?.push(comment);
+        const { comment, listItemId: tempSpotId } = action.payload;
+        const tempSpot = state.listWithCount.data?.find(
+          (t) => t.id === tempSpotId
+        );
+        tempSpot?.verificationProcess?.discussion?.unshift(comment);
+      })
+      .addCase(likeComment.fulfilled, (state, action) => {
+        const { result, subjectId, parentId } = action.payload;
+        const tempSpot = state.listWithCount.data?.find(
+          (t) => t.id === parentId
+        );
+        const comment = tempSpot!.verificationProcess!.discussion?.find(
+          (c) => c.id === subjectId
+        );
+        comment!.likes = result;
       });
   },
 });

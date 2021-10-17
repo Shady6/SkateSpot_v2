@@ -14,7 +14,7 @@ namespace SkateSpot.Application.DTOs.DomainDTOs
 		public HashSet<ObstacleType> Obstacles { get; set; }
 		public byte SurfaceScore { get; set; }
 		public SmallUserDto Author { get; set; }
-		public int LikesCount { get; set; }
+		public LikeDto[] Likes { get; set; }
 		public IEnumerable<CommentDto> Comments { get; set; }
 	}
 }

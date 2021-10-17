@@ -36,8 +36,8 @@ namespace SkateSpot.Application.Services
 
 		public async Task<LikeDto[]> DeleteLike(DeleteLikeCommand request)
 		{
-			var subjectType = _mapper.Map<SubjectType>(request.SubjectType);
-			var foundSubject = await ThrowOnNullAsync(() => _likeRepository.GetSubjectWithLikesAsync(subjectType, request.SubjectId)) as ILikeable;
+			var subjectType = _mapper.Map<SubjectType>(request.subjectType);
+			var foundSubject = await ThrowOnNullAsync(() => _likeRepository.GetSubjectWithLikesAsync(subjectType, request.subjectId)) as ILikeable;
 
 			foundSubject.DeleteLike(request.UserId);
 

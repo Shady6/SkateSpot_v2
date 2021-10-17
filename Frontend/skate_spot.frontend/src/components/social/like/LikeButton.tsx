@@ -10,9 +10,9 @@ export interface LikeButtonProps {
   highlited?: boolean;
 }
 
-export function VerificationButton({
-  likesCount: votesCount,
-  isPositive: votingReal,
+export function LikeButton({
+  likesCount,
+  isPositive,
   onClick,
   highlited = false,
 }: LikeButtonProps) {
@@ -21,11 +21,11 @@ export function VerificationButton({
       onClick={async () => await onClick()}
       size="small"
       variant={highlited ? "contained" : "outlined"}
-      color={votingReal ? "success" : "warning"}
+      color={isPositive ? "success" : "warning"}
       className="me-1"
     >
-      {votingReal ? <ThumbUpIcon /> : <ThumbDownIcon />}{" "}
-      <span className="ms-1">{votesCount}</span>
+      {isPositive ? <ThumbUpIcon /> : <ThumbDownIcon />}{" "}
+      <span className="ms-1">{likesCount}</span>
     </Button>
   );
 }

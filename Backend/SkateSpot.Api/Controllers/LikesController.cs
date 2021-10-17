@@ -6,7 +6,6 @@ using SkateSpot.Api.Extensions;
 using SkateSpot.Application.DTOs;
 using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.LikeFeatures.Commands;
-using SkateSpot.Application.Features.TempSpotFeatures.Commands;
 using SkateSpot.Application.Services.Interfaces;
 using System;
 using System.Threading.Tasks;
@@ -26,10 +25,10 @@ namespace SkateSpot.Api.Controllers
 		}
 
 		[HttpPost("{subjectType}/{subjectId}/Likes")]
-		[MapRouteArgAndUserIdIntoBody(typeof(VoteCommand))]
+		[MapRouteArgAndUserIdIntoBody(typeof(LikeCommand))]
 		[ProducesResponseType(typeof(ApiResponse<LikeDto[]>), 200)]
-		public async Task<ActionResult> Like([FromRoute] LikeSubjectType SubjectType,
-									   [FromRoute] Guid SubjectId,
+		public async Task<ActionResult> Like([FromRoute] LikeSubjectType subjectType,
+									   [FromRoute] Guid subjectId,
 									   [FromBody] LikeCommand request)
 		{
 			return Ok(await _likesService.Like(request));

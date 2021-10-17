@@ -45,7 +45,7 @@ namespace SkateSpot.Application.Services
 
 		public async Task<VoteResult> DeleteVote(DeleteVoteCommand request)
 		{
-			var tempSpot = await ThrowOnNullAsync(() => _tempSpotRepository.GetWithVerificationVotesAsync(request.TempSpotId));
+			var tempSpot = await ThrowOnNullAsync(() => _tempSpotRepository.GetWithVerificationVotesAsync(request.tempSpotId));
 
 			tempSpot.VerificationProcess.DeleteVote(request.UserId);
 

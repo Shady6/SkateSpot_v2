@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Domain.Common;
 using System;

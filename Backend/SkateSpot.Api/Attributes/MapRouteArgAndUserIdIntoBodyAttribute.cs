@@ -25,6 +25,7 @@ namespace SkateSpot.Api.Attributes
 				if (actionArgument.Key != requestCommand.Key)
 				{
 					PropertyInfo prop = ObjectToMapToType.GetProperty(actionArgument.Key.FirstCharToUpper());
+					if (prop == null) prop = ObjectToMapToType.GetProperty(actionArgument.Key);
 					prop.SetValue(requestCommand.Value, actionArgument.Value, null);
 				}
 			}

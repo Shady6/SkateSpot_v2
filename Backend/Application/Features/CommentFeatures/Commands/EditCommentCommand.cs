@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿
 using SkateSpot.Application.DTOs;
 using System;
+using System.Text.Json.Serialization;
 
 namespace SkateSpot.Application.Features.CommentFeatures.Commands
 {

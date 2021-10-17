@@ -21,12 +21,11 @@ namespace SkateSpot.Application.MappingProfiles
 					Lng = s.Longitude
 				}));
 
-			CreateMap<Like, LikeDto>();
-			CreateMap<Comment, CommentDto>()
-				.ForMember(d => d.LikesCount, opt => opt.MapFrom(s => s.Likes.Count()));
+			CreateMap<Like, LikeDto>()
+				.ForMember(d => d.UserId, opt => opt.MapFrom(s => s.GiverId));
+			CreateMap<Comment, CommentDto>();
 			CreateMap<User, SmallUserDto>();
-			CreateMap<Spot, SpotDto>()
-				.ForMember(d => d.LikesCount, opt => opt.MapFrom(s => s.Likes.Count()));
+			CreateMap<Spot, SpotDto>();
 
 			CreateMap<HistoricalVerificationStatement, VerificationStatementDto>();
 			CreateMap<HistoricalVerificationProcess, VerificationProcessDto>();

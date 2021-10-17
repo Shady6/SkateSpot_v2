@@ -35,7 +35,6 @@ const LinkImageUpload: React.FC<Props> = ({
   };
 
   const addImage = async () => {
-    console.log(otherImagesCount);
     if (!canUploadImage()) return;
 
     setError("");

@@ -1,8 +1,8 @@
 import React from "react";
-import { useLikes } from "../../../hooks/useLikes";
-import { VerificationStatementDto } from "../../../skate_spot_api/client";
-import { vote } from "../../../state/actions/tempSpotActions";
-import { VerificationButton } from "./VerificationButton";
+import { useLikes } from "../../../../hooks/useLikes";
+import { VerificationStatementDto } from "../../../../skate_spot_api/client";
+import { vote } from "../../../../state/actions/tempSpotActions";
+import { LikeButton } from "../../../social/like/LikeButton";
 
 export function VerificationButtons({
   votes,
@@ -12,7 +12,7 @@ export function VerificationButtons({
   tempSpotId: string;
 }) {
   const buttonsProps = useLikes({
-    tempSpotId,
+    subjectId: tempSpotId,
     likes:
       votes?.map((v) => ({
         userId: v.voterId as string,
@@ -25,7 +25,7 @@ export function VerificationButtons({
   return (
     <div>
       {buttonsProps.map((props) => (
-        <VerificationButton key={props.isPositive.toString()} {...props} />
+        <LikeButton key={props.isPositive.toString()} {...props} />
       ))}
     </div>
   );

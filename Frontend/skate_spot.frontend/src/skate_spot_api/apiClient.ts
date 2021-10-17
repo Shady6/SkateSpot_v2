@@ -9,5 +9,5 @@ export class ApiClient extends Client {
 
 export type ApiResponse<T> = {
   content?: T;
-  error?: ErrorResponse;
+  error?: Partial<ErrorResponse>;
 };

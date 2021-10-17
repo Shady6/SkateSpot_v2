@@ -18,7 +18,7 @@ export const sendRequestWithFlashMsgOnError = async <TReturn>(
   dispatch(
     createFlashMsgWithTimeout({
       message:
-        response.error?.statusCode !== ErrorCode.DEFAULT_ERROR
+        response?.error?.statusCode !== ErrorCode.DEFAULT_ERROR
           ? (response.error?.message as string)
           : backupErrorMessage || "Something went wrong, try again later.",
       severity: "error",

@@ -168,12 +168,12 @@ namespace SkateSpot.Infrastructure.Identity.Services
 				}
 				else
 				{
-					throw new Exception($"{result.Errors}");
+					throw new AppException(ErrorCode.BAD_INPUT, $"{string.Join('\n', result.Errors.Select(e => e.Description))}");
 				}
 			}
 			else
 			{
-				throw new Exception($"Email {request.Email } is already registered.");
+				throw new AppException(ErrorCode.BAD_INPUT, $"Email {request.Email } is already registered.");
 			}
 		}
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using SkateSpot.Application.DTOs;
+﻿using SkateSpot.Application.DTOs;
 using System;
 using System.Text.Json.Serialization;
 
@@ -13,7 +12,7 @@ namespace SkateSpot.Application.Features.LikeFeatures.Commands
 		[JsonIgnore]
 		public LikeSubjectType SubjectType { get; set; }
 
-		[BindNever]
+		[JsonIgnore]
 		public Guid UserId { get; set; }
 
 		public bool Positive { get; set; }

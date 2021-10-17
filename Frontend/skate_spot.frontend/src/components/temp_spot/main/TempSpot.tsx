@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import {
-  TempSpotWithVerificationDto,
   ObstacleType,
   SmallUserDto,
+  TempSpotWithVerificationDto,
   VerificationStatementDto,
 } from "../../../skate_spot_api/client";
+import CommentBtn from "../../social/comment/CommentBtn";
+import Comments from "../../social/comment/Comments";
 import MapModal from "./MapModal";
 import { Obstacles } from "./Obstacles";
 import { SpotAuthor } from "./SpotAuthor";
 import { SpotImages } from "./SpotImages";
 import { SurfaceScore } from "./SurfaceScore";
 import { TempSpotDetailsBtn as ShowOnMapBtn } from "./TempSpotDetailsBtn";
-import { VerificationButtons } from "./VerificationButtons";
-import CommentBtn from "./CommentBtn";
-import Comments from "./Comments";
+import { VerificationButtons } from "./Verification/VerificationButtons";
 
 interface Props {
   tempSpot: TempSpotWithVerificationDto;

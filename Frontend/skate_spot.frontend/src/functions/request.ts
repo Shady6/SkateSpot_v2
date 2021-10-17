@@ -1,5 +1,9 @@
 import { ApiClient, ApiResponse } from "../skate_spot_api/apiClient";
-import { ApiException, TokenResponse } from "../skate_spot_api/client";
+import {
+  ApiException,
+  TokenResponse,
+  ErrorCode,
+} from "../skate_spot_api/client";
 
 export const request = async <TReturn>(
   reqFunc: (client: ApiClient, token: string) => Promise<ApiResponse<TReturn>>,
@@ -15,7 +19,7 @@ export const request = async <TReturn>(
       resolve({
         content: undefined,
         error: {
-          message: "Oops, something went wrong. Try again later.",
+          statusCode: ErrorCode.DEFAULT_ERROR,
         },
       });
     });

@@ -4,19 +4,19 @@ import { useDispatch } from "react-redux";
 import { useRootState } from "../state/store";
 
 interface LikeArgs {
-  tempSpotId: string;
+  subjectId: string;
   likes: {
     userId: string;
     isPositive: boolean;
   }[];
   likeAction: (
-    tempSpotId: string,
+    subjectId: string,
     isPositive: boolean,
     deletedLike: boolean
   ) => any;
 }
 
-export const useLikes = ({ tempSpotId, likes, likeAction }: LikeArgs) => {
+export const useLikes = ({ subjectId, likes, likeAction }: LikeArgs) => {
   const dispatch = useDispatch();
   const authState = useRootState().auth;
 
@@ -34,7 +34,7 @@ export const useLikes = ({ tempSpotId, likes, likeAction }: LikeArgs) => {
     if (userPrevLike && userPrevLike.isPositive === isPositive)
       deletedLike = true;
 
-    dispatch(likeAction(tempSpotId, isPositive, deletedLike));
+    dispatch(likeAction(subjectId, isPositive, deletedLike));
   };
 
   return [

@@ -60,7 +60,7 @@ namespace SkateSpot.Application.Services
 
 		public async Task<TempSpotWithVerificationDto> GetTempSpotWithVerification(GetTempSpotWithVerificationQuery request)
 		{
-			var foundSpot = await ThrowOnNullAsync(() => _tempSpotRepository.GetFullWithEntitiesAsync(request.SpotId));
+			var foundSpot = await ThrowOnNullAsync(() => _tempSpotRepository.GetFullWithEntitiesAsync(request.spotId));
 			return _mapper.Map<TempSpotWithVerificationDto>(foundSpot);
 		}
 

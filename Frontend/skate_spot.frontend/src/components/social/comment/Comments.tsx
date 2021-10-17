@@ -1,12 +1,12 @@
 import { TextField } from "@material-ui/core";
+import SendIcon from "@mui/icons-material/Send";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { v4 } from "uuid";
 import { useInputState } from "../../../hooks/useInputState";
 import { CommentDto } from "../../../skate_spot_api/client";
-import Comment from "./Comment";
-import SendIcon from "@mui/icons-material/Send";
 import { comment as commentAction } from "../../../state/actions/tempSpotActions";
-import { useDispatch } from "react-redux";
+import Comment from "./Comment";
 
 interface Props {
   comments?: CommentDto[];
@@ -19,7 +19,7 @@ const Comments: React.FC<Props> = ({ comments, tempSpotId }) => {
 
   const sendComment = () => {
     if (!comment) return;
-    dispatch(commentAction({ text: comment, tempSpotId }));
+    dispatch(commentAction({ listItemId: tempSpotId, text: comment }));
     resetCommentInput();
   };
 
@@ -46,7 +46,7 @@ const Comments: React.FC<Props> = ({ comments, tempSpotId }) => {
       </div>
 
       {comments?.map((c) => (
-        <Comment key={v4()} comment={c} />
+        <Comment key={v4()} tempSpotId={tempSpotId} comment={c} />
       ))}
     </div>
   );
