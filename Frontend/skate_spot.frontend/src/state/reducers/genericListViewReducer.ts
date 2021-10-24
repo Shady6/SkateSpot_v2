@@ -8,7 +8,7 @@ import {
 import { CommentActionReturnType } from "../generic/listViewGenerics";
 
 export interface WithId {
-  id: string;
+  id?: string;
 }
 
 type NormalLikes = {

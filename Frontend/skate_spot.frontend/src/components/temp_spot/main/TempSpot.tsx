@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import {
+  AddressDto,
   ObstacleType,
   SmallUserDto,
   TempSpotWithVerificationDto,
-  VerificationStatementDto,
 } from "../../../skate_spot_api/client";
+import { likeThunkCreator } from "../../../state/actions/genericListViewActions";
+import {
+  tempSpotComment,
+  tempSpotLikeComment,
+  vote,
+} from "../../../state/actions/tempSpotActions";
 import CommentBtn from "../../social/comment/CommentBtn";
 import Comments from "../../social/comment/Comments";
-import MapModal from "./MapModal";
-import { Obstacles } from "./Obstacles";
-import { SpotAuthor } from "./SpotAuthor";
-import { SpotImages } from "./SpotImages";
-import { SurfaceScore } from "./SurfaceScore";
-import { TempSpotDetailsBtn as ShowOnMapBtn } from "./TempSpotDetailsBtn";
-import { VerificationButtons } from "./Verification/VerificationButtons";
+import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
+import MapModal from "../../spot_common/MapModal";
+import { Obstacles } from "../../spot_common/Obstacles";
+import { ShowOnMapBtn } from "../../spot_common/ShowOnMapBtn";
+import { SpotAuthor } from "../../spot_common/SpotAuthor";
+import { SpotImages } from "../../spot_common/SpotImages";
+import { SurfaceScore } from "../../spot_common/SurfaceScore";
 
 interface Props {
   tempSpot: TempSpotWithVerificationDto;
@@ -24,16 +30,38 @@ export const TempSpot = React.memo(
     const [isMapModalOpen, setIsMapModalOpen] = useState(false);
     const [commentsOpen, setCommentsOpen] = useState(false);
 
+    const vote_like_adapter = ({
+      isPositive,
+      deletedLike,
+      subjectId,
+    }: {
+      isPositive: boolean;
+      deletedLike: boolean;
+      subjectId: string;
+    }) => {
+      return vote({
+        tempSpotId: subjectId,
+        isReal: isPositive,
+        deletedVote: deletedLike,
+      });
+    };
+
     return (
       <div className="mb-4">
         <h4>{tempSpot.name}</h4>
         <p>{tempSpot.description}</p>
-        <SpotImages tempSpot={tempSpot} />
+        <SpotImages images={tempSpot.images} />
         <div className="d-flex mt-2">
-          <VerificationButtons
-            tempSpotId={tempSpot.id as string}
-            votes={
-              tempSpot!.verificationProcess!.votes as VerificationStatementDto[]
+          <MainLikeButtons
+            listItemId={tempSpot.id as string}
+            likes={tempSpot!.verificationProcess!.votes!.map((v) => ({
+              userId: v.voterId,
+              positive: v.isReal,
+            }))}
+            likeAction={
+              vote_like_adapter as unknown as ReturnType<
+                typeof likeThunkCreator
+              >
             }
           />
           <CommentBtn
@@ -47,13 +75,15 @@ export const TempSpot = React.memo(
         </div>
         {commentsOpen && (
           <Comments
-            tempSpotId={tempSpot.id as string}
+            listItemId={tempSpot.id as string}
             comments={tempSpot.verificationProcess?.discussion}
+            commentAction={tempSpotComment}
+            likeAction={tempSpotLikeComment}
           />
         )}
         <hr />
         <MapModal
-          tempSpot={tempSpot}
+          address={tempSpot.address as AddressDto}
           isOpen={isMapModalOpen}
           setIsOpen={setIsMapModalOpen}
         />

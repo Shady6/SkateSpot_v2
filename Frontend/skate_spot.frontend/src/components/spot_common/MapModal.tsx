@@ -1,10 +1,7 @@
 import { Box, Modal } from "@material-ui/core";
 import React from "react";
-import {
-  TempSpotWithVerificationDto,
-  AddressDto,
-} from "../../../skate_spot_api/client";
-import DisplaySpotMap from "../../map/DisplaySpotMap";
+import { AddressDto } from "../../skate_spot_api/client";
+import DisplaySpotMap from "../map/DisplaySpotMap";
 
 const style = {
   position: "absolute",
@@ -20,14 +17,14 @@ const style = {
 };
 
 interface Props {
-  tempSpot: TempSpotWithVerificationDto;
+  address: AddressDto;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DetailsModal: React.FC<Props> = ({ tempSpot, isOpen, setIsOpen }) => {
-  const MyDisplaySpotMap = React.forwardRef((props, ref) => (
-    <DisplaySpotMap address={tempSpot.address as AddressDto} />
+const DetailsModal: React.FC<Props> = ({ address, isOpen, setIsOpen }) => {
+  const MyDisplaySpotMap = React.forwardRef(() => (
+    <DisplaySpotMap address={address} />
   ));
 
   return (

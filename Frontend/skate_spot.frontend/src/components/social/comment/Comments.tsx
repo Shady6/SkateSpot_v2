@@ -1,27 +1,32 @@
 import { TextField } from "@material-ui/core";
 import SendIcon from "@mui/icons-material/Send";
 import React from "react";
-import { useDispatch } from "react-redux";
 import { v4 } from "uuid";
-import { useInputState } from "../../../hooks/useInputState";
+import { useComment } from "../../../hooks/useComment";
 import { CommentDto } from "../../../skate_spot_api/client";
-import { tempSpotComment as commentAction } from "../../../state/actions/tempSpotActions";
+import {
+  commentThunkCreator,
+  likeThunkCreator,
+} from "../../../state/actions/genericListViewActions";
 import Comment from "./Comment";
 
 interface Props {
   comments?: CommentDto[];
-  tempSpotId: string;
+  listItemId: string;
+  commentAction: ReturnType<typeof commentThunkCreator>;
+  likeAction: ReturnType<typeof likeThunkCreator>;
 }
 
-const Comments: React.FC<Props> = ({ comments, tempSpotId }) => {
-  const [comment, setComment, resetCommentInput] = useInputState("");
-  const dispatch = useDispatch();
-
-  const sendComment = () => {
-    if (!comment) return;
-    dispatch(commentAction({ listItemId: tempSpotId, text: comment }));
-    resetCommentInput();
-  };
+const Comments: React.FC<Props> = ({
+  comments,
+  listItemId,
+  commentAction,
+  likeAction,
+}) => {
+  const { comment, setComment, sendComment } = useComment(
+    listItemId,
+    commentAction
+  );
 
   return (
     <div className="mt-4 row col-4">
@@ -46,7 +51,12 @@ const Comments: React.FC<Props> = ({ comments, tempSpotId }) => {
       </div>
 
       {comments?.map((c) => (
-        <Comment key={v4()} tempSpotId={tempSpotId} comment={c} />
+        <Comment
+          key={v4()}
+          tempSpotId={listItemId}
+          comment={c}
+          likeAction={likeAction}
+        />
       ))}
     </div>
   );

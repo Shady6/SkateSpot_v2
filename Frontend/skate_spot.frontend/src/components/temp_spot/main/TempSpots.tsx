@@ -2,7 +2,7 @@ import { CircularProgress } from "@material-ui/core";
 import React from "react";
 import { useFetchOnScroll } from "../../../hooks/useFetchOnScroll";
 import { useRootState } from "../../../state/store";
-import "./styles.scss";
+import "../../spot_common/styles.scss";
 import { TempSpot } from "./TempSpot";
 import { tempSpotFetch } from "../../../state/actions/tempSpotActions";
 

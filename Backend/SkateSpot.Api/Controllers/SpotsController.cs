@@ -42,6 +42,7 @@ namespace SkateSpot.Api.Controllers
 					.Include(s => s.Author)
 					.Include(s => s.Likes)
 					.Include(s => s.Comments.OrderByDescending(c => c.CreatedAt)).ThenInclude(c => c.Author)
+					.Include(s => s.Comments).ThenInclude(c => c.Likes)
 					.Include(s => s.Images)
 					.ToArrayAsync()),
 

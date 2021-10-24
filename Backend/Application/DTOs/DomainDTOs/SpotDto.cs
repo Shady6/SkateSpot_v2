@@ -16,5 +16,6 @@ namespace SkateSpot.Application.DTOs.DomainDTOs
 		public SmallUserDto Author { get; set; }
 		public LikeDto[] Likes { get; set; }
 		public IEnumerable<CommentDto> Comments { get; set; }
+		public ImageDto[] Images { get; set; }
 	}
 }

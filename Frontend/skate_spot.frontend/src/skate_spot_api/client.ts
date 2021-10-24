@@ -1151,6 +1151,7 @@ export interface SpotDto {
     author: SmallUserDto;
     likes: LikeDto[] | undefined;
     comments: CommentDto[] | undefined;
+    images: ImageDto[] | undefined;
 }
 
 export interface SpotDtoWithTotalCount {

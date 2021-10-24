@@ -1,32 +1,30 @@
 import React from "react";
 import { useLikes } from "../../../hooks/useLikes";
 import { LikeDto } from "../../../skate_spot_api/client";
-import { tempSpotLikeComment } from "../../../state/actions/tempSpotActions";
+import { likeThunkCreator } from "../../../state/actions/genericListViewActions";
 import LikeIconBtn from "../like/LikeIconBtn";
 
 interface Props {
   commentId: string;
   likes: LikeDto[];
-  tempSpotId: string;
+  listItemId: string;
+  likeAction: ReturnType<typeof likeThunkCreator>;
 }
 
-const CommentLikes: React.FC<Props> = ({ commentId, likes, tempSpotId }) => {
+const CommentLikes: React.FC<Props> = ({
+  commentId,
+  likes,
+  listItemId,
+  likeAction,
+}) => {
   const likeButtonsProps = useLikes({
     subjectId: commentId,
-    likes:
-      likes.length === 0
-        ? []
-        : likes.map((l) => ({
-            isPositive: l.positive as boolean,
-            userId: l.userId as string,
-          })),
-    likeAction: (subjectId, isPositive, deletedLike) =>
-      tempSpotLikeComment({
-        isPositive,
-        deletedLike,
-        subjectId,
-        parentId: tempSpotId,
-      }),
+    parentId: listItemId,
+    likes: likes?.map((l) => ({
+      positive: l.positive as boolean,
+      userId: l.userId as string,
+    })),
+    likeAction,
   });
 
   return (

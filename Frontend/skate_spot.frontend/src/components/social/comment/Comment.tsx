@@ -1,13 +1,15 @@
 import React from "react";
 import { CommentDto } from "../../../skate_spot_api/client";
+import { likeThunkCreator } from "../../../state/actions/genericListViewActions";
 import CommentLikes from "./CommentLikes";
 
 interface Props {
   comment: CommentDto;
   tempSpotId: string;
+  likeAction: ReturnType<typeof likeThunkCreator>;
 }
 
-const Comment: React.FC<Props> = ({ comment, tempSpotId }) => {
+const Comment: React.FC<Props> = ({ comment, tempSpotId, likeAction }) => {
   return (
     <div className="mb-3">
       <p className="mb-0">
@@ -18,7 +20,8 @@ const Comment: React.FC<Props> = ({ comment, tempSpotId }) => {
       </p>
       <p className="mb-1">{comment.text}</p>
       <CommentLikes
-        tempSpotId={tempSpotId}
+        likeAction={likeAction}
+        listItemId={tempSpotId}
         commentId={comment.id as string}
         likes={comment.likes || []}
       />

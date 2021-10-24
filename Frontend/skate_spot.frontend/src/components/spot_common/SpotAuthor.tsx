@@ -1,6 +1,6 @@
 import PersonIcon from "@mui/icons-material/Person";
 import React from "react";
-import { SmallUserDto } from "../../../skate_spot_api/client";
+import { SmallUserDto } from "../../skate_spot_api/client";
 
 export function SpotAuthor({ author }: { author: SmallUserDto }) {
   return (

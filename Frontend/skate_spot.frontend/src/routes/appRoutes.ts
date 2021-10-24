@@ -1,9 +1,10 @@
 import Login from "../components/auth/Login";
 import Register from "../components/auth/Register";
 import Home from "../components/Home";
+import Spots from "../components/spot/Spots";
 import AddTempSpotPage from "../components/temp_spot/add/AddTempSpotPage";
-import { UserRoles } from "../types/types";
 import TempSpots from "../components/temp_spot/main/TempSpots";
+import { UserRoles } from "../types/types";
 export interface IRoute {
   linkName: string;
   path: string;
@@ -19,6 +20,7 @@ export enum Routes {
   REGISTER = "/auth/register",
   ADD_TEMP_SPOT = "/tempSpot/add",
   TEMP_SPOTS = "/tempSpot",
+  SPOTS = "/spots",
 }
 
 const routes: IRoute[] = [
@@ -55,6 +57,13 @@ const routes: IRoute[] = [
     path: Routes.TEMP_SPOTS,
     exact: true,
     component: TempSpots,
+    accessedBy: [UserRoles.ALL],
+  },
+  {
+    linkName: "Spots",
+    path: Routes.SPOTS,
+    exact: true,
+    component: Spots,
     accessedBy: [UserRoles.ALL],
   },
 ];

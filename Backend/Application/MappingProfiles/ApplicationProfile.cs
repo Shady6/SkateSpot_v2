@@ -25,7 +25,9 @@ namespace SkateSpot.Application.MappingProfiles
 				.ForMember(d => d.UserId, opt => opt.MapFrom(s => s.GiverId));
 			CreateMap<Comment, CommentDto>();
 			CreateMap<User, SmallUserDto>();
-			CreateMap<Spot, SpotDto>();
+			CreateMap<Spot, SpotDto>()
+				.ForMember(d => d.Obstacles, opt =>
+				opt.MapFrom(s => s.Obstacles.Select(o => o.ObstacleType).ToHashSet()));
 
 			CreateMap<HistoricalVerificationStatement, VerificationStatementDto>();
 			CreateMap<HistoricalVerificationProcess, VerificationProcessDto>();

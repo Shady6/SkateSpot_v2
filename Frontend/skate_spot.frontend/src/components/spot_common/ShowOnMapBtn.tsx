@@ -1,12 +1,12 @@
 import { Button } from "@material-ui/core";
-import React from "react";
 import RoomIcon from "@mui/icons-material/Room";
+import React from "react";
 
 interface Props {
   onClick: () => void;
 }
 
-export function TempSpotDetailsBtn({ onClick }: Props) {
+export function ShowOnMapBtn({ onClick }: Props) {
   return (
     <div>
       <Button onClick={onClick} size="small" variant="contained">
