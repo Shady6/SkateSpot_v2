@@ -19,6 +19,9 @@ const TempSpots: React.FC<Props> = () => {
           return <TempSpot key={t.name} tempSpot={t} />;
         })}
         {state.tempSpotsState.loading && <CircularProgress color="secondary" />}
+        {!state.tempSpotsState.loading && !state.tempSpotsState.error && (
+          <p>There is no temp spots under verifcation right now.</p>
+        )}
       </div>
     </>
   );

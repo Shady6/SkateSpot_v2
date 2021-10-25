@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { commentThunkCreator } from "../state/actions/genericListViewActions";
-import { useInputState } from "./useInputState";
+import { commentThunkCreator } from "../../state/actions/genericListViewActions";
+import { useInputState } from "../useInputState";
 
 export const useComment = (
   listItemId: string,

@@ -1,7 +1,7 @@
+import { Button } from "@material-ui/core";
 import React from "react";
+import { useError } from "../../../../hooks/small_text_feedback/useError";
 import { IGeoLocation } from "../../../../types/types";
-import NoAddressFound from "./NoAddressFound";
-import { useError } from "../../../../hooks/useError";
 
 interface Props {
   fromGeocodeLocations: IGeoLocation[] | null;
@@ -45,25 +45,23 @@ const AddressSearchResults: React.FC<Props> = ({
     else if (showMore)
       return fromGeocodeLocations!.map((l, i) => (
         <div key={l.getKey(i)}>
-          <button
+          <Button
             style={
-              hoveredAddress === i
-                ? { backgroundColor: "rgb(255,50,0)" }
-                : undefined
+              hoveredAddress === i ? { backgroundColor: "#363636" } : undefined
             }
             onClick={(_) => pickAddress(i)}
             onMouseEnter={setAddressIndex}
             onMouseLeave={() => setHoveredAddress(null)}
           >
             {`${i + 1}. ${l.toString()}`}
-          </button>
+          </Button>
         </div>
       ));
     else
       return (
         <div>
-          <button>{location.toString()}</button>
-          <button onClick={() => setShowMore(true)}>Show more</button>
+          <span>{location.toString()}</span>
+          <Button onClick={() => setShowMore(true)}>Show more</Button>
         </div>
       );
   };

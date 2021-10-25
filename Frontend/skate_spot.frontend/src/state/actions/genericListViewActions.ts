@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { sendRequestWithFlashMsgOnError } from "../../functions/sendRequestWithFlashMsgOnError";
+import { sendRequestWithFlashMsgOnError } from "../../functions/request/sendRequestWithFlashMsgOnError";
 import { CommentDto, LikeSubjectType } from "../../skate_spot_api/client";
 import {
   CommentActionReturnType,

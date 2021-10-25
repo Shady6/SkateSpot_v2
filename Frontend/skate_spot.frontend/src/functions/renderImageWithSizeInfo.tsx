@@ -1,4 +1,4 @@
-import { getStringSizeInMb } from "./getStringSizeInMb";
+import { getStringSizeInMb } from "./util/getStringSizeInMb";
 
 export const renderImageWithSizeInfo = (b64Image: string) => {
   return (

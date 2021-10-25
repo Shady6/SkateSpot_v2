@@ -1,9 +1,9 @@
-import { ApiClient, ApiResponse } from "../skate_spot_api/apiClient";
+import { ApiClient, ApiResponse } from "../../skate_spot_api/apiClient";
 import {
   ApiException,
-  TokenResponse,
   ErrorCode,
-} from "../skate_spot_api/client";
+  TokenResponse,
+} from "../../skate_spot_api/client";
 
 export const request = async <TReturn>(
   reqFunc: (client: ApiClient, token: string) => Promise<ApiResponse<TReturn>>,

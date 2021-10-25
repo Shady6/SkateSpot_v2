@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IGeoLocation } from "../../../../types/types";
-import AddMarkerMap from "../../../map/AddMarkerMap";
+import MapWithSpotMarkers from "../../../map/MapWithSpotMarkers";
 import PlacableMarker from "../../../map/PlacableMarker";
 import AddressSearch from "./AddressSearch";
 import AddressSearchMarkers from "./AddressSearchMarkers";
@@ -26,7 +26,7 @@ const MapAddress: React.FC<{
   return (
     <>
       <p>Select spot on map</p>
-      <AddMarkerMap>
+      <MapWithSpotMarkers displaySelectedMarkerLegend={true}>
         <PlacableMarker
           showClickMarker={showClickData}
           setShowClickMarker={setShowClickData}
@@ -42,7 +42,7 @@ const MapAddress: React.FC<{
             location={location}
           />
         )}
-      </AddMarkerMap>
+      </MapWithSpotMarkers>
       <div className={"mt-2"}>
         <AddressSearch
           setGeocodeLocations={setFromGeocodeLocations}

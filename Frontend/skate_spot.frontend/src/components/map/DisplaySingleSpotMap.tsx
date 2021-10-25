@@ -1,22 +1,22 @@
 import React from "react";
 import { AddressDto } from "../../skate_spot_api/client";
 import { Coords } from "../../types/types";
-import IconMarker from "./IconMarker";
+import LeafletMarkerWrapper from "./LeafletMarkerWrapper";
 import Map from "./Map";
 
 interface Props {
   address: AddressDto;
 }
 
-const DisplaySpotMap: React.FC<Props> = ({ address }: Props) => {
+const DisplaySingleSpot: React.FC<Props> = ({ address }: Props) => {
   return (
     <div>
       <Map>
-        <IconMarker
+        <LeafletMarkerWrapper
           flyToMarkerZoom={16}
           animateFly={false}
           position={address!.coords as Coords}
-        ></IconMarker>
+        ></LeafletMarkerWrapper>
       </Map>
       <p>
         {address.country} {address.city} {address.streetName && ","}{" "}
@@ -26,4 +26,4 @@ const DisplaySpotMap: React.FC<Props> = ({ address }: Props) => {
   );
 };
 
-export default DisplaySpotMap;
+export default DisplaySingleSpot;

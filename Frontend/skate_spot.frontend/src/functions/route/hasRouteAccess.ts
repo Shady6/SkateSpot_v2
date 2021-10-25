@@ -1,6 +1,6 @@
-import { IRoute } from "../routes/appRoutes";
-import { AuthState } from "../state/reducers/authReducer";
-import { UserRoles } from "../types/types";
+import { IRoute } from "../../routes/appRoutes";
+import { AuthState } from "../../state/reducers/authReducer";
+import { UserRoles } from "../../types/types";
 
 const hasRouteAccess = (route: IRoute, authState: AuthState) => {
   return (

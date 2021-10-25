@@ -74,7 +74,8 @@ namespace SkateSpot.Application.Services
 		public async Task<List<SpotMarkerDataDto>> GetPermaAndTempSpotsMarkerData()
 		{
 			IQueryable<ISpot> permaSpots = _spotRepository.GetSpots();
-			IQueryable<ISpot> tempSpots = _tempSpotRepository.GetTempSpots();
+			IQueryable<ISpot> tempSpots = _tempSpotRepository.GetTempSpots()
+				.Where(s => s.VerificationProcess.EndDate > DateTime.Now);
 
 			var mappedPermaSpots = await _mapper.ProjectTo<SpotMarkerDataDto>(permaSpots).ToListAsync();
 			var mappedTempSpots = await _mapper.ProjectTo<SpotMarkerDataDto>(tempSpots).ToListAsync();

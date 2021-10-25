@@ -1,7 +1,10 @@
-import { ITag } from "../components/temp_spot/add/tags/Tags";
-import { ObstacleType, CreateTempSpotCommand } from "../skate_spot_api/client";
-import { AuthState } from "../state/reducers/authReducer";
-import { IGeoLocation } from "../types/types";
+import { ITag } from "../../components/temp_spot/add/tags/Tags";
+import {
+  CreateTempSpotCommand,
+  ObstacleType,
+} from "../../skate_spot_api/client";
+import { AuthState } from "../../state/reducers/authReducer";
+import { IGeoLocation } from "../../types/types";
 import { request } from "./request";
 
 export const sendSpotData = async (

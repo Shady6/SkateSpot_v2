@@ -2,7 +2,7 @@ import { TextField } from "@material-ui/core";
 import SendIcon from "@mui/icons-material/Send";
 import React from "react";
 import { v4 } from "uuid";
-import { useComment } from "../../../hooks/useComment";
+import { useComment } from "../../../hooks/social/useComment";
 import { CommentDto } from "../../../skate_spot_api/client";
 import {
   commentThunkCreator,

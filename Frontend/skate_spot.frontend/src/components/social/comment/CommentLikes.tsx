@@ -1,5 +1,5 @@
 import React from "react";
-import { useLikes } from "../../../hooks/useLikes";
+import { useLikes } from "../../../hooks/social/useLikes";
 import { LikeDto } from "../../../skate_spot_api/client";
 import { likeThunkCreator } from "../../../state/actions/genericListViewActions";
 import LikeIconBtn from "../like/LikeIconBtn";

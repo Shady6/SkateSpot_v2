@@ -1,8 +1,8 @@
 import _ from "lodash";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { likeThunkCreator } from "../state/actions/genericListViewActions";
-import { useRootState } from "../state/store";
+import { likeThunkCreator } from "../../state/actions/genericListViewActions";
+import { useRootState } from "../../state/store";
 
 interface LikeArgs {
   subjectId: string;

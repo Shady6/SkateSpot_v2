@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import FlashMsgs from "./components/shared/FlashMsgs";
-import hasRouteAccess from "./functions/hasRouteAccess";
+import hasRouteAccess from "./functions/route/hasRouteAccess";
 import { useAuthFromLocalStorage } from "./hooks/useAuthFromLocalStorage";
 import routes from "./routes/appRoutes";
 import { useRootState } from "./state/store";

@@ -2,6 +2,8 @@ import L, { DivIcon } from "leaflet";
 import React, { useEffect } from "react";
 import { Marker, useMap } from "react-leaflet";
 import { Coords } from "../../types/types";
+import { renderToStaticMarkup } from "react-dom/server";
+import { MarkerIcon } from "./MarkerIcon";
 
 interface Props {
   position: Coords;
@@ -15,7 +17,7 @@ interface Props {
   onClick?: (e: L.LeafletMouseEvent) => void;
 }
 
-const IconMarker: React.FC<Props> = ({
+const LeafletMarkerWrapper: React.FC<Props> = ({
   position,
   size = 30,
   color = "rgb(0,50,255)",
@@ -46,8 +48,11 @@ const IconMarker: React.FC<Props> = ({
       position={position}
       icon={
         new DivIcon({
-          html: `<i class="fa fa-map-marker" 
-            style="font-size:${size}px;color:${color}">${text ?? ""}</i>`,
+          html: renderToStaticMarkup(
+            <MarkerIcon fontSize={size.toString() + "px"} color={color}>
+              {text}
+            </MarkerIcon>
+          ),
           iconSize: [size / 1.75, size],
           iconAnchor: [size / 1.75 / 2, size],
         })
@@ -58,4 +63,7 @@ const IconMarker: React.FC<Props> = ({
   );
 };
 
-export default IconMarker;
+export default LeafletMarkerWrapper;
+
+// `<i class="fa fa-map-marker"
+//             style="font-size:${size}px;color:${color}">${text ?? ""}</i>`,

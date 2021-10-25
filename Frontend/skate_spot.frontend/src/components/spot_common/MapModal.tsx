@@ -1,7 +1,7 @@
 import { Box, Modal } from "@material-ui/core";
 import React from "react";
 import { AddressDto } from "../../skate_spot_api/client";
-import DisplaySpotMap from "../map/DisplaySpotMap";
+import DisplaySingleSpot from "../map/DisplaySingleSpotMap";
 
 const style = {
   position: "absolute",
@@ -24,7 +24,7 @@ interface Props {
 
 const DetailsModal: React.FC<Props> = ({ address, isOpen, setIsOpen }) => {
   const MyDisplaySpotMap = React.forwardRef(() => (
-    <DisplaySpotMap address={address} />
+    <DisplaySingleSpot address={address} />
   ));
 
   return (

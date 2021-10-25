@@ -1,5 +1,5 @@
-import { DefaultAddress } from "../types/types";
-import { AddressDto } from "../skate_spot_api/client";
+import { DefaultAddress } from "../../types/types";
+import { AddressDto } from "../../skate_spot_api/client";
 
 const addressToHtml = (a: DefaultAddress | AddressDto) => (
   <div>

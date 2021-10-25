@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { sendRequestWithFlashMsgOnError } from "../../functions/sendRequestWithFlashMsgOnError";
+import { sendRequestWithFlashMsgOnError } from "../../functions/request/sendRequestWithFlashMsgOnError";
 import { LikeSubjectType } from "../../skate_spot_api/client";
 import { ListViewTypes } from "../generic/listViewGenerics";
 import { RootState } from "../store";

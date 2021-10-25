@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useMapEvents } from "react-leaflet";
-import reverseGeocode from "../../functions/reverseGeocode";
 import { CoordsDto } from "../../skate_spot_api/client";
 import { Coords, IGeoLocation } from "../../types/types";
-import IconMarker from "./IconMarker";
+import LeafletMarkerWrapper from "./LeafletMarkerWrapper";
+import reverseGeocode from "../../functions/map/reverseGeocode";
+import { markersData } from "../../hooks/map/useLegend";
 
 interface Props {
   setLocation: React.Dispatch<React.SetStateAction<IGeoLocation | null>>;
@@ -29,7 +30,10 @@ const PlacableMarker: React.FC<Props> = ({
   });
 
   return markerPosition && showClickMarker ? (
-    <IconMarker color={"rgb(255,100,10)"} position={markerPosition as Coords} />
+    <LeafletMarkerWrapper
+      color={markersData.selected.color}
+      position={markerPosition as Coords}
+    />
   ) : null;
 };
 

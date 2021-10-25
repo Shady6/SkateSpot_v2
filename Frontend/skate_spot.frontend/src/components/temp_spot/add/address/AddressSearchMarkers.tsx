@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useMap } from "react-leaflet";
-import getBoundingBox from "../../../../functions/getBoundingBox";
+import getBoundingBox from "../../../../functions/map/getBoundingBox";
 import { IGeoLocation } from "../../../../types/types";
-import IconMarker from "../../../map/IconMarker";
+import LeafletMarkerWrapper from "../../../map/LeafletMarkerWrapper";
+import { markersData } from "../../../../hooks/map/useLegend";
 
 interface Props {
   showMore: boolean;
@@ -38,10 +39,10 @@ const AddressSearchMarkers: React.FC<Props> = ({
       return fromGeocodeLocations?.map((l, i) => {
         const isHovered = hoveredAddress === i;
         return (
-          <IconMarker
+          <LeafletMarkerWrapper
             size={isHovered ? 40 : 30}
             text={`${(i + 1).toString()}`}
-            color={isHovered ? "red" : "rgb(255,100,10)"}
+            color={markersData.selected.color}
             position={l.coords}
             key={l.getKey(i)}
             onMouseEnter={(_) => setHoveredAddress(i)}
@@ -52,8 +53,8 @@ const AddressSearchMarkers: React.FC<Props> = ({
       });
     else
       return (
-        <IconMarker
-          color={"rgb(255,100,10)"}
+        <LeafletMarkerWrapper
+          color={markersData.selected.color}
           position={location!.coords}
           flyToMarkerZoom={12}
         />
