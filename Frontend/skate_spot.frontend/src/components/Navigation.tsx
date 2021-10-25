@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import hasRouteAccess from "../functions/route/hasRouteAccess";
 import routes from "../routes/appRoutes";
-import { logout } from "../state/actions/authActions";
 import { useAppDispatch, useRootState } from "../state/store";
 
 const Navigation: React.FC = () => {
@@ -21,18 +20,7 @@ const Navigation: React.FC = () => {
   return (
     <ul className={"d-flex"}>
       {renderLinks()}
-      {authState.content && (
-        <>
-          <li
-            className={"me-5"}
-            style={{ cursor: "pointer" }}
-            onClick={() => dispatch(logout())}
-          >
-            Logout
-          </li>
-          <li>{authState.content.userName}</li>
-        </>
-      )}
+      {authState.content && <li>{authState.content.userName}</li>}
     </ul>
   );
 };
