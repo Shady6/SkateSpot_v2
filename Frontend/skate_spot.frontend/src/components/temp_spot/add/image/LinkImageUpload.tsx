@@ -2,7 +2,7 @@ import { Icon, IconButton, TextField } from "@material-ui/core";
 import { useState } from "react";
 import { renderImageWithSizeInfo } from "../../../../functions/renderImageWithSizeInfo";
 import { useError } from "../../../../hooks/small_text_feedback/useError";
-import { useInputState } from "../../../../hooks/useInputState";
+import { useInputState } from "../../../../hooks/util/useInputState";
 import { ApiClient } from "../../../../skate_spot_api/apiClient";
 import { useRootState } from "../../../../state/store";
 import Upload from "../../../shared/Upload";

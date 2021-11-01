@@ -25,26 +25,26 @@ interface Props {
   tempSpot: TempSpotWithVerificationDto;
 }
 
+export const vote_like_adapter = ({
+  isPositive,
+  deletedLike,
+  subjectId,
+}: {
+  isPositive: boolean;
+  deletedLike: boolean;
+  subjectId: string;
+}) => {
+  return vote({
+    tempSpotId: subjectId,
+    isReal: isPositive,
+    deletedVote: deletedLike,
+  });
+};
+
 export const TempSpot = React.memo(
   ({ tempSpot }: Props) => {
     const [isMapModalOpen, setIsMapModalOpen] = useState(false);
     const [commentsOpen, setCommentsOpen] = useState(false);
-
-    const vote_like_adapter = ({
-      isPositive,
-      deletedLike,
-      subjectId,
-    }: {
-      isPositive: boolean;
-      deletedLike: boolean;
-      subjectId: string;
-    }) => {
-      return vote({
-        tempSpotId: subjectId,
-        isReal: isPositive,
-        deletedVote: deletedLike,
-      });
-    };
 
     return (
       <div className="mb-4">
@@ -68,18 +68,22 @@ export const TempSpot = React.memo(
             onClick={() => setCommentsOpen(!commentsOpen)}
             commentsCount={tempSpot.verificationProcess?.discussion?.length}
           />
-          <SurfaceScore surfaceScore={tempSpot.surfaceScore as number} />
-          <Obstacles obstacles={tempSpot.obstacles as ObstacleType[]} />
           <ShowOnMapBtn onClick={() => setIsMapModalOpen(true)} />
+          <div className="ms-3 d-flex">
+            <SurfaceScore surfaceScore={tempSpot.surfaceScore as number} />
+            <Obstacles obstacles={tempSpot.obstacles as ObstacleType[]} />
+          </div>
           <SpotAuthor author={tempSpot.author as SmallUserDto} />
         </div>
         {commentsOpen && (
-          <Comments
-            listItemId={tempSpot.id as string}
-            comments={tempSpot.verificationProcess?.discussion}
-            commentAction={tempSpotComment}
-            likeAction={tempSpotLikeComment}
-          />
+          <div className="row col-4">
+            <Comments
+              listItemId={tempSpot.id as string}
+              comments={tempSpot.verificationProcess?.discussion}
+              commentAction={tempSpotComment}
+              likeAction={tempSpotLikeComment}
+            />
+          </div>
         )}
         <hr />
         <MapModal

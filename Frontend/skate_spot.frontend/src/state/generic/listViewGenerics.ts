@@ -47,8 +47,15 @@ export const listViewSpecifics: IListViewSpecifics = {
     name: "tempSpots",
     commentSubjectType: CommentSubjectType.TempSpots,
   },
-  // @ts-ignore
-  spotVideos: undefined,
+  spotVideos: {
+    // This is not used in SpotVideos
+    fetchListItems: (client: ApiClient, take: number, skip: number) => {
+      return null as unknown as Promise<ApiResponse<ListWithCount<SpotDto>>>;
+    },
+    getSpecificState: (state: RootState) => state.spotVideoState,
+    name: "spotVideos",
+    commentSubjectType: CommentSubjectType.SpotVideos,
+  },
 };
 
 export enum ListViewTypes {

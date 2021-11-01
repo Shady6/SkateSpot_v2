@@ -3,10 +3,10 @@ import { useMap } from "react-leaflet";
 import { useLegend } from "../../hooks/map/useLegend";
 
 interface Props {
-  displaySelectedMarkerLegend: boolean;
+  displaySelectedMarkerLegend?: boolean;
 }
 
-const Legend: React.FC<Props> = ({ displaySelectedMarkerLegend }) => {
+const Legend: React.FC<Props> = ({ displaySelectedMarkerLegend = false }) => {
   useLegend({ displaySelectedMarkerLegend, map: useMap() });
   return <></>;
 };

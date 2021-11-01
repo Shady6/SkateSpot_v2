@@ -9,7 +9,7 @@ interface Props {
 export function ShowOnMapBtn({ onClick }: Props) {
   return (
     <div>
-      <Button onClick={onClick} size="small" variant="contained">
+      <Button onClick={onClick} size="small" variant="outlined">
         <RoomIcon />
       </Button>
     </div>

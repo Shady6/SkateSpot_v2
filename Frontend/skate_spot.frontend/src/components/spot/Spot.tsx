@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Routes } from "../../routes/appRoutes";
 import {
   LikeDto,
   ObstacleType,
@@ -19,6 +21,7 @@ import { ShowOnMapBtn } from "../spot_common/ShowOnMapBtn";
 import { SpotAuthor } from "../spot_common/SpotAuthor";
 import { SpotImages } from "../spot_common/SpotImages";
 import { SurfaceScore } from "../spot_common/SurfaceScore";
+import { SpotVideoBtn } from "../spot_video/SpotVideoBtn";
 
 interface Props {
   spot: SpotDto;
@@ -28,6 +31,11 @@ export const Spot = React.memo(
   ({ spot }: Props) => {
     const [isMapModalOpen, setIsMapModalOpen] = useState(false);
     const [commentsOpen, setCommentsOpen] = useState(false);
+    const history = useHistory();
+
+    const handleSpotVideoBtnClick = () => {
+      history.push(Routes.SPOT_VIDEO.replace(/:spotName/, spot.name as string));
+    };
 
     return (
       <div className="mb-4">
@@ -44,18 +52,23 @@ export const Spot = React.memo(
             onClick={() => setCommentsOpen(!commentsOpen)}
             commentsCount={spot?.comments?.length || 0}
           />
-          <SurfaceScore surfaceScore={spot.surfaceScore as number} />
-          <Obstacles obstacles={spot.obstacles as ObstacleType[]} />
+          <SpotVideoBtn onClick={handleSpotVideoBtnClick} />
           <ShowOnMapBtn onClick={() => setIsMapModalOpen(true)} />
+          <div className="ms-3 d-flex">
+            <SurfaceScore surfaceScore={spot.surfaceScore as number} />
+            <Obstacles obstacles={spot.obstacles as ObstacleType[]} />
+          </div>
           <SpotAuthor author={spot.author as SmallUserDto} />
         </div>
         {commentsOpen && (
-          <Comments
-            listItemId={spot.id as string}
-            comments={spot.comments}
-            commentAction={spotComment}
-            likeAction={spotLikeComment}
-          />
+          <div className="row col-4">
+            <Comments
+              listItemId={spot.id as string}
+              comments={spot.comments}
+              commentAction={spotComment}
+              likeAction={spotLikeComment}
+            />
+          </div>
         )}
         <hr />
         <MapModal

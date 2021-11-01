@@ -265,14 +265,20 @@ namespace SkateSpot.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("EditedAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("EmbedId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PlatformType")
+                        .HasColumnType("integer");
+
                     b.Property<Guid?>("SpotId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

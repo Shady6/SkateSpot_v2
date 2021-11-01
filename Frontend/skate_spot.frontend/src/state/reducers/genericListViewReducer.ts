@@ -140,4 +140,16 @@ export const listViewReducerHandlers = {
       comment!.likes = result;
     },
   },
+  setItems: (state: ListViewImmerState, payload: WithSocial[] ) => {    
+    state.listWithCount = {
+      data: payload,
+      // Total count is not important here, since this action is only needed
+      // to properly dispatch comment, like etc. actions on pages, where we dont use 
+      // fetch action
+      totalCount: 0
+    }    
+  },
+  reset: (defaultState: ListViewState<WithSocial>) => {
+    return defaultState;
+  }
 };

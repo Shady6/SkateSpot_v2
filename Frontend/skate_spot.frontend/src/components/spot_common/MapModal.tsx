@@ -3,7 +3,7 @@ import React from "react";
 import { AddressDto } from "../../skate_spot_api/client";
 import DisplaySingleSpot from "../map/DisplaySingleSpotMap";
 
-const style = {
+export const ModalStyle = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -22,7 +22,7 @@ interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DetailsModal: React.FC<Props> = ({ address, isOpen, setIsOpen }) => {
+const MapModal: React.FC<Props> = ({ address, isOpen, setIsOpen }) => {
   const MyDisplaySpotMap = React.forwardRef(() => (
     <DisplaySingleSpot address={address} />
   ));
@@ -34,11 +34,11 @@ const DetailsModal: React.FC<Props> = ({ address, isOpen, setIsOpen }) => {
       onClose={() => setIsOpen(false)}
     >
       {/* @ts-ignore */}
-      <Box sx={style}>
+      <Box sx={ModalStyle}>
         <MyDisplaySpotMap />
       </Box>
     </Modal>
   );
 };
 
-export default DetailsModal;
+export default MapModal;

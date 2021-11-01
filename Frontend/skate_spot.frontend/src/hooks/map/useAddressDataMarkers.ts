@@ -14,7 +14,7 @@ export const useAddressDataMarkers = () => {
       const r = await sendRequestWithFlashMsgOnError(
         dispatch,
         authState.content,
-        (c, t) => c.get_Perma_And_Temp_Spots_Marker_Data(t)
+        (c) => c.get_Perma_And_Temp_Spots_Marker_Data()
       );
       setSpotMarkerData(r?.content || []);
     })();

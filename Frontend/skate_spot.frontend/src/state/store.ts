@@ -4,6 +4,7 @@ import authReducer from "./reducers/authReducer";
 import flashMsgReducer from "./reducers/flashMsgReducer";
 import tempSpotsReducer from "./reducers/tempSpotsReducer";
 import spotsReducer from "./reducers/spotReducer";
+import spotVideoReducer from "./reducers/spotVideoReducer";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     flashMsgs: flashMsgReducer,
     tempSpotsState: tempSpotsReducer,
     spotsState: spotsReducer,
+    spotVideoState: spotVideoReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

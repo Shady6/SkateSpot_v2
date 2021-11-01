@@ -5,10 +5,18 @@ using SkateSpot.Domain.Interfaces;
 
 namespace SkateSpot.Domain.Models
 {
+	public enum VideoPlatformType
+    {
+		Instagram,
+		YouTube
+    }
+
 	public class SpotVideo : EditableEntity, ICommentable, ILikeable
 	{
-		public string Url { get; protected set; }
-		public Guid AuthorId { get; protected set; }
+		public string EmbedId { get; protected set; }
+        public string Description { get; protected set; }
+        public VideoPlatformType PlatformType { get; protected set; }
+        public Guid AuthorId { get; protected set; }
 		public User Author { get; protected set; }
 		public Guid? SpotId { get; protected set; }
 		public Spot Spot { get; protected set; }
@@ -33,10 +41,15 @@ namespace SkateSpot.Domain.Models
 		{
 		}
 
-		public SpotVideo(string url, Guid userId)
+		public SpotVideo(string embedId,
+                   VideoPlatformType platformType,
+                   Guid userId,
+                   string description)
 		{
-			Url = url;
+			EmbedId = embedId;
+			PlatformType = platformType;
 			AuthorId = userId;
+			Description = description;
 		}
 
 		public void Like(Like like) =>

@@ -29,9 +29,10 @@ const Comments: React.FC<Props> = ({
   );
 
   return (
-    <div className="mt-4 row col-4">
+    <div className="mt-4">
       <div className="d-flex align-items-end mb-3">
         <TextField
+          color="primary"
           className="me-2 flex-grow-1"
           variant="standard"
           label="Write something"

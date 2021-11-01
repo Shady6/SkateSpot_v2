@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { v4 } from "uuid";
 import { sendSpotData } from "../../../functions/request/sendSpotData";
-import { useInputState } from "../../../hooks/useInputState";
+import { useInputState } from "../../../hooks/util/useInputState";
 import { createFlashMsgWithTimeout } from "../../../state/reducers/flashMsgReducer";
 import { useRootState } from "../../../state/store";
 import { IGeoLocation } from "../../../types/types";

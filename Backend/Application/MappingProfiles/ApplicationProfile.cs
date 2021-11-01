@@ -26,8 +26,9 @@ namespace SkateSpot.Application.MappingProfiles
 			CreateMap<Comment, CommentDto>();
 			CreateMap<User, SmallUserDto>();
 			CreateMap<Spot, SpotDto>()
-				.ForMember(d => d.Obstacles, opt =>
-				opt.MapFrom(s => s.Obstacles.Select(o => o.ObstacleType).ToHashSet()));
+                .ForMember(d => d.Obstacles, opt =>
+                opt.MapFrom(s => s.Obstacles.Select(o => o.ObstacleType)))
+                .ForMember(d => d.VideosCount, opt => opt.MapFrom(s => s.Videos.Count()));		
 
 			CreateMap<HistoricalVerificationStatement, VerificationStatementDto>();
 			CreateMap<HistoricalVerificationProcess, VerificationProcessDto>();
@@ -44,7 +45,11 @@ namespace SkateSpot.Application.MappingProfiles
 			CreateMap<ISpot, SpotMarkerDataDto>()
 				.ForMember(d => d.IsTempSpot, opt => opt.MapFrom(s => s is TempSpot));
 
+			CreateMap<SpotImage, ImageDto>()
+				.ForMember(d => d.Base64, opt => opt.MapFrom(s => s.Image.Base64));
 			CreateMap<Image, ImageDto>();
+
+			CreateMap<SpotVideo, SpotVideoDto>();
 		}
 	}
 }

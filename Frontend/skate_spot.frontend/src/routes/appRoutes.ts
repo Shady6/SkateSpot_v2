@@ -6,13 +6,16 @@ import AddTempSpotPage from "../components/temp_spot/add/AddTempSpotPage";
 import TempSpots from "../components/temp_spot/main/TempSpots";
 import { UserRoles } from "../types/types";
 import { Logout } from "../components/auth/Logout";
+import { SpotsMapView } from "../components/spot_common/MapView/SpotsMapView";
+import { SingleSpotVideos } from "../components/spot_video/SingleSpotVideos";
 export interface IRoute {
-  linkName: string;
+  linkName: string | null;
   path: string;
   exact: boolean;
   component: React.FC;
   accessedBy: UserRoles[];
   props?: any;
+  renderLink: boolean;
 }
 
 export enum Routes {
@@ -23,6 +26,8 @@ export enum Routes {
   TEMP_SPOTS = "/tempSpot",
   SPOTS = "/spots",
   LOGOUT = "/logout",
+  MAP = "/map",
+  SPOT_VIDEO = "/spots/:spotName/spotVideo",
 }
 
 const routes: IRoute[] = [
@@ -32,6 +37,7 @@ const routes: IRoute[] = [
     exact: true,
     component: Home,
     accessedBy: [UserRoles.ALL],
+    renderLink: true,
   },
   {
     linkName: "Login",
@@ -39,6 +45,7 @@ const routes: IRoute[] = [
     exact: true,
     component: Login,
     accessedBy: [UserRoles.NOT_SIGNED_IN],
+    renderLink: true,
   },
   {
     linkName: "Register",
@@ -46,6 +53,7 @@ const routes: IRoute[] = [
     exact: true,
     component: Register,
     accessedBy: [UserRoles.NOT_SIGNED_IN],
+    renderLink: true,
   },
   {
     linkName: "Add Spot",
@@ -53,6 +61,7 @@ const routes: IRoute[] = [
     exact: true,
     component: AddTempSpotPage,
     accessedBy: [UserRoles.SIGNED_IN],
+    renderLink: true,
   },
   {
     linkName: "Temp Spots",
@@ -60,6 +69,7 @@ const routes: IRoute[] = [
     exact: true,
     component: TempSpots,
     accessedBy: [UserRoles.ALL],
+    renderLink: true,
   },
   {
     linkName: "Spots",
@@ -67,6 +77,23 @@ const routes: IRoute[] = [
     exact: true,
     component: Spots,
     accessedBy: [UserRoles.ALL],
+    renderLink: true,
+  },
+  {
+    linkName: null,
+    path: Routes.SPOT_VIDEO,
+    exact: true,
+    component: SingleSpotVideos,
+    accessedBy: [UserRoles.ALL],
+    renderLink: false,
+  },
+  {
+    linkName: "Map",
+    path: Routes.MAP,
+    exact: true,
+    component: SpotsMapView,
+    accessedBy: [UserRoles.ALL],
+    renderLink: true,
   },
   {
     linkName: "Logout",
@@ -74,6 +101,7 @@ const routes: IRoute[] = [
     exact: true,
     component: Logout,
     accessedBy: [UserRoles.SIGNED_IN],
+    renderLink: true,
   },
 ];
 

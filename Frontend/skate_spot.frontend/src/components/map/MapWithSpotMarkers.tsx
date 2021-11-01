@@ -3,14 +3,14 @@ import { Popup } from "react-leaflet";
 import MyMarkerClusterGroup from "react-leaflet-markercluster";
 import addressToHtml from "../../functions/map/addressToHtml";
 import { useAddressDataMarkers } from "../../hooks/map/useAddressDataMarkers";
-import { markersData } from "../../hooks/map/useLegend";
-import { Coords, DefaultAddress } from "../../types/types";
-import LeafletMarkerWrapper from "./LeafletMarkerWrapper";
+import { DefaultAddress } from "../../types/types";
 import Legend from "./Legend";
 import Map from "./Map";
+import { ColorCodedMarker } from "./ColorCodedMarker";
 
 interface Props {
   displaySelectedMarkerLegend?: boolean;
+  style?: any;
 }
 
 const MapWithSpotMarkers: React.FC<Props> = ({
@@ -21,23 +21,16 @@ const MapWithSpotMarkers: React.FC<Props> = ({
   return (
     <div>
       <Map>
+        {/* @ts-ignore */}
         <MyMarkerClusterGroup showCoverageOnHover={false}>
           {spotMarkerData &&
             spotMarkerData.map((m) => (
-              <LeafletMarkerWrapper
-                color={
-                  m.isTempSpot
-                    ? markersData.tempSpot.color
-                    : markersData.spot.color
-                }
-                key={m.name}
-                position={m!.address!.coords as Coords}
-              >
+              <ColorCodedMarker key={m.name} spotMarkerData={m}>
                 <Popup>
                   <b>{m.name}</b>
                   {addressToHtml(m!.address as unknown as DefaultAddress)}
                 </Popup>
-              </LeafletMarkerWrapper>
+              </ColorCodedMarker>
             ))}
         </MyMarkerClusterGroup>
         {children}

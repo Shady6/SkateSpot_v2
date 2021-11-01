@@ -64,7 +64,8 @@ namespace SkateSpot.Api
 			app.UseMiddleware<ToApiResponseConverter>();
 			app.UseMiddleware<ExceptionHandler>();
 			app.UseAuthentication();
-			app.UseMiddleware<TokenValidityChecker>();
+			// DEBUGGING
+			//app.UseMiddleware<TokenValidityChecker>();
 			app.UseAuthorization();
 
 

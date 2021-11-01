@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TempSpotWithVerificationDto } from "../../skate_spot_api/client";
 import {
   tempSpotComment,
@@ -29,7 +29,17 @@ const initialState: TempSpotState = {
 const tempSpotsSlice = createSlice({
   name: "tempSpots",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setTempSpots: (
+      state,
+      action: PayloadAction<TempSpotWithVerificationDto[]>
+    ) => {
+      listViewReducerHandlers.setItems(state, action.payload);
+    },
+    reset: () => {
+      return listViewReducerHandlers.reset(initialState) as TempSpotState;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(tempSpotFetch.pending, (state) => {
@@ -59,4 +69,5 @@ const tempSpotsSlice = createSlice({
   },
 });
 
+export const tempSpotActions = tempSpotsSlice.actions;
 export default tempSpotsSlice.reducer;

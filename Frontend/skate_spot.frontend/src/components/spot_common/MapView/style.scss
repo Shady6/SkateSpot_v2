@@ -1,0 +1,12 @@
+#spot-preview-modal {
+  cursor: default;
+  background-color: rgba(0, 0, 0, 0.9);
+  height: 100%;
+  z-index: 1000;
+  overflow-y: auto;
+  font-size: 0.85rem;
+
+  span {
+    font-size: 0.75rem !important;
+  }
+}

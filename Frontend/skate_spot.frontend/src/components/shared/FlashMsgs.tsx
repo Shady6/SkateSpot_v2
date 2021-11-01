@@ -11,7 +11,7 @@ const FlashMsgs: React.FC<Props> = () => {
   const state = useRootState();
 
   return state.flashMsgs.length !== 0 ? (
-    <div style={{ position: "fixed", zIndex: 1000, opacity: 0.95 }}>
+    <div style={{ position: "fixed", zIndex: 10000, opacity: 0.95 }}>
       {state.flashMsgs.map((f) => (
         <Alert
           className="mt-1"

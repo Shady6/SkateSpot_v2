@@ -6,32 +6,32 @@ using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Services
 {
-	public class SpotVideosService : Service, ISpotVideosService
-	{
-		private readonly ISpotRepository _spotRepository;
+    public class SpotVideosService : Service, ISpotVideosService
+    {
+        private readonly ISpotRepository _spotRepository;
 
-		public SpotVideosService(ISpotRepository spotRepository)
-		{
-			_spotRepository = spotRepository;
-		}
+        public SpotVideosService(ISpotRepository spotRepository)
+        {
+            _spotRepository = spotRepository;
+        }
 
-		public async Task AddSpotVideo(AddSpotVideoCommand request)
-		{
-			var foundSpot = await ThrowOnNullAsync(() => _spotRepository.GetByIdAsync(request.SpotId));
+        public async Task AddSpotVideo(AddSpotVideoCommand request)
+        {
+            var foundSpot = await ThrowOnNullAsync(() => _spotRepository.FindByNameAsync(request.SpotName));
 
-			var spotVideo = new SpotVideo(request.Url, request.UserId);
-			foundSpot.AddSpotVideo(spotVideo);
+            var spotVideo = new SpotVideo(request.EmbedId, request.PlatformType, request.UserId, request.Description);
+            foundSpot.AddSpotVideo(spotVideo);
 
-			await _spotRepository.SaveChangesAsync();
-		}
+            await _spotRepository.SaveChangesAsync();
+        }
 
-		public async Task DeleteSpotVideo(DeleteSpotVideoCommand request)
-		{
-			var foundSpot = await ThrowOnNullAsync(() => _spotRepository.GetByIdAsync(request.spotId));
+        public async Task DeleteSpotVideo(DeleteSpotVideoCommand request)
+        {
+            var foundSpot = await ThrowOnNullAsync(() => _spotRepository.GetByIdAsync(request.spotId));
 
-			foundSpot.DeleteSpotVideo(request.spotVideoId, request.UserId);
+            foundSpot.DeleteSpotVideo(request.spotVideoId, request.UserId);
 
-			await _spotRepository.SaveChangesAsync();
-		}
-	}
+            await _spotRepository.SaveChangesAsync();
+        }
+    }
 }

@@ -28,13 +28,13 @@ const App: React.FC = () => {
     ));
 
   return (
-    <div>
+    <>
       <FlashMsgs />
       <BrowserRouter>
         <Navigation />
         <Switch>{renderRoutes()}</Switch>
       </BrowserRouter>
-    </div>
+    </>
   );
 };
 

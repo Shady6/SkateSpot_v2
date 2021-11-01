@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SpotDto } from "../../skate_spot_api/client";
 import {
   spotComment,
@@ -29,7 +29,14 @@ const initialState: SpotState = {
 const spotSlice = createSlice({
   name: "spots",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setSpots: (state, action: PayloadAction<SpotDto[]>) => {
+      listViewReducerHandlers.setItems(state, action.payload);
+    },
+    reset: () => {
+      return listViewReducerHandlers.reset(initialState) as SpotState;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(spotFetch.pending, (state) => {
@@ -56,4 +63,5 @@ const spotSlice = createSlice({
   },
 });
 
+export const spotActions = spotSlice.actions;
 export default spotSlice.reducer;
