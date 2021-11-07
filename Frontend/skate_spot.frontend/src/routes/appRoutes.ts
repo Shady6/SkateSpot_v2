@@ -1,13 +1,15 @@
 import Login from "../components/auth/Login";
+import { Logout } from "../components/auth/Logout";
 import Register from "../components/auth/Register";
 import Home from "../components/Home";
 import Spots from "../components/spot/Spots";
+import { SpotPage } from "../components/spot/spot_page/SpotPage";
+import { SpotsMapView } from "../components/spot_common/MapView/SpotsMapView";
+import { SpotVideos } from "../components/spot_video/spot_videos/SpotVideos";
 import AddTempSpotPage from "../components/temp_spot/add/AddTempSpotPage";
 import TempSpots from "../components/temp_spot/main/TempSpots";
 import { UserRoles } from "../types/types";
-import { Logout } from "../components/auth/Logout";
-import { SpotsMapView } from "../components/spot_common/MapView/SpotsMapView";
-import { SpotVideos } from "../components/spot_video/videos_of_spot/SpotVideos";
+
 export interface IRoute {
   linkName: string | null;
   path: string;
@@ -27,7 +29,8 @@ export enum Routes {
   SPOTS = "/spots",
   LOGOUT = "/logout",
   MAP = "/map",
-  SPOT_VIDEO = "/spots/:spotName/spotVideo",
+  SPOT_VIDEO = "/spotVideo",
+  SPOT_DEDICATED_PAGE = "/spots/:spotName",
 }
 
 const routes: IRoute[] = [
@@ -80,10 +83,18 @@ const routes: IRoute[] = [
     renderLink: true,
   },
   {
-    linkName: null,
+    linkName: "Videos",
     path: Routes.SPOT_VIDEO,
     exact: true,
     component: SpotVideos,
+    accessedBy: [UserRoles.ALL],
+    renderLink: true,
+  },
+  {
+    linkName: null,
+    path: Routes.SPOT_DEDICATED_PAGE,
+    exact: true,
+    component: SpotPage,
     accessedBy: [UserRoles.ALL],
     renderLink: false,
   },

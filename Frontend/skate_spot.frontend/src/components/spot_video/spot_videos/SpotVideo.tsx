@@ -13,6 +13,8 @@ import {
 import CommentBtn from "../../social/comment/CommentBtn";
 import Comments from "../../social/comment/Comments";
 import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
+import { MapModal } from "../../spot_common/MapView/MapModal";
+import { ShowMapModalBtn } from "../../spot_common/MapView/ShowMapModalBtn";
 import { SpotAuthor as SpotVideoAuthor } from "../../spot_common/SpotAuthor";
 import { InstagramVideo } from "../InstagramVideo";
 import { YouTubeVideo } from "../YouTubeVideo";
@@ -23,10 +25,12 @@ interface Props {
 
 export const SpotVideo = React.memo(
   ({ spotVideo }: Props) => {
+    const [isMapModalOpen, setIsMapModalOpen] = useState(false);
     const [commentsOpen, setCommentsOpen] = useState(false);
 
     return (
       <div className="mb-4">
+        <h4>{spotVideo?.spot?.name}</h4>
         {spotVideo.platformType === VideoPlatformType.Instagram ? (
           <InstagramVideo videoId={spotVideo.embedId as string} />
         ) : (
@@ -43,6 +47,7 @@ export const SpotVideo = React.memo(
             onClick={() => setCommentsOpen(!commentsOpen)}
             commentsCount={spotVideo?.comments?.length || 0}
           />
+          <ShowMapModalBtn setIsMapModalOpen={setIsMapModalOpen} />
           <SpotVideoAuthor author={spotVideo.author as SmallUserDto} />
         </div>
         {commentsOpen && (
@@ -56,6 +61,11 @@ export const SpotVideo = React.memo(
           </div>
         )}
         <hr />
+        <MapModal
+          isMapModalOpen={isMapModalOpen}
+          setIsMapModalOpen={setIsMapModalOpen}
+          address={spotVideo.spot.address}
+        />
       </div>
     );
   },

@@ -657,11 +657,11 @@ export class Client {
     /**
      * @return Success
      */
-    get_Spot(id: string): Promise<SpotDtoApiResponse> {
-        let url_ = this.baseUrl + "/api/spots/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+    get_Spot(spotName: string): Promise<SpotDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/spots/{spotName}";
+        if (spotName === undefined || spotName === null)
+            throw new Error("The parameter 'spotName' must be defined.");
+        url_ = url_.replace("{spotName}", encodeURIComponent("" + spotName));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -1277,6 +1277,12 @@ export interface ResetPasswordRequest {
     confirmPassword: string;
 }
 
+export interface SmallSpotDto {
+    id: string;
+    name: string | undefined;
+    address: AddressDto;
+}
+
 export interface SmallUserDto {
     id: string;
     userName: string | undefined;
@@ -1331,9 +1337,9 @@ export interface SpotVideoDto {
     embedId: string | undefined;
     platformType: VideoPlatformType;
     author: SmallUserDto;
-    spotId: string | undefined;
     likes: LikeDto[] | undefined;
     comments: CommentDto[] | undefined;
+    spot: SmallSpotDto;
 }
 
 export interface SpotVideoDtoApiResponse {

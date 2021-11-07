@@ -70,6 +70,7 @@ export const SpotModal = (p: Props) => {
   useEffect(() => {
     if (!modalRef.current) return;
     L.DomEvent.disableScrollPropagation(modalRef.current);
+    L.DomEvent.disableClickPropagation(modalRef.current);
   }, [modalRef]);
 
   useEffect(() => {
@@ -85,7 +86,7 @@ export const SpotModal = (p: Props) => {
         : await sendRequestWithFlashMsgOnError(
             dispatch,
             auth.content,
-            (c) => c.get_Spot(p.markerData.id),
+            (c) => c.get_Spot(p.markerData.name as string),
             "Couldn't load the spot, please try again later."
           );
 

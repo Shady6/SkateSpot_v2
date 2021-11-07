@@ -1,7 +1,10 @@
 import { CircularProgress } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useFetchOnScroll } from "../../../hooks/useFetchOnScroll";
+import { useOneSpot } from "../../../hooks/useOneSpot";
+import { Routes } from "../../../routes/appRoutes";
 import { ApiResponse } from "../../../skate_spot_api/apiClient";
 import { customFuncSpotVideoFetch } from "../../../state/actions/spotVideoActions";
 import { ListViewTypes } from "../../../state/generic/listViewGenerics";
@@ -9,24 +12,24 @@ import {
   ListWithCount,
   WithSocial,
 } from "../../../state/reducers/genericListViewReducer";
-import { useRootState } from "../../../state/store";
-import { SpotVideo } from "./SpotVideo";
-import { SpotVideoHeader } from "./SpotVideoHeader";
-import { SpotDto } from "../../../skate_spot_api/client";
-import { useEffect } from "react";
 import { spotVideoActions } from "../../../state/reducers/spotVideoReducer";
-import { useDispatch } from "react-redux";
+import { useRootState } from "../../../state/store";
+import { SpotVideo } from "../../spot_video/videos_of_spot/SpotVideo";
+import { SpotDetails } from "./SpotDetails";
 
 interface Props {}
 
-export const SpotVideos = (p: Props) => {
-  const history = useHistory();
-  const state = useRootState().spotVideoState;
+export const SpotPage: React.FC<Props> = () => {
+  const state = useRootState();
   const dispatch = useDispatch();
 
-  const pathElements = history.location.pathname.split("/");
-  const spotName = pathElements[pathElements.length - 2];
-  const spot = (history.location.state as { spot: SpotDto }).spot;
+  const history = useHistory();
+  const path = history.location.pathname.split("/");
+  const spotPathPart = Routes.SPOTS.replace("/", "");
+  const spotName = path[path.indexOf(spotPathPart) + 1];
+  useOneSpot(spotName);
+
+  const spot = state.spotsState.listWithCount.data?.[0];
 
   useEffect(() => {
     dispatch(spotVideoActions.reset());
@@ -49,17 +52,16 @@ export const SpotVideos = (p: Props) => {
   }, ListViewTypes.SPOT_VIDEOS);
 
   return (
-    <div className="container mt-5">
-      <div className="mb-5">
-        <SpotVideoHeader spot={spot} />
-      </div>
-      <div style={{ fontSize: "1rem" }}>
-        {state.listWithCount?.data?.map((t) => {
+    <div className="container mt-5" style={{ fontSize: "1rem" }}>
+      <div>{spot && <SpotDetails spot={spot} />}</div>
+      <div>
+        <h4 className="mb-5">Videos</h4>
+        {state.spotVideoState.listWithCount?.data?.map((t) => {
           return (
             <SpotVideo key={t.createdAt as unknown as string} spotVideo={t} />
           );
         })}
-        {state.loading && <CircularProgress color="secondary" />}
+        {state.spotVideoState.loading && <CircularProgress color="secondary" />}
       </div>
     </div>
   );

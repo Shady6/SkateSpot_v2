@@ -42,7 +42,7 @@ namespace SkateSpot.Application.Services
 				.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value,
 				Id = request.UserId
 			};
-			dto.SpotId = foundSpot.Id;
+			dto.Spot = _mapper.Map<SmallSpotDto>(foundSpot);
 			return dto;
 		}
 

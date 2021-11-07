@@ -484,3 +484,4 @@ dist
 .env
 appsettings.json
 TODO.txt
+.history/

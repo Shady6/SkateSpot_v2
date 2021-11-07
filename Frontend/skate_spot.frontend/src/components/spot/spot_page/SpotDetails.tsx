@@ -1,44 +1,33 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { Routes } from "../../routes/appRoutes";
 import {
   LikeDto,
   ObstacleType,
   SmallUserDto,
   SpotDto,
-} from "../../skate_spot_api/client";
+} from "../../../skate_spot_api/client";
 import {
   spotComment,
   spotLike,
   spotLikeComment,
-} from "../../state/actions/spotAcionts";
-import CommentBtn from "../social/comment/CommentBtn";
-import Comments from "../social/comment/Comments";
-import { MainLikeButtons } from "../social/comment/MainLikeButtons";
-import { MapModal } from "../spot_common/MapView/MapModal";
-import { ShowMapModalBtn } from "../spot_common/MapView/ShowMapModalBtn";
-import { Obstacles } from "../spot_common/Obstacles";
-import { SpotAuthor } from "../spot_common/SpotAuthor";
-import { SpotImages } from "../spot_common/SpotImages";
-import { SurfaceScore } from "../spot_common/SurfaceScore";
-import { SpotVideoBtn } from "../spot_video/SpotVideoBtn";
+} from "../../../state/actions/spotAcionts";
+import CommentBtn from "../../social/comment/CommentBtn";
+import Comments from "../../social/comment/Comments";
+import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
+import { MapModal } from "../../spot_common/MapView/MapModal";
+import { ShowMapModalBtn } from "../../spot_common/MapView/ShowMapModalBtn";
+import { Obstacles } from "../../spot_common/Obstacles";
+import { SpotAuthor } from "../../spot_common/SpotAuthor";
+import { SpotImages } from "../../spot_common/SpotImages";
+import { SurfaceScore } from "../../spot_common/SurfaceScore";
 
 interface Props {
   spot: SpotDto;
 }
 
-export const Spot = React.memo(
+export const SpotDetails = React.memo(
   ({ spot }: Props) => {
     const [isMapModalOpen, setIsMapModalOpen] = useState(false);
     const [commentsOpen, setCommentsOpen] = useState(false);
-    const history = useHistory();
-
-    const handleSpotVideoBtnClick = () => {
-      history.push(
-        Routes.SPOT_DEDICATED_PAGE.replace(/:spotName/, spot.name as string),
-        { spot: spot }
-      );
-    };
 
     return (
       <div className="mb-4">
@@ -54,10 +43,6 @@ export const Spot = React.memo(
           <CommentBtn
             onClick={() => setCommentsOpen(!commentsOpen)}
             commentsCount={spot?.comments?.length || 0}
-          />
-          <SpotVideoBtn
-            videosCount={spot.videosCount}
-            onClick={handleSpotVideoBtnClick}
           />
           <ShowMapModalBtn setIsMapModalOpen={setIsMapModalOpen} />
           <div className="ms-3 d-flex">
