@@ -3,11 +3,16 @@ import { ListViewTypes } from "../generic/listViewGenerics";
 import {
   commentThunkCreator,
   fetchlistItemsCustomFuncThunkCreator,
+  fetchlistItemsThunkCreator,
   likeThunkCreator,
 } from "./genericListViewActions";
 
-export const spotVideoFetch = fetchlistItemsCustomFuncThunkCreator(
-  ListViewTypes.SPOTS
+export const spotVideoFetch = fetchlistItemsThunkCreator(
+  ListViewTypes.SPOT_VIDEOS
+);
+
+export const customFuncSpotVideoFetch = fetchlistItemsCustomFuncThunkCreator(
+  ListViewTypes.SPOT_VIDEOS
 );
 
 export const spotVideoComment = commentThunkCreator(ListViewTypes.SPOT_VIDEOS);

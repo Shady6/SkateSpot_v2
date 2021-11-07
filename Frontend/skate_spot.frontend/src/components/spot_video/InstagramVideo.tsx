@@ -13,7 +13,6 @@ export const InstagramVideo = (p: Props) => {
       height="480"
       frameBorder="0"
       scrolling="no"
-      allowTransparency
     ></iframe>
   );
 };

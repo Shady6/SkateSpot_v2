@@ -5,12 +5,13 @@ import { spotFetch } from "../../state/actions/spotAcionts";
 import { useRootState } from "../../state/store";
 import "../spot_common/styles.scss";
 import { Spot } from "./Spot";
+import { ListViewTypes } from "../../state/generic/listViewGenerics";
 
 interface Props {}
 
 const Spots: React.FC<Props> = () => {
   const state = useRootState();
-  useFetchOnScroll(spotFetch);
+  useFetchOnScroll(spotFetch, ListViewTypes.SPOTS);
 
   return (
     <>

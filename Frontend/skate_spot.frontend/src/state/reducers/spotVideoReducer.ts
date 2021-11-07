@@ -27,11 +27,14 @@ const initialState: SpotVideoState = {
 };
 
 const spotVideoSlice = createSlice({
-  name: "tempSpots",
+  name: "spotVideo",
   initialState: initialState,
   reducers: {
     setVideos: (state, action: PayloadAction<SpotVideoDto[]>) => {
       listViewReducerHandlers.setItems(state, action.payload);
+    },
+    prependVideo: (state, action: PayloadAction<SpotVideoDto>) => {
+      state.listWithCount.data.unshift(action.payload);
     },
     reset: () => {
       return listViewReducerHandlers.reset(initialState) as SpotVideoState;

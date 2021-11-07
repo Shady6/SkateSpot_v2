@@ -3,6 +3,7 @@ import {
   CommentDto,
   CommentSubjectType,
   SpotDto,
+  SpotVideoDto,
   TempSpotWithVerificationDto,
 } from "../../skate_spot_api/client";
 import {
@@ -48,9 +49,10 @@ export const listViewSpecifics: IListViewSpecifics = {
     commentSubjectType: CommentSubjectType.TempSpots,
   },
   spotVideos: {
-    // This is not used in SpotVideos
     fetchListItems: (client: ApiClient, take: number, skip: number) => {
-      return null as unknown as Promise<ApiResponse<ListWithCount<SpotDto>>>;
+      return client.get_Spot_Videos(take, skip, undefined) as Promise<
+        ApiResponse<ListWithCount<SpotVideoDto>>
+      >;
     },
     getSpecificState: (state: RootState) => state.spotVideoState,
     name: "spotVideos",

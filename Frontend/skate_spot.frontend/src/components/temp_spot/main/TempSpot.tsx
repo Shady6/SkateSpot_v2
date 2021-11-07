@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  AddressDto,
   ObstacleType,
   SmallUserDto,
   TempSpotWithVerificationDto,
@@ -14,9 +13,9 @@ import {
 import CommentBtn from "../../social/comment/CommentBtn";
 import Comments from "../../social/comment/Comments";
 import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
-import MapModal from "../../spot_common/MapModal";
+import { MapModal } from "../../spot_common/MapView/MapModal";
+import { ShowMapModalBtn } from "../../spot_common/MapView/ShowMapModalBtn";
 import { Obstacles } from "../../spot_common/Obstacles";
-import { ShowOnMapBtn } from "../../spot_common/ShowOnMapBtn";
 import { SpotAuthor } from "../../spot_common/SpotAuthor";
 import { SpotImages } from "../../spot_common/SpotImages";
 import { SurfaceScore } from "../../spot_common/SurfaceScore";
@@ -68,7 +67,7 @@ export const TempSpot = React.memo(
             onClick={() => setCommentsOpen(!commentsOpen)}
             commentsCount={tempSpot.verificationProcess?.discussion?.length}
           />
-          <ShowOnMapBtn onClick={() => setIsMapModalOpen(true)} />
+          <ShowMapModalBtn setIsMapModalOpen={setIsMapModalOpen} />
           <div className="ms-3 d-flex">
             <SurfaceScore surfaceScore={tempSpot.surfaceScore as number} />
             <Obstacles obstacles={tempSpot.obstacles as ObstacleType[]} />
@@ -87,9 +86,9 @@ export const TempSpot = React.memo(
         )}
         <hr />
         <MapModal
-          address={tempSpot.address as AddressDto}
-          isOpen={isMapModalOpen}
-          setIsOpen={setIsMapModalOpen}
+          isMapModalOpen={isMapModalOpen}
+          setIsMapModalOpen={setIsMapModalOpen}
+          address={tempSpot.address}
         />
       </div>
     );

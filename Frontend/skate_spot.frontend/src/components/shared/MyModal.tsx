@@ -1,7 +1,5 @@
 import { Box, Modal } from "@material-ui/core";
 import React from "react";
-import { AddressDto } from "../../skate_spot_api/client";
-import DisplaySingleSpot from "../map/DisplaySingleSpotMap";
 
 export const ModalStyle = {
   position: "absolute",
@@ -17,28 +15,19 @@ export const ModalStyle = {
 };
 
 interface Props {
-  address: AddressDto;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MapModal: React.FC<Props> = ({ address, isOpen, setIsOpen }) => {
-  const MyDisplaySpotMap = React.forwardRef(() => (
-    <DisplaySingleSpot address={address} />
-  ));
-
+export const MyModal: React.FC<Props> = (p) => {
   return (
     <Modal
       style={{ cursor: "pointer" }}
-      open={isOpen}
-      onClose={() => setIsOpen(false)}
+      open={p.isOpen}
+      onClose={() => p.setIsOpen(false)}
     >
       {/* @ts-ignore */}
-      <Box sx={ModalStyle}>
-        <MyDisplaySpotMap />
-      </Box>
+      <Box sx={ModalStyle}>{p.children}</Box>
     </Modal>
   );
 };
-
-export default MapModal;

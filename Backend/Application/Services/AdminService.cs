@@ -46,16 +46,7 @@ namespace SkateSpot.Application.Services
 				.RuleFor(s => s.Obstacles, f => GenerateObstacles(f))
 				.RuleFor(s => s.SurfaceScore, f => (byte)f.Random.Number(0, 10))
 				.RuleFor(s => s.UserId, f => f.PickRandom(users).Id)
-				.RuleFor(s => s.Base64Images, f =>
-				{
-					var imagesUrls = Enumerable.Range(0, f.Random.Number(5))
-					.Select(_ => f.Image.PicsumUrl(
-						f.Random.Number(200, 2560),
-						f.Random.Number(200, 2560)))
-					.ToArray();
-					var b64s = _imageProxyService.GetBase64OfImagesUrls(imagesUrls).Result;
-					return b64s.Where(b => b.Success).Select(b => b.Base64).ToList();
-				}
+				.RuleFor(s => s.Base64Images, f => GenerateImages(f)
 				);
 
 			foreach (var tempSpotCommand in tempSpotFakeCommand.Generate(count))
@@ -69,7 +60,8 @@ namespace SkateSpot.Application.Services
 			List<User> users = makeUserFake().Generate(5);
 
 			var likeFake = new Faker<Like>()
-				.RuleFor(l => l.Giver, f => f.PickRandom(users));
+				.RuleFor(l => l.Giver, f => f.PickRandom(users))
+				.RuleFor(l => l.Positive, f => f.Random.Bool());
 
 			var commentFake = new Faker<Comment>()
 				.RuleFor(c => c.Author, f => f.PickRandom(users))
@@ -81,7 +73,7 @@ namespace SkateSpot.Application.Services
 					return likeFake.GenerateBetween(0, 5);
 				});
 
-			var spotVideoFake = new Faker<SpotVideo>()				
+			var spotVideoFake = new Faker<SpotVideo>()
 				.RuleFor(s => s.Author, f => f.PickRandom(users))
 				.RuleFor(s => s.Comments, (f, s) =>
 				{
@@ -109,6 +101,7 @@ namespace SkateSpot.Application.Services
 				GenerateObstacles(f).Select(o => new ObstacleTypeObj(o)).ToArray())
 				.RuleFor(s => s.SurfaceScore, f => (byte)f.Random.Number(0, 10))
 				.RuleFor(s => s.Author, f => f.PickRandom(users))
+				.RuleFor(s => s.Images, f => GenerateImages(f).Select(u => new SpotImage(new Image(u))).ToList())
 				.RuleFor(s => s.Videos, (f, s) =>
 				{
 					spotVideoFake.RuleFor(sv => sv.CreatedAt, f => f.Date.Between(s.CreatedAt, DateTime.Now));
@@ -144,6 +137,17 @@ namespace SkateSpot.Application.Services
 					obstacles.Add(newObstacle);
 			}
 			return obstacles;
+		}
+
+		private List<string> GenerateImages(Faker f, int maxImages = 5)
+		{
+			var imagesUrls = Enumerable.Range(0, f.Random.Number(maxImages))
+					.Select(_ => f.Image.PicsumUrl(
+						f.Random.Number(200, 2560),
+						f.Random.Number(200, 2560)))
+					.ToArray();
+			var b64s = _imageProxyService.GetBase64OfImagesUrls(imagesUrls).Result;
+			return b64s.Where(b => b.Success).Select(b => b.Base64).ToList();
 		}
 
 

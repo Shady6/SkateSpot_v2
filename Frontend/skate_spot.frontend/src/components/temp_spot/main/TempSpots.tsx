@@ -5,12 +5,13 @@ import { useRootState } from "../../../state/store";
 import "../../spot_common/styles.scss";
 import { TempSpot } from "./TempSpot";
 import { tempSpotFetch } from "../../../state/actions/tempSpotActions";
+import { ListViewTypes } from "../../../state/generic/listViewGenerics";
 
 interface Props {}
 
 const TempSpots: React.FC<Props> = () => {
   const state = useRootState();
-  useFetchOnScroll(tempSpotFetch);
+  useFetchOnScroll(tempSpotFetch, ListViewTypes.TEMP_SPOTS);
 
   return (
     <>

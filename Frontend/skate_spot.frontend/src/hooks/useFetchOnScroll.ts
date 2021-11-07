@@ -1,16 +1,13 @@
-import { AsyncThunk } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-  ListWithCount,
-  WithSocial,
-} from "../state/reducers/genericListViewReducer";
+  listViewSpecifics,
+  ListViewTypes,
+} from "../state/generic/listViewGenerics";
 import { useRootState } from "../state/store";
 
-export const useFetchOnScroll = (
-  fetchAction: AsyncThunk<ListWithCount<WithSocial>, void, {}>
-) => {
-  const state = useRootState();
+export const useFetchOnScroll = (fetchAction: any, listType: ListViewTypes) => {
+  const state = listViewSpecifics[listType].getSpecificState(useRootState());
   const dispatch = useDispatch();
 
   const [scrolled, setScrolled] = useState(0);
@@ -34,9 +31,8 @@ export const useFetchOnScroll = (
 
   useEffect(() => {
     if (
-      !state.tempSpotsState.loading &&
-      state?.tempSpotsState?.listWithCount?.data?.length <
-        state.tempSpotsState.listWithCount.totalCount &&
+      !state.loading &&
+      state.listWithCount.data.length < state.listWithCount.totalCount &&
       scrolled >= 0.8 &&
       scrolled <= 1
     )

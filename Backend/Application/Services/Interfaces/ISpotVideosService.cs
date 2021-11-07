@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Features.SpotVideoFeatures.Commands;
+using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Services.Interfaces
 {
 	public interface ISpotVideosService
 	{
-		Task AddSpotVideo(AddSpotVideoCommand request);
+		Task<SpotVideoDto> AddSpotVideo(AddSpotVideoCommand request);
 
 		Task DeleteSpotVideo(DeleteSpotVideoCommand request);
 	}
