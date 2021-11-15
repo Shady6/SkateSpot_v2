@@ -48,13 +48,8 @@ namespace SkateSpot.Api.Controllers
 		[ProducesResponseType(typeof(ApiResponse<SpotDto>), 200)]
 		public async Task<ActionResult> GetSpot([FromRoute] string spotName)
 		{
-			return Ok(_mapper.Map<SpotDto>(await _dbContext.Spots
-					.Include(s => s.Author)
-					.Include(s => s.Likes)
-					.Include(s => s.Comments.OrderByDescending(c => c.CreatedAt)).ThenInclude(c => c.Author)
-					.Include(s => s.Comments).ThenInclude(c => c.Likes)
-					.Include(s => s.Images)
-					.FirstOrDefaultAsync(s => s.Name == spotName)));
+			return Ok(await _mapper.ProjectTo<SpotDto>(_dbContext.Spots)
+				.FirstOrDefaultAsync(s => s.Name == spotName));
 		}
 
 		[HttpGet]

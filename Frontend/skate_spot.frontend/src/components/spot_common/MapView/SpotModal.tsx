@@ -3,9 +3,11 @@ import L from "leaflet";
 import React, { useEffect, useRef, useState } from "react";
 import { useMapEvents } from "react-leaflet";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import useMeasure from "react-use-measure";
 import { tempSpotToSpot } from "../../../functions/mapper/mappingProfile";
 import { sendRequestWithFlashMsgOnError } from "../../../functions/request/sendRequestWithFlashMsgOnError";
+import { goToSpotDetailPage } from "../../../functions/route/goToSpotDetailPage";
 import {
   CommentDto,
   LikeDto,
@@ -30,6 +32,8 @@ import { useRootState } from "../../../state/store";
 import CommentBtn from "../../social/comment/CommentBtn";
 import Comments from "../../social/comment/Comments";
 import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
+import { SpotNameLink } from "../../spot/SpotNameLink";
+import { SpotVideoBtn } from "../../spot_video/SpotVideoBtn";
 import { vote_like_adapter } from "../../temp_spot/main/TempSpot";
 import { Obstacles } from "../Obstacles";
 import { SpotImages } from "../SpotImages";
@@ -126,6 +130,8 @@ export const SpotModal = (p: Props) => {
       setSpot(spotState.listWithCount.data[0]);
   }, [tempSpotState.listWithCount.data, spotState.listWithCount.data]);
 
+  const history = useHistory();
+
   return (
     <div
       className="d-flex w-100 h-100 justify-content-end"
@@ -154,10 +160,10 @@ export const SpotModal = (p: Props) => {
                 />
               </div>
             )}
-            <div className="ms-3">
-              <h4 className="mt-2">{spot.name}</h4>
+            <div className="mt-4 ms-3">
+              <SpotNameLink spotName={spot.name as string} />
               <p>{spot.description}</p>
-              <div className="d-flex mb-2">
+              <div className="d-flex mt-5 mb-3">
                 <SurfaceScore surfaceScore={spot.surfaceScore as number} />
                 <Obstacles obstacles={spot.obstacles as ObstacleType[]} />
               </div>
@@ -177,6 +183,10 @@ export const SpotModal = (p: Props) => {
                 <CommentBtn
                   onClick={() => setCommentsOpen(!commentsOpen)}
                   commentsCount={spot.comments?.length}
+                />
+                <SpotVideoBtn
+                  videosCount={spot.videosCount}
+                  onClick={() => goToSpotDetailPage({ history, spot })}
                 />
               </div>
 

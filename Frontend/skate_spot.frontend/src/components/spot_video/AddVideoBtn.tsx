@@ -8,11 +8,11 @@ interface Props {
 
 export const AddVideoBtn: React.FC<Props> = (p) => {
   return (
-    <div>
+    <div className="me-1">
       <Button
         size="small"
         onClick={() => p.setIsAddSpotVideoModalOpen(true)}
-        variant="contained"
+        variant="outlined"
       >
         <AddVideoIcon />
       </Button>

@@ -37,7 +37,7 @@ namespace SkateSpot.Application.MappingProfiles
 			CreateMap<VerificationProcess, VerificationProcessDto>();
 			CreateMap<TempSpot, TempSpotWithVerificationDto>()
 				.ForMember(d => d.Obstacles, opt =>
-				opt.MapFrom(s => s.Obstacles.Select(o => o.ObstacleType).ToHashSet()));
+				opt.MapFrom(s => s.Obstacles.Select(o => o.ObstacleType)));
 
 			CreateMap<CommentSubjectType, SubjectType>();
 			CreateMap<LikeSubjectType, SubjectType>();

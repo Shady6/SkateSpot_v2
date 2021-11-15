@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Routes } from "../../routes/appRoutes";
+import { RouteParams, Routes } from "../../routes/appRoutes";
 import {
   LikeDto,
   ObstacleType,
@@ -22,6 +22,8 @@ import { SpotAuthor } from "../spot_common/SpotAuthor";
 import { SpotImages } from "../spot_common/SpotImages";
 import { SurfaceScore } from "../spot_common/SurfaceScore";
 import { SpotVideoBtn } from "../spot_video/SpotVideoBtn";
+import { SpotNameLink } from "./SpotNameLink";
+import { goToSpotDetailPage } from "../../functions/route/goToSpotDetailPage";
 
 interface Props {
   spot: SpotDto;
@@ -33,16 +35,9 @@ export const Spot = React.memo(
     const [commentsOpen, setCommentsOpen] = useState(false);
     const history = useHistory();
 
-    const handleSpotVideoBtnClick = () => {
-      history.push(
-        Routes.SPOT_DEDICATED_PAGE.replace(/:spotName/, spot.name as string),
-        { spot: spot }
-      );
-    };
-
     return (
       <div className="mb-4">
-        <h4>{spot.name}</h4>
+        <SpotNameLink spotName={spot.name as string} />
         <p>{spot.description}</p>
         <SpotImages images={spot.images} />
         <div className="d-flex mt-2">
@@ -57,7 +52,7 @@ export const Spot = React.memo(
           />
           <SpotVideoBtn
             videosCount={spot.videosCount}
-            onClick={handleSpotVideoBtnClick}
+            onClick={() => goToSpotDetailPage({ history, spot })}
           />
           <ShowMapModalBtn setIsMapModalOpen={setIsMapModalOpen} />
           <div className="ms-3 d-flex">

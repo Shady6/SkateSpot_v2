@@ -19,7 +19,7 @@ const Spots: React.FC<Props> = () => {
         {state.spotsState.listWithCount?.data?.map((t) => {
           return <Spot key={t.name} spot={t} />;
         })}
-        {state.tempSpotsState.loading && <CircularProgress color="secondary" />}
+        {state.spotsState.loading && <CircularProgress color="primary" />}
       </div>
     </>
   );

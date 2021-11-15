@@ -30,6 +30,7 @@ namespace SkateSpot.Api.Extensions
 		{
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+			AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 			services.AddDbContext<IdentityContext>(options =>
 			options.UseNpgsql(configuration.GetConnectionString("IdentityConnection")));
 			services.AddDbContext<ApplicationDbContext>(options =>

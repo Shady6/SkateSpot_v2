@@ -68,7 +68,6 @@ namespace SkateSpot.Api
 			//app.UseMiddleware<TokenValidityChecker>();
 			app.UseAuthorization();
 
-
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();

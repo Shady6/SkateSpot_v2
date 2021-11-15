@@ -20,6 +20,10 @@ export interface IRoute {
   renderLink: boolean;
 }
 
+export enum RouteParams {
+  SPOT_NAME = ":spotName",
+}
+
 export enum Routes {
   HOME = "/",
   LOGIN = "/auth/login",
@@ -30,7 +34,7 @@ export enum Routes {
   LOGOUT = "/logout",
   MAP = "/map",
   SPOT_VIDEO = "/spotVideo",
-  SPOT_DEDICATED_PAGE = "/spots/:spotName",
+  SPOT_DEDICATED_PAGE = `/spots/:spotName`,
 }
 
 const routes: IRoute[] = [

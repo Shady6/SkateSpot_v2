@@ -19,6 +19,8 @@ import { Obstacles } from "../../spot_common/Obstacles";
 import { SpotAuthor } from "../../spot_common/SpotAuthor";
 import { SpotImages } from "../../spot_common/SpotImages";
 import { SurfaceScore } from "../../spot_common/SurfaceScore";
+import { AddSpotVideoModal } from "../../spot_video/AddSpotVideoModal";
+import { AddVideoBtn } from "../../spot_video/AddVideoBtn";
 
 interface Props {
   spot: SpotDto;
@@ -28,6 +30,8 @@ export const SpotDetails = React.memo(
   ({ spot }: Props) => {
     const [isMapModalOpen, setIsMapModalOpen] = useState(false);
     const [commentsOpen, setCommentsOpen] = useState(false);
+    const [isAddSpotVideoModalOpen, setIsAddSpotVideoModalOpen] =
+      useState(false);
 
     return (
       <div className="mb-4">
@@ -43,6 +47,9 @@ export const SpotDetails = React.memo(
           <CommentBtn
             onClick={() => setCommentsOpen(!commentsOpen)}
             commentsCount={spot?.comments?.length || 0}
+          />
+          <AddVideoBtn
+            setIsAddSpotVideoModalOpen={setIsAddSpotVideoModalOpen}
           />
           <ShowMapModalBtn setIsMapModalOpen={setIsMapModalOpen} />
           <div className="ms-3 d-flex">
@@ -66,6 +73,11 @@ export const SpotDetails = React.memo(
           isMapModalOpen={isMapModalOpen}
           setIsMapModalOpen={setIsMapModalOpen}
           address={spot.address}
+        />
+        <AddSpotVideoModal
+          isOpen={isAddSpotVideoModalOpen}
+          setIsOpen={setIsAddSpotVideoModalOpen}
+          spotName={spot.name as string}
         />
       </div>
     );
