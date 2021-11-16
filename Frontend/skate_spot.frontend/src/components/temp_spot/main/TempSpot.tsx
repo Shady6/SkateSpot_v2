@@ -4,12 +4,12 @@ import {
   SmallUserDto,
   TempSpotWithVerificationDto,
 } from "../../../skate_spot_api/client";
-import { likeThunkCreator } from "../../../state/actions/genericListViewActions";
 import {
   tempSpotComment,
   tempSpotLikeComment,
   vote,
 } from "../../../state/actions/tempSpotActions";
+import { likeThunkCreator } from "../../../state/actions/thunk_creators/likeThunkCreator";
 import CommentBtn from "../../social/comment/CommentBtn";
 import Comments from "../../social/comment/Comments";
 import { MainLikeButtons } from "../../social/comment/MainLikeButtons";

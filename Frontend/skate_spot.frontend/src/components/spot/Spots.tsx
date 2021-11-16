@@ -1,17 +1,17 @@
 import { CircularProgress } from "@material-ui/core";
 import React from "react";
 import { useFetchOnScroll } from "../../hooks/useFetchOnScroll";
-import { spotFetch } from "../../state/actions/spotAcionts";
 import { useRootState } from "../../state/store";
 import "../spot_common/styles.scss";
 import { Spot } from "./Spot";
 import { ListViewTypes } from "../../state/generic/listViewGenerics";
+import { getAllThunks } from "../../state/actions/thunk_creators/allThunks";
 
 interface Props {}
 
 const Spots: React.FC<Props> = () => {
   const state = useRootState();
-  useFetchOnScroll(spotFetch, ListViewTypes.SPOTS);
+  useFetchOnScroll(getAllThunks().spots.fetchListItems, ListViewTypes.SPOTS);
 
   return (
     <>

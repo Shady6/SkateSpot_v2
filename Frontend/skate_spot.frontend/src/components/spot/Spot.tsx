@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { RouteParams, Routes } from "../../routes/appRoutes";
+import { goToSpotDetailPage } from "../../functions/route/goToSpotDetailPage";
 import {
   LikeDto,
   ObstacleType,
   SmallUserDto,
   SpotDto,
 } from "../../skate_spot_api/client";
-import {
-  spotComment,
-  spotLike,
-  spotLikeComment,
-} from "../../state/actions/spotAcionts";
+import { spotLike } from "../../state/actions/spotAcionts";
+import { getAllThunks } from "../../state/actions/thunk_creators/allThunks";
+import { ListViewTypes } from "../../state/generic/listViewGenerics";
 import CommentBtn from "../social/comment/CommentBtn";
 import Comments from "../social/comment/Comments";
 import { MainLikeButtons } from "../social/comment/MainLikeButtons";
@@ -23,7 +21,6 @@ import { SpotImages } from "../spot_common/SpotImages";
 import { SurfaceScore } from "../spot_common/SurfaceScore";
 import { SpotVideoBtn } from "../spot_video/SpotVideoBtn";
 import { SpotNameLink } from "./SpotNameLink";
-import { goToSpotDetailPage } from "../../functions/route/goToSpotDetailPage";
 
 interface Props {
   spot: SpotDto;
@@ -66,8 +63,8 @@ export const Spot = React.memo(
             <Comments
               listItemId={spot.id as string}
               comments={spot.comments}
-              commentAction={spotComment}
-              likeAction={spotLikeComment}
+              commentAction={getAllThunks().spots.comment}
+              likeAction={getAllThunks().spots.likeComment}
             />
           </div>
         )}

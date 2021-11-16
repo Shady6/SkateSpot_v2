@@ -16,16 +16,13 @@ import {
   SpotMarkerDataDto,
   TempSpotWithVerificationDto,
 } from "../../../skate_spot_api/client";
-import { likeThunkCreator } from "../../../state/actions/genericListViewActions";
-import {
-  spotComment,
-  spotLike,
-  spotLikeComment,
-} from "../../../state/actions/spotAcionts";
+import { spotLike } from "../../../state/actions/spotAcionts";
 import {
   tempSpotComment,
   tempSpotLikeComment,
 } from "../../../state/actions/tempSpotActions";
+import { getAllThunks } from "../../../state/actions/thunk_creators/allThunks";
+import { likeThunkCreator } from "../../../state/actions/thunk_creators/likeThunkCreator";
 import { spotActions } from "../../../state/reducers/spotReducer";
 import { tempSpotActions } from "../../../state/reducers/tempSpotsReducer";
 import { useRootState } from "../../../state/store";
@@ -195,12 +192,14 @@ export const SpotModal = (p: Props) => {
                   listItemId={spot.id as string}
                   comments={spot.comments as CommentDto[]}
                   commentAction={
-                    p.markerData.isTempSpot ? tempSpotComment : spotComment
+                    p.markerData.isTempSpot
+                      ? tempSpotComment
+                      : getAllThunks().spots.comment
                   }
                   likeAction={
                     p.markerData.isTempSpot
                       ? tempSpotLikeComment
-                      : spotLikeComment
+                      : getAllThunks().spots.likeComment
                   }
                 />
               )}

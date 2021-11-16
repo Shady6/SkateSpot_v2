@@ -1,6 +1,6 @@
 import React from "react";
 import { CommentDto } from "../../../skate_spot_api/client";
-import { likeThunkCreator } from "../../../state/actions/genericListViewActions";
+import { likeThunkCreator } from "../../../state/actions/thunk_creators/likeThunkCreator";
 import CommentLikes from "./CommentLikes";
 
 interface Props {

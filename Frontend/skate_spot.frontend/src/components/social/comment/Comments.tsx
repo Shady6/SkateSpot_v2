@@ -4,10 +4,8 @@ import React from "react";
 import { v4 } from "uuid";
 import { useComment } from "../../../hooks/social/useComment";
 import { CommentDto } from "../../../skate_spot_api/client";
-import {
-  commentThunkCreator,
-  likeThunkCreator,
-} from "../../../state/actions/genericListViewActions";
+import { commentThunkCreator } from "../../../state/actions/thunk_creators/commentThunkCreator";
+import { likeThunkCreator } from "../../../state/actions/thunk_creators/likeThunkCreator";
 import Comment from "./Comment";
 
 interface Props {

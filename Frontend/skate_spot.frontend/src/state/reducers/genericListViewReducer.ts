@@ -1,3 +1,4 @@
+import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 import { WritableDraft } from "immer/dist/internal";
 import {
   CommentDto,
@@ -5,7 +6,13 @@ import {
   LikeSubjectType,
   VerificationStatementDto,
 } from "../../skate_spot_api/client";
-import { CommentActionReturnType } from "../generic/listViewGenerics";
+import { getAllThunks } from "../actions/thunk_creators/allThunks";
+import { DeleteComment } from "../actions/thunk_creators/deleteCommentThunkCreator";
+import { EditComment } from "../actions/thunk_creators/editCommentThunkCreator";
+import {
+  CommentActionReturnType,
+  ListViewTypes,
+} from "../generic/listViewGenerics";
 
 export interface WithId {
   id?: string;
@@ -94,6 +101,41 @@ export const listViewReducerHandlers = {
       else (listItem as NormalComments).comments?.unshift(comment);
     },
   },
+  deleteComment: {
+    fulfilled: (state: ListViewImmerState, payload: DeleteComment) => {
+      const { commentId, listItemId } = payload;
+      const listItem = state.listWithCount.data?.find(
+        (t) => t.id === listItemId
+      );
+
+      let comment =
+        (listItem as VoteComments).verificationProcess?.discussion?.find(
+          (c) => c.id === commentId
+        ) ||
+        (listItem as NormalComments).comments?.find((c) => c.id === commentId);
+
+      comment!.text = "";
+      comment!.isDeleted = true;
+      comment!.author = { id: "", userName: undefined };
+      comment!.authorId = undefined;
+    },
+  },
+  editComment: {
+    fulfilled: (state: ListViewImmerState, payload: EditComment) => {
+      const { commentId, listItemId, newText } = payload;
+      const listItem = state.listWithCount.data?.find(
+        (t) => t.id === listItemId
+      );
+
+      let comment =
+        (listItem as VoteComments).verificationProcess?.discussion?.find(
+          (c) => c.id === commentId
+        ) ||
+        (listItem as NormalComments).comments?.find((c) => c.id === commentId);
+
+      comment!.text = newText;
+    },
+  },
   like: {
     fulfilled: (
       state: ListViewImmerState,
@@ -140,16 +182,45 @@ export const listViewReducerHandlers = {
       comment!.likes = result;
     },
   },
-  setItems: (state: ListViewImmerState, payload: WithSocial[] ) => {    
+  setItems: (state: ListViewImmerState, payload: WithSocial[]) => {
     state.listWithCount = {
       data: payload,
       // Total count is not important here, since this action is only needed
-      // to properly dispatch comment, like etc. actions on pages, where we dont use 
+      // to properly dispatch comment, like etc. actions on pages, where we dont use
       // fetch action
-      totalCount: 0
-    }    
+      totalCount: 0,
+    };
   },
   reset: (defaultState: ListViewState<WithSocial>) => {
     return defaultState;
-  }
+  },
+};
+
+export const addDefaultCases = (
+  builder: ActionReducerMapBuilder<ListViewImmerState>,
+  listViewType: ListViewTypes
+) => {
+  const thunks = getAllThunks()[listViewType];
+  builder
+    .addCase(thunks.fetchListItems.pending, (state) => {
+      listViewReducerHandlers.fetchListItems.pending(state);
+    })
+    .addCase(thunks.fetchListItems.fulfilled, (state, action) => {
+      listViewReducerHandlers.fetchListItems.fulfilled(state, action.payload);
+    })
+    .addCase(thunks.fetchListItems.rejected, (state) => {
+      listViewReducerHandlers.fetchListItems.rejected(state);
+    })
+    .addCase(thunks.comment.fulfilled, (state, action) => {
+      listViewReducerHandlers.comment.fulfilled(state, action.payload);
+    })
+    .addCase(thunks.deleteComment.fulfilled, (state, action) => {
+      listViewReducerHandlers.deleteComment.fulfilled(state, action.payload);
+    })
+    .addCase(thunks.editComment.fulfilled, (state, action) => {
+      listViewReducerHandlers.editComment.fulfilled(state, action.payload);
+    })
+    .addCase(thunks.likeComment.fulfilled, (state, action) => {
+      listViewReducerHandlers.likeComment.fulfilled(state, action.payload);
+    });
 };

@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SpotVideoDto } from "../../skate_spot_api/client";
 import {
+  spotVideoDeleteComment,
+  spotVideoEditComment,
+} from "../actions/spotVideoActions";
+import {
   spotVideoComment,
   spotVideoFetch,
   spotVideoLike,
@@ -53,6 +57,12 @@ const spotVideoSlice = createSlice({
       })
       .addCase(spotVideoComment.fulfilled, (state, action) => {
         listViewReducerHandlers.comment.fulfilled(state, action.payload);
+      })
+      .addCase(spotVideoDeleteComment.fulfilled, (state, action) => {
+        listViewReducerHandlers.deleteComment.fulfilled(state, action.payload);
+      })
+      .addCase(spotVideoEditComment.fulfilled, (state, action) => {
+        listViewReducerHandlers.editComment.fulfilled(state, action.payload);
       })
       .addCase(spotVideoLike.fulfilled, (state, action) => {
         listViewReducerHandlers.like.fulfilled(state, {

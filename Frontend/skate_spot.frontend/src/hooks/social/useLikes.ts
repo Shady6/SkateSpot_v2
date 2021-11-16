@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { likeThunkCreator } from "../../state/actions/genericListViewActions";
+import { likeThunkCreator } from "../../state/actions/thunk_creators/likeThunkCreator";
 import { useRootState } from "../../state/store";
 
 interface LikeArgs {

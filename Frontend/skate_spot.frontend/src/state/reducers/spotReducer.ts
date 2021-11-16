@@ -1,12 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SpotDto } from "../../skate_spot_api/client";
+import { spotLike } from "../actions/spotAcionts";
+import { ListViewTypes } from "../generic/listViewGenerics";
 import {
-  spotComment,
-  spotFetch,
-  spotLike,
-  spotLikeComment,
-} from "../actions/spotAcionts";
-import {
+  addDefaultCases,
   listViewReducerHandlers,
   ListViewState,
 } from "./genericListViewReducer";
@@ -38,28 +35,13 @@ const spotSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(spotFetch.pending, (state) => {
-        listViewReducerHandlers.fetchListItems.pending(state);
-      })
-      .addCase(spotFetch.fulfilled, (state: SpotState, action) => {
-        listViewReducerHandlers.fetchListItems.fulfilled(state, action.payload);
-      })
-      .addCase(spotFetch.rejected, (state) => {
-        listViewReducerHandlers.fetchListItems.pending(state);
-      })
-      .addCase(spotComment.fulfilled, (state, action) => {
-        listViewReducerHandlers.comment.fulfilled(state, action.payload);
-      })
-      .addCase(spotLike.fulfilled, (state, action) => {
-        listViewReducerHandlers.like.fulfilled(state, {
-          result: action.payload.result,
-          listItemId: action.payload.subjectId,
-        });
-      })
-      .addCase(spotLikeComment.fulfilled, (state, action) => {
-        listViewReducerHandlers.likeComment.fulfilled(state, action.payload);
+    addDefaultCases(builder, ListViewTypes.SPOTS);
+    builder.addCase(spotLike.fulfilled, (state, action) => {
+      listViewReducerHandlers.like.fulfilled(state, {
+        result: action.payload.result,
+        listItemId: action.payload.subjectId,
       });
+    });
   },
 });
 
