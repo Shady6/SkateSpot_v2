@@ -45,7 +45,7 @@ namespace SkateSpot.Api.Controllers
 			return Ok();
 		}
 
-		[HttpDelete("{subjectType}/{subjectId}/comments/{commentId}")]
+		[HttpDelete("{SubjectType}/{SubjectId}/comments/{CommentId}")]
 		public async Task<ActionResult> DeleteComment([FromRoute] DeleteCommentCommand request)
 		{
 			request.UserId = User.GetUserId();

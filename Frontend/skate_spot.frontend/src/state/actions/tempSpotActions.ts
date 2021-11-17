@@ -1,32 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { sendRequestWithFlashMsgOnError } from "../../functions/request/sendRequestWithFlashMsgOnError";
-import { LikeSubjectType } from "../../skate_spot_api/client";
-import { ListViewTypes } from "../generic/listViewGenerics";
 import { RootState } from "../store";
-import { commentThunkCreator } from "./thunk_creators/commentThunkCreator";
-import { deleteCommentThunkCreator } from "./thunk_creators/deleteCommentThunkCreator";
-import { editCommentThunkCreator } from "./thunk_creators/editCommentThunkCreator";
-import { fetchlistItemsThunkCreator } from "./thunk_creators/fetchlistItemsThunkCreator";
-import { likeThunkCreator } from "./thunk_creators/likeThunkCreator";
-
-export const tempSpotFetch = fetchlistItemsThunkCreator(
-  ListViewTypes.TEMP_SPOTS
-);
-
-export const tempSpotComment = commentThunkCreator(ListViewTypes.TEMP_SPOTS);
-
-export const tempSpotDeleteComment = deleteCommentThunkCreator(
-  ListViewTypes.TEMP_SPOTS
-);
-
-export const tempSpotEditComment = editCommentThunkCreator(
-  ListViewTypes.TEMP_SPOTS
-);
-
-export const tempSpotLikeComment = likeThunkCreator(
-  ListViewTypes.TEMP_SPOTS,
-  LikeSubjectType.Comments
-);
 
 export const vote = createAsyncThunk(
   "tempSpots/vote",

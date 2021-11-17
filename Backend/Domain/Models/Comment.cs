@@ -46,5 +46,13 @@ namespace SkateSpot.Domain.Models
 
 		public void DeleteLike(Guid userId) =>
 			Likeable.DeleteLike(userId);
+
+		public void Delete()
+		{
+			AuthorId = null;
+			Author = null;
+			Text = null;
+			IsDeleted = true;
+		}
 	}
 }

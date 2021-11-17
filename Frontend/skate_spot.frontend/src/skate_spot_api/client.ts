@@ -195,7 +195,7 @@ export class Client {
      * @return Success
      */
     delete_Comment(subjectId: string, subjectType: CommentSubjectType, commentId: string, authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/comments/{commentId}";
+        let url_ = this.baseUrl + "/api/{SubjectType}/{SubjectId}/comments/{CommentId}";
         if (subjectId === undefined || subjectId === null)
             throw new Error("The parameter 'subjectId' must be defined.");
         url_ = url_.replace("{SubjectId}", encodeURIComponent("" + subjectId));

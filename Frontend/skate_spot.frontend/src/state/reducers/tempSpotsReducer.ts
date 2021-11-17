@@ -1,14 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TempSpotWithVerificationDto } from "../../skate_spot_api/client";
+import { vote } from "../actions/tempSpotActions";
+import { ListViewTypes } from "../generic/listViewGenerics";
 import {
-  tempSpotComment,
-  tempSpotDeleteComment,
-  tempSpotEditComment,
-  tempSpotFetch,
-  tempSpotLikeComment,
-  vote,
-} from "../actions/tempSpotActions";
-import {
+  addDefaultCases,
   listViewReducerHandlers,
   ListViewState,
 } from "./genericListViewReducer";
@@ -43,37 +38,17 @@ const tempSpotsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(tempSpotFetch.pending, (state) => {
-        listViewReducerHandlers.fetchListItems.pending(state);
-      })
-      .addCase(tempSpotFetch.fulfilled, (state: TempSpotState, action) => {
-        listViewReducerHandlers.fetchListItems.fulfilled(state, action.payload);
-      })
-      .addCase(tempSpotFetch.rejected, (state) => {
-        listViewReducerHandlers.fetchListItems.pending(state);
-      })
-      .addCase(vote.fulfilled, (state, action) => {
-        const tempSpot = listViewReducerHandlers.like.fulfilled(state, {
-          listItemId: action.payload.tempSpotId,
-          result: action.payload.result?.votes,
-        }) as TempSpotWithVerificationDto;
+    addDefaultCases(builder, ListViewTypes.TEMP_SPOTS);
 
-        tempSpot!.verificationProcess!.isVerified =
-          action.payload.result!.verified;
-      })
-      .addCase(tempSpotComment.fulfilled, (state, action) => {
-        listViewReducerHandlers.comment.fulfilled(state, action.payload);
-      })
-      .addCase(tempSpotDeleteComment.fulfilled, (state, action) => {
-        listViewReducerHandlers.deleteComment.fulfilled(state, action.payload);
-      })
-      .addCase(tempSpotEditComment.fulfilled, (state, action) => {
-        listViewReducerHandlers.editComment.fulfilled(state, action.payload);
-      })
-      .addCase(tempSpotLikeComment.fulfilled, (state, action) => {
-        listViewReducerHandlers.likeComment.fulfilled(state, action.payload);
-      });
+    builder.addCase(vote.fulfilled, (state, action) => {
+      const tempSpot = listViewReducerHandlers.like.fulfilled(state, {
+        listItemId: action.payload.tempSpotId,
+        result: action.payload.result?.votes,
+      }) as TempSpotWithVerificationDto;
+
+      tempSpot!.verificationProcess!.isVerified =
+        action.payload.result!.verified;
+    });
   },
 });
 

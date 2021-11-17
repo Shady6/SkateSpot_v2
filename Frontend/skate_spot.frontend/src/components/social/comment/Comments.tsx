@@ -5,25 +5,25 @@ import { v4 } from "uuid";
 import { useComment } from "../../../hooks/social/useComment";
 import { CommentDto } from "../../../skate_spot_api/client";
 import { commentThunkCreator } from "../../../state/actions/thunk_creators/commentThunkCreator";
+import { deleteCommentThunkCreator } from "../../../state/actions/thunk_creators/deleteCommentThunkCreator";
+import { editCommentThunkCreator } from "../../../state/actions/thunk_creators/editCommentThunkCreator";
 import { likeThunkCreator } from "../../../state/actions/thunk_creators/likeThunkCreator";
 import Comment from "./Comment";
+import { DeletedComment } from "./DeletedComment";
 
 interface Props {
   comments?: CommentDto[];
   listItemId: string;
   commentAction: ReturnType<typeof commentThunkCreator>;
   likeAction: ReturnType<typeof likeThunkCreator>;
+  deleteCommentAction: ReturnType<typeof deleteCommentThunkCreator>;
+  editCommentAction: ReturnType<typeof editCommentThunkCreator>;
 }
 
-const Comments: React.FC<Props> = ({
-  comments,
-  listItemId,
-  commentAction,
-  likeAction,
-}) => {
+const Comments: React.FC<Props> = (p) => {
   const { comment, setComment, sendComment } = useComment(
-    listItemId,
-    commentAction
+    p.listItemId,
+    p.commentAction
   );
 
   return (
@@ -49,14 +49,20 @@ const Comments: React.FC<Props> = ({
         />
       </div>
 
-      {comments?.map((c) => (
-        <Comment
-          key={v4()}
-          tempSpotId={listItemId}
-          comment={c}
-          likeAction={likeAction}
-        />
-      ))}
+      {p.comments?.map((c) =>
+        c.isDeleted ? (
+          <DeletedComment key={v4()} />
+        ) : (
+          <Comment
+            deleteCommentAction={p.deleteCommentAction}
+            editCommentAction={p.editCommentAction}
+            key={v4()}
+            listItemId={p.listItemId}
+            comment={c}
+            likeAction={p.likeAction}
+          />
+        )
+      )}
     </div>
   );
 };

@@ -1,17 +1,15 @@
 import React, { useState } from "react";
+import { createCommentComponent } from "../../../functions/component_creators/commentsCreator";
 import {
+  CommentDto,
   ObstacleType,
   SmallUserDto,
   TempSpotWithVerificationDto,
 } from "../../../skate_spot_api/client";
-import {
-  tempSpotComment,
-  tempSpotLikeComment,
-  vote,
-} from "../../../state/actions/tempSpotActions";
+import { vote } from "../../../state/actions/tempSpotActions";
 import { likeThunkCreator } from "../../../state/actions/thunk_creators/likeThunkCreator";
+import { ListViewTypes } from "../../../state/generic/listViewGenerics";
 import CommentBtn from "../../social/comment/CommentBtn";
-import Comments from "../../social/comment/Comments";
 import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
 import { MapModal } from "../../spot_common/MapView/MapModal";
 import { ShowMapModalBtn } from "../../spot_common/MapView/ShowMapModalBtn";
@@ -76,12 +74,11 @@ export const TempSpot = React.memo(
         </div>
         {commentsOpen && (
           <div className="row col-4">
-            <Comments
-              listItemId={tempSpot.id as string}
-              comments={tempSpot.verificationProcess?.discussion}
-              commentAction={tempSpotComment}
-              likeAction={tempSpotLikeComment}
-            />
+            {createCommentComponent({
+              listItemId: tempSpot.id,
+              comments: tempSpot.verificationProcess.discussion as CommentDto[],
+              listViewType: ListViewTypes.TEMP_SPOTS,
+            })}
           </div>
         )}
         <hr />

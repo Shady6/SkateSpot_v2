@@ -1,16 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SpotVideoDto } from "../../skate_spot_api/client";
+import { spotVideoLike } from "../actions/spotVideoActions";
+import { ListViewTypes } from "../generic/listViewGenerics";
 import {
-  spotVideoDeleteComment,
-  spotVideoEditComment,
-} from "../actions/spotVideoActions";
-import {
-  spotVideoComment,
-  spotVideoFetch,
-  spotVideoLike,
-  spotVideoLikeComment,
-} from "../actions/spotVideoActions";
-import {
+  addDefaultCases,
   listViewReducerHandlers,
   ListViewState,
 } from "./genericListViewReducer";
@@ -45,34 +38,14 @@ const spotVideoSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(spotVideoFetch.pending, (state) => {
-        listViewReducerHandlers.fetchListItems.pending(state);
-      })
-      .addCase(spotVideoFetch.fulfilled, (state: SpotVideoState, action) => {
-        listViewReducerHandlers.fetchListItems.fulfilled(state, action.payload);
-      })
-      .addCase(spotVideoFetch.rejected, (state) => {
-        listViewReducerHandlers.fetchListItems.pending(state);
-      })
-      .addCase(spotVideoComment.fulfilled, (state, action) => {
-        listViewReducerHandlers.comment.fulfilled(state, action.payload);
-      })
-      .addCase(spotVideoDeleteComment.fulfilled, (state, action) => {
-        listViewReducerHandlers.deleteComment.fulfilled(state, action.payload);
-      })
-      .addCase(spotVideoEditComment.fulfilled, (state, action) => {
-        listViewReducerHandlers.editComment.fulfilled(state, action.payload);
-      })
-      .addCase(spotVideoLike.fulfilled, (state, action) => {
-        listViewReducerHandlers.like.fulfilled(state, {
-          result: action.payload.result,
-          listItemId: action.payload.subjectId,
-        });
-      })
-      .addCase(spotVideoLikeComment.fulfilled, (state, action) => {
-        listViewReducerHandlers.likeComment.fulfilled(state, action.payload);
+    addDefaultCases(builder, ListViewTypes.SPOT_VIDEOS);
+
+    builder.addCase(spotVideoLike.fulfilled, (state, action) => {
+      listViewReducerHandlers.like.fulfilled(state, {
+        result: action.payload.result,
+        listItemId: action.payload.subjectId,
       });
+    });
   },
 });
 

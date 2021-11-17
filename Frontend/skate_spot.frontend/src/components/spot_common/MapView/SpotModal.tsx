@@ -5,6 +5,7 @@ import { useMapEvents } from "react-leaflet";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import useMeasure from "react-use-measure";
+import { createCommentComponent } from "../../../functions/component_creators/commentsCreator";
 import { tempSpotToSpot } from "../../../functions/mapper/mappingProfile";
 import { sendRequestWithFlashMsgOnError } from "../../../functions/request/sendRequestWithFlashMsgOnError";
 import { goToSpotDetailPage } from "../../../functions/route/goToSpotDetailPage";
@@ -17,17 +18,12 @@ import {
   TempSpotWithVerificationDto,
 } from "../../../skate_spot_api/client";
 import { spotLike } from "../../../state/actions/spotAcionts";
-import {
-  tempSpotComment,
-  tempSpotLikeComment,
-} from "../../../state/actions/tempSpotActions";
-import { getAllThunks } from "../../../state/actions/thunk_creators/allThunks";
 import { likeThunkCreator } from "../../../state/actions/thunk_creators/likeThunkCreator";
+import { ListViewTypes } from "../../../state/generic/listViewGenerics";
 import { spotActions } from "../../../state/reducers/spotReducer";
 import { tempSpotActions } from "../../../state/reducers/tempSpotsReducer";
 import { useRootState } from "../../../state/store";
 import CommentBtn from "../../social/comment/CommentBtn";
-import Comments from "../../social/comment/Comments";
 import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
 import { SpotNameLink } from "../../spot/SpotNameLink";
 import { SpotVideoBtn } from "../../spot_video/SpotVideoBtn";
@@ -187,22 +183,14 @@ export const SpotModal = (p: Props) => {
                 />
               </div>
 
-              {commentsOpen && (
-                <Comments
-                  listItemId={spot.id as string}
-                  comments={spot.comments as CommentDto[]}
-                  commentAction={
-                    p.markerData.isTempSpot
-                      ? tempSpotComment
-                      : getAllThunks().spots.comment
-                  }
-                  likeAction={
-                    p.markerData.isTempSpot
-                      ? tempSpotLikeComment
-                      : getAllThunks().spots.likeComment
-                  }
-                />
-              )}
+              {commentsOpen &&
+                createCommentComponent({
+                  listItemId: spot.id,
+                  comments: spot.comments as CommentDto[],
+                  listViewType: p.markerData.isTempSpot
+                    ? ListViewTypes.TEMP_SPOTS
+                    : ListViewTypes.SPOTS,
+                })}
             </div>
           </div>
         )}

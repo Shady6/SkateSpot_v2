@@ -28,13 +28,18 @@ namespace SkateSpot.Application.MappingProfiles
 			CreateMap<Spot, SpotDto>()
 				.ForMember(d => d.Obstacles, opt =>
 				opt.MapFrom(s => s.Obstacles.Select(o => o.ObstacleType)))
-				.ForMember(d => d.VideosCount, opt => opt.MapFrom(s => s.Videos.Count()));
+				.ForMember(d => d.VideosCount, opt => opt.MapFrom(s => s.Videos.Count()))
+				.ForMember(d => d.Comments, opt => opt.MapFrom(s =>
+					s.Comments.OrderByDescending(c => c.CreatedAt)));
+
 
 			CreateMap<HistoricalVerificationStatement, VerificationStatementDto>();
 			CreateMap<HistoricalVerificationProcess, VerificationProcessDto>();
 
 			CreateMap<VerificationStatement, VerificationStatementDto>();
-			CreateMap<VerificationProcess, VerificationProcessDto>();
+			CreateMap<VerificationProcess, VerificationProcessDto>()
+				.ForMember(d => d.Discussion, opt => opt.MapFrom(s =>
+					s.Discussion.OrderByDescending(c => c.CreatedAt)));
 			CreateMap<TempSpot, TempSpotWithVerificationDto>()
 				.ForMember(d => d.Obstacles, opt =>
 				opt.MapFrom(s => s.Obstacles.Select(o => o.ObstacleType)));

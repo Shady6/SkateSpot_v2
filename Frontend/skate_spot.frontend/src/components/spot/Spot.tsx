@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { createCommentComponent } from "../../functions/component_creators/commentsCreator";
 import { goToSpotDetailPage } from "../../functions/route/goToSpotDetailPage";
 import {
+  CommentDto,
   LikeDto,
   ObstacleType,
   SmallUserDto,
   SpotDto,
 } from "../../skate_spot_api/client";
 import { spotLike } from "../../state/actions/spotAcionts";
-import { getAllThunks } from "../../state/actions/thunk_creators/allThunks";
 import { ListViewTypes } from "../../state/generic/listViewGenerics";
 import CommentBtn from "../social/comment/CommentBtn";
-import Comments from "../social/comment/Comments";
 import { MainLikeButtons } from "../social/comment/MainLikeButtons";
 import { MapModal } from "../spot_common/MapView/MapModal";
 import { ShowMapModalBtn } from "../spot_common/MapView/ShowMapModalBtn";
@@ -60,12 +60,11 @@ export const Spot = React.memo(
         </div>
         {commentsOpen && (
           <div className="row col-4">
-            <Comments
-              listItemId={spot.id as string}
-              comments={spot.comments}
-              commentAction={getAllThunks().spots.comment}
-              likeAction={getAllThunks().spots.likeComment}
-            />
+            {createCommentComponent({
+              listItemId: spot.id,
+              comments: spot.comments as CommentDto[],
+              listViewType: ListViewTypes.SPOTS,
+            })}
           </div>
         )}
         <hr />

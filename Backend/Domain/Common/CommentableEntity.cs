@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SkateSpot.Domain.Interfaces;
+using SkateSpot.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using SkateSpot.Domain.Models;
-using SkateSpot.Domain.Interfaces;
 
 namespace SkateSpot.Domain.Common
 {
@@ -24,7 +24,7 @@ namespace SkateSpot.Domain.Common
 		{
 			var foundComment = Comments.FirstOrDefault(c => c.Id == commentId);
 			ValidateComment(foundComment, userId);
-			Comments.Remove(foundComment);
+			foundComment.Delete();
 		}
 
 		public void EditComment(Guid commentId, Guid userId, string newText)

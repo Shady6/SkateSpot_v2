@@ -15,6 +15,7 @@ export const deleteCommentThunkCreator = (listType: ListViewTypes) => {
       { getState, dispatch, rejectWithValue }
     ) => {
       const state = getState() as RootState;
+
       const res = await sendRequestWithFlashMsgOnError(
         dispatch,
         state.auth.content,

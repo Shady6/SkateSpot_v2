@@ -1,17 +1,15 @@
 import React, { useState } from "react";
+import { createCommentComponent } from "../../../functions/component_creators/commentsCreator";
 import {
+  CommentDto,
   LikeDto,
   SmallUserDto,
   SpotVideoDto,
   VideoPlatformType,
 } from "../../../skate_spot_api/client";
-import {
-  spotVideoComment,
-  spotVideoLike,
-  spotVideoLikeComment,
-} from "../../../state/actions/spotVideoActions";
+import { spotVideoLike } from "../../../state/actions/spotVideoActions";
+import { ListViewTypes } from "../../../state/generic/listViewGenerics";
 import CommentBtn from "../../social/comment/CommentBtn";
-import Comments from "../../social/comment/Comments";
 import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
 import { MapModal } from "../../spot_common/MapView/MapModal";
 import { ShowMapModalBtn } from "../../spot_common/MapView/ShowMapModalBtn";
@@ -52,12 +50,11 @@ export const SpotVideo = React.memo(
         </div>
         {commentsOpen && (
           <div className="row col-4">
-            <Comments
-              listItemId={spotVideo.id as string}
-              comments={spotVideo.comments}
-              commentAction={spotVideoComment}
-              likeAction={spotVideoLikeComment}
-            />
+            {createCommentComponent({
+              listItemId: spotVideo.id,
+              comments: spotVideo.comments as CommentDto[],
+              listViewType: ListViewTypes.SPOT_VIDEOS,
+            })}
           </div>
         )}
         <hr />

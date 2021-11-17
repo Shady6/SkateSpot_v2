@@ -1,7 +1,7 @@
 import { CircularProgress } from "@material-ui/core";
 import React from "react";
 import { useFetchOnScroll } from "../../../hooks/useFetchOnScroll";
-import { spotVideoFetch } from "../../../state/actions/spotVideoActions";
+import { getAllThunks } from "../../../state/actions/thunk_creators/allThunks";
 import { ListViewTypes } from "../../../state/generic/listViewGenerics";
 import { useRootState } from "../../../state/store";
 import { SpotVideo } from "./SpotVideo";
@@ -10,7 +10,10 @@ interface Props {}
 
 export const SpotVideos = (p: Props) => {
   const state = useRootState();
-  useFetchOnScroll(spotVideoFetch, ListViewTypes.SPOT_VIDEOS);
+  useFetchOnScroll(
+    getAllThunks().spotVideos.fetchListItems,
+    ListViewTypes.SPOT_VIDEOS
+  );
 
   return (
     <div className="container mt-5" style={{ fontSize: "1rem" }}>

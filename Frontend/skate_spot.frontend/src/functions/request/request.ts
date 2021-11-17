@@ -11,7 +11,9 @@ export const request = async <TReturn>(
 ): Promise<ApiResponse<TReturn>> => {
   try {
     const response = await reqFunc(new ApiClient(), "Bearer " + auth?.jwToken);
-    return response;
+    return response === undefined
+      ? { content: undefined, error: undefined }
+      : response;
   } catch (e) {
     if (e instanceof ApiException) return JSON.parse(e.response);
 

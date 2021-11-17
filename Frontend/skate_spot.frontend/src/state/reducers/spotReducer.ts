@@ -36,6 +36,7 @@ const spotSlice = createSlice({
   },
   extraReducers: (builder) => {
     addDefaultCases(builder, ListViewTypes.SPOTS);
+
     builder.addCase(spotLike.fulfilled, (state, action) => {
       listViewReducerHandlers.like.fulfilled(state, {
         result: action.payload.result,
