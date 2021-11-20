@@ -8,12 +8,15 @@ using Microsoft.IdentityModel.Tokens;
 using SkateSpot.Application.DTOs.Settings;
 using SkateSpot.Application.Interfaces;
 using SkateSpot.Application.Interfaces.Shared;
+using SkateSpot.Application.MappingProfiles;
+using SkateSpot.Application.Services;
 using SkateSpot.Domain.Common;
 using SkateSpot.Infrastructure.DbContexts;
 using SkateSpot.Infrastructure.Identity.Models;
 using SkateSpot.Infrastructure.Identity.Services;
 using SkateSpot.Infrastructure.Shared.Services;
 using System;
+using System.Reflection;
 using System.Text;
 
 namespace SkateSpot.Api.Extensions
@@ -86,6 +89,16 @@ namespace SkateSpot.Api.Extensions
 						},
 					};
 				});
+		}
+
+		public static void AddApplicationLayer(this IServiceCollection services)
+		{
+			services.AddAutoMapper(Assembly.GetAssembly(typeof(ApplicationProfile)));
+			services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+			services.Scan(scan =>
+			scan.FromAssemblyOf<Service>()
+			.AddClasses(filter => filter.InNamespaceOf<Service>())
+			.AsMatchingInterface());
 		}
 	}
 }

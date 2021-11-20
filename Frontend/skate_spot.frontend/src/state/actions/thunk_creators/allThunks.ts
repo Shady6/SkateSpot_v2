@@ -1,32 +1,22 @@
 //@ts-nocheck
 
-import { fetchlistItemsThunkCreator } from "./fetchlistItemsThunkCreator";
+import { LikeSubjectType } from "../../../skate_spot_api/client";
+import { ListViewTypes } from "../../generic/listViewGenerics";
 import { commentThunkCreator } from "./commentThunkCreator";
-import {
-  DeleteComment,
-  deleteCommentThunkCreator,
-} from "./deleteCommentThunkCreator";
+import { deleteCommentThunkCreator } from "./deleteCommentThunkCreator";
+import { deleteListItemThunkCreator } from "./deleteListItemThunkCreator";
 import { editCommentThunkCreator } from "./editCommentThunkCreator";
+import { fetchlistItemsThunkCreator } from "./fetchlistItemsThunkCreator";
 import { likeThunkCreator } from "./likeThunkCreator";
-import {
-  CommentActionReturnType,
-  ListViewTypes,
-} from "../../generic/listViewGenerics";
-import { AsyncThunk } from "@reduxjs/toolkit";
-import {
-  ListWithCount,
-  WithSocial,
-} from "../../reducers/genericListViewReducer";
-import { LikeDto, LikeSubjectType } from "../../../skate_spot_api/client";
 
 export const genericThunkActions = {
   fetchListItems: fetchlistItemsThunkCreator,
   comment: commentThunkCreator,
   deleteComment: deleteCommentThunkCreator,
   editComment: editCommentThunkCreator,
-  // Like comment because this thunk creator is only used for liking comments,
   // liking list objects is done separetely
   likeComment: likeThunkCreator,
+  deleteListItem: deleteListItemThunkCreator,
 };
 
 export const getAllThunks = () => {
@@ -48,53 +38,15 @@ export const getAllThunks = () => {
           genericThunkActions[genericThunkKey](ListViewTypes[listViewType]);
     });
   });
+
   return thunkActions as {
     [index in ListViewTypes]: {
-      fetchListItems: AsyncThunk<ListWithCount<WithSocial>, void, {}>;
-      comment: AsyncThunk<
-        CommentActionReturnType,
-        {
-          listItemId: string;
-          text: string;
-        },
-        {}
-      >;
-      deleteComment: AsyncThunk<
-        {
-          listItemId: string;
-          commentId: string;
-        },
-        DeleteComment,
-        {}
-      >;
-      editComment: AsyncThunk<
-        {
-          listItemId: string;
-          commentId: string;
-          newText: string;
-        },
-        {
-          listItemId: string;
-          commentId: string;
-          newText: string;
-        },
-        {}
-      >;
-      likeComment: AsyncThunk<
-        {
-          result: LikeDto[] | undefined;
-          likeSubjectType: LikeSubjectType;
-          subjectId: string;
-          parentId: string | undefined;
-        },
-        {
-          isPositive: boolean;
-          deletedLike: boolean;
-          subjectId: string;
-          parentId?: string | undefined;
-        },
-        {}
-      >;
+      fetchListItems: ReturnType<typeof fetchlistItemsThunkCreator>;
+      comment: ReturnType<typeof commentThunkCreator>;
+      deleteComment: ReturnType<typeof deleteCommentThunkCreator>;
+      editComment: ReturnType<typeof editCommentThunkCreator>;
+      likeComment: ReturnType<typeof likeThunkCreator>;
+      deleteListItem: ReturnType<typeof deleteListItemThunkCreator>;
     };
   };
 };

@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SkateSpot.Application.Interfaces;
 using SkateSpot.Domain.Models;
 using System.Reflection;
 
 namespace SkateSpot.Infrastructure.DbContexts
 {
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : DbContext, IApplicationDbContext
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)

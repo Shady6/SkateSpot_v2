@@ -69,5 +69,14 @@ namespace SkateSpot.Api.Controllers
 			return Ok(await _mapper.ProjectTo<TempSpotWithVerificationDto>(_dbContext.TempSpots
 					).FirstOrDefaultAsync(s => s.Id == id));
 		}
+
+		[Authorize]
+		[HttpDelete("{id}")]
+		[MapRouteArgAndUserIdIntoBody(typeof(DeleteTempSpotCommand))]
+		public async Task<ActionResult> DeleteTempSpot([FromRoute] DeleteTempSpotCommand request)
+		{
+			await _tempSpotsService.DeleteTempSpot(request);
+			return Ok();
+		}
 	}
 }

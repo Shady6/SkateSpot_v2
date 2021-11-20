@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using SkateSpot.Application.DTOs.DomainDTOs;
 using SkateSpot.Application.Factories;
 using SkateSpot.Application.Features.TempSpotFeatures.Commands;
-using SkateSpot.Application.Features.TempSpotFeatures.Queries;
+using SkateSpot.Application.Interfaces;
 using SkateSpot.Application.Interfaces.Repositories;
 using SkateSpot.Application.Services.Interfaces;
 using SkateSpot.Application.Utility;
@@ -20,16 +20,19 @@ namespace SkateSpot.Application.Services
 		private readonly ITempSpotRepository _tempSpotRepository;
 		private readonly IMapper _mapper;
 		private readonly IServiceScopeFactory _scopeFactory;
+		private readonly IApplicationDbContext _context;
 
 		public TempSpotsService(ISpotRepository spotRepository,
 						 IMapper mapper,
 						 IServiceScopeFactory scopeFactory,
-						 ITempSpotRepository tempSpotRepository)
+						 ITempSpotRepository tempSpotRepository,
+						 IApplicationDbContext context)
 		{
 			_spotRepository = spotRepository;
 			_mapper = mapper;
 			_scopeFactory = scopeFactory;
 			_tempSpotRepository = tempSpotRepository;
+			_context = context;
 		}
 
 		public async Task<Guid> CreateTempSpot(CreateTempSpotCommand request)
@@ -58,10 +61,15 @@ namespace SkateSpot.Application.Services
 			return tempSpot.Id;
 		}
 
-		public async Task<TempSpotWithVerificationDto> GetTempSpotWithVerification(GetTempSpotWithVerificationQuery request)
+		public async Task DeleteTempSpot(DeleteTempSpotCommand request)
 		{
-			var foundSpot = await ThrowOnNullAsync(() => _tempSpotRepository.GetFullWithEntitiesAsync(request.spotId));
-			return _mapper.Map<TempSpotWithVerificationDto>(foundSpot);
+			var foundSpot = await ThrowOnNullAsync(() =>
+				_context.TempSpots.FirstOrDefaultAsync(s => s.Id == request.Id));
+
+			if (foundSpot.AuthorId != request.UserId)
+				throw new AppException(ErrorCode.NOT_OWNED, "You can't delete temp spot which doesn't belong to you");
+
+			_context.TempSpots.Remove(foundSpot);
 		}
 
 		private void VerifySpotOnTimerElapsed(IServiceScope scope, Guid ownerId)

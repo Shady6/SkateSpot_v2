@@ -15,6 +15,7 @@ interface Props {
   editCommentAction: ReturnType<typeof editCommentThunkCreator>;
   comment: CommentDto;
   listItemId: string;
+  setIsEditingComment: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const CommentActions: React.FC<Props> = (p) => {
@@ -38,7 +39,13 @@ export const CommentActions: React.FC<Props> = (p) => {
           disableTouchListener
           title={
             <div>
-              <IconButton className="p-1 me-2">
+              <IconButton
+                onClick={() => {
+                  setIsCommentActionsTooltipOpen(false);
+                  p.setIsEditingComment(true);
+                }}
+                className="p-1 me-2"
+              >
                 <EditIcon style={{ cursor: "pointer", fontSize: "1.1rem" }} />
               </IconButton>
               <IconButton

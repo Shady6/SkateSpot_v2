@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SkateSpot.Api.Attributes;
 using SkateSpot.Api.Data;
 using SkateSpot.Application.DTOs;
 using SkateSpot.Application.DTOs.DomainDTOs;
+using SkateSpot.Application.Features.SpotFeatures.Commands;
 using SkateSpot.Application.Services.Interfaces;
 using SkateSpot.Infrastructure.DbContexts;
 using System.Collections.Generic;
@@ -58,6 +61,15 @@ namespace SkateSpot.Api.Controllers
 		public async Task<ActionResult<List<SpotMarkerDataDto>>> GetPermaAndTempSpotsMarkerData()
 		{
 			return Ok(await _spotsService.GetPermaAndTempSpotsMarkerData());
+		}
+
+		[Authorize]
+		[HttpDelete("{id}")]
+		[MapRouteArgAndUserIdIntoBody(typeof(DeleteSpotCommand))]
+		public async Task<ActionResult> DeleteSpot([FromRoute] DeleteSpotCommand request)
+		{
+			await _spotsService.DeleteSpot(request);
+			return Ok();
 		}
 	}
 }

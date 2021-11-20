@@ -1,9 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using SkateSpot.Application.Features.TempSpotFeatures.Commands;
+using System;
 using System.Threading.Tasks;
-using SkateSpot.Application.DTOs.DomainDTOs;
-using SkateSpot.Application.Features.TempSpotFeatures.Commands;
-using SkateSpot.Application.Features.TempSpotFeatures.Queries;
 
 namespace SkateSpot.Application.Services.Interfaces
 {
@@ -11,6 +8,6 @@ namespace SkateSpot.Application.Services.Interfaces
 	{
 		Task<Guid> CreateTempSpot(CreateTempSpotCommand request);
 
-		Task<TempSpotWithVerificationDto> GetTempSpotWithVerification(GetTempSpotWithVerificationQuery request);
+		Task DeleteTempSpot(DeleteTempSpotCommand request);
 	}
 }

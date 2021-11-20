@@ -54,7 +54,10 @@ namespace SkateSpot.Application.MappingProfiles
 				.ForMember(d => d.Base64, opt => opt.MapFrom(s => s.Image.Base64));
 			CreateMap<Image, ImageDto>();
 
-			CreateMap<SpotVideo, SpotVideoDto>();
+			CreateMap<SpotVideo, SpotVideoDto>()
+				.ForMember(d => d.Comments, opt => opt.MapFrom(s =>
+					s.Comments.OrderByDescending(c => c.CreatedAt)));
+
 
 			CreateMap<Spot, SmallSpotDto>();
 		}

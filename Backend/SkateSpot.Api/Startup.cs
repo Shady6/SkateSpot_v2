@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using SkateSpot.Api.Extensions;
 using SkateSpot.Api.Middleware;
 using SkateSpot.Api.Swagger;
-using SkateSpot.Extensions.Application;
 using SkateSpot.Infrastructure.Extensions;
 using System;
 using System.Text.Json.Serialization;
@@ -30,6 +29,7 @@ namespace SkateSpot.Api
 			services.AddPersistenceContexts(_configuration);
 			services.AddRepositories();
 			services.AddSharedInfrastructure(_configuration);
+			services.AddApplicationLayer();
 			services.RegisterSwagger();
 			services.AddCors(options =>
 			{

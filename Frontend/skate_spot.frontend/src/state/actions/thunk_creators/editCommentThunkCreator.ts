@@ -26,8 +26,8 @@ export const editCommentThunkCreator = (listType: ListViewTypes) => {
         (client, token) =>
           client.edit_Comment(
             listViewSpecifics[listType].commentSubjectType,
-            commentId,
             listItemId,
+            commentId,
             token,
             {
               newText,
