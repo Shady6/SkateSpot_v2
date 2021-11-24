@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SkateSpot.Domain.Models;
+using System.Threading.Tasks;
 
 namespace SkateSpot.Application.Interfaces
 {
@@ -11,5 +12,7 @@ namespace SkateSpot.Application.Interfaces
 		DbSet<SpotVideo> SpotVideos { get; set; }
 		DbSet<VerificationProcess> VerificationProcesses { get; set; }
 		DbSet<Comment> Comments { get; set; }
+
+		Task<int> SaveChangesAsync();
 	}
 }

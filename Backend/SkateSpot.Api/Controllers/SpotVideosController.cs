@@ -43,9 +43,9 @@ namespace SkateSpot.Api.Controllers
 			{
 				Data = await _mapper.ProjectTo<SpotVideoDto>(
 				 _dbContext.SpotVideos
+				.OrderByDescending(v => v.CreatedAt)
 				.Skip(offset)
 				.Take(take))
-				.OrderByDescending(v => v.CreatedAt)
 				.ToArrayAsync(),
 				TotalCount = await _dbContext.SpotVideos
 				.CountAsync()
@@ -63,10 +63,10 @@ namespace SkateSpot.Api.Controllers
 			{
 				Data = await _mapper.ProjectTo<SpotVideoDto>(
 				  _dbContext.SpotVideos
+				 .OrderByDescending(v => v.CreatedAt)
 				 .Where(v => v.Spot.Name == spotName)
 				 .Skip(offset)
 				 .Take(take))
-				.OrderByDescending(v => v.CreatedAt)
 				.ToArrayAsync(),
 				TotalCount = await _dbContext.SpotVideos
 				 .Where(v => v.Spot.Name == spotName)
@@ -82,7 +82,7 @@ namespace SkateSpot.Api.Controllers
 			return Ok(await _spotVideosService.AddSpotVideo(request));
 		}
 
-		[HttpDelete("spots/{spotId}/spotVideos/{spotVideoId}")]
+		[HttpDelete("spotVideos/{spotVideoId}")]
 		public async Task<ActionResult> DeleteSpotVideo([FromRoute] DeleteSpotVideoCommand request)
 		{
 			request.UserId = User.GetUserId();

@@ -112,7 +112,7 @@ namespace SkateSpot.Domain.Models
 		public void AddSpotVideo(SpotVideo video) =>
 			Videos.Add(video);
 
-		public void DeleteSpotVideo(Guid spotVideoId, Guid userId)
+		public SpotVideo DeleteSpotVideo(Guid spotVideoId, Guid userId)
 		{
 			var foundVideo = Videos.FirstOrDefault(v => v.Id == spotVideoId);
 			if (foundVideo == null)
@@ -120,6 +120,7 @@ namespace SkateSpot.Domain.Models
 			else if (foundVideo.AuthorId != userId)
 				throw new AppException(ErrorCode.NOT_OWNED, "You don't own this video.");
 			Videos.Remove(foundVideo);
+			return foundVideo;
 		}
 
 		public void Like(Like like) =>

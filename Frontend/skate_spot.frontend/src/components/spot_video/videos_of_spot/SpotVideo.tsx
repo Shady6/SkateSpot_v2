@@ -11,6 +11,7 @@ import { spotVideoLike } from "../../../state/actions/spotVideoActions";
 import { ListViewTypes } from "../../../state/generic/listViewGenerics";
 import CommentBtn from "../../social/comment/CommentBtn";
 import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
+import { ListItemActions } from "../../spot_common/ListItemActions";
 import { SpotAuthor as SpotVideoAuthor } from "../../spot_common/SpotAuthor";
 import { InstagramVideo } from "../InstagramVideo";
 import { YouTubeVideo } from "../YouTubeVideo";
@@ -25,11 +26,19 @@ export const SpotVideo = React.memo(
 
     return (
       <div className="mb-4">
-        {spotVideo.platformType === VideoPlatformType.Instagram ? (
-          <InstagramVideo videoId={spotVideo.embedId as string} />
-        ) : (
-          <YouTubeVideo videoId={spotVideo.embedId as string} />
-        )}
+        <div className="d-flex justify-content-between">
+          {spotVideo.platformType === VideoPlatformType.Instagram ? (
+            <InstagramVideo videoId={spotVideo.embedId as string} />
+          ) : (
+            <YouTubeVideo videoId={spotVideo.embedId as string} />
+          )}
+          <ListItemActions
+            authorId={spotVideo.author.id}
+            listItemId={spotVideo.id}
+            listViewType={ListViewTypes.SPOT_VIDEOS}
+            deleteFunc={(c, t) => c.delete_Spot_Video(spotVideo.id, t)}
+          />
+        </div>
         <p>{spotVideo.description}</p>
         <div className="d-flex mt-2">
           <MainLikeButtons

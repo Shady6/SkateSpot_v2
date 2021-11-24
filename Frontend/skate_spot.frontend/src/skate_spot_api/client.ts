@@ -732,14 +732,11 @@ export class Client {
     /**
      * @return Success
      */
-    delete_Spot(id: string, userId: string, authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/spots/{id}";
+    delete_Spot(id: string, authorization: string): Promise<void> {
+        let url_ = this.baseUrl + "/api/spots/{Id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{Id}", encodeURIComponent("" + id));
-        if (userId === undefined || userId === null)
-            throw new Error("The parameter 'userId' must be defined.");
-        url_ = url_.replace("{UserId}", encodeURIComponent("" + userId));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -916,11 +913,8 @@ export class Client {
     /**
      * @return Success
      */
-    delete_Spot_Video(spotId: string, spotVideoId: string, authorization: string): Promise<void> {
-        let url_ = this.baseUrl + "/api/spots/{spotId}/spotVideos/{spotVideoId}";
-        if (spotId === undefined || spotId === null)
-            throw new Error("The parameter 'spotId' must be defined.");
-        url_ = url_.replace("{spotId}", encodeURIComponent("" + spotId));
+    delete_Spot_Video(spotVideoId: string, authorization: string): Promise<void> {
+        let url_ = this.baseUrl + "/api/spotVideos/{spotVideoId}";
         if (spotVideoId === undefined || spotVideoId === null)
             throw new Error("The parameter 'spotVideoId' must be defined.");
         url_ = url_.replace("{spotVideoId}", encodeURIComponent("" + spotVideoId));
@@ -1083,14 +1077,11 @@ export class Client {
     /**
      * @return Success
      */
-    delete_Temp_Spot(id: string, userId: string, authorization: string): Promise<void> {
+    delete_Temp_Spot(id: string, authorization: string): Promise<void> {
         let url_ = this.baseUrl + "/api/TempSpots/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{Id}", encodeURIComponent("" + id));
-        if (userId === undefined || userId === null)
-            throw new Error("The parameter 'userId' must be defined.");
-        url_ = url_.replace("{UserId}", encodeURIComponent("" + userId));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{

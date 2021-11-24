@@ -14,8 +14,10 @@ import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
 import { MapModal } from "../../spot_common/MapView/MapModal";
 import { ShowMapModalBtn } from "../../spot_common/MapView/ShowMapModalBtn";
 import { SpotAuthor as SpotVideoAuthor } from "../../spot_common/SpotAuthor";
+import { SpotNameLink } from "../../spot_common/SpotNameLink";
 import { InstagramVideo } from "../InstagramVideo";
 import { YouTubeVideo } from "../YouTubeVideo";
+import { ListItemHeader } from "../../spot_common/ListItemHeader";
 
 interface Props {
   spotVideo: SpotVideoDto;
@@ -28,7 +30,18 @@ export const SpotVideo = React.memo(
 
     return (
       <div className="mb-4">
-        <h4>{spotVideo?.spot?.name}</h4>
+        <ListItemHeader
+          authorId={spotVideo.author.id}
+          listItemId={spotVideo.id}
+          listViewType={ListViewTypes.SPOT_VIDEOS}
+          deleteFunc={(c, t) => c.delete_Spot_Video(spotVideo.id, t)}
+        >
+          {spotVideo.spot ? (
+            <SpotNameLink spotName={spotVideo?.spot?.name as string} />
+          ) : (
+            <h4 style={{ color: "rgb(148,148,148)" }}>[Spot deleted]</h4>
+          )}
+        </ListItemHeader>
         {spotVideo.platformType === VideoPlatformType.Instagram ? (
           <InstagramVideo videoId={spotVideo.embedId as string} />
         ) : (
@@ -45,7 +58,10 @@ export const SpotVideo = React.memo(
             onClick={() => setCommentsOpen(!commentsOpen)}
             commentsCount={spotVideo?.comments?.length || 0}
           />
-          <ShowMapModalBtn setIsMapModalOpen={setIsMapModalOpen} />
+          <ShowMapModalBtn
+            disabled={!spotVideo.spot}
+            setIsMapModalOpen={setIsMapModalOpen}
+          />
           <SpotVideoAuthor author={spotVideo.author as SmallUserDto} />
         </div>
         {commentsOpen && (
@@ -58,11 +74,13 @@ export const SpotVideo = React.memo(
           </div>
         )}
         <hr />
-        <MapModal
-          isMapModalOpen={isMapModalOpen}
-          setIsMapModalOpen={setIsMapModalOpen}
-          address={spotVideo.spot.address}
-        />
+        {spotVideo.spot && (
+          <MapModal
+            isMapModalOpen={isMapModalOpen}
+            setIsMapModalOpen={setIsMapModalOpen}
+            address={spotVideo.spot.address}
+          />
+        )}
       </div>
     );
   },

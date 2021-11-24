@@ -25,7 +25,7 @@ import { tempSpotActions } from "../../../state/reducers/tempSpotsReducer";
 import { useRootState } from "../../../state/store";
 import CommentBtn from "../../social/comment/CommentBtn";
 import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
-import { SpotNameLink } from "../../spot/SpotNameLink";
+import { SpotNameLink } from "../SpotNameLink";
 import { SpotVideoBtn } from "../../spot_video/SpotVideoBtn";
 import { vote_like_adapter } from "../../temp_spot/main/TempSpot";
 import { Obstacles } from "../Obstacles";

@@ -61,6 +61,7 @@ namespace SkateSpot.Application.Services
 				throw new AppException(ErrorCode.NOT_OWNED, "You can't delete spot which doesn't belong to you");
 
 			_context.Spots.Remove(foundSpot);
+			await _context.SaveChangesAsync();
 		}
 
 		private void VerifyImagesOnTimerElapsed(IServiceScope scope, Guid ownerId)

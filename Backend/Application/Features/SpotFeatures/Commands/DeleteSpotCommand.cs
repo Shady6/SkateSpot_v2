@@ -1,5 +1,5 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 
 namespace SkateSpot.Application.Features.SpotFeatures.Commands
 {
@@ -7,7 +7,7 @@ namespace SkateSpot.Application.Features.SpotFeatures.Commands
 	{
 		public Guid Id { get; set; }
 
-		[JsonIgnore]
+		[BindNever]
 		public Guid UserId { get; set; }
 	}
 }

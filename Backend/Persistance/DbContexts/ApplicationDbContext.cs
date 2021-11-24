@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using SkateSpot.Application.Interfaces;
 using SkateSpot.Domain.Models;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace SkateSpot.Infrastructure.DbContexts
 {
@@ -25,6 +26,11 @@ namespace SkateSpot.Infrastructure.DbContexts
 			optionsBuilder.EnableDetailedErrors();
 			optionsBuilder.EnableSensitiveDataLogging();
 			base.OnConfiguring(optionsBuilder);
+		}
+
+		public async Task<int> SaveChangesAsync()
+		{
+			return await base.SaveChangesAsync();
 		}
 
 		public static readonly LoggerFactory _myLoggerFactory =

@@ -11,6 +11,7 @@ import { likeThunkCreator } from "../../../state/actions/thunk_creators/likeThun
 import { ListViewTypes } from "../../../state/generic/listViewGenerics";
 import CommentBtn from "../../social/comment/CommentBtn";
 import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
+import { ListItemHeader } from "../../spot_common/ListItemHeader";
 import { MapModal } from "../../spot_common/MapView/MapModal";
 import { ShowMapModalBtn } from "../../spot_common/MapView/ShowMapModalBtn";
 import { Obstacles } from "../../spot_common/Obstacles";
@@ -45,7 +46,14 @@ export const TempSpot = React.memo(
 
     return (
       <div className="mb-4">
-        <h4>{tempSpot.name}</h4>
+        <ListItemHeader
+          authorId={tempSpot.author.id}
+          listItemId={tempSpot.id}
+          listViewType={ListViewTypes.TEMP_SPOTS}
+          deleteFunc={(c, t) => c.delete_Temp_Spot(tempSpot.id, t)}
+        >
+          <h4>{tempSpot.name}</h4>
+        </ListItemHeader>
         <p>{tempSpot.description}</p>
         <SpotImages images={tempSpot.images} />
         <div className="d-flex mt-2">

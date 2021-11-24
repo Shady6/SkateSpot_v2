@@ -28,13 +28,13 @@ export enum Routes {
   HOME = "/",
   LOGIN = "/auth/login",
   REGISTER = "/auth/register",
-  ADD_TEMP_SPOT = "/tempSpot/add",
-  TEMP_SPOTS = "/tempSpot",
-  SPOTS = "/spots",
+  ADD_TEMP_SPOT = "/temp/add",
+  TEMP_SPOTS = "/temp",
+  SPOTS = "/spot",
   LOGOUT = "/logout",
   MAP = "/map",
-  SPOT_VIDEO = "/spotVideo",
-  SPOT_DEDICATED_PAGE = `/spots/:spotName`,
+  SPOT_VIDEO = "/video",
+  SPOT_DEDICATED_PAGE = `/spot/:spotName`,
 }
 
 const routes: IRoute[] = [

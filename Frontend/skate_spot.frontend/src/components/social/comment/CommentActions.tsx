@@ -9,6 +9,7 @@ import { deleteCommentThunkCreator } from "../../../state/actions/thunk_creators
 import { editCommentThunkCreator } from "../../../state/actions/thunk_creators/editCommentThunkCreator";
 import { useDispatch } from "react-redux";
 import { CommentDto } from "../../../skate_spot_api/client";
+import { MoreVertWithTooltip } from "../../shared/MoreVertWithTooltip";
 
 interface Props {
   deleteCommentAction: ReturnType<typeof deleteCommentThunkCreator>;
@@ -19,68 +20,39 @@ interface Props {
 }
 
 export const CommentActions: React.FC<Props> = (p) => {
-  const [isCommentActionsTooltipOpen, setIsCommentActionsTooltipOpen] =
-    useState(false);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const dispatch = useDispatch();
 
   return (
-    <ClickAwayListener
-      onClickAway={() => setIsCommentActionsTooltipOpen(false)}
+    <MoreVertWithTooltip
+      isTooltipOpen={isTooltipOpen}
+      setIsTooltipOpen={setIsTooltipOpen}
     >
       <div>
-        <Tooltip
-          PopperProps={{
-            disablePortal: true,
+        <IconButton
+          onClick={() => {
+            setIsTooltipOpen(false);
+            p.setIsEditingComment(true);
           }}
-          onClose={() => setIsCommentActionsTooltipOpen(false)}
-          open={isCommentActionsTooltipOpen}
-          disableFocusListener
-          disableHoverListener
-          disableTouchListener
-          title={
-            <div>
-              <IconButton
-                onClick={() => {
-                  setIsCommentActionsTooltipOpen(false);
-                  p.setIsEditingComment(true);
-                }}
-                className="p-1 me-2"
-              >
-                <EditIcon style={{ cursor: "pointer", fontSize: "1.1rem" }} />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  dispatch(
-                    p.deleteCommentAction({
-                      listItemId: p.listItemId,
-                      commentId: p.comment.id,
-                    })
-                  );
-                  setIsCommentActionsTooltipOpen(false);
-                }}
-                className="p-1"
-              >
-                <DeleteIcon style={{ cursor: "pointer", fontSize: "1.1rem" }} />
-              </IconButton>
-            </div>
-          }
+          className="p-1 me-2"
         >
-          <IconButton
-            onClick={() => {
-              setIsCommentActionsTooltipOpen(!isCommentActionsTooltipOpen);
-            }}
-            className="ms-1 p-0"
-          >
-            <MoreVertIcon
-              style={{
-                color: "#d2d2d2",
-                fontSize: "1.1rem",
-                cursor: "pointer",
-              }}
-            />
-          </IconButton>
-        </Tooltip>
+          <EditIcon style={{ cursor: "pointer", fontSize: "1.1rem" }} />
+        </IconButton>
+        <IconButton
+          onClick={() => {
+            dispatch(
+              p.deleteCommentAction({
+                listItemId: p.listItemId,
+                commentId: p.comment.id,
+              })
+            );
+            setIsTooltipOpen(false);
+          }}
+          className="p-1"
+        >
+          <DeleteIcon style={{ cursor: "pointer", fontSize: "1.1rem" }} />
+        </IconButton>
       </div>
-    </ClickAwayListener>
+    </MoreVertWithTooltip>
   );
 };

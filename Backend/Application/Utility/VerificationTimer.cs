@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Timers;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace SkateSpot.Application.Utility
 {
@@ -10,7 +10,10 @@ namespace SkateSpot.Application.Utility
 		public IServiceScopeFactory ScopeFactory { get; set; }
 		public Action<IServiceScope, Guid> OnTimerElapsed { get; set; }
 
-		public static void StartNewVerificationTimer(double startAfterMs, Guid spotId, Action<IServiceScope, Guid> onTimerElapsed, IServiceScopeFactory scopeFactory)
+		public static void StartNewVerificationTimer(double startAfterMs,
+											   Guid spotId,
+											   Action<IServiceScope, Guid> onTimerElapsed,
+											   IServiceScopeFactory scopeFactory)
 		{
 			var spotVerificationTimer = new VerificationTimer
 			{
@@ -20,11 +23,11 @@ namespace SkateSpot.Application.Utility
 				ScopeFactory = scopeFactory,
 				OnTimerElapsed = onTimerElapsed
 			};
-			spotVerificationTimer.Elapsed += (source, args) =>
+			spotVerificationTimer.Elapsed += (source, args) => OnTimerElapsedWrapper(source, args);
 			spotVerificationTimer.Start();
 		}
 
-		private void OnTimerElapsedWrapper(object source, ElapsedEventArgs e)
+		private static void OnTimerElapsedWrapper(object source, ElapsedEventArgs e)
 		{
 			var verificationTimer = (VerificationTimer)source;
 

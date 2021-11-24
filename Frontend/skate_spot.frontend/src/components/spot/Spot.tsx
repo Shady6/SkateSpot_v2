@@ -20,7 +20,8 @@ import { SpotAuthor } from "../spot_common/SpotAuthor";
 import { SpotImages } from "../spot_common/SpotImages";
 import { SurfaceScore } from "../spot_common/SurfaceScore";
 import { SpotVideoBtn } from "../spot_video/SpotVideoBtn";
-import { SpotNameLink } from "./SpotNameLink";
+import { SpotNameLink } from "../spot_common/SpotNameLink";
+import { ListItemHeader } from "../spot_common/ListItemHeader";
 
 interface Props {
   spot: SpotDto;
@@ -34,7 +35,15 @@ export const Spot = React.memo(
 
     return (
       <div className="mb-4">
-        <SpotNameLink spotName={spot.name as string} />
+        <ListItemHeader
+          authorId={spot.author.id}
+          listItemId={spot.id}
+          listViewType={ListViewTypes.SPOTS}
+          deleteFunc={(c, t) => c.delete_Spot(spot.id, t)}
+        >
+          <SpotNameLink spotName={spot.name as string} />
+        </ListItemHeader>
+
         <p>{spot.description}</p>
         <SpotImages images={spot.images} />
         <div className="d-flex mt-2">

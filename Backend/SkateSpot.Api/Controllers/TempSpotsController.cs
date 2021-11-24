@@ -49,6 +49,7 @@ namespace SkateSpot.Api.Controllers
 			{
 				Data = await _mapper.ProjectTo<TempSpotWithVerificationDto>(
 					_dbContext.TempSpots
+					.OrderByDescending(s => s.CreatedAt)
 					.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
 					.Include(s => s.VerificationProcess)
 					.ThenInclude(s => s.Discussion.OrderByDescending(c => c.CreatedAt))

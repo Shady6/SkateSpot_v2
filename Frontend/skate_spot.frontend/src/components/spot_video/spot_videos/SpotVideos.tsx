@@ -22,7 +22,7 @@ export const SpotVideos = (p: Props) => {
           <SpotVideo key={t.createdAt as unknown as string} spotVideo={t} />
         );
       })}
-      {state.tempSpotsState.loading && <CircularProgress color="secondary" />}
+      {state.spotVideoState.loading && <CircularProgress color="secondary" />}
     </div>
   );
 };

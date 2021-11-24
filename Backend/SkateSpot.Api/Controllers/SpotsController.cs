@@ -39,6 +39,7 @@ namespace SkateSpot.Api.Controllers
 			return Ok(new WithTotalCount<SpotDto>
 			{
 				Data = await _mapper.ProjectTo<SpotDto>(_dbContext.Spots
+					.OrderByDescending(s => s.CreatedAt)
 					.Skip(offset)
 					.Take(take))
 				.ToArrayAsync(),
@@ -64,7 +65,7 @@ namespace SkateSpot.Api.Controllers
 		}
 
 		[Authorize]
-		[HttpDelete("{id}")]
+		[HttpDelete("{Id}")]
 		[MapRouteArgAndUserIdIntoBody(typeof(DeleteSpotCommand))]
 		public async Task<ActionResult> DeleteSpot([FromRoute] DeleteSpotCommand request)
 		{
