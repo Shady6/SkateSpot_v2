@@ -2,12 +2,11 @@ import Login from "../components/auth/Login";
 import { Logout } from "../components/auth/Logout";
 import Register from "../components/auth/Register";
 import Home from "../components/Home";
-import Spots from "../components/spot/Spots";
 import { SpotPage } from "../components/spot/spot_page/SpotPage";
+import { ListItemsMainPage } from "../components/spot_common/ListItemsMainPage";
 import { SpotsMapView } from "../components/spot_common/MapView/SpotsMapView";
-import { SpotVideos } from "../components/spot_video/spot_videos/SpotVideos";
 import AddTempSpotPage from "../components/temp_spot/add/AddTempSpotPage";
-import TempSpots from "../components/temp_spot/main/TempSpots";
+import { ListViewTypes } from "../state/generic/listViewGenerics";
 import { UserRoles } from "../types/types";
 
 export interface IRoute {
@@ -74,7 +73,9 @@ const routes: IRoute[] = [
     linkName: "Temp Spots",
     path: Routes.TEMP_SPOTS,
     exact: true,
-    component: TempSpots,
+    component: () => (
+      <ListItemsMainPage listViewType={ListViewTypes.TEMP_SPOTS} />
+    ),
     accessedBy: [UserRoles.ALL],
     renderLink: true,
   },
@@ -82,7 +83,7 @@ const routes: IRoute[] = [
     linkName: "Spots",
     path: Routes.SPOTS,
     exact: true,
-    component: Spots,
+    component: () => <ListItemsMainPage listViewType={ListViewTypes.SPOTS} />,
     accessedBy: [UserRoles.ALL],
     renderLink: true,
   },
@@ -90,7 +91,9 @@ const routes: IRoute[] = [
     linkName: "Videos",
     path: Routes.SPOT_VIDEO,
     exact: true,
-    component: SpotVideos,
+    component: () => (
+      <ListItemsMainPage listViewType={ListViewTypes.SPOT_VIDEOS} />
+    ),
     accessedBy: [UserRoles.ALL],
     renderLink: true,
   },

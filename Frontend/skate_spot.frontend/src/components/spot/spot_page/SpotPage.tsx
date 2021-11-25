@@ -56,12 +56,14 @@ export const SpotPage: React.FC<Props> = () => {
       <div>{spot && <SpotDetails spot={spot} />}</div>
       <div>
         <h4 className="mb-5">Videos</h4>
-        {state.spotVideoState.listWithCount?.data?.map((t) => {
+        {state.spotVideosState.listWithCount?.data?.map((t) => {
           return (
             <SpotVideo key={t.createdAt as unknown as string} spotVideo={t} />
           );
         })}
-        {state.spotVideoState.loading && <CircularProgress color="secondary" />}
+        {state.spotVideosState.loading && (
+          <CircularProgress color="secondary" />
+        )}
       </div>
     </div>
   );

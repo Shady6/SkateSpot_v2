@@ -2,9 +2,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import authReducer from "./reducers/authReducer";
 import flashMsgReducer from "./reducers/flashMsgReducer";
-import tempSpotsReducer from "./reducers/tempSpotsReducer";
 import spotsReducer from "./reducers/spotReducer";
 import spotVideoReducer from "./reducers/spotVideoReducer";
+import tempSpotsReducer from "./reducers/tempSpotsReducer";
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +12,7 @@ export const store = configureStore({
     flashMsgs: flashMsgReducer,
     tempSpotsState: tempSpotsReducer,
     spotsState: spotsReducer,
-    spotVideoState: spotVideoReducer,
+    spotVideosState: spotVideoReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

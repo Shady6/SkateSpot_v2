@@ -54,7 +54,7 @@ export const listViewSpecifics: IListViewSpecifics = {
         ApiResponse<ListWithCount<SpotVideoDto>>
       >;
     },
-    getSpecificState: (state: RootState) => state.spotVideoState,
+    getSpecificState: (state: RootState) => state.spotVideosState,
     name: "spotVideos",
     commentSubjectType: CommentSubjectType.SpotVideos,
   },

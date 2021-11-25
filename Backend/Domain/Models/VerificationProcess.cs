@@ -20,7 +20,7 @@ namespace SkateSpot.Domain.Models
 
 		public CommentableEntity Commentable { get; protected set; } = new CommentableEntity();
 
-		public readonly TimeSpan VerificationDuration = TimeSpan.FromSeconds(5);// TimeSpan.FromDays(1);
+		public readonly TimeSpan VerificationDuration = TimeSpan.FromDays(1);
 		private const int MinRealVotesToConsiderVerifyOnAdd = 30;
 		private const int MinRealFakeRatioToVerify = 3;
 

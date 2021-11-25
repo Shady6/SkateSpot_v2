@@ -13,15 +13,17 @@ export const SpotImages = ({
   width = 800,
 }: SpotImagesProps) => {
   return images && images.length ? (
-    <ImageGallery
-      showThumbnails={false}
-      showPlayButton={false}
-      items={images!.map((i) => ({
-        original: i.base64 as string,
-        originalWidth: width,
-        originalHeight: height,
-      }))}
-    />
+    <div>
+      <ImageGallery
+        showThumbnails={false}
+        showPlayButton={false}
+        items={images!.map((i) => ({
+          original: i.base64 as string,
+          originalWidth: width,
+          originalHeight: height,
+        }))}
+      />
+    </div>
   ) : (
     <div>No images were added for this spot.</div>
   );
