@@ -1,23 +1,23 @@
-import { useDispatch } from "react-redux";
-import { commentThunkCreator } from "../../state/actions/thunk_creators/commentThunkCreator";
-import { useInputState } from "../util/useInputState";
+import { useDispatch } from 'react-redux'
+import { commentThunkCreator } from '../../state/actions/thunk_creators/commentThunkCreator'
+import { useInputState } from '../util/useInputState'
 
 export const useComment = (
   listItemId: string,
   commentAction: ReturnType<typeof commentThunkCreator>
 ) => {
-  const [comment, setComment, resetCommentInput] = useInputState("");
-  const dispatch = useDispatch();
+  const [comment, setComment, resetCommentInput] = useInputState('')
+  const dispatch = useDispatch()
 
   const sendComment = () => {
-    if (!comment) return;
-    dispatch(commentAction({ listItemId, text: comment }));
-    resetCommentInput();
-  };
+    if (!comment) return
+    dispatch(commentAction({ listItemId, text: comment }))
+    resetCommentInput()
+  }
 
   return {
     comment,
     setComment,
     sendComment,
-  };
-};
+  }
+}

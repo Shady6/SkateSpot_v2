@@ -1,21 +1,21 @@
-import { ApiClient, ApiResponse } from "../../skate_spot_api/apiClient";
+import { ApiClient, ApiResponse } from '../../skate_spot_api/apiClient'
 import {
   CommentDto,
   CommentSubjectType,
   SpotDto,
   SpotVideoDto,
   TempSpotWithVerificationDto,
-} from "../../skate_spot_api/client";
+} from '../../skate_spot_api/client'
 import {
   ListViewState,
   ListWithCount,
   WithSocial,
-} from "../reducers/genericListViewReducer";
-import { RootState } from "../store";
+} from '../reducers/genericListViewReducer'
+import { RootState } from '../store'
 export interface IListViewSpecifics {
-  spots: ListViewSpecification;
-  tempSpots: ListViewSpecification;
-  spotVideos: ListViewSpecification;
+  spots: ListViewSpecification
+  tempSpots: ListViewSpecification
+  spotVideos: ListViewSpecification
 }
 
 export interface ListViewSpecification {
@@ -23,10 +23,10 @@ export interface ListViewSpecification {
     client: ApiClient,
     take: number,
     skip: number
-  ) => Promise<ApiResponse<ListWithCount<WithSocial>>>;
-  getSpecificState: (state: RootState) => ListViewState<WithSocial>;
-  name: string;
-  commentSubjectType: CommentSubjectType;
+  ) => Promise<ApiResponse<ListWithCount<WithSocial>>>
+  getSpecificState: (state: RootState) => ListViewState<WithSocial>
+  name: string
+  commentSubjectType: CommentSubjectType
 }
 
 export const listViewSpecifics: IListViewSpecifics = {
@@ -36,7 +36,7 @@ export const listViewSpecifics: IListViewSpecifics = {
         ApiResponse<ListWithCount<SpotDto>>
       >,
     getSpecificState: (state: RootState) => state.spotsState,
-    name: "spots",
+    name: 'spots',
     commentSubjectType: CommentSubjectType.Spots,
   },
   tempSpots: {
@@ -45,28 +45,28 @@ export const listViewSpecifics: IListViewSpecifics = {
         ApiResponse<ListWithCount<TempSpotWithVerificationDto>>
       >,
     getSpecificState: (state: RootState) => state.tempSpotsState,
-    name: "tempSpots",
+    name: 'tempSpots',
     commentSubjectType: CommentSubjectType.TempSpots,
   },
   spotVideos: {
     fetchListItems: (client: ApiClient, take: number, skip: number) => {
       return client.get_Spot_Videos(take, skip, undefined) as Promise<
         ApiResponse<ListWithCount<SpotVideoDto>>
-      >;
+      >
     },
     getSpecificState: (state: RootState) => state.spotVideosState,
-    name: "spotVideos",
+    name: 'spotVideos',
     commentSubjectType: CommentSubjectType.SpotVideos,
   },
-};
+}
 
 export enum ListViewTypes {
-  SPOTS = "spots",
-  TEMP_SPOTS = "tempSpots",
-  SPOT_VIDEOS = "spotVideos",
+  SPOTS = 'spots',
+  TEMP_SPOTS = 'tempSpots',
+  SPOT_VIDEOS = 'spotVideos',
 }
 
 export interface CommentActionReturnType {
-  comment: CommentDto;
-  listItemId: string;
+  comment: CommentDto
+  listItemId: string
 }

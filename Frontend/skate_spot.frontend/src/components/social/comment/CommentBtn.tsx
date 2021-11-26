@@ -1,10 +1,10 @@
-import React from "react";
-import { Button } from "@material-ui/core";
-import ChatIcon from "@mui/icons-material/Chat";
+import React from 'react'
+import { Button } from '@material-ui/core'
+import ChatIcon from '@mui/icons-material/Chat'
 
 interface Props {
-  commentsCount?: number;
-  onClick: () => void;
+  commentsCount?: number
+  onClick: () => void
 }
 
 const CommentBtn: React.FC<Props> = ({ commentsCount, onClick }) => {
@@ -12,15 +12,14 @@ const CommentBtn: React.FC<Props> = ({ commentsCount, onClick }) => {
     <div>
       <Button
         onClick={onClick}
-        variant="outlined"
-        size="small"
-        className="me-1"
-      >
-        <ChatIcon className="me-1" />
-        <span>{commentsCount || "0"}</span>
+        variant='outlined'
+        size='small'
+        className='me-1'>
+        <ChatIcon className='me-1' />
+        <span>{commentsCount || '0'}</span>
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default CommentBtn;
+export default CommentBtn

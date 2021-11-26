@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import { IGeoLocation } from "../../../../types/types";
-import MapWithSpotMarkers from "../../../map/MapWithSpotMarkers";
-import PlacableMarker from "../../../map/PlacableMarker";
-import AddressSearch from "./AddressSearch";
-import AddressSearchMarkers from "./AddressSearchMarkers";
-import AddressSearchResults from "./AddressSearchResults";
-import ClickSearchResult from "./ClickSearchResult";
+import React, { useState } from 'react'
+import { IGeoLocation } from '../../../../types/types'
+import MapWithSpotMarkers from '../../../map/MapWithSpotMarkers'
+import PlacableMarker from '../../../map/PlacableMarker'
+import AddressSearch from './AddressSearch'
+import AddressSearchMarkers from './AddressSearchMarkers'
+import AddressSearchResults from './AddressSearchResults'
+import ClickSearchResult from './ClickSearchResult'
 
 const MapAddress: React.FC<{
-  location: IGeoLocation | null;
-  setLocation: React.Dispatch<React.SetStateAction<IGeoLocation | null>>;
+  location: IGeoLocation | null
+  setLocation: React.Dispatch<React.SetStateAction<IGeoLocation | null>>
 }> = ({ location, setLocation }) => {
   const [fromGeocodeLocations, setFromGeocodeLocations] = useState<
     IGeoLocation[] | null
-  >(null);
-  const [showClickData, setShowClickData] = useState<boolean>(true);
-  const [showMore, setShowMore] = useState(false);
-  const [hoveredAddress, setHoveredAddress] = useState<number | null>(null);
+  >(null)
+  const [showClickData, setShowClickData] = useState<boolean>(true)
+  const [showMore, setShowMore] = useState(false)
+  const [hoveredAddress, setHoveredAddress] = useState<number | null>(null)
 
   const pickAddress = (i: number) => {
-    setShowMore(false);
-    setLocation(fromGeocodeLocations![i]);
-  };
+    setShowMore(false)
+    setLocation(fromGeocodeLocations![i])
+  }
 
   return (
     <>
@@ -43,7 +43,7 @@ const MapAddress: React.FC<{
           />
         )}
       </MapWithSpotMarkers>
-      <div className={"mt-2"}>
+      <div className={'mt-2'}>
         <AddressSearch
           setGeocodeLocations={setFromGeocodeLocations}
           setLocation={setLocation}
@@ -64,7 +64,7 @@ const MapAddress: React.FC<{
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default MapAddress;
+export default MapAddress

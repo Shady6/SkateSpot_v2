@@ -1,11 +1,11 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { sendRequestWithFlashMsgOnError } from "../../../functions/request/sendRequestWithFlashMsgOnError";
-import { ApiResponse } from "../../../skate_spot_api/apiClient";
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { sendRequestWithFlashMsgOnError } from '../../../functions/request/sendRequestWithFlashMsgOnError'
+import { ApiResponse } from '../../../skate_spot_api/apiClient'
 import {
   listViewSpecifics,
   ListViewTypes,
-} from "../../generic/listViewGenerics";
-import { RootState } from "../../store";
+} from '../../generic/listViewGenerics'
+import { RootState } from '../../store'
 
 export const deleteCommentThunkCreator = (listType: ListViewTypes) => {
   return createAsyncThunk(
@@ -14,7 +14,7 @@ export const deleteCommentThunkCreator = (listType: ListViewTypes) => {
       { listItemId, commentId }: DeleteComment,
       { getState, dispatch, rejectWithValue }
     ) => {
-      const state = getState() as RootState;
+      const state = getState() as RootState
 
       const res = await sendRequestWithFlashMsgOnError(
         dispatch,
@@ -27,15 +27,15 @@ export const deleteCommentThunkCreator = (listType: ListViewTypes) => {
             token
           ) as unknown as Promise<ApiResponse<any>>,
         "Couldn't delete comment, please try again later"
-      );
+      )
 
-      if (res.error) return rejectWithValue(null);
+      if (res.error) return rejectWithValue(null)
       return {
         listItemId,
         commentId,
-      };
+      }
     }
-  );
-};
+  )
+}
 
-export type DeleteComment = { listItemId: string; commentId: string };
+export type DeleteComment = { listItemId: string; commentId: string }

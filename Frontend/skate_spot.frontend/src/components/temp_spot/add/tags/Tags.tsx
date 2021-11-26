@@ -1,53 +1,52 @@
-import React from "react";
-import Tag from "./Tag";
+import React from 'react'
+import Tag from './Tag'
 
 export interface ITag {
   name:
-    | "Skatepark"
-    | "Ledge"
-    | "Rail"
-    | "Stairs"
-    | "Bank"
-    | "Kicker"
-    | "Manualpad"
-    | "Flatground"
-    | "Quater"
-    | "Downhill";
-  isSelected: boolean;
+    | 'Skatepark'
+    | 'Ledge'
+    | 'Rail'
+    | 'Stairs'
+    | 'Bank'
+    | 'Kicker'
+    | 'Manualpad'
+    | 'Flatground'
+    | 'Quater'
+    | 'Downhill'
+  isSelected: boolean
 }
 
 export const initialTags: ITag[] = [
-  { name: "Skatepark", isSelected: false },
-  { name: "Ledge", isSelected: false },
-  { name: "Rail", isSelected: false },
-  { name: "Stairs", isSelected: false },
-  { name: "Bank", isSelected: false },
-  { name: "Kicker", isSelected: false },
-  { name: "Manualpad", isSelected: false },
-  { name: "Flatground", isSelected: false },
-  { name: "Quater", isSelected: false },
-  { name: "Downhill", isSelected: false },
-];
+  { name: 'Skatepark', isSelected: false },
+  { name: 'Ledge', isSelected: false },
+  { name: 'Rail', isSelected: false },
+  { name: 'Stairs', isSelected: false },
+  { name: 'Bank', isSelected: false },
+  { name: 'Kicker', isSelected: false },
+  { name: 'Manualpad', isSelected: false },
+  { name: 'Flatground', isSelected: false },
+  { name: 'Quater', isSelected: false },
+  { name: 'Downhill', isSelected: false },
+]
 
 interface Props {
-  tags: ITag[];
-  setTags: React.Dispatch<React.SetStateAction<ITag[]>>;
+  tags: ITag[]
+  setTags: React.Dispatch<React.SetStateAction<ITag[]>>
 }
 
-const Tags: React.FC<Props> = ({ tags, setTags }) => {
+export const Tags: React.FC<Props> = ({ tags, setTags }) => {
   const toggleSelection = (tag: ITag) => {
     setTags(
-      tags.map((t) => {
-        if (t.name === tag.name) t.isSelected = !t.isSelected;
-        return t;
+      tags.map(t => {
+        if (t.name === tag.name) t.isSelected = !t.isSelected
+        return t
       })
-    );
-  };
+    )
+  }
 
   return (
     <>
-      <p>Select at least one tag</p>
-      {tags.map((t) => (
+      {tags.map(t => (
         <Tag
           key={t.name}
           name={t.name}
@@ -56,7 +55,5 @@ const Tags: React.FC<Props> = ({ tags, setTags }) => {
         />
       ))}
     </>
-  );
-};
-
-export default Tags;
+  )
+}

@@ -1,18 +1,17 @@
-import React from "react";
+import React from 'react'
 
 interface Props {
-  videoId: string;
+  videoId: string
 }
 
 export const InstagramVideo = (p: Props) => {
   return (
     <iframe
-      title="Instagram video"
+      title='Instagram video'
       src={`https://www.instagram.com/p/${p.videoId}/embed`}
-      width="400"
-      height="480"
-      frameBorder="0"
-      scrolling="no"
-    ></iframe>
-  );
-};
+      width='400'
+      height='480'
+      frameBorder='0'
+      scrolling='no'></iframe>
+  )
+}

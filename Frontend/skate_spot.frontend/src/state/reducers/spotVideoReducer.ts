@@ -1,14 +1,14 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SpotVideoDto } from "../../skate_spot_api/client";
-import { spotVideoLike } from "../actions/spotVideoActions";
-import { ListViewTypes } from "../generic/listViewGenerics";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { SpotVideoDto } from '../../skate_spot_api/client'
+import { spotVideoLike } from '../actions/spotVideoActions'
+import { ListViewTypes } from '../generic/listViewGenerics'
 import {
   addDefaultCases,
   listViewReducerHandlers,
   ListViewState,
-} from "./genericListViewReducer";
+} from './genericListViewReducer'
 
-export type SpotVideoState = ListViewState<SpotVideoDto>;
+export type SpotVideoState = ListViewState<SpotVideoDto>
 
 const initialState: SpotVideoState = {
   listWithCount: {
@@ -21,33 +21,33 @@ const initialState: SpotVideoState = {
   },
   loading: false,
   error: false,
-};
+}
 
 const spotVideoSlice = createSlice({
-  name: "spotVideo",
+  name: 'spotVideo',
   initialState: initialState,
   reducers: {
     setVideos: (state, action: PayloadAction<SpotVideoDto[]>) => {
-      listViewReducerHandlers.setItems(state, action.payload);
+      listViewReducerHandlers.setItems(state, action.payload)
     },
     prependVideo: (state, action: PayloadAction<SpotVideoDto>) => {
-      state.listWithCount.data.unshift(action.payload);
+      state.listWithCount.data.unshift(action.payload)
     },
     reset: () => {
-      return listViewReducerHandlers.reset(initialState) as SpotVideoState;
+      return listViewReducerHandlers.reset(initialState) as SpotVideoState
     },
   },
-  extraReducers: (builder) => {
-    addDefaultCases(builder, ListViewTypes.SPOT_VIDEOS);
+  extraReducers: builder => {
+    addDefaultCases(builder, ListViewTypes.SPOT_VIDEOS)
 
     builder.addCase(spotVideoLike.fulfilled, (state, action) => {
       listViewReducerHandlers.like.fulfilled(state, {
         result: action.payload.result,
         listItemId: action.payload.subjectId,
-      });
-    });
+      })
+    })
   },
-});
+})
 
-export const spotVideoActions = spotVideoSlice.actions;
-export default spotVideoSlice.reducer;
+export const spotVideoActions = spotVideoSlice.actions
+export default spotVideoSlice.reducer

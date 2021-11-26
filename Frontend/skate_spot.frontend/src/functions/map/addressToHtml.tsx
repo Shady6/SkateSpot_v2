@@ -1,5 +1,5 @@
-import { DefaultAddress } from "../../types/types";
-import { AddressDto } from "../../skate_spot_api/client";
+import { DefaultAddress } from '../../types/types'
+import { AddressDto } from '../../skate_spot_api/client'
 
 const addressToHtml = (a: DefaultAddress | AddressDto) => (
   <div>
@@ -10,6 +10,6 @@ const addressToHtml = (a: DefaultAddress | AddressDto) => (
       {a.streetName} {a.streetName && a.streetNumber}
     </p>
   </div>
-);
+)
 
-export default addressToHtml;
+export default addressToHtml

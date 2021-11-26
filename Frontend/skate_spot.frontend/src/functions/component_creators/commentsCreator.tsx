@@ -1,14 +1,14 @@
-import { CommentDto } from "../../skate_spot_api/client";
-import { ListViewTypes } from "../../state/generic/listViewGenerics";
-import Comments from "../../components/social/comment/Comments";
-import { getAllThunks } from "../../state/actions/thunk_creators/allThunks";
+import { CommentDto } from '../../skate_spot_api/client'
+import { ListViewTypes } from '../../state/generic/listViewGenerics'
+import Comments from '../../components/social/comment/Comments'
+import { getAllThunks } from '../../state/actions/thunk_creators/allThunks'
 
 export const createCommentComponent = (p: {
-  listItemId: string;
-  comments: CommentDto[];
-  listViewType: ListViewTypes;
+  listItemId: string
+  comments: CommentDto[]
+  listViewType: ListViewTypes
 }) => {
-  const thunks = getAllThunks()[p.listViewType];
+  const thunks = getAllThunks()[p.listViewType]
 
   return (
     <Comments
@@ -19,5 +19,5 @@ export const createCommentComponent = (p: {
       deleteCommentAction={thunks.deleteComment}
       editCommentAction={thunks.editComment}
     />
-  );
-};
+  )
+}

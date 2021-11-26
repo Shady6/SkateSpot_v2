@@ -1,6 +1,6 @@
-import { IRoute } from "../../routes/appRoutes";
-import { AuthState } from "../../state/reducers/authReducer";
-import { UserRoles } from "../../types/types";
+import { IRoute } from '../../routes/appRoutes'
+import { AuthState } from '../../state/reducers/authReducer'
+import { UserRoles } from '../../types/types'
 
 const hasRouteAccess = (route: IRoute, authState: AuthState) => {
   return (
@@ -9,10 +9,10 @@ const hasRouteAccess = (route: IRoute, authState: AuthState) => {
     (!authState.content &&
       route.accessedBy.includes(UserRoles.NOT_SIGNED_IN)) ||
     (authState.content &&
-      route.accessedBy.some((r) =>
-        authState.content?.roles?.some((ur) => ur === r)
+      route.accessedBy.some(r =>
+        authState.content?.roles?.some(ur => ur === r)
       ))
-  );
-};
+  )
+}
 
-export default hasRouteAccess;
+export default hasRouteAccess

@@ -1,16 +1,16 @@
-import React from "react";
-import { getAnyDimStringArrSizeInMb } from "../../../../functions/util/getAnyDimStringArrSizeInMb";
-import FileImageUpload from "./FileImageUpload";
-import LinkImageUpload from "./LinkImageUpload";
+import React from 'react'
+import { getAnyDimStringArrSizeInMb } from '../../../../functions/util/getAnyDimStringArrSizeInMb'
+import FileImageUpload from './FileImageUpload'
+import LinkImageUpload from './LinkImageUpload'
 
-export const imagesLimit = 10;
-export const sizeMbLimit = 20;
+export const imagesLimit = 10
+export const sizeMbLimit = 20
 
 interface Props {
-  fromLinkImages: string[];
-  setFromLinkImages: React.Dispatch<React.SetStateAction<string[]>>;
-  fromFileImages: string[];
-  setFromFileImages: React.Dispatch<React.SetStateAction<string[]>>;
+  fromLinkImages: string[]
+  setFromLinkImages: React.Dispatch<React.SetStateAction<string[]>>
+  fromFileImages: string[]
+  setFromFileImages: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 const ImageUpload = React.memo(
@@ -21,21 +21,22 @@ const ImageUpload = React.memo(
     setFromFileImages,
   }: Props) => {
     const renderImageStats = () => {
-      const uploadsTotal = fromLinkImages.length + fromFileImages.length;
+      const uploadsTotal = fromLinkImages.length + fromFileImages.length
       const uploadsSize = getAnyDimStringArrSizeInMb([
         fromLinkImages,
         fromFileImages,
-      ]);
+      ])
 
       return (
-        <p className="text-info text-sm">
+        <p className='text-info text-sm'>
           {`Uploaded ${uploadsTotal}/${imagesLimit}, `}
-          <span className={uploadsSize > sizeMbLimit ? "text-danger" : ""}>
-            {`Size ${uploadsSize}/${sizeMbLimit}MBs`}
-          </span>
+          <span
+            className={
+              uploadsSize > sizeMbLimit ? 'text-danger' : ''
+            }>{`Size ${uploadsSize}/${sizeMbLimit}MBs`}</span>
         </p>
-      );
-    };
+      )
+    }
 
     return (
       <>
@@ -43,7 +44,7 @@ const ImageUpload = React.memo(
 
         {renderImageStats()}
 
-        <div className={"mt-4 mb-3"}>
+        <div className={'mt-4 mb-3'}>
           <FileImageUpload
             images={fromFileImages}
             setImages={setFromFileImages}
@@ -60,8 +61,8 @@ const ImageUpload = React.memo(
           />
         </div>
       </>
-    );
+    )
   }
-);
+)
 
-export default ImageUpload;
+export default ImageUpload

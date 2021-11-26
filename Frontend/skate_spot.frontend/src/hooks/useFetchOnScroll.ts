@@ -1,33 +1,33 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import {
   listViewSpecifics,
   ListViewTypes,
-} from "../state/generic/listViewGenerics";
-import { useRootState } from "../state/store";
+} from '../state/generic/listViewGenerics'
+import { useRootState } from '../state/store'
 
 export const useFetchOnScroll = (fetchAction: any, listType: ListViewTypes) => {
-  const state = listViewSpecifics[listType].getSpecificState(useRootState());
-  const dispatch = useDispatch();
+  const state = listViewSpecifics[listType].getSpecificState(useRootState())
+  const dispatch = useDispatch()
 
-  const [scrolled, setScrolled] = useState(0);
+  const [scrolled, setScrolled] = useState(0)
 
   const setScrolledPercent = () => {
     setScrolled(
       document.documentElement.scrollTop /
         (document.documentElement.scrollHeight -
           document.documentElement.clientHeight)
-    );
-  };
+    )
+  }
 
   useEffect(() => {
-    window.addEventListener("scroll", setScrolledPercent);
-    dispatch(fetchAction());
+    window.addEventListener('scroll', setScrolledPercent)
+    dispatch(fetchAction())
 
     return () => {
-      window.removeEventListener("scroll", setScrolledPercent);
-    };
-  }, []);
+      window.removeEventListener('scroll', setScrolledPercent)
+    }
+  }, [])
 
   useEffect(() => {
     if (
@@ -36,6 +36,6 @@ export const useFetchOnScroll = (fetchAction: any, listType: ListViewTypes) => {
       scrolled >= 0.8 &&
       scrolled <= 1
     )
-      dispatch(fetchAction());
-  }, [scrolled]);
-};
+      dispatch(fetchAction())
+  }, [scrolled])
+}

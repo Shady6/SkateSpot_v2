@@ -1,17 +1,17 @@
-import _ from "lodash";
-import { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { likeThunkCreator } from "../../state/actions/thunk_creators/likeThunkCreator";
-import { useRootState } from "../../state/store";
+import _ from 'lodash'
+import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { likeThunkCreator } from '../../state/actions/thunk_creators/likeThunkCreator'
+import { useRootState } from '../../state/store'
 
 interface LikeArgs {
-  subjectId: string;
-  parentId: string;
+  subjectId: string
+  parentId: string
   likes: {
-    userId: string;
-    positive: boolean;
-  }[];
-  likeAction: ReturnType<typeof likeThunkCreator>;
+    userId: string
+    positive: boolean
+  }[]
+  likeAction: ReturnType<typeof likeThunkCreator>
 }
 
 export const useLikes = ({
@@ -20,25 +20,24 @@ export const useLikes = ({
   likes,
   likeAction,
 }: LikeArgs) => {
-  const dispatch = useDispatch();
-  const authState = useRootState().auth;
+  const dispatch = useDispatch()
+  const authState = useRootState().auth
 
   const countPositiveLikes = useCallback(
     () => likes.reduce((prev, curr) => prev + Number(curr.positive), 0),
     [likes]
-  );
+  )
 
   const getUserLike = () =>
-    _.first(likes.filter((v) => v.userId === authState?.content?.id));
+    _.first(likes.filter(v => v.userId === authState?.content?.id))
 
   const like = async (isPositive: boolean) => {
-    const userPrevLike = getUserLike();
-    let deletedLike = false;
-    if (userPrevLike && userPrevLike.positive === isPositive)
-      deletedLike = true;
+    const userPrevLike = getUserLike()
+    let deletedLike = false
+    if (userPrevLike && userPrevLike.positive === isPositive) deletedLike = true
 
-    dispatch(likeAction({ isPositive, deletedLike, subjectId, parentId }));
-  };
+    dispatch(likeAction({ isPositive, deletedLike, subjectId, parentId }))
+  }
 
   return [
     {
@@ -53,5 +52,5 @@ export const useLikes = ({
       isPositive: false,
       likesCount: likes.length - countPositiveLikes(),
     },
-  ];
-};
+  ]
+}

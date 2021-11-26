@@ -1,7 +1,7 @@
 import {
   SpotDto,
   TempSpotWithVerificationDto,
-} from "../../skate_spot_api/client";
+} from '../../skate_spot_api/client'
 
 export const tempSpotToSpot = (t: TempSpotWithVerificationDto): SpotDto => ({
   address: t.address,
@@ -11,7 +11,7 @@ export const tempSpotToSpot = (t: TempSpotWithVerificationDto): SpotDto => ({
   description: t.description,
   id: t.id,
   images: t.images,
-  likes: t.verificationProcess.votes?.map((v) => ({
+  likes: t.verificationProcess.votes?.map(v => ({
     positive: v.isReal,
     userId: v.voterId,
   })),
@@ -19,4 +19,4 @@ export const tempSpotToSpot = (t: TempSpotWithVerificationDto): SpotDto => ({
   obstacles: t.obstacles,
   surfaceScore: t.surfaceScore,
   videosCount: 0,
-});
+})

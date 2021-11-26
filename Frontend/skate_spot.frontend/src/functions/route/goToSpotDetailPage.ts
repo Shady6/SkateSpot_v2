@@ -1,5 +1,5 @@
-import { RouteParams, Routes } from "../../routes/appRoutes";
-import { SpotDto } from "../../skate_spot_api/client";
+import { RouteParams, Routes } from '../../routes/appRoutes'
+import { SpotDto } from '../../skate_spot_api/client'
 
 export const goToSpotDetailPage = (args: { history: any; spot: SpotDto }) => {
   args.history.push(
@@ -7,6 +7,8 @@ export const goToSpotDetailPage = (args: { history: any; spot: SpotDto }) => {
       RouteParams.SPOT_NAME,
       args.spot.name as string
     ),
-    { spot: args.spot }
-  );
-};
+    {
+      spot: args.spot,
+    }
+  )
+}

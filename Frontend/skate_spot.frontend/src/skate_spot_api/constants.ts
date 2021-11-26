@@ -1,1 +1,1 @@
-export const skateSpotApiBaseUrl = "https://localhost:44309"
+export const skateSpotApiBaseUrl = 'https://localhost:44309'

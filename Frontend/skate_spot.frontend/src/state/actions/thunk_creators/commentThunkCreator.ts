@@ -1,13 +1,13 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { sendRequestWithFlashMsgOnError } from "../../../functions/request/sendRequestWithFlashMsgOnError";
-import { CommentDto } from "../../../skate_spot_api/client";
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { sendRequestWithFlashMsgOnError } from '../../../functions/request/sendRequestWithFlashMsgOnError'
+import { CommentDto } from '../../../skate_spot_api/client'
 import {
   CommentActionReturnType,
   listViewSpecifics,
   ListViewTypes,
-} from "../../generic/listViewGenerics";
-import { RootState } from "../../store";
-import { ApiClient, ApiResponse } from "../../../skate_spot_api/apiClient";
+} from '../../generic/listViewGenerics'
+import { RootState } from '../../store'
+import { ApiClient, ApiResponse } from '../../../skate_spot_api/apiClient'
 
 export const commentThunkCreator = (listType: ListViewTypes) => {
   return createAsyncThunk(
@@ -16,7 +16,7 @@ export const commentThunkCreator = (listType: ListViewTypes) => {
       { listItemId, text }: { listItemId: string; text: string },
       { getState, dispatch, rejectWithValue }
     ) => {
-      const state = getState() as RootState;
+      const state = getState() as RootState
       const res = await sendRequestWithFlashMsgOnError(
         dispatch,
         state.auth.content,
@@ -25,16 +25,18 @@ export const commentThunkCreator = (listType: ListViewTypes) => {
             listViewSpecifics[listType].commentSubjectType,
             listItemId,
             token,
-            { text }
+            {
+              text,
+            }
           ),
         "Couldn't add comment, please try again later"
-      );
+      )
 
-      if (res.error) return rejectWithValue(null);
+      if (res.error) return rejectWithValue(null)
       return {
         comment: res.content as CommentDto,
         listItemId,
-      } as CommentActionReturnType;
+      } as CommentActionReturnType
     }
-  );
-};
+  )
+}

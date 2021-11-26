@@ -1,19 +1,19 @@
-import { Button, Typography } from "@material-ui/core";
-import React from "react";
-import { v4 as uuid } from "uuid";
-import { useError } from "../../hooks/small_text_feedback/useError";
+import { Button, Typography } from '@material-ui/core'
+import React from 'react'
+import { v4 as uuid } from 'uuid'
+import { useError } from '../../hooks/small_text_feedback/useError'
 
 interface Props {
-  uploadedItems: any[];
-  setUploadedItems: React.Dispatch<React.SetStateAction<any[]>>;
-  otherUploadedItemsCount: number;
-  uploadLimit: number;
-  uploadedItemPluralized: string;
-  onUploadBtnClick: () => void;
-  uploadedCount: number;
-  setUploadedCount: React.Dispatch<React.SetStateAction<number>>;
-  showUploadButton?: boolean;
-  renderItem: (item: any) => JSX.Element;
+  uploadedItems: any[]
+  setUploadedItems: React.Dispatch<React.SetStateAction<any[]>>
+  otherUploadedItemsCount: number
+  uploadLimit: number
+  uploadedItemPluralized: string
+  onUploadBtnClick: () => void
+  uploadedCount: number
+  setUploadedCount: React.Dispatch<React.SetStateAction<number>>
+  showUploadButton?: boolean
+  renderItem: (item: any) => JSX.Element
 }
 
 const Upload: React.FC<Props> = ({
@@ -30,72 +30,69 @@ const Upload: React.FC<Props> = ({
   renderItem,
 }) => {
   const renderError = useError(() => {
-    const totalUploads = uploadedCount + otherUploadedItemsCount;
-    let error = "";
+    const totalUploads = uploadedCount + otherUploadedItemsCount
+    let error = ''
 
     if (otherUploadedItemsCount >= uploadLimit)
-      error = `You can't upload more ${uploadedItemPluralized} because you've reached the images limit.`;
+      error = `You can't upload more ${uploadedItemPluralized} because you've reached the images limit.`
     else if (totalUploads > uploadLimit) {
-      const uploadsToTake = uploadLimit - otherUploadedItemsCount;
-      error = `Only ${uploadsToTake} ${uploadedItemPluralized} of ${uploadedCount} were uploaded because of the limit`;
-      setUploadedCount(uploadsToTake);
+      const uploadsToTake = uploadLimit - otherUploadedItemsCount
+      error = `Only ${uploadsToTake} ${uploadedItemPluralized} of ${uploadedCount} were uploaded because of the limit`
+      setUploadedCount(uploadsToTake)
     }
-    return error;
-  }, [uploadedItems]);
+    return error
+  }, [uploadedItems])
 
   function renderUploadedItemsData() {
     if (uploadedItems.length)
       return (
         <div>
-          <p className={"mb-1"}>
+          <p className={'mb-1'}>
             Uploaded {uploadedItemPluralized}: {uploadedItems!.length}
           </p>
-          <div className={"d-flex flex-wrap"}>
+          <div className={'d-flex flex-wrap'}>
             {uploadedItems!.map((item, currentIndex) => (
               <Button
-                className={"p-1 me-3 mb-2 text-sm"}
+                className={'p-1 me-3 mb-2 text-sm'}
                 key={uuid()}
-                onClick={(_) =>
+                onClick={_ =>
                   setUploadedItems([
                     ...uploadedItems.filter(
                       (_, fromStateItemIndex) =>
                         fromStateItemIndex !== currentIndex
                     ),
                   ])
-                }
-              >
-                <Typography style={{ textTransform: "none" }}>
+                }>
+                <Typography style={{ textTransform: 'none' }}>
                   {renderItem(item)}
                 </Typography>
-                <i className="fa fa-times-circle ms-2" aria-hidden="true"></i>
+                <i className='fa fa-times-circle ms-2' aria-hidden='true'></i>
               </Button>
             ))}
           </div>
         </div>
-      );
+      )
   }
 
   return (
-    <div className="mb-2">
-      <div className="d-flex">
-        <div className="order-2">
+    <div className='mb-2'>
+      <div className='d-flex'>
+        <div className='order-2'>
           <Button
             hidden={!showUploadButton}
-            variant="contained"
+            variant='contained'
             onClick={onUploadBtnClick}
-            className={"me-1"}
-          >
+            className={'me-1'}>
             Upload Files
           </Button>
           {uploadedItems.length !== 0 && (
             <Button
-              variant="contained"
-              color="warning"
-              onClick={(_) => {
-                setUploadedItems([]);
-                setUploadedCount(0);
-              }}
-            >
+              variant='contained'
+              color='warning'
+              onClick={_ => {
+                setUploadedItems([])
+                setUploadedCount(0)
+              }}>
               Remove all
             </Button>
           )}
@@ -105,7 +102,7 @@ const Upload: React.FC<Props> = ({
       {renderError()}
       {renderUploadedItemsData()}
     </div>
-  );
-};
+  )
+}
 
-export default Upload;
+export default Upload

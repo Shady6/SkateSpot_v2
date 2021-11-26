@@ -1,20 +1,20 @@
-import { ChangeEvent, useRef, useState } from "react";
-import Upload from "../../../shared/Upload";
-import { renderImageWithSizeInfo } from "../../../../functions/util/renderImageWithSizeInfo";
+import { ChangeEvent, useRef, useState } from 'react'
+import Upload from '../../../shared/Upload'
+import { renderImageWithSizeInfo } from '../../../../functions/util/renderImageWithSizeInfo'
 
 interface Props {
-  images: string[];
-  setImages: React.Dispatch<React.SetStateAction<string[]>>;
-  imagesLimit: number;
-  otherImagesCount: number;
+  images: string[]
+  setImages: React.Dispatch<React.SetStateAction<string[]>>
+  imagesLimit: number
+  otherImagesCount: number
 }
 
 export const acceptedFileFormats = [
-  "image/png",
-  "image/jpg",
-  "image/jpeg",
-  "image/webp",
-];
+  'image/png',
+  'image/jpg',
+  'image/jpeg',
+  'image/webp',
+]
 
 const FileImageUpload: React.FC<Props> = ({
   images,
@@ -22,28 +22,28 @@ const FileImageUpload: React.FC<Props> = ({
   imagesLimit,
   otherImagesCount,
 }) => {
-  const [uploadedImagesCount, setUploadedImagesCount] = useState(0);
-  const fileInput = useRef<HTMLInputElement>(null);
+  const [uploadedImagesCount, setUploadedImagesCount] = useState(0)
+  const fileInput = useRef<HTMLInputElement>(null)
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const imagesToTakeMax = imagesLimit - otherImagesCount;
-    const uploadedFilesCount = e.target.files?.length ?? 0;
-    let loadedImages: string[] = [];
-    let imagesProcessed = 0;
+    const imagesToTakeMax = imagesLimit - otherImagesCount
+    const uploadedFilesCount = e.target.files?.length ?? 0
+    let loadedImages: string[] = []
+    let imagesProcessed = 0
 
     Array.from(e.target.files || []).forEach((f, i) => {
-      if (i + 1 > imagesToTakeMax) return;
+      if (i + 1 > imagesToTakeMax) return
 
-      const fr = new FileReader();
-      fr.addEventListener("load", (e) => {
-        loadedImages.push(e!.target!.result as string);
-        imagesProcessed++;
-      });
-      fr.addEventListener("error", () => imagesProcessed++);
-      fr.addEventListener("abort", () => imagesProcessed++);
+      const fr = new FileReader()
+      fr.addEventListener('load', e => {
+        loadedImages.push(e!.target!.result as string)
+        imagesProcessed++
+      })
+      fr.addEventListener('error', () => imagesProcessed++)
+      fr.addEventListener('abort', () => imagesProcessed++)
 
-      fr.readAsDataURL(f);
-    });
+      fr.readAsDataURL(f)
+    })
 
     const interval = setInterval(() => {
       if (
@@ -51,38 +51,37 @@ const FileImageUpload: React.FC<Props> = ({
         (uploadedFilesCount > imagesToTakeMax &&
           imagesProcessed === imagesToTakeMax)
       ) {
-        setUploadedImagesCount(uploadedFilesCount);
-        setImages(loadedImages);
-        clearInterval(interval);
+        setUploadedImagesCount(uploadedFilesCount)
+        setImages(loadedImages)
+        clearInterval(interval)
       }
-    }, 100);
+    }, 100)
 
     //@ts-ignore
-    e.target.value = null;
-  };
+    e.target.value = null
+  }
 
   return (
     <Upload
       uploadedItems={images}
       setUploadedItems={setImages}
       uploadLimit={imagesLimit}
-      uploadedItemPluralized={"images"}
+      uploadedItemPluralized={'images'}
       onUploadBtnClick={() => fileInput.current?.click()}
       uploadedCount={uploadedImagesCount}
       setUploadedCount={setUploadedImagesCount}
       renderItem={renderImageWithSizeInfo}
-      otherUploadedItemsCount={otherImagesCount}
-    >
+      otherUploadedItemsCount={otherImagesCount}>
       <input
         ref={fileInput}
         onChange={handleFileInputChange}
-        style={{ display: "none" }}
-        type="file"
-        accept={acceptedFileFormats.join(", ")}
+        style={{ display: 'none' }}
+        type='file'
+        accept={acceptedFileFormats.join(', ')}
         multiple={true}
       />
     </Upload>
-  );
-};
+  )
+}
 
-export default FileImageUpload;
+export default FileImageUpload

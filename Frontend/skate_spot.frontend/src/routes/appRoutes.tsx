@@ -1,44 +1,44 @@
-import Login from "../components/auth/Login";
-import { Logout } from "../components/auth/Logout";
-import Register from "../components/auth/Register";
-import Home from "../components/Home";
-import { SpotPage } from "../components/spot/spot_page/SpotPage";
-import { ListItemsMainPage } from "../components/spot_common/ListItemsMainPage";
-import { SpotsMapView } from "../components/spot_common/MapView/SpotsMapView";
-import AddTempSpotPage from "../components/temp_spot/add/AddTempSpotPage";
-import { ListViewTypes } from "../state/generic/listViewGenerics";
-import { UserRoles } from "../types/types";
+import Login from '../components/auth/Login'
+import { Logout } from '../components/auth/Logout'
+import Register from '../components/auth/Register'
+import Home from '../components/Home'
+import { SpotPage } from '../components/spot/spot_page/SpotPage'
+import { ListItemsMainPage } from '../components/spot_common/ListItemsMainPage'
+import { SpotsMapView } from '../components/spot_common/MapView/SpotsMapView'
+import AddTempSpotPage from '../components/temp_spot/add/AddTempSpotPage'
+import { ListViewTypes } from '../state/generic/listViewGenerics'
+import { UserRoles } from '../types/types'
 
 export interface IRoute {
-  linkName: string | null;
-  path: string;
-  exact: boolean;
-  component: React.FC;
-  accessedBy: UserRoles[];
-  props?: any;
-  renderLink: boolean;
+  linkName: string | null
+  path: string
+  exact: boolean
+  component: React.FC
+  accessedBy: UserRoles[]
+  props?: any
+  renderLink: boolean
 }
 
 export enum RouteParams {
-  SPOT_NAME = ":spotName",
+  SPOT_NAME = ':spotName',
 }
 
 export enum Routes {
-  HOME = "/",
-  LOGIN = "/auth/login",
-  REGISTER = "/auth/register",
-  ADD_TEMP_SPOT = "/temp/add",
-  TEMP_SPOTS = "/temp",
-  SPOTS = "/spot",
-  LOGOUT = "/logout",
-  MAP = "/map",
-  SPOT_VIDEO = "/video",
+  HOME = '/',
+  LOGIN = '/auth/login',
+  REGISTER = '/auth/register',
+  ADD_TEMP_SPOT = '/temp/add',
+  TEMP_SPOTS = '/temp',
+  SPOTS = '/spot',
+  LOGOUT = '/logout',
+  MAP = '/map',
+  SPOT_VIDEO = '/video',
   SPOT_DEDICATED_PAGE = `/spot/:spotName`,
 }
 
 const routes: IRoute[] = [
   {
-    linkName: "Home",
+    linkName: 'Home',
     path: Routes.HOME,
     exact: true,
     component: Home,
@@ -46,7 +46,7 @@ const routes: IRoute[] = [
     renderLink: true,
   },
   {
-    linkName: "Login",
+    linkName: 'Login',
     path: Routes.LOGIN,
     exact: true,
     component: Login,
@@ -54,7 +54,7 @@ const routes: IRoute[] = [
     renderLink: true,
   },
   {
-    linkName: "Register",
+    linkName: 'Register',
     path: Routes.REGISTER,
     exact: true,
     component: Register,
@@ -62,7 +62,7 @@ const routes: IRoute[] = [
     renderLink: true,
   },
   {
-    linkName: "Add Spot",
+    linkName: 'Add Spot',
     path: Routes.ADD_TEMP_SPOT,
     exact: true,
     component: AddTempSpotPage,
@@ -70,7 +70,7 @@ const routes: IRoute[] = [
     renderLink: true,
   },
   {
-    linkName: "Temp Spots",
+    linkName: 'Temp Spots',
     path: Routes.TEMP_SPOTS,
     exact: true,
     component: () => (
@@ -80,7 +80,7 @@ const routes: IRoute[] = [
     renderLink: true,
   },
   {
-    linkName: "Spots",
+    linkName: 'Spots',
     path: Routes.SPOTS,
     exact: true,
     component: () => <ListItemsMainPage listViewType={ListViewTypes.SPOTS} />,
@@ -88,7 +88,7 @@ const routes: IRoute[] = [
     renderLink: true,
   },
   {
-    linkName: "Videos",
+    linkName: 'Videos',
     path: Routes.SPOT_VIDEO,
     exact: true,
     component: () => (
@@ -106,7 +106,7 @@ const routes: IRoute[] = [
     renderLink: false,
   },
   {
-    linkName: "Map",
+    linkName: 'Map',
     path: Routes.MAP,
     exact: true,
     component: SpotsMapView,
@@ -114,13 +114,13 @@ const routes: IRoute[] = [
     renderLink: true,
   },
   {
-    linkName: "Logout",
+    linkName: 'Logout',
     path: Routes.LOGOUT,
     exact: true,
     component: Logout,
     accessedBy: [UserRoles.SIGNED_IN],
     renderLink: true,
   },
-];
+]
 
-export default routes;
+export default routes

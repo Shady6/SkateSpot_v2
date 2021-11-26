@@ -1,12 +1,12 @@
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import React, { useState } from "react";
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import ClickAwayListener from '@mui/material/ClickAwayListener'
+import IconButton from '@mui/material/IconButton'
+import Tooltip from '@mui/material/Tooltip'
+import React, { useState } from 'react'
 
 interface Props {
-  isTooltipOpen: boolean;
-  setIsTooltipOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isTooltipOpen: boolean
+  setIsTooltipOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const MoreVertWithTooltip: React.FC<Props> = ({
@@ -26,24 +26,22 @@ export const MoreVertWithTooltip: React.FC<Props> = ({
           disableFocusListener
           disableHoverListener
           disableTouchListener
-          title={<>{children}</>}
-        >
+          title={<>{children}</>}>
           <IconButton
             onClick={() => {
-              setIsTooltipOpen(!isTooltipOpen);
+              setIsTooltipOpen(!isTooltipOpen)
             }}
-            className="ms-1 p-0"
-          >
+            className='ms-1 p-0'>
             <MoreVertIcon
               style={{
-                color: "#d2d2d2",
-                fontSize: "1.1rem",
-                cursor: "pointer",
+                color: '#d2d2d2',
+                fontSize: '1.1rem',
+                cursor: 'pointer',
               }}
             />
           </IconButton>
         </Tooltip>
       </div>
     </ClickAwayListener>
-  );
-};
+  )
+}

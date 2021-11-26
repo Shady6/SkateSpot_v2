@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react'
 
 interface Props {
-  fontSize?: string;
-  color: string;
-  className?: string;
+  fontSize?: string
+  color: string
+  className?: string
 }
 
 export const MarkerIcon: React.FC<Props> = ({
-  fontSize = "1rem",
+  fontSize = '1rem',
   color,
   className,
   children,
@@ -16,5 +16,5 @@ export const MarkerIcon: React.FC<Props> = ({
     <i className={`fa fa-map-marker ${className}`} style={{ fontSize, color }}>
       {children}
     </i>
-  );
-};
+  )
+}

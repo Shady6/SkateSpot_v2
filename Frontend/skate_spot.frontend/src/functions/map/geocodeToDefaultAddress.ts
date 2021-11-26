@@ -1,4 +1,4 @@
-import { DefaultAddress, Geocode } from "../../types/types";
+import { DefaultAddress, Geocode } from '../../types/types'
 
 const geocodeToDefaultAddress = (g: Geocode): DefaultAddress => {
   return {
@@ -8,7 +8,7 @@ const geocodeToDefaultAddress = (g: Geocode): DefaultAddress => {
     streetName: g.address.road,
     streetNumber: g.address.house_number,
     display: g.display_name,
-  };
-};
+  }
+}
 
-export default geocodeToDefaultAddress;
+export default geocodeToDefaultAddress

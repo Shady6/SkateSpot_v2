@@ -1,14 +1,14 @@
-import React from "react";
-import { useMap } from "react-leaflet";
-import { useLegend } from "../../hooks/map/useLegend";
+import React from 'react'
+import { useMap } from 'react-leaflet'
+import { useLegend } from '../../hooks/map/useLegend'
 
 interface Props {
-  displaySelectedMarkerLegend?: boolean;
+  displaySelectedMarkerLegend?: boolean
 }
 
 const Legend: React.FC<Props> = ({ displaySelectedMarkerLegend = false }) => {
-  useLegend({ displaySelectedMarkerLegend, map: useMap() });
-  return <></>;
-};
+  useLegend({ displaySelectedMarkerLegend, map: useMap() })
+  return <></>
+}
 
-export default Legend;
+export default Legend

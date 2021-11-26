@@ -1,8 +1,8 @@
-import { Dispatch } from "react";
-import { ApiClient, ApiResponse } from "../../skate_spot_api/apiClient";
-import { ErrorCode, TokenResponse } from "../../skate_spot_api/client";
-import { createFlashMsgWithTimeout } from "../../state/reducers/flashMsgReducer";
-import { request } from "./request";
+import { Dispatch } from 'react'
+import { ApiClient, ApiResponse } from '../../skate_spot_api/apiClient'
+import { ErrorCode, TokenResponse } from '../../skate_spot_api/client'
+import { createFlashMsgWithTimeout } from '../../state/reducers/flashMsgReducer'
+import { request } from './request'
 
 export const sendRequestWithFlashMsgOnError = async <TReturn>(
   dispatch: Dispatch<any>,
@@ -11,7 +11,7 @@ export const sendRequestWithFlashMsgOnError = async <TReturn>(
   backupErrorMessage?: string,
   clearAfterMs: number = 10000
 ): Promise<ApiResponse<TReturn>> => {
-  const response = await request(reqFunc, auth);
+  const response = await request(reqFunc, auth)
 
   if (response.error)
     dispatch(
@@ -19,11 +19,11 @@ export const sendRequestWithFlashMsgOnError = async <TReturn>(
         message:
           response?.error?.statusCode !== ErrorCode.DEFAULT_ERROR
             ? (response.error?.message as string)
-            : backupErrorMessage || "Something went wrong, try again later.",
-        severity: "error",
+            : backupErrorMessage || 'Something went wrong, try again later.',
+        severity: 'error',
         clearAtDate: new Date(Date.now() + clearAfterMs),
       })
-    );
+    )
 
-  return response;
-};
+  return response
+}

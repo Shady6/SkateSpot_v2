@@ -33,6 +33,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-sass": "^6.0.1",
+    "prettier": "^2.5.0",
     "react": "^17.0.2",
     "react-countdown": "^2.3.2",
     "react-dom": "^17.0.2",
@@ -55,7 +56,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "pretty": "prettier --write \"./**/*.{ts,tsx}\""
   },
   "eslintConfig": {
     "extends": [

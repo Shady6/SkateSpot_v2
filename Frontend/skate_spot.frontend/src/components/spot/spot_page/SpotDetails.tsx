@@ -1,42 +1,42 @@
-import React, { useState } from "react";
-import { createCommentComponent } from "../../../functions/component_creators/commentsCreator";
+import React, { useState } from 'react'
+import { createCommentComponent } from '../../../functions/component_creators/commentsCreator'
 import {
   CommentDto,
   LikeDto,
   ObstacleType,
   SmallUserDto,
   SpotDto,
-} from "../../../skate_spot_api/client";
-import { spotLike } from "../../../state/actions/spotAcionts";
-import { ListViewTypes } from "../../../state/generic/listViewGenerics";
-import CommentBtn from "../../social/comment/CommentBtn";
-import { MainLikeButtons } from "../../social/comment/MainLikeButtons";
-import { MapModal } from "../../spot_common/MapView/MapModal";
-import { ShowMapModalBtn } from "../../spot_common/MapView/ShowMapModalBtn";
-import { Obstacles } from "../../spot_common/Obstacles";
-import { SpotAuthor } from "../../spot_common/SpotAuthor";
-import { SpotImages } from "../../spot_common/SpotImages";
-import { SurfaceScore } from "../../spot_common/SurfaceScore";
-import { AddSpotVideoModal } from "../../spot_video/AddSpotVideoModal";
-import { AddVideoBtn } from "../../spot_video/AddVideoBtn";
+} from '../../../skate_spot_api/client'
+import { spotLike } from '../../../state/actions/spotAcionts'
+import { ListViewTypes } from '../../../state/generic/listViewGenerics'
+import CommentBtn from '../../social/comment/CommentBtn'
+import { MainLikeButtons } from '../../social/comment/MainLikeButtons'
+import { MapModal } from '../../spot_common/MapView/MapModal'
+import { ShowMapModalBtn } from '../../spot_common/MapView/ShowMapModalBtn'
+import { Obstacles } from '../../spot_common/Obstacles'
+import { SpotAuthor } from '../../spot_common/SpotAuthor'
+import { SpotImages } from '../../spot_common/SpotImages'
+import { SurfaceScore } from '../../spot_common/SurfaceScore'
+import { AddSpotVideoModal } from '../../spot_video/AddSpotVideoModal'
+import { AddVideoBtn } from '../../spot_video/AddVideoBtn'
 
 interface Props {
-  spot: SpotDto;
+  spot: SpotDto
 }
 
 export const SpotDetails = React.memo(
   ({ spot }: Props) => {
-    const [isMapModalOpen, setIsMapModalOpen] = useState(false);
-    const [commentsOpen, setCommentsOpen] = useState(false);
+    const [isMapModalOpen, setIsMapModalOpen] = useState(false)
+    const [commentsOpen, setCommentsOpen] = useState(false)
     const [isAddSpotVideoModalOpen, setIsAddSpotVideoModalOpen] =
-      useState(false);
+      useState(false)
 
     return (
-      <div className="mb-4">
+      <div className='mb-4'>
         <h4>{spot.name}</h4>
         <p>{spot.description}</p>
         <SpotImages images={spot.images} />
-        <div className="d-flex mt-2">
+        <div className='d-flex mt-2'>
           <MainLikeButtons
             listItemId={spot.id as string}
             likes={spot.likes as LikeDto[]}
@@ -50,14 +50,14 @@ export const SpotDetails = React.memo(
             setIsAddSpotVideoModalOpen={setIsAddSpotVideoModalOpen}
           />
           <ShowMapModalBtn setIsMapModalOpen={setIsMapModalOpen} />
-          <div className="ms-3 d-flex">
+          <div className='ms-3 d-flex'>
             <SurfaceScore surfaceScore={spot.surfaceScore as number} />
             <Obstacles obstacles={spot.obstacles as ObstacleType[]} />
           </div>
           <SpotAuthor author={spot.author as SmallUserDto} />
         </div>
         {commentsOpen && (
-          <div className="row col-4">
+          <div className='row col-4'>
             {createCommentComponent({
               listItemId: spot.id,
               comments: spot.comments as CommentDto[],
@@ -77,9 +77,9 @@ export const SpotDetails = React.memo(
           spotName={spot.name as string}
         />
       </div>
-    );
+    )
   },
   (p, n) =>
     JSON.stringify({ likes: p.spot.likes, comments: p.spot.comments }) ===
     JSON.stringify({ likes: n.spot.likes, comments: n.spot.comments })
-);
+)
