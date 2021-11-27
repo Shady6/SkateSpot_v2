@@ -6,8 +6,11 @@ using SkateSpot.Api.Attributes;
 using SkateSpot.Api.Data;
 using SkateSpot.Application.DTOs;
 using SkateSpot.Application.DTOs.DomainDTOs;
+using SkateSpot.Application.DTOs.Filter;
+using SkateSpot.Application.Extensions;
 using SkateSpot.Application.Features.TempSpotFeatures.Commands;
 using SkateSpot.Application.Services.Interfaces;
+using SkateSpot.Domain.Models;
 using SkateSpot.Infrastructure.DbContexts;
 using System;
 using System.Linq;
@@ -43,16 +46,17 @@ namespace SkateSpot.Api.Controllers
 
 		[HttpGet]
 		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<TempSpotWithVerificationDto>>), 200)]
-		public async Task<ActionResult> GetTempSpots([FromQuery] int take, [FromQuery] int offset)
+		public async Task<ActionResult> GetTempSpots([FromQuery] int take, [FromQuery] int offset, [FromQuery] SortAndFilter snf)
 		{
 			return Ok(new WithTotalCount<TempSpotWithVerificationDto>
 			{
 				Data = await _mapper.ProjectTo<TempSpotWithVerificationDto>(
 					_dbContext.TempSpots
-					.OrderByDescending(s => s.CreatedAt)
 					.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
 					.Include(s => s.VerificationProcess)
 					.ThenInclude(s => s.Discussion.OrderByDescending(c => c.CreatedAt))
+					.ApplySortingAndFilters(snf)
+					.Cast<TempSpot>()
 					.Skip(offset)
 					.Take(take)
 					).ToArrayAsync(),

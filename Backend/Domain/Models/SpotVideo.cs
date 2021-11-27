@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using SkateSpot.Domain.Common;
+﻿using SkateSpot.Domain.Common;
 using SkateSpot.Domain.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace SkateSpot.Domain.Models
 {
 	public enum VideoPlatformType
-    {
+	{
 		Instagram,
 		YouTube
-    }
+	}
 
-	public class SpotVideo : EditableEntity, ICommentable, ILikeable
+	public class SpotVideo : EditableEntity, ICommentable, IWithSocial, ILikeable
 	{
 		public string EmbedId { get; protected set; }
-        public string Description { get; protected set; }
-        public VideoPlatformType PlatformType { get; protected set; }
-        public Guid AuthorId { get; protected set; }
+		public string Description { get; protected set; }
+		public VideoPlatformType PlatformType { get; protected set; }
+		public Guid AuthorId { get; protected set; }
 		public User Author { get; protected set; }
 		public Guid? SpotId { get; protected set; }
 		public Spot Spot { get; protected set; }
@@ -42,9 +42,9 @@ namespace SkateSpot.Domain.Models
 		}
 
 		public SpotVideo(string embedId,
-                   VideoPlatformType platformType,
-                   Guid userId,
-                   string description)
+				   VideoPlatformType platformType,
+				   Guid userId,
+				   string description)
 		{
 			EmbedId = embedId;
 			PlatformType = platformType;

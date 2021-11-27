@@ -7,8 +7,11 @@ using SkateSpot.Api.Data;
 using SkateSpot.Api.Extensions;
 using SkateSpot.Application.DTOs;
 using SkateSpot.Application.DTOs.DomainDTOs;
+using SkateSpot.Application.DTOs.Filter;
+using SkateSpot.Application.Extensions;
 using SkateSpot.Application.Features.SpotVideoFeatures.Commands;
 using SkateSpot.Application.Services.Interfaces;
+using SkateSpot.Domain.Models;
 using SkateSpot.Infrastructure.DbContexts;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,16 +40,21 @@ namespace SkateSpot.Api.Controllers
 		[HttpGet("spotVideos")]
 		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<SpotVideoDto>>), 200)]
 		public async Task<ActionResult> GetSpotVideos([FromQuery] int take,
-													[FromQuery] int offset)
+													[FromQuery] int offset,
+													[FromQuery] SortAndFilter snf)
 		{
+			return Ok();
+
 			return Ok(new WithTotalCount<SpotVideoDto>
 			{
 				Data = await _mapper.ProjectTo<SpotVideoDto>(
-				 _dbContext.SpotVideos
-				.OrderByDescending(v => v.CreatedAt)
-				.Skip(offset)
-				.Take(take))
-				.ToArrayAsync(),
+					_dbContext.Spots
+					.ApplyFilters(snf.Filtering)
+					.Cast<Spot>()
+					.SelectMany(s => s.Videos)
+					.ApplySort(snf.Sorting)
+					.Skip(offset)
+					.Take(take)).ToArrayAsync(),
 				TotalCount = await _dbContext.SpotVideos
 				.CountAsync()
 			});

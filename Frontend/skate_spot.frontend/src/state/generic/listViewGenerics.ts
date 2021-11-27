@@ -53,19 +53,42 @@ export const listViewSpecifics: IListViewSpecifics = {
     commentSubjectType: CommentSubjectType.Spots,
   },
   tempSpots: {
-    fetchListItems: (client: ApiClient, take: number, skip: number) =>
-      client.get_Temp_Spots(take, skip) as Promise<
-        ApiResponse<ListWithCount<TempSpotWithVerificationDto>>
-      >,
+    fetchListItems: (
+      client: ApiClient,
+      take: number,
+      skip: number,
+      snf: IAppliedFilter
+    ) =>
+      client.get_Temp_Spots(
+        take,
+        skip,
+        snf.sort?.option,
+        snf.sort?.ascending,
+        snf.filter?.surfaceScore?.gtFiltering,
+        snf.filter?.surfaceScore?.score,
+        snf.filter?.tags
+      ) as Promise<ApiResponse<ListWithCount<TempSpotWithVerificationDto>>>,
     getSpecificState: (state: RootState) => state.tempSpotsState,
     name: 'tempSpots',
     commentSubjectType: CommentSubjectType.TempSpots,
   },
   spotVideos: {
-    fetchListItems: (client: ApiClient, take: number, skip: number) => {
-      return client.get_Spot_Videos(take, skip, undefined) as Promise<
-        ApiResponse<ListWithCount<SpotVideoDto>>
-      >
+    fetchListItems: (
+      client: ApiClient,
+      take: number,
+      skip: number,
+      snf: IAppliedFilter
+    ) => {
+      return client.get_Spot_Videos(
+        take,
+        skip,
+        undefined,
+        snf.sort?.option,
+        snf.sort?.ascending,
+        snf.filter?.surfaceScore?.gtFiltering,
+        snf.filter?.surfaceScore?.score,
+        snf.filter?.tags
+      ) as Promise<ApiResponse<ListWithCount<SpotVideoDto>>>
     },
     getSpecificState: (state: RootState) => state.spotVideosState,
     name: 'spotVideos',

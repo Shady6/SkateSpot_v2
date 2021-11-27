@@ -39,6 +39,20 @@ export const SpotPage: React.FC<Props> = () => {
     }
   }, [])
 
+  useEffect(() => {
+    dispatch(
+      customFuncSpotVideoFetch({
+        fetchFunc: (client, take, skip) =>
+          client.get_Spot_Videos_Of_Spot(
+            spotName,
+            take,
+            skip,
+            undefined
+          ) as Promise<ApiResponse<ListWithCount<WithSocial>>>,
+      })
+    )
+  }, [])
+
   useFetchOnScroll(() => {
     return customFuncSpotVideoFetch({
       fetchFunc: (client, take, skip) =>

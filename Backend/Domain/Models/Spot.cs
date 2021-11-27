@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SkateSpot.Domain.Models
 {
-	public class Spot : EditableEntity, ICommentable, ILikeable, ISpot, IFilteredSpot
+	public class Spot : EditableEntity, ICommentable, ILikeable, IWithSocial, ISpot
 	{
 		public string Name { get; protected set; }
 		public string Description { get; protected set; }

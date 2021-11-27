@@ -8,2116 +8,1616 @@
 // ReSharper disable InconsistentNaming
 
 export class Client {
-  private http: {
-    fetch(url: RequestInfo, init?: RequestInit): Promise<Response>
-  }
-  private baseUrl: string
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
-    undefined
-
-  constructor(
-    baseUrl?: string,
-    http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }
-  ) {
-    this.http = http ? http : <any>window
-    this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : ''
-  }
-
-  /**
-   * @param count (optional)
-   * @return Success
-   */
-  seed_Fake_Spots(
-    authorization: string,
-    count?: number | undefined
-  ): Promise<void> {
-    let url_ = this.baseUrl + '/api/admin/seed/spots?'
-    if (count === null) throw new Error("The parameter 'count' cannot be null.")
-    else if (count !== undefined)
-      url_ += 'count=' + encodeURIComponent('' + count) + '&'
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'POST',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processSeed_Fake_Spots(_response)
-    })
-  }
-
-  protected processSeed_Fake_Spots(response: Response): Promise<void> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        return
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<void>(<any>null)
-  }
-
-  /**
-   * @param count (optional)
-   * @return Success
-   */
-  seed_Fake_Temp_Spots(
-    authorization: string,
-    count?: number | undefined
-  ): Promise<void> {
-    let url_ = this.baseUrl + '/api/admin/seed/tempSpots?'
-    if (count === null) throw new Error("The parameter 'count' cannot be null.")
-    else if (count !== undefined)
-      url_ += 'count=' + encodeURIComponent('' + count) + '&'
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'POST',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processSeed_Fake_Temp_Spots(_response)
-    })
-  }
-
-  protected processSeed_Fake_Temp_Spots(response: Response): Promise<void> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        return
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<void>(<any>null)
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  comment(
-    subjectType: CommentSubjectType,
-    subjectId: string,
-    authorization: string,
-    body?: CommentCommand | undefined
-  ): Promise<CommentDtoApiResponse> {
-    let url_ = this.baseUrl + '/api/{subjectType}/{subjectId}/comments'
-    if (subjectType === undefined || subjectType === null)
-      throw new Error("The parameter 'subjectType' must be defined.")
-    url_ = url_.replace('{subjectType}', encodeURIComponent('' + subjectType))
-    if (subjectId === undefined || subjectId === null)
-      throw new Error("The parameter 'subjectId' must be defined.")
-    url_ = url_.replace('{subjectId}', encodeURIComponent('' + subjectId))
-    url_ = url_.replace(/[?&]$/, '')
-
-    const content_ = JSON.stringify(body)
-
-    let options_ = <RequestInit>{
-      body: content_,
-      method: 'POST',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        'Content-Type': 'application/json',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processComment(_response)
-    })
-  }
-
-  protected processComment(response: Response): Promise<CommentDtoApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <CommentDtoApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<CommentDtoApiResponse>(<any>null)
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  edit_Comment(
-    subjectType: CommentSubjectType,
-    subjectId: string,
-    commentId: string,
-    authorization: string,
-    body?: EditCommentCommand | undefined
-  ): Promise<void> {
-    let url_ =
-      this.baseUrl + '/api/{subjectType}/{subjectId}/comments/{commentId}'
-    if (subjectType === undefined || subjectType === null)
-      throw new Error("The parameter 'subjectType' must be defined.")
-    url_ = url_.replace('{subjectType}', encodeURIComponent('' + subjectType))
-    if (subjectId === undefined || subjectId === null)
-      throw new Error("The parameter 'subjectId' must be defined.")
-    url_ = url_.replace('{subjectId}', encodeURIComponent('' + subjectId))
-    if (commentId === undefined || commentId === null)
-      throw new Error("The parameter 'commentId' must be defined.")
-    url_ = url_.replace('{commentId}', encodeURIComponent('' + commentId))
-    url_ = url_.replace(/[?&]$/, '')
-
-    const content_ = JSON.stringify(body)
-
-    let options_ = <RequestInit>{
-      body: content_,
-      method: 'PUT',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        'Content-Type': 'application/json',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processEdit_Comment(_response)
-    })
-  }
-
-  protected processEdit_Comment(response: Response): Promise<void> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        return
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<void>(<any>null)
-  }
-
-  /**
-   * @return Success
-   */
-  delete_Comment(
-    subjectId: string,
-    subjectType: CommentSubjectType,
-    commentId: string,
-    authorization: string
-  ): Promise<void> {
-    let url_ =
-      this.baseUrl + '/api/{SubjectType}/{SubjectId}/comments/{CommentId}'
-    if (subjectId === undefined || subjectId === null)
-      throw new Error("The parameter 'subjectId' must be defined.")
-    url_ = url_.replace('{SubjectId}', encodeURIComponent('' + subjectId))
-    if (subjectType === undefined || subjectType === null)
-      throw new Error("The parameter 'subjectType' must be defined.")
-    url_ = url_.replace('{SubjectType}', encodeURIComponent('' + subjectType))
-    if (commentId === undefined || commentId === null)
-      throw new Error("The parameter 'commentId' must be defined.")
-    url_ = url_.replace('{CommentId}', encodeURIComponent('' + commentId))
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'DELETE',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processDelete_Comment(_response)
-    })
-  }
-
-  protected processDelete_Comment(response: Response): Promise<void> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        return
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<void>(<any>null)
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  get_Token(
-    body?: TokenRequest | undefined
-  ): Promise<TokenResponseApiResponse> {
-    let url_ = this.baseUrl + '/api/identity/token'
-    url_ = url_.replace(/[?&]$/, '')
-
-    const content_ = JSON.stringify(body)
-
-    let options_ = <RequestInit>{
-      body: content_,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processGet_Token(_response)
-    })
-  }
-
-  protected processGet_Token(
-    response: Response
-  ): Promise<TokenResponseApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <TokenResponseApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<TokenResponseApiResponse>(<any>null)
-  }
-
-  /**
-   * @return Success
-   */
-  logout(authorization: string): Promise<void> {
-    let url_ = this.baseUrl + '/api/identity/logout'
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'DELETE',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processLogout(_response)
-    })
-  }
-
-  protected processLogout(response: Response): Promise<void> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        return
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<void>(<any>null)
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  register(body?: RegisterRequest | undefined): Promise<StringApiResponse> {
-    let url_ = this.baseUrl + '/api/identity/register'
-    url_ = url_.replace(/[?&]$/, '')
-
-    const content_ = JSON.stringify(body)
-
-    let options_ = <RequestInit>{
-      body: content_,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processRegister(_response)
-    })
-  }
-
-  protected processRegister(response: Response): Promise<StringApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <StringApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<StringApiResponse>(<any>null)
-  }
-
-  /**
-   * @param userId (optional)
-   * @param code (optional)
-   * @return Success
-   */
-  confirm_Email(
-    userId?: string | undefined,
-    code?: string | undefined
-  ): Promise<StringApiResponse> {
-    let url_ = this.baseUrl + '/api/identity/confirm-email?'
-    if (userId === null)
-      throw new Error("The parameter 'userId' cannot be null.")
-    else if (userId !== undefined)
-      url_ += 'userId=' + encodeURIComponent('' + userId) + '&'
-    if (code === null) throw new Error("The parameter 'code' cannot be null.")
-    else if (code !== undefined)
-      url_ += 'code=' + encodeURIComponent('' + code) + '&'
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'GET',
-      headers: {
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processConfirm_Email(_response)
-    })
-  }
-
-  protected processConfirm_Email(
-    response: Response
-  ): Promise<StringApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <StringApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<StringApiResponse>(<any>null)
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  forgot_Password(body?: ForgotPasswordRequest | undefined): Promise<void> {
-    let url_ = this.baseUrl + '/api/identity/forgot-password'
-    url_ = url_.replace(/[?&]$/, '')
-
-    const content_ = JSON.stringify(body)
-
-    let options_ = <RequestInit>{
-      body: content_,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processForgot_Password(_response)
-    })
-  }
-
-  protected processForgot_Password(response: Response): Promise<void> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        return
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<void>(<any>null)
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  reset_Password(
-    body?: ResetPasswordRequest | undefined
-  ): Promise<StringApiResponse> {
-    let url_ = this.baseUrl + '/api/identity/reset-password'
-    url_ = url_.replace(/[?&]$/, '')
-
-    const content_ = JSON.stringify(body)
-
-    let options_ = <RequestInit>{
-      body: content_,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processReset_Password(_response)
-    })
-  }
-
-  protected processReset_Password(
-    response: Response
-  ): Promise<StringApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <StringApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<StringApiResponse>(<any>null)
-  }
-
-  /**
-   * @param imagesUrls (optional)
-   * @return Success
-   */
-  get_Base64_Images(
-    authorization: string,
-    imagesUrls?: string[] | undefined
-  ): Promise<Base64FetchResultArrayApiResponse> {
-    let url_ = this.baseUrl + '/api/ImageProxy/base64?'
-    if (imagesUrls === null)
-      throw new Error("The parameter 'imagesUrls' cannot be null.")
-    else if (imagesUrls !== undefined)
-      imagesUrls &&
-        imagesUrls.forEach(item => {
-          url_ += 'imagesUrls=' + encodeURIComponent('' + item) + '&'
-        })
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'GET',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processGet_Base64_Images(_response)
-    })
-  }
-
-  protected processGet_Base64_Images(
-    response: Response
-  ): Promise<Base64FetchResultArrayApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <Base64FetchResultArrayApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<Base64FetchResultArrayApiResponse>(<any>null)
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  like(
-    subjectType: LikeSubjectType,
-    subjectId: string,
-    authorization: string,
-    body?: LikeCommand | undefined
-  ): Promise<LikeDtoArrayApiResponse> {
-    let url_ = this.baseUrl + '/api/{subjectType}/{subjectId}/Likes'
-    if (subjectType === undefined || subjectType === null)
-      throw new Error("The parameter 'subjectType' must be defined.")
-    url_ = url_.replace('{subjectType}', encodeURIComponent('' + subjectType))
-    if (subjectId === undefined || subjectId === null)
-      throw new Error("The parameter 'subjectId' must be defined.")
-    url_ = url_.replace('{subjectId}', encodeURIComponent('' + subjectId))
-    url_ = url_.replace(/[?&]$/, '')
-
-    const content_ = JSON.stringify(body)
-
-    let options_ = <RequestInit>{
-      body: content_,
-      method: 'POST',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        'Content-Type': 'application/json',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processLike(_response)
-    })
-  }
-
-  protected processLike(response: Response): Promise<LikeDtoArrayApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <LikeDtoArrayApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<LikeDtoArrayApiResponse>(<any>null)
-  }
-
-  /**
-   * @return Success
-   */
-  delete_Like(
-    subjectId: string,
-    subjectType: LikeSubjectType,
-    authorization: string
-  ): Promise<LikeDtoArrayApiResponse> {
-    let url_ = this.baseUrl + '/api/{subjectType}/{subjectId}/Likes'
-    if (subjectId === undefined || subjectId === null)
-      throw new Error("The parameter 'subjectId' must be defined.")
-    url_ = url_.replace('{subjectId}', encodeURIComponent('' + subjectId))
-    if (subjectType === undefined || subjectType === null)
-      throw new Error("The parameter 'subjectType' must be defined.")
-    url_ = url_.replace('{subjectType}', encodeURIComponent('' + subjectType))
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'DELETE',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processDelete_Like(_response)
-    })
-  }
-
-  protected processDelete_Like(
-    response: Response
-  ): Promise<LikeDtoArrayApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <LikeDtoArrayApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<LikeDtoArrayApiResponse>(<any>null)
-  }
-
-  /**
-   * @param take (optional)
-   * @param offset (optional)
-   * @param sorting_Option (optional)
-   * @param sorting_Ascending (optional)
-   * @param filtering_SurfaceFilter_GreaterThan (optional)
-   * @param filtering_SurfaceFilter_Score (optional)
-   * @param filtering_ObstaclesFilter_Obstacles (optional)
-   * @return Success
-   */
-  get_Spots(
-    take?: number | undefined,
-    offset?: number | undefined,
-    sorting_Option?: SortOption | undefined,
-    sorting_Ascending?: boolean | undefined,
-    filtering_SurfaceFilter_GreaterThan?: boolean | undefined,
-    filtering_SurfaceFilter_Score?: number | undefined,
-    filtering_ObstaclesFilter_Obstacles?: ObstacleType[] | undefined
-  ): Promise<SpotDtoWithTotalCountApiResponse> {
-    let url_ = this.baseUrl + '/api/spots?'
-    if (take === null) throw new Error("The parameter 'take' cannot be null.")
-    else if (take !== undefined)
-      url_ += 'take=' + encodeURIComponent('' + take) + '&'
-    if (offset === null)
-      throw new Error("The parameter 'offset' cannot be null.")
-    else if (offset !== undefined)
-      url_ += 'offset=' + encodeURIComponent('' + offset) + '&'
-    if (sorting_Option === null)
-      throw new Error("The parameter 'sorting_Option' cannot be null.")
-    else if (sorting_Option !== undefined)
-      url_ += 'Sorting.Option=' + encodeURIComponent('' + sorting_Option) + '&'
-    if (sorting_Ascending === null)
-      throw new Error("The parameter 'sorting_Ascending' cannot be null.")
-    else if (sorting_Ascending !== undefined)
-      url_ +=
-        'Sorting.Ascending=' + encodeURIComponent('' + sorting_Ascending) + '&'
-    if (filtering_SurfaceFilter_GreaterThan === null)
-      throw new Error(
-        "The parameter 'filtering_SurfaceFilter_GreaterThan' cannot be null."
-      )
-    else if (filtering_SurfaceFilter_GreaterThan !== undefined)
-      url_ +=
-        'Filtering.SurfaceFilter.GreaterThan=' +
-        encodeURIComponent('' + filtering_SurfaceFilter_GreaterThan) +
-        '&'
-    if (filtering_SurfaceFilter_Score === null)
-      throw new Error(
-        "The parameter 'filtering_SurfaceFilter_Score' cannot be null."
-      )
-    else if (filtering_SurfaceFilter_Score !== undefined)
-      url_ +=
-        'Filtering.SurfaceFilter.Score=' +
-        encodeURIComponent('' + filtering_SurfaceFilter_Score) +
-        '&'
-    if (filtering_ObstaclesFilter_Obstacles === null)
-      throw new Error(
-        "The parameter 'filtering_ObstaclesFilter_Obstacles' cannot be null."
-      )
-    else if (filtering_ObstaclesFilter_Obstacles !== undefined)
-      filtering_ObstaclesFilter_Obstacles &&
-        filtering_ObstaclesFilter_Obstacles.forEach(item => {
-          url_ +=
-            'Filtering.ObstaclesFilter.Obstacles=' +
-            encodeURIComponent('' + item) +
-            '&'
-        })
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'GET',
-      headers: {
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processGet_Spots(_response)
-    })
-  }
-
-  protected processGet_Spots(
-    response: Response
-  ): Promise<SpotDtoWithTotalCountApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <SpotDtoWithTotalCountApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<SpotDtoWithTotalCountApiResponse>(<any>null)
-  }
-
-  /**
-   * @return Success
-   */
-  get_Spot(spotName: string): Promise<SpotDtoApiResponse> {
-    let url_ = this.baseUrl + '/api/spots/{spotName}'
-    if (spotName === undefined || spotName === null)
-      throw new Error("The parameter 'spotName' must be defined.")
-    url_ = url_.replace('{spotName}', encodeURIComponent('' + spotName))
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'GET',
-      headers: {
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processGet_Spot(_response)
-    })
-  }
-
-  protected processGet_Spot(response: Response): Promise<SpotDtoApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <SpotDtoApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<SpotDtoApiResponse>(<any>null)
-  }
-
-  /**
-   * @param surfaceFilter_GreaterThan (optional)
-   * @param surfaceFilter_Score (optional)
-   * @param obstaclesFilter_Obstacles (optional)
-   * @return Success
-   */
-  get_Perma_And_Temp_Spots_Marker_Data(
-    surfaceFilter_GreaterThan?: boolean | undefined,
-    surfaceFilter_Score?: number | undefined,
-    obstaclesFilter_Obstacles?: ObstacleType[] | undefined
-  ): Promise<SpotMarkerDataDtoListApiResponse> {
-    let url_ = this.baseUrl + '/api/spots/marker?'
-    if (surfaceFilter_GreaterThan === null)
-      throw new Error(
-        "The parameter 'surfaceFilter_GreaterThan' cannot be null."
-      )
-    else if (surfaceFilter_GreaterThan !== undefined)
-      url_ +=
-        'SurfaceFilter.GreaterThan=' +
-        encodeURIComponent('' + surfaceFilter_GreaterThan) +
-        '&'
-    if (surfaceFilter_Score === null)
-      throw new Error("The parameter 'surfaceFilter_Score' cannot be null.")
-    else if (surfaceFilter_Score !== undefined)
-      url_ +=
-        'SurfaceFilter.Score=' +
-        encodeURIComponent('' + surfaceFilter_Score) +
-        '&'
-    if (obstaclesFilter_Obstacles === null)
-      throw new Error(
-        "The parameter 'obstaclesFilter_Obstacles' cannot be null."
-      )
-    else if (obstaclesFilter_Obstacles !== undefined)
-      obstaclesFilter_Obstacles &&
-        obstaclesFilter_Obstacles.forEach(item => {
-          url_ +=
-            'ObstaclesFilter.Obstacles=' + encodeURIComponent('' + item) + '&'
-        })
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'GET',
-      headers: {
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processGet_Perma_And_Temp_Spots_Marker_Data(_response)
-    })
-  }
-
-  protected processGet_Perma_And_Temp_Spots_Marker_Data(
-    response: Response
-  ): Promise<SpotMarkerDataDtoListApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <SpotMarkerDataDtoListApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<SpotMarkerDataDtoListApiResponse>(<any>null)
-  }
-
-  /**
-   * @return Success
-   */
-  delete_Spot(id: string, authorization: string): Promise<void> {
-    let url_ = this.baseUrl + '/api/spots/{Id}'
-    if (id === undefined || id === null)
-      throw new Error("The parameter 'id' must be defined.")
-    url_ = url_.replace('{Id}', encodeURIComponent('' + id))
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'DELETE',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processDelete_Spot(_response)
-    })
-  }
-
-  protected processDelete_Spot(response: Response): Promise<void> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        return
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<void>(<any>null)
-  }
-
-  /**
-   * @param take (optional)
-   * @param offset (optional)
-   * @param authorization (optional)
-   * @return Success
-   */
-  get_Spot_Videos(
-    take?: number | undefined,
-    offset?: number | undefined,
-    authorization?: string | undefined
-  ): Promise<SpotVideoDtoWithTotalCountApiResponse> {
-    let url_ = this.baseUrl + '/api/spotVideos?'
-    if (take === null) throw new Error("The parameter 'take' cannot be null.")
-    else if (take !== undefined)
-      url_ += 'take=' + encodeURIComponent('' + take) + '&'
-    if (offset === null)
-      throw new Error("The parameter 'offset' cannot be null.")
-    else if (offset !== undefined)
-      url_ += 'offset=' + encodeURIComponent('' + offset) + '&'
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'GET',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processGet_Spot_Videos(_response)
-    })
-  }
-
-  protected processGet_Spot_Videos(
-    response: Response
-  ): Promise<SpotVideoDtoWithTotalCountApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <SpotVideoDtoWithTotalCountApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<SpotVideoDtoWithTotalCountApiResponse>(<any>null)
-  }
-
-  /**
-   * @param take (optional)
-   * @param offset (optional)
-   * @param authorization (optional)
-   * @return Success
-   */
-  get_Spot_Videos_Of_Spot(
-    spotName: string,
-    take?: number | undefined,
-    offset?: number | undefined,
-    authorization?: string | undefined
-  ): Promise<SpotVideoDtoWithTotalCountApiResponse> {
-    let url_ = this.baseUrl + '/api/spots/{spotName}/spotVideos?'
-    if (spotName === undefined || spotName === null)
-      throw new Error("The parameter 'spotName' must be defined.")
-    url_ = url_.replace('{spotName}', encodeURIComponent('' + spotName))
-    if (take === null) throw new Error("The parameter 'take' cannot be null.")
-    else if (take !== undefined)
-      url_ += 'take=' + encodeURIComponent('' + take) + '&'
-    if (offset === null)
-      throw new Error("The parameter 'offset' cannot be null.")
-    else if (offset !== undefined)
-      url_ += 'offset=' + encodeURIComponent('' + offset) + '&'
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'GET',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processGet_Spot_Videos_Of_Spot(_response)
-    })
-  }
-
-  protected processGet_Spot_Videos_Of_Spot(
-    response: Response
-  ): Promise<SpotVideoDtoWithTotalCountApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <SpotVideoDtoWithTotalCountApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<SpotVideoDtoWithTotalCountApiResponse>(<any>null)
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  add_Spot_Video(
-    spotName: string,
-    authorization: string,
-    body?: AddSpotVideoCommand | undefined
-  ): Promise<SpotVideoDtoApiResponse> {
-    let url_ = this.baseUrl + '/api/spots/{spotName}/spotVideos'
-    if (spotName === undefined || spotName === null)
-      throw new Error("The parameter 'spotName' must be defined.")
-    url_ = url_.replace('{spotName}', encodeURIComponent('' + spotName))
-    url_ = url_.replace(/[?&]$/, '')
-
-    const content_ = JSON.stringify(body)
-
-    let options_ = <RequestInit>{
-      body: content_,
-      method: 'POST',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        'Content-Type': 'application/json',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processAdd_Spot_Video(_response)
-    })
-  }
-
-  protected processAdd_Spot_Video(
-    response: Response
-  ): Promise<SpotVideoDtoApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <SpotVideoDtoApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<SpotVideoDtoApiResponse>(<any>null)
-  }
-
-  /**
-   * @return Success
-   */
-  delete_Spot_Video(spotVideoId: string, authorization: string): Promise<void> {
-    let url_ = this.baseUrl + '/api/spotVideos/{spotVideoId}'
-    if (spotVideoId === undefined || spotVideoId === null)
-      throw new Error("The parameter 'spotVideoId' must be defined.")
-    url_ = url_.replace('{spotVideoId}', encodeURIComponent('' + spotVideoId))
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'DELETE',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processDelete_Spot_Video(_response)
-    })
-  }
-
-  protected processDelete_Spot_Video(response: Response): Promise<void> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        return
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<void>(<any>null)
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  create_Spot(
-    authorization: string,
-    body?: CreateTempSpotCommand | undefined
-  ): Promise<GuidApiResponse> {
-    let url_ = this.baseUrl + '/api/TempSpots'
-    url_ = url_.replace(/[?&]$/, '')
-
-    const content_ = JSON.stringify(body)
-
-    let options_ = <RequestInit>{
-      body: content_,
-      method: 'POST',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        'Content-Type': 'application/json',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processCreate_Spot(_response)
-    })
-  }
-
-  protected processCreate_Spot(response: Response): Promise<GuidApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <GuidApiResponse>JSON.parse(_responseText, this.jsonParseReviver)
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<GuidApiResponse>(<any>null)
-  }
-
-  /**
-   * @param take (optional)
-   * @param offset (optional)
-   * @return Success
-   */
-  get_Temp_Spots(
-    take?: number | undefined,
-    offset?: number | undefined
-  ): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
-    let url_ = this.baseUrl + '/api/TempSpots?'
-    if (take === null) throw new Error("The parameter 'take' cannot be null.")
-    else if (take !== undefined)
-      url_ += 'take=' + encodeURIComponent('' + take) + '&'
-    if (offset === null)
-      throw new Error("The parameter 'offset' cannot be null.")
-    else if (offset !== undefined)
-      url_ += 'offset=' + encodeURIComponent('' + offset) + '&'
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'GET',
-      headers: {
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processGet_Temp_Spots(_response)
-    })
-  }
-
-  protected processGet_Temp_Spots(
-    response: Response
-  ): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <TempSpotWithVerificationDtoWithTotalCountApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<TempSpotWithVerificationDtoWithTotalCountApiResponse>(
-      <any>null
-    )
-  }
-
-  /**
-   * @return Success
-   */
-  get_Temp_Spot(id: string): Promise<TempSpotWithVerificationDtoApiResponse> {
-    let url_ = this.baseUrl + '/api/TempSpots/{id}'
-    if (id === undefined || id === null)
-      throw new Error("The parameter 'id' must be defined.")
-    url_ = url_.replace('{id}', encodeURIComponent('' + id))
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'GET',
-      headers: {
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processGet_Temp_Spot(_response)
-    })
-  }
-
-  protected processGet_Temp_Spot(
-    response: Response
-  ): Promise<TempSpotWithVerificationDtoApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <TempSpotWithVerificationDtoApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<TempSpotWithVerificationDtoApiResponse>(<any>null)
-  }
-
-  /**
-   * @return Success
-   */
-  delete_Temp_Spot(id: string, authorization: string): Promise<void> {
-    let url_ = this.baseUrl + '/api/TempSpots/{id}'
-    if (id === undefined || id === null)
-      throw new Error("The parameter 'id' must be defined.")
-    url_ = url_.replace('{Id}', encodeURIComponent('' + id))
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'DELETE',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processDelete_Temp_Spot(_response)
-    })
-  }
-
-  protected processDelete_Temp_Spot(response: Response): Promise<void> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        return
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<void>(<any>null)
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  vote(
-    tempSpotId: string,
-    authorization: string,
-    body?: VoteCommand | undefined
-  ): Promise<VoteResultApiResponse> {
-    let url_ = this.baseUrl + '/api/tempSpots/{tempSpotId}/vote'
-    if (tempSpotId === undefined || tempSpotId === null)
-      throw new Error("The parameter 'tempSpotId' must be defined.")
-    url_ = url_.replace('{tempSpotId}', encodeURIComponent('' + tempSpotId))
-    url_ = url_.replace(/[?&]$/, '')
-
-    const content_ = JSON.stringify(body)
-
-    let options_ = <RequestInit>{
-      body: content_,
-      method: 'POST',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        'Content-Type': 'application/json',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processVote(_response)
-    })
-  }
-
-  protected processVote(response: Response): Promise<VoteResultApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <VoteResultApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<VoteResultApiResponse>(<any>null)
-  }
-
-  /**
-   * @return Success
-   */
-  delete_Vote(
-    tempSpotId: string,
-    authorization: string
-  ): Promise<VoteResultApiResponse> {
-    let url_ = this.baseUrl + '/api/tempSpots/{tempSpotId}/vote'
-    if (tempSpotId === undefined || tempSpotId === null)
-      throw new Error("The parameter 'tempSpotId' must be defined.")
-    url_ = url_.replace('{tempSpotId}', encodeURIComponent('' + tempSpotId))
-    url_ = url_.replace(/[?&]$/, '')
-
-    let options_ = <RequestInit>{
-      method: 'DELETE',
-      headers: {
-        Authorization:
-          authorization !== undefined && authorization !== null
-            ? '' + authorization
-            : '',
-        Accept: 'text/plain',
-      },
-    }
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processDelete_Vote(_response)
-    })
-  }
-
-  protected processDelete_Vote(
-    response: Response
-  ): Promise<VoteResultApiResponse> {
-    const status = response.status
-    let _headers: any = {}
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
-    }
-    if (status === 200) {
-      return response.text().then(_responseText => {
-        let result200: any = null
-        result200 =
-          _responseText === ''
-            ? null
-            : <VoteResultApiResponse>(
-                JSON.parse(_responseText, this.jsonParseReviver)
-              )
-        return result200
-      })
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then(_responseText => {
-        return throwException(
-          'An unexpected server error occurred.',
-          status,
-          _responseText,
-          _headers
-        )
-      })
-    }
-    return Promise.resolve<VoteResultApiResponse>(<any>null)
-  }
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        this.http = http ? http : <any>window;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param count (optional) 
+     * @return Success
+     */
+    seed_Fake_Spots(authorization: string, count?: number | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/api/admin/seed/spots?";
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "POST",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSeed_Fake_Spots(_response);
+        });
+    }
+
+    protected processSeed_Fake_Spots(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * @param count (optional) 
+     * @return Success
+     */
+    seed_Fake_Temp_Spots(authorization: string, count?: number | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/api/admin/seed/tempSpots?";
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "POST",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSeed_Fake_Temp_Spots(_response);
+        });
+    }
+
+    protected processSeed_Fake_Temp_Spots(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    comment(subjectType: CommentSubjectType, subjectId: string, authorization: string, body?: CommentCommand | undefined): Promise<CommentDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/comments";
+        if (subjectType === undefined || subjectType === null)
+            throw new Error("The parameter 'subjectType' must be defined.");
+        url_ = url_.replace("{subjectType}", encodeURIComponent("" + subjectType));
+        if (subjectId === undefined || subjectId === null)
+            throw new Error("The parameter 'subjectId' must be defined.");
+        url_ = url_.replace("{subjectId}", encodeURIComponent("" + subjectId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processComment(_response);
+        });
+    }
+
+    protected processComment(response: Response): Promise<CommentDtoApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CommentDtoApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<CommentDtoApiResponse>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    edit_Comment(subjectType: CommentSubjectType, subjectId: string, commentId: string, authorization: string, body?: EditCommentCommand | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/comments/{commentId}";
+        if (subjectType === undefined || subjectType === null)
+            throw new Error("The parameter 'subjectType' must be defined.");
+        url_ = url_.replace("{subjectType}", encodeURIComponent("" + subjectType));
+        if (subjectId === undefined || subjectId === null)
+            throw new Error("The parameter 'subjectId' must be defined.");
+        url_ = url_.replace("{subjectId}", encodeURIComponent("" + subjectId));
+        if (commentId === undefined || commentId === null)
+            throw new Error("The parameter 'commentId' must be defined.");
+        url_ = url_.replace("{commentId}", encodeURIComponent("" + commentId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Content-Type": "application/json",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processEdit_Comment(_response);
+        });
+    }
+
+    protected processEdit_Comment(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    delete_Comment(subjectId: string, subjectType: CommentSubjectType, commentId: string, authorization: string): Promise<void> {
+        let url_ = this.baseUrl + "/api/{SubjectType}/{SubjectId}/comments/{CommentId}";
+        if (subjectId === undefined || subjectId === null)
+            throw new Error("The parameter 'subjectId' must be defined.");
+        url_ = url_.replace("{SubjectId}", encodeURIComponent("" + subjectId));
+        if (subjectType === undefined || subjectType === null)
+            throw new Error("The parameter 'subjectType' must be defined.");
+        url_ = url_.replace("{SubjectType}", encodeURIComponent("" + subjectType));
+        if (commentId === undefined || commentId === null)
+            throw new Error("The parameter 'commentId' must be defined.");
+        url_ = url_.replace("{CommentId}", encodeURIComponent("" + commentId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processDelete_Comment(_response);
+        });
+    }
+
+    protected processDelete_Comment(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    get_Token(body?: TokenRequest | undefined): Promise<TokenResponseApiResponse> {
+        let url_ = this.baseUrl + "/api/identity/token";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Token(_response);
+        });
+    }
+
+    protected processGet_Token(response: Response): Promise<TokenResponseApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <TokenResponseApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TokenResponseApiResponse>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    logout(authorization: string): Promise<void> {
+        let url_ = this.baseUrl + "/api/identity/logout";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processLogout(_response);
+        });
+    }
+
+    protected processLogout(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    register(body?: RegisterRequest | undefined): Promise<StringApiResponse> {
+        let url_ = this.baseUrl + "/api/identity/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processRegister(_response);
+        });
+    }
+
+    protected processRegister(response: Response): Promise<StringApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <StringApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<StringApiResponse>(<any>null);
+    }
+
+    /**
+     * @param userId (optional) 
+     * @param code (optional) 
+     * @return Success
+     */
+    confirm_Email(userId?: string | undefined, code?: string | undefined): Promise<StringApiResponse> {
+        let url_ = this.baseUrl + "/api/identity/confirm-email?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        if (code === null)
+            throw new Error("The parameter 'code' cannot be null.");
+        else if (code !== undefined)
+            url_ += "code=" + encodeURIComponent("" + code) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processConfirm_Email(_response);
+        });
+    }
+
+    protected processConfirm_Email(response: Response): Promise<StringApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <StringApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<StringApiResponse>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    forgot_Password(body?: ForgotPasswordRequest | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/api/identity/forgot-password";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processForgot_Password(_response);
+        });
+    }
+
+    protected processForgot_Password(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    reset_Password(body?: ResetPasswordRequest | undefined): Promise<StringApiResponse> {
+        let url_ = this.baseUrl + "/api/identity/reset-password";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processReset_Password(_response);
+        });
+    }
+
+    protected processReset_Password(response: Response): Promise<StringApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <StringApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<StringApiResponse>(<any>null);
+    }
+
+    /**
+     * @param imagesUrls (optional) 
+     * @return Success
+     */
+    get_Base64_Images(authorization: string, imagesUrls?: string[] | undefined): Promise<Base64FetchResultArrayApiResponse> {
+        let url_ = this.baseUrl + "/api/ImageProxy/base64?";
+        if (imagesUrls === null)
+            throw new Error("The parameter 'imagesUrls' cannot be null.");
+        else if (imagesUrls !== undefined)
+            imagesUrls && imagesUrls.forEach(item => { url_ += "imagesUrls=" + encodeURIComponent("" + item) + "&"; });
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Base64_Images(_response);
+        });
+    }
+
+    protected processGet_Base64_Images(response: Response): Promise<Base64FetchResultArrayApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <Base64FetchResultArrayApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Base64FetchResultArrayApiResponse>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    like(subjectType: LikeSubjectType, subjectId: string, authorization: string, body?: LikeCommand | undefined): Promise<LikeDtoArrayApiResponse> {
+        let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/Likes";
+        if (subjectType === undefined || subjectType === null)
+            throw new Error("The parameter 'subjectType' must be defined.");
+        url_ = url_.replace("{subjectType}", encodeURIComponent("" + subjectType));
+        if (subjectId === undefined || subjectId === null)
+            throw new Error("The parameter 'subjectId' must be defined.");
+        url_ = url_.replace("{subjectId}", encodeURIComponent("" + subjectId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processLike(_response);
+        });
+    }
+
+    protected processLike(response: Response): Promise<LikeDtoArrayApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <LikeDtoArrayApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<LikeDtoArrayApiResponse>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    delete_Like(subjectId: string, subjectType: LikeSubjectType, authorization: string): Promise<LikeDtoArrayApiResponse> {
+        let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/Likes";
+        if (subjectId === undefined || subjectId === null)
+            throw new Error("The parameter 'subjectId' must be defined.");
+        url_ = url_.replace("{subjectId}", encodeURIComponent("" + subjectId));
+        if (subjectType === undefined || subjectType === null)
+            throw new Error("The parameter 'subjectType' must be defined.");
+        url_ = url_.replace("{subjectType}", encodeURIComponent("" + subjectType));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processDelete_Like(_response);
+        });
+    }
+
+    protected processDelete_Like(response: Response): Promise<LikeDtoArrayApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <LikeDtoArrayApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<LikeDtoArrayApiResponse>(<any>null);
+    }
+
+    /**
+     * @param take (optional) 
+     * @param offset (optional) 
+     * @param sorting_Option (optional) 
+     * @param sorting_Ascending (optional) 
+     * @param filtering_SurfaceFilter_GreaterThan (optional) 
+     * @param filtering_SurfaceFilter_Score (optional) 
+     * @param filtering_ObstaclesFilter_Obstacles (optional) 
+     * @return Success
+     */
+    get_Spots(take?: number | undefined, offset?: number | undefined, sorting_Option?: SortOption | undefined, sorting_Ascending?: boolean | undefined, filtering_SurfaceFilter_GreaterThan?: boolean | undefined, filtering_SurfaceFilter_Score?: number | undefined, filtering_ObstaclesFilter_Obstacles?: ObstacleType[] | undefined): Promise<SpotDtoWithTotalCountApiResponse> {
+        let url_ = this.baseUrl + "/api/spots?";
+        if (take === null)
+            throw new Error("The parameter 'take' cannot be null.");
+        else if (take !== undefined)
+            url_ += "take=" + encodeURIComponent("" + take) + "&";
+        if (offset === null)
+            throw new Error("The parameter 'offset' cannot be null.");
+        else if (offset !== undefined)
+            url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+        if (sorting_Option === null)
+            throw new Error("The parameter 'sorting_Option' cannot be null.");
+        else if (sorting_Option !== undefined)
+            url_ += "Sorting.Option=" + encodeURIComponent("" + sorting_Option) + "&";
+        if (sorting_Ascending === null)
+            throw new Error("The parameter 'sorting_Ascending' cannot be null.");
+        else if (sorting_Ascending !== undefined)
+            url_ += "Sorting.Ascending=" + encodeURIComponent("" + sorting_Ascending) + "&";
+        if (filtering_SurfaceFilter_GreaterThan === null)
+            throw new Error("The parameter 'filtering_SurfaceFilter_GreaterThan' cannot be null.");
+        else if (filtering_SurfaceFilter_GreaterThan !== undefined)
+            url_ += "Filtering.SurfaceFilter.GreaterThan=" + encodeURIComponent("" + filtering_SurfaceFilter_GreaterThan) + "&";
+        if (filtering_SurfaceFilter_Score === null)
+            throw new Error("The parameter 'filtering_SurfaceFilter_Score' cannot be null.");
+        else if (filtering_SurfaceFilter_Score !== undefined)
+            url_ += "Filtering.SurfaceFilter.Score=" + encodeURIComponent("" + filtering_SurfaceFilter_Score) + "&";
+        if (filtering_ObstaclesFilter_Obstacles === null)
+            throw new Error("The parameter 'filtering_ObstaclesFilter_Obstacles' cannot be null.");
+        else if (filtering_ObstaclesFilter_Obstacles !== undefined)
+            filtering_ObstaclesFilter_Obstacles && filtering_ObstaclesFilter_Obstacles.forEach(item => { url_ += "Filtering.ObstaclesFilter.Obstacles=" + encodeURIComponent("" + item) + "&"; });
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Spots(_response);
+        });
+    }
+
+    protected processGet_Spots(response: Response): Promise<SpotDtoWithTotalCountApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <SpotDtoWithTotalCountApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SpotDtoWithTotalCountApiResponse>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    get_Spot(spotName: string): Promise<SpotDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/spots/{spotName}";
+        if (spotName === undefined || spotName === null)
+            throw new Error("The parameter 'spotName' must be defined.");
+        url_ = url_.replace("{spotName}", encodeURIComponent("" + spotName));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Spot(_response);
+        });
+    }
+
+    protected processGet_Spot(response: Response): Promise<SpotDtoApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <SpotDtoApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SpotDtoApiResponse>(<any>null);
+    }
+
+    /**
+     * @param surfaceFilter_GreaterThan (optional) 
+     * @param surfaceFilter_Score (optional) 
+     * @param obstaclesFilter_Obstacles (optional) 
+     * @return Success
+     */
+    get_Perma_And_Temp_Spots_Marker_Data(surfaceFilter_GreaterThan?: boolean | undefined, surfaceFilter_Score?: number | undefined, obstaclesFilter_Obstacles?: ObstacleType[] | undefined): Promise<SpotMarkerDataDtoListApiResponse> {
+        let url_ = this.baseUrl + "/api/spots/marker?";
+        if (surfaceFilter_GreaterThan === null)
+            throw new Error("The parameter 'surfaceFilter_GreaterThan' cannot be null.");
+        else if (surfaceFilter_GreaterThan !== undefined)
+            url_ += "SurfaceFilter.GreaterThan=" + encodeURIComponent("" + surfaceFilter_GreaterThan) + "&";
+        if (surfaceFilter_Score === null)
+            throw new Error("The parameter 'surfaceFilter_Score' cannot be null.");
+        else if (surfaceFilter_Score !== undefined)
+            url_ += "SurfaceFilter.Score=" + encodeURIComponent("" + surfaceFilter_Score) + "&";
+        if (obstaclesFilter_Obstacles === null)
+            throw new Error("The parameter 'obstaclesFilter_Obstacles' cannot be null.");
+        else if (obstaclesFilter_Obstacles !== undefined)
+            obstaclesFilter_Obstacles && obstaclesFilter_Obstacles.forEach(item => { url_ += "ObstaclesFilter.Obstacles=" + encodeURIComponent("" + item) + "&"; });
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Perma_And_Temp_Spots_Marker_Data(_response);
+        });
+    }
+
+    protected processGet_Perma_And_Temp_Spots_Marker_Data(response: Response): Promise<SpotMarkerDataDtoListApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <SpotMarkerDataDtoListApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SpotMarkerDataDtoListApiResponse>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    delete_Spot(id: string, authorization: string): Promise<void> {
+        let url_ = this.baseUrl + "/api/spots/{Id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processDelete_Spot(_response);
+        });
+    }
+
+    protected processDelete_Spot(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * @param take (optional) 
+     * @param offset (optional) 
+     * @param authorization (optional) 
+     * @return Success
+     */
+    get_Spot_Videos(take?: number | undefined, offset?: number | undefined, authorization?: string | undefined): Promise<SpotVideoDtoWithTotalCountApiResponse> {
+        let url_ = this.baseUrl + "/api/spotVideos?";
+        if (take === null)
+            throw new Error("The parameter 'take' cannot be null.");
+        else if (take !== undefined)
+            url_ += "take=" + encodeURIComponent("" + take) + "&";
+        if (offset === null)
+            throw new Error("The parameter 'offset' cannot be null.");
+        else if (offset !== undefined)
+            url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Spot_Videos(_response);
+        });
+    }
+
+    protected processGet_Spot_Videos(response: Response): Promise<SpotVideoDtoWithTotalCountApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <SpotVideoDtoWithTotalCountApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SpotVideoDtoWithTotalCountApiResponse>(<any>null);
+    }
+
+    /**
+     * @param take (optional) 
+     * @param offset (optional) 
+     * @param authorization (optional) 
+     * @return Success
+     */
+    get_Spot_Videos_Of_Spot(spotName: string, take?: number | undefined, offset?: number | undefined, authorization?: string | undefined): Promise<SpotVideoDtoWithTotalCountApiResponse> {
+        let url_ = this.baseUrl + "/api/spots/{spotName}/spotVideos?";
+        if (spotName === undefined || spotName === null)
+            throw new Error("The parameter 'spotName' must be defined.");
+        url_ = url_.replace("{spotName}", encodeURIComponent("" + spotName));
+        if (take === null)
+            throw new Error("The parameter 'take' cannot be null.");
+        else if (take !== undefined)
+            url_ += "take=" + encodeURIComponent("" + take) + "&";
+        if (offset === null)
+            throw new Error("The parameter 'offset' cannot be null.");
+        else if (offset !== undefined)
+            url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Spot_Videos_Of_Spot(_response);
+        });
+    }
+
+    protected processGet_Spot_Videos_Of_Spot(response: Response): Promise<SpotVideoDtoWithTotalCountApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <SpotVideoDtoWithTotalCountApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SpotVideoDtoWithTotalCountApiResponse>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    add_Spot_Video(spotName: string, authorization: string, body?: AddSpotVideoCommand | undefined): Promise<SpotVideoDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/spots/{spotName}/spotVideos";
+        if (spotName === undefined || spotName === null)
+            throw new Error("The parameter 'spotName' must be defined.");
+        url_ = url_.replace("{spotName}", encodeURIComponent("" + spotName));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processAdd_Spot_Video(_response);
+        });
+    }
+
+    protected processAdd_Spot_Video(response: Response): Promise<SpotVideoDtoApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <SpotVideoDtoApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SpotVideoDtoApiResponse>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    delete_Spot_Video(spotVideoId: string, authorization: string): Promise<void> {
+        let url_ = this.baseUrl + "/api/spotVideos/{spotVideoId}";
+        if (spotVideoId === undefined || spotVideoId === null)
+            throw new Error("The parameter 'spotVideoId' must be defined.");
+        url_ = url_.replace("{spotVideoId}", encodeURIComponent("" + spotVideoId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processDelete_Spot_Video(_response);
+        });
+    }
+
+    protected processDelete_Spot_Video(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create_Spot(authorization: string, body?: CreateTempSpotCommand | undefined): Promise<GuidApiResponse> {
+        let url_ = this.baseUrl + "/api/TempSpots";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCreate_Spot(_response);
+        });
+    }
+
+    protected processCreate_Spot(response: Response): Promise<GuidApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuidApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<GuidApiResponse>(<any>null);
+    }
+
+    /**
+     * @param take (optional) 
+     * @param offset (optional) 
+     * @param sorting_Option (optional) 
+     * @param sorting_Ascending (optional) 
+     * @param filtering_SurfaceFilter_GreaterThan (optional) 
+     * @param filtering_SurfaceFilter_Score (optional) 
+     * @param filtering_ObstaclesFilter_Obstacles (optional) 
+     * @return Success
+     */
+    get_Temp_Spots(take?: number | undefined, offset?: number | undefined, sorting_Option?: SortOption | undefined, sorting_Ascending?: boolean | undefined, filtering_SurfaceFilter_GreaterThan?: boolean | undefined, filtering_SurfaceFilter_Score?: number | undefined, filtering_ObstaclesFilter_Obstacles?: ObstacleType[] | undefined): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
+        let url_ = this.baseUrl + "/api/TempSpots?";
+        if (take === null)
+            throw new Error("The parameter 'take' cannot be null.");
+        else if (take !== undefined)
+            url_ += "take=" + encodeURIComponent("" + take) + "&";
+        if (offset === null)
+            throw new Error("The parameter 'offset' cannot be null.");
+        else if (offset !== undefined)
+            url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+        if (sorting_Option === null)
+            throw new Error("The parameter 'sorting_Option' cannot be null.");
+        else if (sorting_Option !== undefined)
+            url_ += "Sorting.Option=" + encodeURIComponent("" + sorting_Option) + "&";
+        if (sorting_Ascending === null)
+            throw new Error("The parameter 'sorting_Ascending' cannot be null.");
+        else if (sorting_Ascending !== undefined)
+            url_ += "Sorting.Ascending=" + encodeURIComponent("" + sorting_Ascending) + "&";
+        if (filtering_SurfaceFilter_GreaterThan === null)
+            throw new Error("The parameter 'filtering_SurfaceFilter_GreaterThan' cannot be null.");
+        else if (filtering_SurfaceFilter_GreaterThan !== undefined)
+            url_ += "Filtering.SurfaceFilter.GreaterThan=" + encodeURIComponent("" + filtering_SurfaceFilter_GreaterThan) + "&";
+        if (filtering_SurfaceFilter_Score === null)
+            throw new Error("The parameter 'filtering_SurfaceFilter_Score' cannot be null.");
+        else if (filtering_SurfaceFilter_Score !== undefined)
+            url_ += "Filtering.SurfaceFilter.Score=" + encodeURIComponent("" + filtering_SurfaceFilter_Score) + "&";
+        if (filtering_ObstaclesFilter_Obstacles === null)
+            throw new Error("The parameter 'filtering_ObstaclesFilter_Obstacles' cannot be null.");
+        else if (filtering_ObstaclesFilter_Obstacles !== undefined)
+            filtering_ObstaclesFilter_Obstacles && filtering_ObstaclesFilter_Obstacles.forEach(item => { url_ += "Filtering.ObstaclesFilter.Obstacles=" + encodeURIComponent("" + item) + "&"; });
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Temp_Spots(_response);
+        });
+    }
+
+    protected processGet_Temp_Spots(response: Response): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <TempSpotWithVerificationDtoWithTotalCountApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TempSpotWithVerificationDtoWithTotalCountApiResponse>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    get_Temp_Spot(id: string): Promise<TempSpotWithVerificationDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/TempSpots/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Temp_Spot(_response);
+        });
+    }
+
+    protected processGet_Temp_Spot(response: Response): Promise<TempSpotWithVerificationDtoApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <TempSpotWithVerificationDtoApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TempSpotWithVerificationDtoApiResponse>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    delete_Temp_Spot(id: string, authorization: string): Promise<void> {
+        let url_ = this.baseUrl + "/api/TempSpots/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processDelete_Temp_Spot(_response);
+        });
+    }
+
+    protected processDelete_Temp_Spot(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    vote(tempSpotId: string, authorization: string, body?: VoteCommand | undefined): Promise<VoteResultApiResponse> {
+        let url_ = this.baseUrl + "/api/tempSpots/{tempSpotId}/vote";
+        if (tempSpotId === undefined || tempSpotId === null)
+            throw new Error("The parameter 'tempSpotId' must be defined.");
+        url_ = url_.replace("{tempSpotId}", encodeURIComponent("" + tempSpotId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processVote(_response);
+        });
+    }
+
+    protected processVote(response: Response): Promise<VoteResultApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <VoteResultApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<VoteResultApiResponse>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    delete_Vote(tempSpotId: string, authorization: string): Promise<VoteResultApiResponse> {
+        let url_ = this.baseUrl + "/api/tempSpots/{tempSpotId}/vote";
+        if (tempSpotId === undefined || tempSpotId === null)
+            throw new Error("The parameter 'tempSpotId' must be defined.");
+        url_ = url_.replace("{tempSpotId}", encodeURIComponent("" + tempSpotId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processDelete_Vote(_response);
+        });
+    }
+
+    protected processDelete_Vote(response: Response): Promise<VoteResultApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <VoteResultApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<VoteResultApiResponse>(<any>null);
+    }
 }
 
 export interface AddressDto {
-  streetName: string | undefined
-  streetNumber: string | undefined
-  postCode: string | undefined
-  city: string | undefined
-  country: string | undefined
-  coords: CoordsDto
+    streetName: string | undefined;
+    streetNumber: string | undefined;
+    postCode: string | undefined;
+    city: string | undefined;
+    country: string | undefined;
+    coords: CoordsDto;
 }
 
 export interface AddSpotVideoCommand {
-  platformType: VideoPlatformType
-  embedId: string | undefined
-  description: string | undefined
+    platformType: VideoPlatformType;
+    embedId: string | undefined;
+    description: string | undefined;
 }
 
 export interface Base64FetchResult {
-  success: boolean
-  base64: string | undefined
+    success: boolean;
+    base64: string | undefined;
 }
 
 export interface Base64FetchResultArrayApiResponse {
-  content: Base64FetchResult[] | undefined
-  error: ErrorResponse
+    content: Base64FetchResult[] | undefined;
+    error: ErrorResponse;
 }
 
 export interface CommentCommand {
-  text: string | undefined
+    text: string | undefined;
 }
 
 export interface CommentDto {
-  id: string
-  createdAt: Date
-  editedAt: Date
-  authorId: string | undefined
-  author: SmallUserDto
-  text: string | undefined
-  isDeleted: boolean
-  likes: LikeDto[] | undefined
+    id: string;
+    createdAt: Date;
+    editedAt: Date;
+    authorId: string | undefined;
+    author: SmallUserDto;
+    text: string | undefined;
+    isDeleted: boolean;
+    likes: LikeDto[] | undefined;
 }
 
 export interface CommentDtoApiResponse {
-  content: CommentDto
-  error: ErrorResponse
+    content: CommentDto;
+    error: ErrorResponse;
 }
 
 export enum CommentSubjectType {
-  Spots = 'Spots',
-  SpotVideos = 'SpotVideos',
-  TempSpots = 'TempSpots',
+    Spots = "Spots",
+    SpotVideos = "SpotVideos",
+    TempSpots = "TempSpots",
 }
 
 export interface CoordsDto {
-  lat: number
-  lng: number
+    lat: number;
+    lng: number;
 }
 
 export interface CreateTempSpotCommand {
-  name: string | undefined
-  description: string | undefined
-  address: AddressDto
-  surfaceScore: number
-  obstacles: ObstacleType[] | undefined
-  base64Images: string[] | undefined
+    name: string | undefined;
+    description: string | undefined;
+    address: AddressDto;
+    surfaceScore: number;
+    obstacles: ObstacleType[] | undefined;
+    base64Images: string[] | undefined;
 }
 
 export interface EditCommentCommand {
-  newText: string | undefined
+    newText: string | undefined;
 }
 
 export enum ErrorCode {
-  DEFAULT_ERROR = 'DEFAULT_ERROR',
-  ALREADY_EXISTS = 'ALREADY_EXISTS',
-  VOTING_FINISHED = 'VOTING_FINISHED',
-  DOESNT_EXIST = 'DOESNT_EXIST',
-  NOT_OWNED = 'NOT_OWNED',
-  EMAIL_NOT_VERIFIED = 'EMAIL_NOT_VERIFIED',
-  CANT_DO_THAT = 'CANT_DO_THAT',
-  IMAGES_MAXED = 'IMAGES_MAXED',
-  TOO_MANY_IMAGES = 'TOO_MANY_IMAGES',
-  BAD_INPUT = 'BAD_INPUT',
-  UNAUTHORIZED = 'UNAUTHORIZED',
-  FORBIDDEN = 'FORBIDDEN',
+    DEFAULT_ERROR = "DEFAULT_ERROR",
+    ALREADY_EXISTS = "ALREADY_EXISTS",
+    VOTING_FINISHED = "VOTING_FINISHED",
+    DOESNT_EXIST = "DOESNT_EXIST",
+    NOT_OWNED = "NOT_OWNED",
+    EMAIL_NOT_VERIFIED = "EMAIL_NOT_VERIFIED",
+    CANT_DO_THAT = "CANT_DO_THAT",
+    IMAGES_MAXED = "IMAGES_MAXED",
+    TOO_MANY_IMAGES = "TOO_MANY_IMAGES",
+    BAD_INPUT = "BAD_INPUT",
+    UNAUTHORIZED = "UNAUTHORIZED",
+    FORBIDDEN = "FORBIDDEN",
 }
 
 export interface ErrorResponse {
-  statusCode: ErrorCode
-  message: string | undefined
-  developerMessage: string | undefined
-  data: { [key: string]: string } | undefined
+    statusCode: ErrorCode;
+    message: string | undefined;
+    developerMessage: string | undefined;
+    data: { [key: string]: string; } | undefined;
 }
 
 export interface ForgotPasswordRequest {
-  email: string
+    email: string;
 }
 
 export interface GuidApiResponse {
-  content: string
-  error: ErrorResponse
+    content: string;
+    error: ErrorResponse;
 }
 
 export interface ImageDto {
-  base64: string | undefined
+    base64: string | undefined;
 }
 
 export interface LikeCommand {
-  positive: boolean
+    positive: boolean;
 }
 
 export interface LikeDto {
-  userId: string
-  positive: boolean
+    userId: string;
+    positive: boolean;
 }
 
 export interface LikeDtoArrayApiResponse {
-  content: LikeDto[] | undefined
-  error: ErrorResponse
+    content: LikeDto[] | undefined;
+    error: ErrorResponse;
 }
 
 export enum LikeSubjectType {
-  Spots = 'Spots',
-  SpotVideos = 'SpotVideos',
-  Comments = 'Comments',
+    Spots = "Spots",
+    SpotVideos = "SpotVideos",
+    Comments = "Comments",
 }
 
 export enum ObstacleType {
-  Ledge = 'Ledge',
-  Stairs = 'Stairs',
-  Quater = 'Quater',
-  Kicker = 'Kicker',
-  Downhill = 'Downhill',
-  Rail = 'Rail',
-  Bank = 'Bank',
-  Flatground = 'Flatground',
-  Manualpad = 'Manualpad',
-  Skatepark = 'Skatepark',
+    Ledge = "Ledge",
+    Stairs = "Stairs",
+    Quater = "Quater",
+    Kicker = "Kicker",
+    Downhill = "Downhill",
+    Rail = "Rail",
+    Bank = "Bank",
+    Flatground = "Flatground",
+    Manualpad = "Manualpad",
+    Skatepark = "Skatepark",
 }
 
 export interface RegisterRequest {
-  email: string
-  userName: string
-  password: string
-  confirmPassword: string
+    email: string;
+    userName: string;
+    password: string;
+    confirmPassword: string;
 }
 
 export interface ResetPasswordRequest {
-  email: string
-  token: string
-  password: string
-  confirmPassword: string
+    email: string;
+    token: string;
+    password: string;
+    confirmPassword: string;
 }
 
 export interface SmallSpotDto {
-  id: string
-  name: string | undefined
-  address: AddressDto
-  obstacles: ObstacleType[] | undefined
-  surfaceScore: number
+    id: string;
+    name: string | undefined;
+    address: AddressDto;
+    obstacles: ObstacleType[] | undefined;
+    surfaceScore: number;
 }
 
 export interface SmallUserDto {
-  id: string
-  userName: string | undefined
+    id: string;
+    userName: string | undefined;
 }
 
 export enum SortOption {
-  CREATION_DATE = 'CREATION_DATE',
-  LIKES = 'LIKES',
-  COMMENTS = 'COMMENTS',
-  VIDEOS = 'VIDEOS',
+    CREATION_DATE = "CREATION_DATE",
+    LIKES = "LIKES",
+    COMMENTS = "COMMENTS",
+    VIDEOS = "VIDEOS",
 }
 
 export interface SpotDto {
-  id: string
-  createdAt: Date
-  name: string | undefined
-  description: string | undefined
-  address: AddressDto
-  obstacles: ObstacleType[] | undefined
-  surfaceScore: number
-  author: SmallUserDto
-  likes: LikeDto[] | undefined
-  comments: CommentDto[] | undefined
-  images: ImageDto[] | undefined
-  videosCount: number
+    id: string;
+    createdAt: Date;
+    name: string | undefined;
+    description: string | undefined;
+    address: AddressDto;
+    obstacles: ObstacleType[] | undefined;
+    surfaceScore: number;
+    author: SmallUserDto;
+    likes: LikeDto[] | undefined;
+    comments: CommentDto[] | undefined;
+    images: ImageDto[] | undefined;
+    videosCount: number;
 }
 
 export interface SpotDtoApiResponse {
-  content: SpotDto
-  error: ErrorResponse
+    content: SpotDto;
+    error: ErrorResponse;
 }
 
 export interface SpotDtoWithTotalCount {
-  data: SpotDto[] | undefined
-  totalCount: number
+    data: SpotDto[] | undefined;
+    totalCount: number;
 }
 
 export interface SpotDtoWithTotalCountApiResponse {
-  content: SpotDtoWithTotalCount
-  error: ErrorResponse
+    content: SpotDtoWithTotalCount;
+    error: ErrorResponse;
 }
 
 export interface SpotMarkerDataDto {
-  id: string
-  name: string | undefined
-  isTempSpot: boolean
-  address: AddressDto
-  obstacles: ObstacleType[] | undefined
-  surfaceScore: number
+    id: string;
+    name: string | undefined;
+    isTempSpot: boolean;
+    address: AddressDto;
+    obstacles: ObstacleType[] | undefined;
+    surfaceScore: number;
 }
 
 export interface SpotMarkerDataDtoListApiResponse {
-  content: SpotMarkerDataDto[] | undefined
-  error: ErrorResponse
+    content: SpotMarkerDataDto[] | undefined;
+    error: ErrorResponse;
 }
 
 export interface SpotVideoDto {
-  id: string
-  createdAt: Date
-  description: string | undefined
-  embedId: string | undefined
-  platformType: VideoPlatformType
-  author: SmallUserDto
-  likes: LikeDto[] | undefined
-  comments: CommentDto[] | undefined
-  spot: SmallSpotDto
+    id: string;
+    createdAt: Date;
+    description: string | undefined;
+    embedId: string | undefined;
+    platformType: VideoPlatformType;
+    author: SmallUserDto;
+    likes: LikeDto[] | undefined;
+    comments: CommentDto[] | undefined;
+    spot: SmallSpotDto;
 }
 
 export interface SpotVideoDtoApiResponse {
-  content: SpotVideoDto
-  error: ErrorResponse
+    content: SpotVideoDto;
+    error: ErrorResponse;
 }
 
 export interface SpotVideoDtoWithTotalCount {
-  data: SpotVideoDto[] | undefined
-  totalCount: number
+    data: SpotVideoDto[] | undefined;
+    totalCount: number;
 }
 
 export interface SpotVideoDtoWithTotalCountApiResponse {
-  content: SpotVideoDtoWithTotalCount
-  error: ErrorResponse
+    content: SpotVideoDtoWithTotalCount;
+    error: ErrorResponse;
 }
 
 export interface StringApiResponse {
-  content: string | undefined
-  error: ErrorResponse
+    content: string | undefined;
+    error: ErrorResponse;
 }
 
 export interface TempSpotWithVerificationDto {
-  id: string
-  createdAt: Date
-  name: string | undefined
-  description: string | undefined
-  address: AddressDto
-  obstacles: ObstacleType[] | undefined
-  surfaceScore: number
-  author: SmallUserDto
-  verificationProcess: VerificationProcessDto
-  images: ImageDto[] | undefined
+    id: string;
+    createdAt: Date;
+    name: string | undefined;
+    description: string | undefined;
+    address: AddressDto;
+    obstacles: ObstacleType[] | undefined;
+    surfaceScore: number;
+    author: SmallUserDto;
+    verificationProcess: VerificationProcessDto;
+    images: ImageDto[] | undefined;
 }
 
 export interface TempSpotWithVerificationDtoApiResponse {
-  content: TempSpotWithVerificationDto
-  error: ErrorResponse
+    content: TempSpotWithVerificationDto;
+    error: ErrorResponse;
 }
 
 export interface TempSpotWithVerificationDtoWithTotalCount {
-  data: TempSpotWithVerificationDto[] | undefined
-  totalCount: number
+    data: TempSpotWithVerificationDto[] | undefined;
+    totalCount: number;
 }
 
 export interface TempSpotWithVerificationDtoWithTotalCountApiResponse {
-  content: TempSpotWithVerificationDtoWithTotalCount
-  error: ErrorResponse
+    content: TempSpotWithVerificationDtoWithTotalCount;
+    error: ErrorResponse;
 }
 
 export interface TokenRequest {
-  email: string | undefined
-  password: string | undefined
+    email: string | undefined;
+    password: string | undefined;
 }
 
 export interface TokenResponse {
-  id: string | undefined
-  userName: string | undefined
-  email: string | undefined
-  roles: string[] | undefined
-  isVerified: boolean
-  jwToken: string | undefined
-  issuedOn: Date
-  expiresOn: Date
-  refreshToken: string | undefined
+    id: string | undefined;
+    userName: string | undefined;
+    email: string | undefined;
+    roles: string[] | undefined;
+    isVerified: boolean;
+    jwToken: string | undefined;
+    issuedOn: Date;
+    expiresOn: Date;
+    refreshToken: string | undefined;
 }
 
 export interface TokenResponseApiResponse {
-  content: TokenResponse
-  error: ErrorResponse
+    content: TokenResponse;
+    error: ErrorResponse;
 }
 
 export interface VerificationProcessDto {
-  id: string
-  votes: VerificationStatementDto[] | undefined
-  endDate: Date
-  isVerified: boolean
-  discussion: CommentDto[] | undefined
+    id: string;
+    votes: VerificationStatementDto[] | undefined;
+    endDate: Date;
+    isVerified: boolean;
+    discussion: CommentDto[] | undefined;
 }
 
 export interface VerificationStatementDto {
-  voterId: string
-  isReal: boolean
+    voterId: string;
+    isReal: boolean;
 }
 
 export enum VideoPlatformType {
-  Instagram = 'Instagram',
-  YouTube = 'YouTube',
+    Instagram = "Instagram",
+    YouTube = "YouTube",
 }
 
 export interface VoteCommand {
-  isReal: boolean
+    isReal: boolean;
 }
 
 export interface VoteResult {
-  verified: boolean
-  votes: VerificationStatementDto[] | undefined
+    verified: boolean;
+    votes: VerificationStatementDto[] | undefined;
 }
 
 export interface VoteResultApiResponse {
-  content: VoteResult
-  error: ErrorResponse
+    content: VoteResult;
+    error: ErrorResponse;
 }
 
 export class ApiException extends Error {
-  message: string
-  status: number
-  response: string
-  headers: { [key: string]: any }
-  result: any
+    message: string;
+    status: number;
+    response: string;
+    headers: { [key: string]: any; };
+    result: any;
 
-  constructor(
-    message: string,
-    status: number,
-    response: string,
-    headers: { [key: string]: any },
-    result: any
-  ) {
-    super()
+    constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
+        super();
 
-    this.message = message
-    this.status = status
-    this.response = response
-    this.headers = headers
-    this.result = result
-  }
+        this.message = message;
+        this.status = status;
+        this.response = response;
+        this.headers = headers;
+        this.result = result;
+    }
 
-  protected isApiException = true
+    protected isApiException = true;
 
-  static isApiException(obj: any): obj is ApiException {
-    return obj.isApiException === true
-  }
+    static isApiException(obj: any): obj is ApiException {
+        return obj.isApiException === true;
+    }
 }
 
-function throwException(
-  message: string,
-  status: number,
-  response: string,
-  headers: { [key: string]: any },
-  result?: any
-): any {
-  if (result !== null && result !== undefined) throw result
-  else throw new ApiException(message, status, response, headers, null)
+function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
+    if (result !== null && result !== undefined)
+        throw result;
+    else
+        throw new ApiException(message, status, response, headers, null);
 }

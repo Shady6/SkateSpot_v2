@@ -37,7 +37,9 @@ namespace SkateSpot.Api.Controllers
 
 		[HttpGet]
 		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<SpotDto>>), 200)]
-		public async Task<ActionResult> GetSpots([FromQuery] int take, [FromQuery] int offset, [FromQuery] SortAndFilter snf)
+		public async Task<ActionResult> GetSpots([FromQuery] int take,
+										   [FromQuery] int offset,
+										   [FromQuery] SortAndFilter snf)
 		{
 			return Ok(new WithTotalCount<SpotDto>
 			{
@@ -49,6 +51,7 @@ namespace SkateSpot.Api.Controllers
 					.Take(take))
 				.ToArrayAsync(),
 				TotalCount = await _dbContext.Spots
+				.ApplySortingAndFilters(snf)
 				.CountAsync()
 			});
 		}

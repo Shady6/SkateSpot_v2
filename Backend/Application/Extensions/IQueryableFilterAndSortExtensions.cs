@@ -1,15 +1,17 @@
 ﻿using SkateSpot.Application.DTOs.Filter;
+using SkateSpot.Domain.Common;
+using SkateSpot.Domain.Interfaces;
 using SkateSpot.Domain.Models;
 using System;
 using System.Linq;
 
 namespace SkateSpot.Application.Extensions
 {
-	public static class IQueryableSpotFilteredSpotExtensions
+	public static class IQueryableFilterAndSortExtensions
 	{
-		public static IQueryable<IFilteredSpot> ApplySort(
-			this IQueryable<IFilteredSpot> spot,
-			Sorting sorting) => sorting switch
+		public static IQueryable<T> ApplySort<T>(
+			this IQueryable<T> spot,
+			Sorting sorting) where T : BaseEntity, IWithSocial => sorting switch
 			{
 				{ Ascending: false, Option: SortOption.CREATION_DATE } => spot.OrderByDescending(s => s.CreatedAt),
 				{ Ascending: true, Option: SortOption.CREATION_DATE } => spot.OrderBy(s => s.CreatedAt),
@@ -20,29 +22,29 @@ namespace SkateSpot.Application.Extensions
 				_ => spot
 			};
 
-		public static IQueryable<IFilteredSpot> ApplyFilters(
-			this IQueryable<IFilteredSpot> spot,
-			Filtering filter) => spot
+		public static IQueryable<T> ApplyFilters<T>(
+			this IQueryable<T> spot,
+			Filtering filter) where T : ISpot => spot
 			.ApplyFuncWithArgIfArgNotNull(filter.SurfaceFilter, ApplySurfaceScoreFilter)
 			.ApplyFuncWithArgIfArgNotNull(filter.ObstaclesFilter, ApplyObstaclesFilter);
 
-		public static IQueryable<IFilteredSpot> ApplySurfaceScoreFilter(
-			this IQueryable<IFilteredSpot> spot,
-			SurfaceFilter filter) => filter.GreaterThan switch
+		public static IQueryable<T> ApplySurfaceScoreFilter<T>(
+			this IQueryable<T> spot,
+			SurfaceFilter filter) where T : ISpot => filter.GreaterThan switch
 			{
 				true => spot.Where(s => s.SurfaceScore >= filter.Score),
 				false => spot.Where(s => s.SurfaceScore < filter.Score),
 			};
 
-		public static IQueryable<IFilteredSpot> ApplyObstaclesFilter(
-			this IQueryable<IFilteredSpot> spot,
-			ObstaclesFilter filter) => spot.Where(s =>
+		public static IQueryable<T> ApplyObstaclesFilter<T>(
+			this IQueryable<T> spot,
+			ObstaclesFilter filter) where T : ISpot => spot.Where(s =>
 			s.Obstacles.Where(o => filter.Obstacles.Contains(o.ObstacleType)).Count() ==
 			filter.Obstacles.Length);
 
-		public static IQueryable<IFilteredSpot> ApplySortingAndFilters(
-			this IQueryable<IFilteredSpot> spot,
-			SortAndFilter snf) => spot.ApplyFuncWithArgIfArgNotNull(snf.Sorting, ApplySort,
+		public static IQueryable<T> ApplySortingAndFilters<T>(
+			this IQueryable<T> spot,
+			SortAndFilter snf) where T : BaseEntity, ISpot, IWithSocial => spot.ApplyFuncWithArgIfArgNotNull(snf.Sorting, ApplySort,
 				(s) => s.ApplySort(new Sorting
 				{
 					Ascending = false,

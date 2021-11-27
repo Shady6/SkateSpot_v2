@@ -1,10 +1,10 @@
-import { ListViewTypes } from '../state/generic/listViewGenerics'
-import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { RootState } from '../state/store'
-import { IFilter, IAppliedFilter } from '../state/reducers/filtersReducer'
+import { useDispatch, useSelector } from 'react-redux'
 import { getAllCommonActions } from '../state/actions/allCommonActions'
 import { getAllCommonThunks } from '../state/actions/thunk_creators/allCommonThunks'
+import { ListViewTypes } from '../state/generic/listViewGenerics'
+import { IAppliedFilter } from '../state/reducers/filtersReducer'
+import { RootState } from '../state/store'
 
 export const useFetchOnFilterChanged = (
   pageInitalized: boolean,
