@@ -14,12 +14,11 @@ export const genericThunkActions = {
   comment: commentThunkCreator,
   deleteComment: deleteCommentThunkCreator,
   editComment: editCommentThunkCreator,
-  // liking list objects is done separetely
   likeComment: likeThunkCreator,
   deleteListItem: deleteListItemThunkCreator,
 }
 
-export const getAllThunks = () => {
+export const getAllCommonThunks = () => {
   let thunkActions = {} as any
   Object.keys(ListViewTypes).forEach(listViewType => {
     thunkActions[ListViewTypes[listViewType]] = {}

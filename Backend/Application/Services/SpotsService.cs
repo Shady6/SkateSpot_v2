@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SkateSpot.Application.DTOs.DomainDTOs;
+using SkateSpot.Application.DTOs.Filter;
+using SkateSpot.Application.Extensions;
 using SkateSpot.Application.Features.SpotFeatures.Commands;
 using SkateSpot.Application.Interfaces;
 using SkateSpot.Application.Interfaces.Repositories;
@@ -33,18 +35,12 @@ namespace SkateSpot.Application.Services
 			_context = context;
 		}
 
-		public List<SpotDto> GetSpots()
+		public async Task<List<SpotMarkerDataDto>> GetPermaAndTempSpotsMarkerData(Filtering filtering)
 		{
-			var spots = _spotRepository.GetSpots();
-			var spotsDto = _mapper.ProjectTo<SpotDto>(spots).ToList();
-			return spotsDto;
-		}
-
-		public async Task<List<SpotMarkerDataDto>> GetPermaAndTempSpotsMarkerData()
-		{
-			IQueryable<ISpot> permaSpots = _spotRepository.GetSpots();
-			IQueryable<ISpot> tempSpots = _tempSpotRepository.GetTempSpots()
-				.Where(s => s.VerificationProcess.EndDate > DateTime.Now);
+			IQueryable<ISpot> permaSpots = (IQueryable<ISpot>)_spotRepository.GetSpots().ApplyFilters(filtering);
+			IQueryable<ISpot> tempSpots = (IQueryable<ISpot>)_tempSpotRepository.GetTempSpots()
+				.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
+				.ApplyFilters(filtering);
 
 			var mappedPermaSpots = await _mapper.ProjectTo<SpotMarkerDataDto>(permaSpots).ToListAsync();
 			var mappedTempSpots = await _mapper.ProjectTo<SpotMarkerDataDto>(tempSpots).ToListAsync();

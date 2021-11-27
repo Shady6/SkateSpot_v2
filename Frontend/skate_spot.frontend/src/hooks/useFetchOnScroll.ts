@@ -6,8 +6,11 @@ import {
 } from '../state/generic/listViewGenerics'
 import { useRootState } from '../state/store'
 
-export const useFetchOnScroll = (fetchAction: any, listType: ListViewTypes) => {
-  const state = listViewSpecifics[listType].getSpecificState(useRootState())
+export const useFetchOnScroll = (
+  fetchAction: any,
+  listViewType: ListViewTypes
+) => {
+  const state = listViewSpecifics[listViewType].getSpecificState(useRootState())
   const dispatch = useDispatch()
 
   const [scrolled, setScrolled] = useState(0)
@@ -22,8 +25,6 @@ export const useFetchOnScroll = (fetchAction: any, listType: ListViewTypes) => {
 
   useEffect(() => {
     window.addEventListener('scroll', setScrolledPercent)
-    dispatch(fetchAction())
-
     return () => {
       window.removeEventListener('scroll', setScrolledPercent)
     }

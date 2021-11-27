@@ -31,7 +31,9 @@ export const sendSpotData = async (
           }
         : undefined,
       surfaceScore: surfaceScore,
-      obstacles: tags.filter(t => t.isSelected).map(t => ObstacleType[t.name]),
+      obstacles: tags
+        .filter(t => t.isSelected)
+        .map(t => ObstacleType[t.obstacleType]),
       base64Images: images,
     }
     return await request<string>(

@@ -25,7 +25,6 @@
     <Folder Include="Features\CommentFeatures\Queries\" />
     <Folder Include="Features\LikeFeatures\Queries\" />
     <Folder Include="Features\TempSpotFeatures\Queries\" />
-    <Folder Include="Interfaces\Contexts\" />
   </ItemGroup>
 
 </Project>

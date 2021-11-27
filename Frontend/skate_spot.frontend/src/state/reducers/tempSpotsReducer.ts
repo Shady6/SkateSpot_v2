@@ -1,11 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { TempSpotWithVerificationDto } from '../../skate_spot_api/client'
 import { vote } from '../actions/tempSpotActions'
 import { ListViewTypes } from '../generic/listViewGenerics'
 import {
-  addDefaultCases,
+  addExtraReducerDefaultCases,
   listViewReducerHandlers,
   ListViewState,
+  reducerDefaultCases,
 } from './genericListViewReducer'
 
 export type TempSpotState = ListViewState<TempSpotWithVerificationDto>
@@ -27,18 +28,10 @@ const tempSpotsSlice = createSlice({
   name: 'tempSpots',
   initialState: initialState,
   reducers: {
-    setTempSpots: (
-      state,
-      action: PayloadAction<TempSpotWithVerificationDto[]>
-    ) => {
-      listViewReducerHandlers.setItems(state, action.payload)
-    },
-    reset: () => {
-      return listViewReducerHandlers.reset(initialState) as TempSpotState
-    },
+    ...reducerDefaultCases(initialState),
   },
   extraReducers: builder => {
-    addDefaultCases(builder, ListViewTypes.TEMP_SPOTS)
+    addExtraReducerDefaultCases(builder, ListViewTypes.TEMP_SPOTS)
 
     builder.addCase(vote.fulfilled, (state, action) => {
       const tempSpot = listViewReducerHandlers.like.fulfilled(state, {

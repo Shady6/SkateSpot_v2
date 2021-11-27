@@ -1,49 +1,69 @@
 import { CircularProgress } from '@material-ui/core'
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { useFetchOnScroll } from '../../hooks/useFetchOnScroll'
 import {
   SpotDto,
   SpotVideoDto,
   TempSpotWithVerificationDto,
 } from '../../skate_spot_api/client'
-import { getAllThunks } from '../../state/actions/thunk_creators/allThunks'
+import { getAllCommonThunks } from '../../state/actions/thunk_creators/allCommonThunks'
 import { ListViewTypes } from '../../state/generic/listViewGenerics'
 import { ListViewState } from '../../state/reducers/genericListViewReducer'
 import { RootState } from '../../state/store'
 import { FilterAndSortPane } from '../filters/FilterAndSortPane'
 import { Spot } from '../spot/Spot'
-import { SpotVideo } from '../spot_video/videos_of_spot/SpotVideo'
+import { SpotVideo } from '../spot_video/spot_videos/SpotVideo'
 import { TempSpot } from '../temp_spot/main/TempSpot'
+import { useFetchOnFilterChanged } from '../../hooks/useFetchOnFilterChanged'
+import { useEffect } from 'react'
 
 interface Props {
   listViewType: ListViewTypes
 }
 
 export const ListItemsMainPage: React.FC<Props> = ({ listViewType }) => {
-  useFetchOnScroll(getAllThunks()[listViewType].fetchListItems, listViewType)
+  const dispatch = useDispatch()
+  const [pageInitialized, setPageInitialized] = useState(false)
+
+  useEffect(() => {
+    setPageInitialized(true)
+    dispatch(getAllCommonThunks()[listViewType].fetchListItems())
+  }, [])
+
+  useFetchOnScroll(
+    getAllCommonThunks()[listViewType].fetchListItems,
+    listViewType
+  )
+
+  useFetchOnFilterChanged(pageInitialized, listViewType)
 
   const state = useSelector<RootState, ListViewState<any>>(
     // @ts-ignore
     state => state[listViewType + 'State']
   )
 
-  const getListItemComponent = (l: any) => {
+  const getListItemComponent = (listItem: any) => {
     switch (listViewType) {
       case ListViewTypes.SPOTS:
-        return <Spot key={(l as { id: string }).id} spot={l as SpotDto} />
+        return (
+          <Spot
+            key={(listItem as { id: string }).id}
+            spot={listItem as SpotDto}
+          />
+        )
       case ListViewTypes.SPOT_VIDEOS:
         return (
           <SpotVideo
-            key={(l as { id: string }).id}
-            spotVideo={l as SpotVideoDto}
+            key={(listItem as { id: string }).id}
+            spotVideo={listItem as SpotVideoDto}
           />
         )
       case ListViewTypes.TEMP_SPOTS:
         return (
           <TempSpot
-            key={(l as { id: string }).id}
-            tempSpot={l as TempSpotWithVerificationDto}
+            key={(listItem as { id: string }).id}
+            tempSpot={listItem as TempSpotWithVerificationDto}
           />
         )
     }
@@ -53,7 +73,7 @@ export const ListItemsMainPage: React.FC<Props> = ({ listViewType }) => {
     <>
       <div className='row m-0 mt-5' style={{ fontSize: '1rem' }}>
         <div className='col-2'>
-          <FilterAndSortPane />
+          <FilterAndSortPane listViewType={listViewType} />
         </div>
         <div className='col-1'></div>
         <div className='col-6'>

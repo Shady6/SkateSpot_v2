@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
 import authReducer from './reducers/authReducer'
+import filtersReducer from './reducers/filtersReducer'
 import flashMsgReducer from './reducers/flashMsgReducer'
 import spotsReducer from './reducers/spotReducer'
 import spotVideoReducer from './reducers/spotVideoReducer'
@@ -13,6 +14,7 @@ export const store = configureStore({
     tempSpotsState: tempSpotsReducer,
     spotsState: spotsReducer,
     spotVideosState: spotVideoReducer,
+    filtersState: filtersReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

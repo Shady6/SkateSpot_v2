@@ -1,15 +1,23 @@
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../state/store'
 import { ITag, Tags } from '../temp_spot/add/tags/Tags'
+import { filterActions } from '../../state/reducers/filtersReducer'
 
-interface Props {
-  tags: ITag[]
-  setTags: React.Dispatch<React.SetStateAction<ITag[]>>
-}
+export const TagsFilter = () => {
+  const tags = useSelector<RootState, ITag[]>(
+    state => state.filtersState.filterInMaking.filter.tags.tags
+  )
+  const dispatch = useDispatch()
 
-export const TagsFilter = ({ tags, setTags }: Props) => {
   return (
     <div className='mt-4'>
       <p className='m-0'>Tags</p>
-      <Tags tags={tags} setTags={setTags} />
+      <Tags
+        tags={tags}
+        setTags={tags => {
+          dispatch(filterActions.setTags(tags))
+        }}
+      />
     </div>
   )
 }

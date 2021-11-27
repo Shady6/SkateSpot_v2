@@ -6,6 +6,7 @@ import {
   SpotVideoDto,
   TempSpotWithVerificationDto,
 } from '../../skate_spot_api/client'
+import { IAppliedFilter, IFilter } from '../reducers/filtersReducer'
 import {
   ListViewState,
   ListWithCount,
@@ -22,7 +23,8 @@ export interface ListViewSpecification {
   fetchListItems: (
     client: ApiClient,
     take: number,
-    skip: number
+    skip: number,
+    snf: IAppliedFilter
   ) => Promise<ApiResponse<ListWithCount<WithSocial>>>
   getSpecificState: (state: RootState) => ListViewState<WithSocial>
   name: string
@@ -31,10 +33,21 @@ export interface ListViewSpecification {
 
 export const listViewSpecifics: IListViewSpecifics = {
   spots: {
-    fetchListItems: (client: ApiClient, take: number, skip: number) =>
-      client.get_Spots(take, skip) as Promise<
-        ApiResponse<ListWithCount<SpotDto>>
-      >,
+    fetchListItems: (
+      client: ApiClient,
+      take: number,
+      skip: number,
+      snf: IAppliedFilter
+    ) =>
+      client.get_Spots(
+        take,
+        skip,
+        snf.sort?.option,
+        snf.sort?.ascending,
+        snf.filter?.surfaceScore?.gtFiltering,
+        snf.filter?.surfaceScore?.score,
+        snf.filter?.tags
+      ) as Promise<ApiResponse<ListWithCount<SpotDto>>>,
     getSpecificState: (state: RootState) => state.spotsState,
     name: 'spots',
     commentSubjectType: CommentSubjectType.Spots,

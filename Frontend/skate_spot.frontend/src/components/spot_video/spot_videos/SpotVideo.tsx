@@ -3,6 +3,7 @@ import { createCommentComponent } from '../../../functions/component_creators/co
 import {
   CommentDto,
   LikeDto,
+  ObstacleType,
   SmallUserDto,
   SpotVideoDto,
   VideoPlatformType,
@@ -18,6 +19,8 @@ import { SpotNameLink } from '../../spot_common/SpotNameLink'
 import { InstagramVideo } from '../InstagramVideo'
 import { YouTubeVideo } from '../YouTubeVideo'
 import { ListItemHeader } from '../../spot_common/ListItemHeader'
+import { Obstacles } from '../../spot_common/Obstacles'
+import { SurfaceScore } from '../../spot_common/SurfaceScore'
 
 interface Props {
   spotVideo: SpotVideoDto
@@ -61,6 +64,16 @@ export const SpotVideo = React.memo(
             disabled={!spotVideo.spot}
             setIsMapModalOpen={setIsMapModalOpen}
           />
+          {spotVideo.spot && (
+            <div className='ms-3 d-flex'>
+              <SurfaceScore
+                surfaceScore={spotVideo.spot.surfaceScore as number}
+              />
+              <Obstacles
+                obstacles={spotVideo.spot.obstacles as ObstacleType[]}
+              />
+            </div>
+          )}
           <SpotVideoAuthor author={spotVideo.author as SmallUserDto} />
         </div>
         {commentsOpen && (

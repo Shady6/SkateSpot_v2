@@ -1,11 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { SpotDto } from '../../skate_spot_api/client'
 import { spotLike } from '../actions/spotAcionts'
 import { ListViewTypes } from '../generic/listViewGenerics'
 import {
-  addDefaultCases,
+  addExtraReducerDefaultCases,
   listViewReducerHandlers,
   ListViewState,
+  reducerDefaultCases,
 } from './genericListViewReducer'
 
 export type SpotState = ListViewState<SpotDto>
@@ -27,15 +28,10 @@ const spotSlice = createSlice({
   name: 'spots',
   initialState: initialState,
   reducers: {
-    setSpots: (state, action: PayloadAction<SpotDto[]>) => {
-      listViewReducerHandlers.setItems(state, action.payload)
-    },
-    reset: () => {
-      return listViewReducerHandlers.reset(initialState) as SpotState
-    },
+    ...reducerDefaultCases(initialState),
   },
   extraReducers: builder => {
-    addDefaultCases(builder, ListViewTypes.SPOTS)
+    addExtraReducerDefaultCases(builder, ListViewTypes.SPOTS)
 
     builder.addCase(spotLike.fulfilled, (state, action) => {
       listViewReducerHandlers.like.fulfilled(state, {

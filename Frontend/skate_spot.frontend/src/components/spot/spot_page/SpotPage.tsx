@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useFetchOnScroll } from '../../../hooks/useFetchOnScroll'
-import { useOneSpot } from '../../../hooks/useOneSpot'
+import { useSpotFromHistoryStateOrFetch } from '../../../hooks/useSpotFromHistoryStateOrFetch'
 import { Routes } from '../../../routes/appRoutes'
 import { ApiResponse } from '../../../skate_spot_api/apiClient'
 import { customFuncSpotVideoFetch } from '../../../state/actions/spotVideoActions'
@@ -27,7 +27,7 @@ export const SpotPage: React.FC<Props> = () => {
   const path = history.location.pathname.split('/')
   const spotPathPart = Routes.SPOTS.replace('/', '')
   const spotName = path[path.indexOf(spotPathPart) + 1]
-  useOneSpot(spotName)
+  useSpotFromHistoryStateOrFetch(spotName)
 
   const spot = state.spotsState.listWithCount.data?.[0]
 

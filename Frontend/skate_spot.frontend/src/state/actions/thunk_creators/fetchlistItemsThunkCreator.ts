@@ -17,6 +17,7 @@ export const fetchlistItemsThunkCreator = (listType: ListViewTypes) => {
       const globalState = getState() as RootState
       const specificState =
         listViewSpecifics[listType].getSpecificState(globalState)
+
       const res = await sendRequestWithFlashMsgOnError(
         dispatch,
         globalState.auth.content,
@@ -24,7 +25,8 @@ export const fetchlistItemsThunkCreator = (listType: ListViewTypes) => {
           listViewSpecifics[listType].fetchListItems(
             client,
             specificState.paging.take,
-            specificState.paging.skip
+            specificState.paging.skip,
+            globalState.filtersState.appliedFilter
           ),
         'Error occured while loading next records, please try again later.'
       )

@@ -28,8 +28,8 @@ export class Client {
    * @return Success
    */
   seed_Fake_Spots(
-    count: number | undefined,
-    authorization: string
+    authorization: string,
+    count?: number | undefined
   ): Promise<void> {
     let url_ = this.baseUrl + '/api/admin/seed/spots?'
     if (count === null) throw new Error("The parameter 'count' cannot be null.")
@@ -80,8 +80,8 @@ export class Client {
    * @return Success
    */
   seed_Fake_Temp_Spots(
-    count: number | undefined,
-    authorization: string
+    authorization: string,
+    count?: number | undefined
   ): Promise<void> {
     let url_ = this.baseUrl + '/api/admin/seed/tempSpots?'
     if (count === null) throw new Error("The parameter 'count' cannot be null.")
@@ -135,7 +135,7 @@ export class Client {
     subjectType: CommentSubjectType,
     subjectId: string,
     authorization: string,
-    body: CommentCommand | undefined
+    body?: CommentCommand | undefined
   ): Promise<CommentDtoApiResponse> {
     let url_ = this.baseUrl + '/api/{subjectType}/{subjectId}/comments'
     if (subjectType === undefined || subjectType === null)
@@ -205,7 +205,7 @@ export class Client {
     subjectId: string,
     commentId: string,
     authorization: string,
-    body: EditCommentCommand | undefined
+    body?: EditCommentCommand | undefined
   ): Promise<void> {
     let url_ =
       this.baseUrl + '/api/{subjectType}/{subjectId}/comments/{commentId}'
@@ -326,7 +326,9 @@ export class Client {
    * @param body (optional)
    * @return Success
    */
-  get_Token(body: TokenRequest | undefined): Promise<TokenResponseApiResponse> {
+  get_Token(
+    body?: TokenRequest | undefined
+  ): Promise<TokenResponseApiResponse> {
     let url_ = this.baseUrl + '/api/identity/token'
     url_ = url_.replace(/[?&]$/, '')
 
@@ -427,7 +429,7 @@ export class Client {
    * @param body (optional)
    * @return Success
    */
-  register(body: RegisterRequest | undefined): Promise<StringApiResponse> {
+  register(body?: RegisterRequest | undefined): Promise<StringApiResponse> {
     let url_ = this.baseUrl + '/api/identity/register'
     url_ = url_.replace(/[?&]$/, '')
 
@@ -483,8 +485,8 @@ export class Client {
    * @return Success
    */
   confirm_Email(
-    userId: string | undefined,
-    code: string | undefined
+    userId?: string | undefined,
+    code?: string | undefined
   ): Promise<StringApiResponse> {
     let url_ = this.baseUrl + '/api/identity/confirm-email?'
     if (userId === null)
@@ -544,7 +546,7 @@ export class Client {
    * @param body (optional)
    * @return Success
    */
-  forgot_Password(body: ForgotPasswordRequest | undefined): Promise<void> {
+  forgot_Password(body?: ForgotPasswordRequest | undefined): Promise<void> {
     let url_ = this.baseUrl + '/api/identity/forgot-password'
     url_ = url_.replace(/[?&]$/, '')
 
@@ -591,7 +593,7 @@ export class Client {
    * @return Success
    */
   reset_Password(
-    body: ResetPasswordRequest | undefined
+    body?: ResetPasswordRequest | undefined
   ): Promise<StringApiResponse> {
     let url_ = this.baseUrl + '/api/identity/reset-password'
     url_ = url_.replace(/[?&]$/, '')
@@ -649,8 +651,8 @@ export class Client {
    * @return Success
    */
   get_Base64_Images(
-    imagesUrls: string[] | undefined,
-    authorization: string
+    authorization: string,
+    imagesUrls?: string[] | undefined
   ): Promise<Base64FetchResultArrayApiResponse> {
     let url_ = this.baseUrl + '/api/ImageProxy/base64?'
     if (imagesUrls === null)
@@ -718,7 +720,7 @@ export class Client {
     subjectType: LikeSubjectType,
     subjectId: string,
     authorization: string,
-    body: LikeCommand | undefined
+    body?: LikeCommand | undefined
   ): Promise<LikeDtoArrayApiResponse> {
     let url_ = this.baseUrl + '/api/{subjectType}/{subjectId}/Likes'
     if (subjectType === undefined || subjectType === null)
@@ -847,11 +849,21 @@ export class Client {
   /**
    * @param take (optional)
    * @param offset (optional)
+   * @param sorting_Option (optional)
+   * @param sorting_Ascending (optional)
+   * @param filtering_SurfaceFilter_GreaterThan (optional)
+   * @param filtering_SurfaceFilter_Score (optional)
+   * @param filtering_ObstaclesFilter_Obstacles (optional)
    * @return Success
    */
   get_Spots(
-    take: number | undefined,
-    offset: number | undefined
+    take?: number | undefined,
+    offset?: number | undefined,
+    sorting_Option?: SortOption | undefined,
+    sorting_Ascending?: boolean | undefined,
+    filtering_SurfaceFilter_GreaterThan?: boolean | undefined,
+    filtering_SurfaceFilter_Score?: number | undefined,
+    filtering_ObstaclesFilter_Obstacles?: ObstacleType[] | undefined
   ): Promise<SpotDtoWithTotalCountApiResponse> {
     let url_ = this.baseUrl + '/api/spots?'
     if (take === null) throw new Error("The parameter 'take' cannot be null.")
@@ -861,6 +873,45 @@ export class Client {
       throw new Error("The parameter 'offset' cannot be null.")
     else if (offset !== undefined)
       url_ += 'offset=' + encodeURIComponent('' + offset) + '&'
+    if (sorting_Option === null)
+      throw new Error("The parameter 'sorting_Option' cannot be null.")
+    else if (sorting_Option !== undefined)
+      url_ += 'Sorting.Option=' + encodeURIComponent('' + sorting_Option) + '&'
+    if (sorting_Ascending === null)
+      throw new Error("The parameter 'sorting_Ascending' cannot be null.")
+    else if (sorting_Ascending !== undefined)
+      url_ +=
+        'Sorting.Ascending=' + encodeURIComponent('' + sorting_Ascending) + '&'
+    if (filtering_SurfaceFilter_GreaterThan === null)
+      throw new Error(
+        "The parameter 'filtering_SurfaceFilter_GreaterThan' cannot be null."
+      )
+    else if (filtering_SurfaceFilter_GreaterThan !== undefined)
+      url_ +=
+        'Filtering.SurfaceFilter.GreaterThan=' +
+        encodeURIComponent('' + filtering_SurfaceFilter_GreaterThan) +
+        '&'
+    if (filtering_SurfaceFilter_Score === null)
+      throw new Error(
+        "The parameter 'filtering_SurfaceFilter_Score' cannot be null."
+      )
+    else if (filtering_SurfaceFilter_Score !== undefined)
+      url_ +=
+        'Filtering.SurfaceFilter.Score=' +
+        encodeURIComponent('' + filtering_SurfaceFilter_Score) +
+        '&'
+    if (filtering_ObstaclesFilter_Obstacles === null)
+      throw new Error(
+        "The parameter 'filtering_ObstaclesFilter_Obstacles' cannot be null."
+      )
+    else if (filtering_ObstaclesFilter_Obstacles !== undefined)
+      filtering_ObstaclesFilter_Obstacles &&
+        filtering_ObstaclesFilter_Obstacles.forEach(item => {
+          url_ +=
+            'Filtering.ObstaclesFilter.Obstacles=' +
+            encodeURIComponent('' + item) +
+            '&'
+        })
     url_ = url_.replace(/[?&]$/, '')
 
     let options_ = <RequestInit>{
@@ -960,10 +1011,43 @@ export class Client {
   }
 
   /**
+   * @param surfaceFilter_GreaterThan (optional)
+   * @param surfaceFilter_Score (optional)
+   * @param obstaclesFilter_Obstacles (optional)
    * @return Success
    */
-  get_Perma_And_Temp_Spots_Marker_Data(): Promise<SpotMarkerDataDtoListApiResponse> {
-    let url_ = this.baseUrl + '/api/spots/marker'
+  get_Perma_And_Temp_Spots_Marker_Data(
+    surfaceFilter_GreaterThan?: boolean | undefined,
+    surfaceFilter_Score?: number | undefined,
+    obstaclesFilter_Obstacles?: ObstacleType[] | undefined
+  ): Promise<SpotMarkerDataDtoListApiResponse> {
+    let url_ = this.baseUrl + '/api/spots/marker?'
+    if (surfaceFilter_GreaterThan === null)
+      throw new Error(
+        "The parameter 'surfaceFilter_GreaterThan' cannot be null."
+      )
+    else if (surfaceFilter_GreaterThan !== undefined)
+      url_ +=
+        'SurfaceFilter.GreaterThan=' +
+        encodeURIComponent('' + surfaceFilter_GreaterThan) +
+        '&'
+    if (surfaceFilter_Score === null)
+      throw new Error("The parameter 'surfaceFilter_Score' cannot be null.")
+    else if (surfaceFilter_Score !== undefined)
+      url_ +=
+        'SurfaceFilter.Score=' +
+        encodeURIComponent('' + surfaceFilter_Score) +
+        '&'
+    if (obstaclesFilter_Obstacles === null)
+      throw new Error(
+        "The parameter 'obstaclesFilter_Obstacles' cannot be null."
+      )
+    else if (obstaclesFilter_Obstacles !== undefined)
+      obstaclesFilter_Obstacles &&
+        obstaclesFilter_Obstacles.forEach(item => {
+          url_ +=
+            'ObstaclesFilter.Obstacles=' + encodeURIComponent('' + item) + '&'
+        })
     url_ = url_.replace(/[?&]$/, '')
 
     let options_ = <RequestInit>{
@@ -1065,9 +1149,9 @@ export class Client {
    * @return Success
    */
   get_Spot_Videos(
-    take: number | undefined,
-    offset: number | undefined,
-    authorization: string | undefined
+    take?: number | undefined,
+    offset?: number | undefined,
+    authorization?: string | undefined
   ): Promise<SpotVideoDtoWithTotalCountApiResponse> {
     let url_ = this.baseUrl + '/api/spotVideos?'
     if (take === null) throw new Error("The parameter 'take' cannot be null.")
@@ -1135,9 +1219,9 @@ export class Client {
    */
   get_Spot_Videos_Of_Spot(
     spotName: string,
-    take: number | undefined,
-    offset: number | undefined,
-    authorization: string | undefined
+    take?: number | undefined,
+    offset?: number | undefined,
+    authorization?: string | undefined
   ): Promise<SpotVideoDtoWithTotalCountApiResponse> {
     let url_ = this.baseUrl + '/api/spots/{spotName}/spotVideos?'
     if (spotName === undefined || spotName === null)
@@ -1207,7 +1291,7 @@ export class Client {
   add_Spot_Video(
     spotName: string,
     authorization: string,
-    body: AddSpotVideoCommand | undefined
+    body?: AddSpotVideoCommand | undefined
   ): Promise<SpotVideoDtoApiResponse> {
     let url_ = this.baseUrl + '/api/spots/{spotName}/spotVideos'
     if (spotName === undefined || spotName === null)
@@ -1321,7 +1405,7 @@ export class Client {
    */
   create_Spot(
     authorization: string,
-    body: CreateTempSpotCommand | undefined
+    body?: CreateTempSpotCommand | undefined
   ): Promise<GuidApiResponse> {
     let url_ = this.baseUrl + '/api/TempSpots'
     url_ = url_.replace(/[?&]$/, '')
@@ -1380,8 +1464,8 @@ export class Client {
    * @return Success
    */
   get_Temp_Spots(
-    take: number | undefined,
-    offset: number | undefined
+    take?: number | undefined,
+    offset?: number | undefined
   ): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
     let url_ = this.baseUrl + '/api/TempSpots?'
     if (take === null) throw new Error("The parameter 'take' cannot be null.")
@@ -1548,7 +1632,7 @@ export class Client {
   vote(
     tempSpotId: string,
     authorization: string,
-    body: VoteCommand | undefined
+    body?: VoteCommand | undefined
   ): Promise<VoteResultApiResponse> {
     let url_ = this.baseUrl + '/api/tempSpots/{tempSpotId}/vote'
     if (tempSpotId === undefined || tempSpotId === null)
@@ -1823,11 +1907,20 @@ export interface SmallSpotDto {
   id: string
   name: string | undefined
   address: AddressDto
+  obstacles: ObstacleType[] | undefined
+  surfaceScore: number
 }
 
 export interface SmallUserDto {
   id: string
   userName: string | undefined
+}
+
+export enum SortOption {
+  CREATION_DATE = 'CREATION_DATE',
+  LIKES = 'LIKES',
+  COMMENTS = 'COMMENTS',
+  VIDEOS = 'VIDEOS',
 }
 
 export interface SpotDto {
@@ -1865,6 +1958,8 @@ export interface SpotMarkerDataDto {
   name: string | undefined
   isTempSpot: boolean
   address: AddressDto
+  obstacles: ObstacleType[] | undefined
+  surfaceScore: number
 }
 
 export interface SpotMarkerDataDtoListApiResponse {

@@ -1,14 +1,14 @@
 import { CommentDto } from '../../skate_spot_api/client'
 import { ListViewTypes } from '../../state/generic/listViewGenerics'
 import Comments from '../../components/social/comment/Comments'
-import { getAllThunks } from '../../state/actions/thunk_creators/allThunks'
+import { getAllCommonThunks } from '../../state/actions/thunk_creators/allCommonThunks'
 
 export const createCommentComponent = (p: {
   listItemId: string
   comments: CommentDto[]
   listViewType: ListViewTypes
 }) => {
-  const thunks = getAllThunks()[p.listViewType]
+  const thunks = getAllCommonThunks()[p.listViewType]
 
   return (
     <Comments

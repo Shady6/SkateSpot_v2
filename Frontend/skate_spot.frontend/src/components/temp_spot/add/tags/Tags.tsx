@@ -1,46 +1,38 @@
 import React from 'react'
+import { ObstacleType } from '../../../../skate_spot_api/client'
 import Tag from './Tag'
 
 export interface ITag {
-  name:
-    | 'Skatepark'
-    | 'Ledge'
-    | 'Rail'
-    | 'Stairs'
-    | 'Bank'
-    | 'Kicker'
-    | 'Manualpad'
-    | 'Flatground'
-    | 'Quater'
-    | 'Downhill'
+  obstacleType: ObstacleType
   isSelected: boolean
 }
 
 export const initialTags: ITag[] = [
-  { name: 'Skatepark', isSelected: false },
-  { name: 'Ledge', isSelected: false },
-  { name: 'Rail', isSelected: false },
-  { name: 'Stairs', isSelected: false },
-  { name: 'Bank', isSelected: false },
-  { name: 'Kicker', isSelected: false },
-  { name: 'Manualpad', isSelected: false },
-  { name: 'Flatground', isSelected: false },
-  { name: 'Quater', isSelected: false },
-  { name: 'Downhill', isSelected: false },
+  { obstacleType: ObstacleType.Skatepark, isSelected: false },
+  { obstacleType: ObstacleType.Ledge, isSelected: false },
+  { obstacleType: ObstacleType.Rail, isSelected: false },
+  { obstacleType: ObstacleType.Stairs, isSelected: false },
+  { obstacleType: ObstacleType.Bank, isSelected: false },
+  { obstacleType: ObstacleType.Kicker, isSelected: false },
+  { obstacleType: ObstacleType.Manualpad, isSelected: false },
+  { obstacleType: ObstacleType.Flatground, isSelected: false },
+  { obstacleType: ObstacleType.Quater, isSelected: false },
+  { obstacleType: ObstacleType.Downhill, isSelected: false },
 ]
 
 interface Props {
   tags: ITag[]
-  setTags: React.Dispatch<React.SetStateAction<ITag[]>>
+  setTags: (tags: ITag[]) => void
 }
 
 export const Tags: React.FC<Props> = ({ tags, setTags }) => {
   const toggleSelection = (tag: ITag) => {
     setTags(
-      tags.map(t => {
-        if (t.name === tag.name) t.isSelected = !t.isSelected
-        return t
-      })
+      tags.map(t => ({
+        obstacleType: t.obstacleType,
+        isSelected:
+          t.obstacleType === tag.obstacleType ? !t.isSelected : t.isSelected,
+      }))
     )
   }
 
@@ -48,8 +40,8 @@ export const Tags: React.FC<Props> = ({ tags, setTags }) => {
     <>
       {tags.map(t => (
         <Tag
-          key={t.name}
-          name={t.name}
+          key={t.obstacleType}
+          name={t.obstacleType}
           isSelected={t.isSelected}
           toggleSelection={() => toggleSelection(t)}
         />

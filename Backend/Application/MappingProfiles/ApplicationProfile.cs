@@ -32,7 +32,6 @@ namespace SkateSpot.Application.MappingProfiles
 				.ForMember(d => d.Comments, opt => opt.MapFrom(s =>
 					s.Comments.OrderByDescending(c => c.CreatedAt)));
 
-
 			CreateMap<HistoricalVerificationStatement, VerificationStatementDto>();
 			CreateMap<HistoricalVerificationProcess, VerificationProcessDto>();
 
@@ -48,7 +47,9 @@ namespace SkateSpot.Application.MappingProfiles
 			CreateMap<LikeSubjectType, SubjectType>();
 
 			CreateMap<ISpot, SpotMarkerDataDto>()
-				.ForMember(d => d.IsTempSpot, opt => opt.MapFrom(s => s is TempSpot));
+				.ForMember(d => d.IsTempSpot, opt => opt.MapFrom(s => s is TempSpot))
+				.ForMember(d => d.Obstacles, opt =>
+				opt.MapFrom(s => s.Obstacles.Select(o => o.ObstacleType)));
 
 			CreateMap<SpotImage, ImageDto>()
 				.ForMember(d => d.Base64, opt => opt.MapFrom(s => s.Image.Base64));
@@ -58,8 +59,9 @@ namespace SkateSpot.Application.MappingProfiles
 				.ForMember(d => d.Comments, opt => opt.MapFrom(s =>
 					s.Comments.OrderByDescending(c => c.CreatedAt)));
 
-
-			CreateMap<Spot, SmallSpotDto>();
+			CreateMap<Spot, SmallSpotDto>()
+				.ForMember(d => d.Obstacles, opt =>
+				opt.MapFrom(s => s.Obstacles.Select(o => o.ObstacleType)));
 		}
 	}
 }

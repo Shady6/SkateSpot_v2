@@ -2,8 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { SpotVideoDto } from '../../skate_spot_api/client'
 import { spotVideoLike } from '../actions/spotVideoActions'
 import { ListViewTypes } from '../generic/listViewGenerics'
+import { reducerDefaultCases } from './genericListViewReducer'
 import {
-  addDefaultCases,
+  addExtraReducerDefaultCases,
   listViewReducerHandlers,
   ListViewState,
 } from './genericListViewReducer'
@@ -27,18 +28,13 @@ const spotVideoSlice = createSlice({
   name: 'spotVideo',
   initialState: initialState,
   reducers: {
-    setVideos: (state, action: PayloadAction<SpotVideoDto[]>) => {
-      listViewReducerHandlers.setItems(state, action.payload)
-    },
+    ...reducerDefaultCases(initialState),
     prependVideo: (state, action: PayloadAction<SpotVideoDto>) => {
       state.listWithCount.data.unshift(action.payload)
     },
-    reset: () => {
-      return listViewReducerHandlers.reset(initialState) as SpotVideoState
-    },
   },
   extraReducers: builder => {
-    addDefaultCases(builder, ListViewTypes.SPOT_VIDEOS)
+    addExtraReducerDefaultCases(builder, ListViewTypes.SPOT_VIDEOS)
 
     builder.addCase(spotVideoLike.fulfilled, (state, action) => {
       listViewReducerHandlers.like.fulfilled(state, {

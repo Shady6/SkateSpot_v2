@@ -6,8 +6,11 @@ using SkateSpot.Api.Attributes;
 using SkateSpot.Api.Data;
 using SkateSpot.Application.DTOs;
 using SkateSpot.Application.DTOs.DomainDTOs;
+using SkateSpot.Application.DTOs.Filter;
+using SkateSpot.Application.Extensions;
 using SkateSpot.Application.Features.SpotFeatures.Commands;
 using SkateSpot.Application.Services.Interfaces;
+using SkateSpot.Domain.Models;
 using SkateSpot.Infrastructure.DbContexts;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,12 +37,14 @@ namespace SkateSpot.Api.Controllers
 
 		[HttpGet]
 		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<SpotDto>>), 200)]
-		public async Task<ActionResult> GetSpots([FromQuery] int take, [FromQuery] int offset)
+		public async Task<ActionResult> GetSpots([FromQuery] int take, [FromQuery] int offset, [FromQuery] SortAndFilter snf)
 		{
 			return Ok(new WithTotalCount<SpotDto>
 			{
 				Data = await _mapper.ProjectTo<SpotDto>(_dbContext.Spots
-					.OrderByDescending(s => s.CreatedAt)
+					.ApplySpotSort(snf.Sorting)
+					.ApplySortingAndFilters(snf)
+					.Cast<Spot>()
 					.Skip(offset)
 					.Take(take))
 				.ToArrayAsync(),
@@ -59,9 +64,9 @@ namespace SkateSpot.Api.Controllers
 		[HttpGet]
 		[Route("marker")]
 		[ProducesResponseType(typeof(ApiResponse<List<SpotMarkerDataDto>>), 200)]
-		public async Task<ActionResult<List<SpotMarkerDataDto>>> GetPermaAndTempSpotsMarkerData()
+		public async Task<ActionResult<List<SpotMarkerDataDto>>> GetPermaAndTempSpotsMarkerData([FromQuery] Filtering filtering)
 		{
-			return Ok(await _spotsService.GetPermaAndTempSpotsMarkerData());
+			return Ok(await _spotsService.GetPermaAndTempSpotsMarkerData(filtering));
 		}
 
 		[Authorize]

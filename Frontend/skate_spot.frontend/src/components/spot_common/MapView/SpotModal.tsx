@@ -17,6 +17,7 @@ import {
   SpotMarkerDataDto,
   TempSpotWithVerificationDto,
 } from '../../../skate_spot_api/client'
+import { getAllCommonActions } from '../../../state/actions/allCommonActions'
 import { spotLike } from '../../../state/actions/spotAcionts'
 import { likeThunkCreator } from '../../../state/actions/thunk_creators/likeThunkCreator'
 import { ListViewTypes } from '../../../state/generic/listViewGenerics'
@@ -25,11 +26,11 @@ import { tempSpotActions } from '../../../state/reducers/tempSpotsReducer'
 import { useRootState } from '../../../state/store'
 import CommentBtn from '../../social/comment/CommentBtn'
 import { MainLikeButtons } from '../../social/comment/MainLikeButtons'
-import { SpotNameLink } from '../SpotNameLink'
 import { SpotVideoBtn } from '../../spot_video/SpotVideoBtn'
 import { vote_like_adapter } from '../../temp_spot/main/TempSpot'
 import { Obstacles } from '../Obstacles'
 import { SpotImages } from '../SpotImages'
+import { SpotNameLink } from '../SpotNameLink'
 import { SurfaceScore } from '../SurfaceScore'
 import './style.scss'
 
@@ -93,13 +94,13 @@ export const SpotModal = (p: Props) => {
             ? tempSpotToSpot(res.content as TempSpotWithVerificationDto)
             : (res.content as SpotDto)
         )
-        p.markerData.isTempSpot
-          ? dispatch(
-              tempSpotActions.setTempSpots([
-                res.content as TempSpotWithVerificationDto,
-              ])
-            )
-          : dispatch(spotActions.setSpots([res.content as SpotDto]))
+        dispatch(
+          getAllCommonActions()[
+            p.markerData.isTempSpot
+              ? ListViewTypes.TEMP_SPOTS
+              : ListViewTypes.SPOTS
+          ].setItems([res.content])
+        )
       }
     })()
 

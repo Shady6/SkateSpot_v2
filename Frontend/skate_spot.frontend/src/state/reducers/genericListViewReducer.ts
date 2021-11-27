@@ -1,11 +1,11 @@
-import { ActionReducerMapBuilder } from '@reduxjs/toolkit'
+import { ActionReducerMapBuilder, PayloadAction } from '@reduxjs/toolkit'
 import { WritableDraft } from 'immer/dist/internal'
 import {
   CommentDto,
   LikeDto,
   VerificationStatementDto,
 } from '../../skate_spot_api/client'
-import { getAllThunks } from '../actions/thunk_creators/allThunks'
+import { getAllCommonThunks } from '../actions/thunk_creators/allCommonThunks'
 import { ListViewTypes } from '../generic/listViewGenerics'
 
 export interface WithId {
@@ -52,7 +52,7 @@ export interface ListViewState<T extends WithSocial> {
   error: boolean
 }
 
-type ListViewImmerState = WritableDraft<ListViewState<WithSocial>>
+export type ListViewImmerState = WritableDraft<ListViewState<WithSocial>>
 
 export const listViewReducerHandlers = {
   like: {
@@ -74,26 +74,26 @@ export const listViewReducerHandlers = {
       return listItem
     },
   },
-
-  setItems: (state: ListViewImmerState, payload: WithSocial[]) => {
-    state.listWithCount = {
-      data: payload,
-      // Total count is not important here, since this action is only needed
-      // to properly dispatch comment, like etc. actions on pages, where we dont use
-      // fetch action
-      totalCount: 0,
-    }
-  },
-  reset: (defaultState: ListViewState<WithSocial>) => {
-    return defaultState
-  },
 }
 
-export const addDefaultCases = (
+export const reducerDefaultCases = (initialState: ListViewState<any>) => ({
+  reset: () => initialState,
+  setItems: (
+    state: ListViewImmerState,
+    action: PayloadAction<WithSocial[]>
+  ) => {
+    state.listWithCount = {
+      data: action.payload,
+      totalCount: state.listWithCount.totalCount,
+    }
+  },
+})
+
+export const addExtraReducerDefaultCases = (
   builder: ActionReducerMapBuilder<ListViewImmerState>,
   listViewType: ListViewTypes
 ) => {
-  const thunks = getAllThunks()[listViewType]
+  const thunks = getAllCommonThunks()[listViewType]
   builder
     .addCase(thunks.fetchListItems.pending, state => {
       state.loading = true

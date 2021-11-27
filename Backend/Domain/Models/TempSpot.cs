@@ -6,8 +6,7 @@ using System.Text;
 
 namespace SkateSpot.Domain.Models
 {
-
-	public class TempSpot : BaseEntity, ISpot
+	public partial class TempSpot : BaseEntity, ISpot
 	{
 		public string Name { get; protected set; }
 		public string Description { get; protected set; }

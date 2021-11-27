@@ -6,7 +6,7 @@ import { SpotDto } from '../skate_spot_api/client'
 import { spotActions } from '../state/reducers/spotReducer'
 import { useRootState } from '../state/store'
 
-export const useOneSpot = (spotName: string) => {
+export const useSpotFromHistoryStateOrFetch = (spotName: string) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const state = useRootState()
@@ -15,7 +15,7 @@ export const useOneSpot = (spotName: string) => {
     dispatch(spotActions.reset())
 
     const spot = (history.location.state as { spot: SpotDto | undefined })?.spot
-    if (spot && spot.videosCount) dispatch(spotActions.setSpots([spot]))
+    if (spot && spot.videosCount) dispatch(spotActions.setItems([spot]))
     else
       (async () => {
         const res = await sendRequestWithFlashMsgOnError(
@@ -24,7 +24,7 @@ export const useOneSpot = (spotName: string) => {
           (c, t) => c.get_Spot(spotName)
         )
 
-        if (res.content) dispatch(spotActions.setSpots([res.content]))
+        if (res.content) dispatch(spotActions.setItems([res.content]))
       })()
 
     return () => {

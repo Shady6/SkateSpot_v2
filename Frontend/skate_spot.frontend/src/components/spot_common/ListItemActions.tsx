@@ -6,7 +6,7 @@ import { RootState } from '../../state/store'
 import { MoreVertWithTooltip } from '../shared/MoreVertWithTooltip'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { ListViewTypes } from '../../state/generic/listViewGenerics'
-import { getAllThunks } from '../../state/actions/thunk_creators/allThunks'
+import { getAllCommonThunks } from '../../state/actions/thunk_creators/allCommonThunks'
 import { ApiClient } from '../../skate_spot_api/apiClient'
 
 interface Props {
@@ -32,7 +32,7 @@ export const ListItemActions: React.FC<Props> = p => {
         <IconButton
           onClick={() => {
             dispatch(
-              getAllThunks()[p.listViewType].deleteListItem({
+              getAllCommonThunks()[p.listViewType].deleteListItem({
                 listItemId: p.listItemId,
                 deleteFunc: p.deleteFunc,
               })
