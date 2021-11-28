@@ -5,6 +5,7 @@ import { SortingOptions } from './SortingOptions'
 import { SurfaceScoreFilter } from './SurfaceScoreFilter'
 import { TagsFilter } from './TagsFilter'
 import { ListViewTypes } from '../../state/generic/listViewGenerics'
+import { FilterApplyCancelBtns } from './FilterApplyCancelBtns'
 
 interface Props {
   listViewType: ListViewTypes
@@ -16,8 +17,7 @@ export const FilterAndSortPane: React.FC<Props> = ({ listViewType }) => {
       <SortingOptions listViewType={listViewType} />
       <SurfaceScoreFilter />
       <TagsFilter />
-      <ApplyFilters />
-      <ClearFilters />
+      <FilterApplyCancelBtns />
     </div>
   )
 }

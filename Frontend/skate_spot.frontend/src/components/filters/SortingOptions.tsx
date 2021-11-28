@@ -1,13 +1,12 @@
-import { Select, MenuItem, Button } from '@material-ui/core'
+import { Button, MenuItem, Select } from '@material-ui/core'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import SortIcon from '@mui/icons-material/Sort'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../../state/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { SortOption } from '../../skate_spot_api/client'
 import { ListViewTypes } from '../../state/generic/listViewGenerics'
 import { filterActions, ISorting } from '../../state/reducers/filtersReducer'
-import { SortOption } from '../../skate_spot_api/client'
-import { useEffect } from 'react'
+import { RootState } from '../../state/store'
 
 interface Props {
   listViewType: ListViewTypes
@@ -18,17 +17,6 @@ export const SortingOptions = ({ listViewType }: Props) => {
     state => state.filtersState.filterInMaking.sort
   )
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (
-      sorting.option === SortOption.VIDEOS &&
-      listViewType !== ListViewTypes.SPOTS
-    ) {
-      dispatch(filterActions.setSortingOption(SortOption.CREATION_DATE))
-      dispatch(filterActions.setSortAscending(false))
-    }
-  }, [listViewType])
-
   return (
     <div className='d-flex'>
       <Select

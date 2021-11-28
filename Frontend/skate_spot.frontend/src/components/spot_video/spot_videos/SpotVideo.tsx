@@ -30,7 +30,6 @@ export const SpotVideo = React.memo(
   ({ spotVideo }: Props) => {
     const [isMapModalOpen, setIsMapModalOpen] = useState(false)
     const [commentsOpen, setCommentsOpen] = useState(false)
-
     return (
       <div className='mb-4'>
         <ListItemHeader

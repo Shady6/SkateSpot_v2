@@ -8,7 +8,6 @@ export const ClearFilters = () => {
   return (
     <Button
       onClick={_ => dispatch(filterActions.clearFilters())}
-      className='mt-5'
       variant='contained'
       color='secondary'>
       Clear

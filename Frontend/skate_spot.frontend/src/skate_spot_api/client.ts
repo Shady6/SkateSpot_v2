@@ -21,7 +21,7 @@ export class Client {
      * @param count (optional) 
      * @return Success
      */
-    seed_Fake_Spots(authorization: string, count?: number | undefined): Promise<void> {
+    seed_Fake_Spots(count: number | undefined, authorization: string): Promise<void> {
         let url_ = this.baseUrl + "/api/admin/seed/spots?";
         if (count === null)
             throw new Error("The parameter 'count' cannot be null.");
@@ -60,7 +60,7 @@ export class Client {
      * @param count (optional) 
      * @return Success
      */
-    seed_Fake_Temp_Spots(authorization: string, count?: number | undefined): Promise<void> {
+    seed_Fake_Temp_Spots(count: number | undefined, authorization: string): Promise<void> {
         let url_ = this.baseUrl + "/api/admin/seed/tempSpots?";
         if (count === null)
             throw new Error("The parameter 'count' cannot be null.");
@@ -99,7 +99,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    comment(subjectType: CommentSubjectType, subjectId: string, authorization: string, body?: CommentCommand | undefined): Promise<CommentDtoApiResponse> {
+    comment(subjectType: CommentSubjectType, subjectId: string, authorization: string, body: CommentCommand | undefined): Promise<CommentDtoApiResponse> {
         let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/comments";
         if (subjectType === undefined || subjectType === null)
             throw new Error("The parameter 'subjectType' must be defined.");
@@ -147,7 +147,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    edit_Comment(subjectType: CommentSubjectType, subjectId: string, commentId: string, authorization: string, body?: EditCommentCommand | undefined): Promise<void> {
+    edit_Comment(subjectType: CommentSubjectType, subjectId: string, commentId: string, authorization: string, body: EditCommentCommand | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/comments/{commentId}";
         if (subjectType === undefined || subjectType === null)
             throw new Error("The parameter 'subjectType' must be defined.");
@@ -238,7 +238,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    get_Token(body?: TokenRequest | undefined): Promise<TokenResponseApiResponse> {
+    get_Token(body: TokenRequest | undefined): Promise<TokenResponseApiResponse> {
         let url_ = this.baseUrl + "/api/identity/token";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -313,7 +313,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    register(body?: RegisterRequest | undefined): Promise<StringApiResponse> {
+    register(body: RegisterRequest | undefined): Promise<StringApiResponse> {
         let url_ = this.baseUrl + "/api/identity/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -355,7 +355,7 @@ export class Client {
      * @param code (optional) 
      * @return Success
      */
-    confirm_Email(userId?: string | undefined, code?: string | undefined): Promise<StringApiResponse> {
+    confirm_Email(userId: string | undefined, code: string | undefined): Promise<StringApiResponse> {
         let url_ = this.baseUrl + "/api/identity/confirm-email?";
         if (userId === null)
             throw new Error("The parameter 'userId' cannot be null.");
@@ -400,7 +400,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    forgot_Password(body?: ForgotPasswordRequest | undefined): Promise<void> {
+    forgot_Password(body: ForgotPasswordRequest | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/identity/forgot-password";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -438,7 +438,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    reset_Password(body?: ResetPasswordRequest | undefined): Promise<StringApiResponse> {
+    reset_Password(body: ResetPasswordRequest | undefined): Promise<StringApiResponse> {
         let url_ = this.baseUrl + "/api/identity/reset-password";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -479,7 +479,7 @@ export class Client {
      * @param imagesUrls (optional) 
      * @return Success
      */
-    get_Base64_Images(authorization: string, imagesUrls?: string[] | undefined): Promise<Base64FetchResultArrayApiResponse> {
+    get_Base64_Images(imagesUrls: string[] | undefined, authorization: string): Promise<Base64FetchResultArrayApiResponse> {
         let url_ = this.baseUrl + "/api/ImageProxy/base64?";
         if (imagesUrls === null)
             throw new Error("The parameter 'imagesUrls' cannot be null.");
@@ -521,7 +521,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    like(subjectType: LikeSubjectType, subjectId: string, authorization: string, body?: LikeCommand | undefined): Promise<LikeDtoArrayApiResponse> {
+    like(subjectType: LikeSubjectType, subjectId: string, authorization: string, body: LikeCommand | undefined): Promise<LikeDtoArrayApiResponse> {
         let url_ = this.baseUrl + "/api/{subjectType}/{subjectId}/Likes";
         if (subjectType === undefined || subjectType === null)
             throw new Error("The parameter 'subjectType' must be defined.");
@@ -618,7 +618,7 @@ export class Client {
      * @param filtering_ObstaclesFilter_Obstacles (optional) 
      * @return Success
      */
-    get_Spots(take?: number | undefined, offset?: number | undefined, sorting_Option?: SortOption | undefined, sorting_Ascending?: boolean | undefined, filtering_SurfaceFilter_GreaterThan?: boolean | undefined, filtering_SurfaceFilter_Score?: number | undefined, filtering_ObstaclesFilter_Obstacles?: ObstacleType[] | undefined): Promise<SpotDtoWithTotalCountApiResponse> {
+    get_Spots(take: number | undefined, offset: number | undefined, sorting_Option: SortOption | undefined, sorting_Ascending: boolean | undefined, filtering_SurfaceFilter_GreaterThan: boolean | undefined, filtering_SurfaceFilter_Score: number | undefined, filtering_ObstaclesFilter_Obstacles: ObstacleType[] | undefined): Promise<SpotDtoWithTotalCountApiResponse> {
         let url_ = this.baseUrl + "/api/spots?";
         if (take === null)
             throw new Error("The parameter 'take' cannot be null.");
@@ -724,7 +724,7 @@ export class Client {
      * @param obstaclesFilter_Obstacles (optional) 
      * @return Success
      */
-    get_Perma_And_Temp_Spots_Marker_Data(surfaceFilter_GreaterThan?: boolean | undefined, surfaceFilter_Score?: number | undefined, obstaclesFilter_Obstacles?: ObstacleType[] | undefined): Promise<SpotMarkerDataDtoListApiResponse> {
+    get_Perma_And_Temp_Spots_Marker_Data(surfaceFilter_GreaterThan: boolean | undefined, surfaceFilter_Score: number | undefined, obstaclesFilter_Obstacles: ObstacleType[] | undefined): Promise<SpotMarkerDataDtoListApiResponse> {
         let url_ = this.baseUrl + "/api/spots/marker?";
         if (surfaceFilter_GreaterThan === null)
             throw new Error("The parameter 'surfaceFilter_GreaterThan' cannot be null.");
@@ -809,10 +809,15 @@ export class Client {
     /**
      * @param take (optional) 
      * @param offset (optional) 
+     * @param sorting_Option (optional) 
+     * @param sorting_Ascending (optional) 
+     * @param filtering_SurfaceFilter_GreaterThan (optional) 
+     * @param filtering_SurfaceFilter_Score (optional) 
+     * @param filtering_ObstaclesFilter_Obstacles (optional) 
      * @param authorization (optional) 
      * @return Success
      */
-    get_Spot_Videos(take?: number | undefined, offset?: number | undefined, authorization?: string | undefined): Promise<SpotVideoDtoWithTotalCountApiResponse> {
+    get_Spot_Videos(take: number | undefined, offset: number | undefined, sorting_Option: SortOption | undefined, sorting_Ascending: boolean | undefined, filtering_SurfaceFilter_GreaterThan: boolean | undefined, filtering_SurfaceFilter_Score: number | undefined, filtering_ObstaclesFilter_Obstacles: ObstacleType[] | undefined, authorization: string | undefined): Promise<SpotVideoDtoWithTotalCountApiResponse> {
         let url_ = this.baseUrl + "/api/spotVideos?";
         if (take === null)
             throw new Error("The parameter 'take' cannot be null.");
@@ -822,6 +827,26 @@ export class Client {
             throw new Error("The parameter 'offset' cannot be null.");
         else if (offset !== undefined)
             url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+        if (sorting_Option === null)
+            throw new Error("The parameter 'sorting_Option' cannot be null.");
+        else if (sorting_Option !== undefined)
+            url_ += "Sorting.Option=" + encodeURIComponent("" + sorting_Option) + "&";
+        if (sorting_Ascending === null)
+            throw new Error("The parameter 'sorting_Ascending' cannot be null.");
+        else if (sorting_Ascending !== undefined)
+            url_ += "Sorting.Ascending=" + encodeURIComponent("" + sorting_Ascending) + "&";
+        if (filtering_SurfaceFilter_GreaterThan === null)
+            throw new Error("The parameter 'filtering_SurfaceFilter_GreaterThan' cannot be null.");
+        else if (filtering_SurfaceFilter_GreaterThan !== undefined)
+            url_ += "Filtering.SurfaceFilter.GreaterThan=" + encodeURIComponent("" + filtering_SurfaceFilter_GreaterThan) + "&";
+        if (filtering_SurfaceFilter_Score === null)
+            throw new Error("The parameter 'filtering_SurfaceFilter_Score' cannot be null.");
+        else if (filtering_SurfaceFilter_Score !== undefined)
+            url_ += "Filtering.SurfaceFilter.Score=" + encodeURIComponent("" + filtering_SurfaceFilter_Score) + "&";
+        if (filtering_ObstaclesFilter_Obstacles === null)
+            throw new Error("The parameter 'filtering_ObstaclesFilter_Obstacles' cannot be null.");
+        else if (filtering_ObstaclesFilter_Obstacles !== undefined)
+            filtering_ObstaclesFilter_Obstacles && filtering_ObstaclesFilter_Obstacles.forEach(item => { url_ += "Filtering.ObstaclesFilter.Obstacles=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -857,10 +882,12 @@ export class Client {
     /**
      * @param take (optional) 
      * @param offset (optional) 
+     * @param option (optional) 
+     * @param ascending (optional) 
      * @param authorization (optional) 
      * @return Success
      */
-    get_Spot_Videos_Of_Spot(spotName: string, take?: number | undefined, offset?: number | undefined, authorization?: string | undefined): Promise<SpotVideoDtoWithTotalCountApiResponse> {
+    get_Spot_Videos_Of_Spot(spotName: string, take: number | undefined, offset: number | undefined, option: SortOption | undefined, ascending: boolean | undefined, authorization: string | undefined): Promise<SpotVideoDtoWithTotalCountApiResponse> {
         let url_ = this.baseUrl + "/api/spots/{spotName}/spotVideos?";
         if (spotName === undefined || spotName === null)
             throw new Error("The parameter 'spotName' must be defined.");
@@ -873,6 +900,14 @@ export class Client {
             throw new Error("The parameter 'offset' cannot be null.");
         else if (offset !== undefined)
             url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+        if (option === null)
+            throw new Error("The parameter 'option' cannot be null.");
+        else if (option !== undefined)
+            url_ += "Option=" + encodeURIComponent("" + option) + "&";
+        if (ascending === null)
+            throw new Error("The parameter 'ascending' cannot be null.");
+        else if (ascending !== undefined)
+            url_ += "Ascending=" + encodeURIComponent("" + ascending) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -909,7 +944,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    add_Spot_Video(spotName: string, authorization: string, body?: AddSpotVideoCommand | undefined): Promise<SpotVideoDtoApiResponse> {
+    add_Spot_Video(spotName: string, authorization: string, body: AddSpotVideoCommand | undefined): Promise<SpotVideoDtoApiResponse> {
         let url_ = this.baseUrl + "/api/spots/{spotName}/spotVideos";
         if (spotName === undefined || spotName === null)
             throw new Error("The parameter 'spotName' must be defined.");
@@ -991,7 +1026,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    create_Spot(authorization: string, body?: CreateTempSpotCommand | undefined): Promise<GuidApiResponse> {
+    create_Spot(authorization: string, body: CreateTempSpotCommand | undefined): Promise<GuidApiResponse> {
         let url_ = this.baseUrl + "/api/TempSpots";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1039,7 +1074,7 @@ export class Client {
      * @param filtering_ObstaclesFilter_Obstacles (optional) 
      * @return Success
      */
-    get_Temp_Spots(take?: number | undefined, offset?: number | undefined, sorting_Option?: SortOption | undefined, sorting_Ascending?: boolean | undefined, filtering_SurfaceFilter_GreaterThan?: boolean | undefined, filtering_SurfaceFilter_Score?: number | undefined, filtering_ObstaclesFilter_Obstacles?: ObstacleType[] | undefined): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
+    get_Temp_Spots(take: number | undefined, offset: number | undefined, sorting_Option: SortOption | undefined, sorting_Ascending: boolean | undefined, filtering_SurfaceFilter_GreaterThan: boolean | undefined, filtering_SurfaceFilter_Score: number | undefined, filtering_ObstaclesFilter_Obstacles: ObstacleType[] | undefined): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
         let url_ = this.baseUrl + "/api/TempSpots?";
         if (take === null)
             throw new Error("The parameter 'take' cannot be null.");
@@ -1180,7 +1215,7 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    vote(tempSpotId: string, authorization: string, body?: VoteCommand | undefined): Promise<VoteResultApiResponse> {
+    vote(tempSpotId: string, authorization: string, body: VoteCommand | undefined): Promise<VoteResultApiResponse> {
         let url_ = this.baseUrl + "/api/tempSpots/{tempSpotId}/vote";
         if (tempSpotId === undefined || tempSpotId === null)
             throw new Error("The parameter 'tempSpotId' must be defined.");

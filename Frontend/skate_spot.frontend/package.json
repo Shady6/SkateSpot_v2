@@ -25,6 +25,7 @@
     "@types/react-leaflet": "^2.8.2",
     "@types/react-leaflet-markercluster": "^2.0.0",
     "@types/react-router-dom": "^5.1.8",
+    "@types/underscore": "^1.11.3",
     "@types/uuid": "^8.3.1",
     "immer": "^9.0.5",
     "install": "^0.13.0",
@@ -49,6 +50,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
     "typescript": "^4.3.5",
+    "underscore": "^1.13.1",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"
   },

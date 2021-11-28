@@ -75,16 +75,27 @@ const slice = createSlice({
   reducers: {
     applyFilters: state => {
       state.appliedFilter.sort = state.filterInMaking.sort
-      state.appliedFilter.filter = { tags: undefined, surfaceScore: undefined }
-      if (state.filterInMaking.filter.surfaceScore.enabled)
+
+      if (state.filterInMaking.filter.surfaceScore.enabled) {
+        state.appliedFilter.filter ??= {}
         state.appliedFilter.filter.surfaceScore = {
           score: state.filterInMaking.filter.surfaceScore.score,
           gtFiltering: state.filterInMaking.filter.surfaceScore.gtFiltering,
         }
-      if (state.filterInMaking.filter.tags.enabled)
+      }
+
+      if (state.filterInMaking.filter.tags.enabled) {
+        state.appliedFilter.filter ??= {}
         state.appliedFilter.filter.tags = state.filterInMaking.filter.tags.tags
           .filter(t => t.isSelected)
           .map(t => t.obstacleType)
+      }
+
+      if (
+        !state.filterInMaking.filter.surfaceScore.enabled &&
+        !state.filterInMaking.filter.tags.enabled
+      )
+        state.appliedFilter.filter = undefined
     },
     clearFilters: _ => filterInitialState,
     setSortingOption: (state, action: PayloadAction<SortOption>) => {

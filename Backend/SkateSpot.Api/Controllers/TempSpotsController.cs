@@ -46,7 +46,9 @@ namespace SkateSpot.Api.Controllers
 
 		[HttpGet]
 		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<TempSpotWithVerificationDto>>), 200)]
-		public async Task<ActionResult> GetTempSpots([FromQuery] int take, [FromQuery] int offset, [FromQuery] SortAndFilter snf)
+		public async Task<ActionResult> GetTempSpots([FromQuery] int take,
+											   [FromQuery] int offset,
+											   [FromQuery] SortAndFilter snf)
 		{
 			return Ok(new WithTotalCount<TempSpotWithVerificationDto>
 			{
@@ -63,6 +65,7 @@ namespace SkateSpot.Api.Controllers
 
 				TotalCount = await _dbContext.TempSpots
 				.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
+				.ApplySortingAndFilters(snf)
 				.CountAsync()
 			});
 		}

@@ -43,21 +43,36 @@ namespace SkateSpot.Api.Controllers
 													[FromQuery] int offset,
 													[FromQuery] SortAndFilter snf)
 		{
-			return Ok();
-
-			return Ok(new WithTotalCount<SpotVideoDto>
-			{
-				Data = await _mapper.ProjectTo<SpotVideoDto>(
-					_dbContext.Spots
-					.ApplyFilters(snf.Filtering)
-					.Cast<Spot>()
-					.SelectMany(s => s.Videos)
-					.ApplySort(snf.Sorting)
-					.Skip(offset)
-					.Take(take)).ToArrayAsync(),
-				TotalCount = await _dbContext.SpotVideos
-				.CountAsync()
-			});
+			if (snf.Filtering == null ||
+				(snf.Filtering.SurfaceFilter == null && snf.Filtering.ObstaclesFilter == null))
+				return Ok(new WithTotalCount<SpotVideoDto>
+				{
+					Data = await _mapper.ProjectTo<SpotVideoDto>(
+						_dbContext.SpotVideos
+						.ApplySort(snf.Sorting)
+						.Cast<SpotVideo>()
+						.Skip(offset)
+						.Take(take)).ToArrayAsync(),
+					TotalCount = await _dbContext.SpotVideos
+					.CountAsync()
+				});
+			else
+				return Ok(new WithTotalCount<SpotVideoDto>
+				{
+					Data = await _mapper.ProjectTo<SpotVideoDto>(
+						_dbContext.Spots
+						.ApplyFilters(snf.Filtering)
+						.Cast<Spot>()
+						.SelectMany(s => s.Videos)
+						.ApplySort(snf.Sorting)
+						.Skip(offset)
+						.Take(take)).ToArrayAsync(),
+					TotalCount = await _dbContext.Spots
+						.ApplyFilters(snf.Filtering)
+						.Cast<Spot>()
+						.SelectMany(s => s.Videos)
+					.CountAsync()
+				});
 		}
 
 		[AllowAnonymous]
@@ -65,14 +80,15 @@ namespace SkateSpot.Api.Controllers
 		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<SpotVideoDto>>), 200)]
 		public async Task<ActionResult> GetSpotVideosOfSpot([FromRoute] string spotName,
 													  [FromQuery] int take,
-													  [FromQuery] int offset)
+													  [FromQuery] int offset,
+													  [FromQuery] Sorting sorting)
 		{
 			return Ok(new WithTotalCount<SpotVideoDto>
 			{
 				Data = await _mapper.ProjectTo<SpotVideoDto>(
 				  _dbContext.SpotVideos
-				 .OrderByDescending(v => v.CreatedAt)
 				 .Where(v => v.Spot.Name == spotName)
+				 .ApplySort(sorting)
 				 .Skip(offset)
 				 .Take(take))
 				.ToArrayAsync(),

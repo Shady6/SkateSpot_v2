@@ -45,8 +45,8 @@ const LinkImageUpload: React.FC<Props> = ({
     } else {
       try {
         const res = await new ApiClient().get_Base64_Images(
-          'Bearer ' + authState?.content?.jwToken ?? '',
-          [input]
+          [input],
+          'Bearer ' + authState?.content?.jwToken ?? ''
         )
         if (res!.content![0]!.success) {
           addLinkToState(res!.content![0]!.base64 as string)

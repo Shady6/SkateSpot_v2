@@ -36,7 +36,8 @@ export const useFetchOnScroll = (
       state.listWithCount.data.length < state.listWithCount.totalCount &&
       scrolled >= 0.8 &&
       scrolled <= 1
-    )
+    ) {
       dispatch(fetchAction())
+    }
   }, [scrolled])
 }

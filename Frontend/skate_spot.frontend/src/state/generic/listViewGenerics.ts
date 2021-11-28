@@ -82,12 +82,12 @@ export const listViewSpecifics: IListViewSpecifics = {
       return client.get_Spot_Videos(
         take,
         skip,
-        undefined,
         snf.sort?.option,
         snf.sort?.ascending,
         snf.filter?.surfaceScore?.gtFiltering,
         snf.filter?.surfaceScore?.score,
-        snf.filter?.tags
+        snf.filter?.tags,
+        undefined
       ) as Promise<ApiResponse<ListWithCount<SpotVideoDto>>>
     },
     getSpecificState: (state: RootState) => state.spotVideosState,
