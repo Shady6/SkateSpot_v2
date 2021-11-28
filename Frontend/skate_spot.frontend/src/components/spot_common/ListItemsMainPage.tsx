@@ -1,12 +1,10 @@
 import { CircularProgress } from '@material-ui/core'
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useClearFilters } from '../../hooks/useClearFilters'
+import { useFetchOnFilterChanged } from '../../hooks/useFetchOnFilterChanged'
 import { useFetchOnScroll } from '../../hooks/useFetchOnScroll'
-import {
-  SpotDto,
-  SpotVideoDto,
-  TempSpotWithVerificationDto,
-} from '../../skate_spot_api/client'
+import { SpotDto, SpotVideoDto, TempSpotDto } from '../../skate_spot_api/client'
 import { getAllCommonThunks } from '../../state/actions/thunk_creators/allCommonThunks'
 import { ListViewTypes } from '../../state/generic/listViewGenerics'
 import { ListViewState } from '../../state/reducers/genericListViewReducer'
@@ -15,8 +13,6 @@ import { FilterAndSortPane } from '../filters/FilterAndSortPane'
 import { Spot } from '../spot/Spot'
 import { SpotVideo } from '../spot_video/spot_videos/SpotVideo'
 import { TempSpot } from '../temp_spot/main/TempSpot'
-import { useFetchOnFilterChanged } from '../../hooks/useFetchOnFilterChanged'
-import { useEffect } from 'react'
 
 interface Props {
   listViewType: ListViewTypes
@@ -35,7 +31,7 @@ export const ListItemsMainPage: React.FC<Props> = ({ listViewType }) => {
     getAllCommonThunks()[listViewType].fetchListItems,
     listViewType
   )
-
+  useClearFilters()
   useFetchOnFilterChanged(pageInitialized, listViewType)
 
   const state = useSelector<RootState, ListViewState<any>>(
@@ -63,7 +59,7 @@ export const ListItemsMainPage: React.FC<Props> = ({ listViewType }) => {
         return (
           <TempSpot
             key={(listItem as { id: string }).id}
-            tempSpot={listItem as TempSpotWithVerificationDto}
+            tempSpot={listItem as TempSpotDto}
           />
         )
     }

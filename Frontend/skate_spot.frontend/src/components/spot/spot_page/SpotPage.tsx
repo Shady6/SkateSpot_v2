@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import _ from 'underscore'
+import { useClearFilters } from '../../../hooks/useClearFilters'
 import { useFetchOnFilterChanged } from '../../../hooks/useFetchOnFilterChanged'
 import { useFetchOnScroll } from '../../../hooks/useFetchOnScroll'
 import { useSpotFromHistoryStateOrFetch } from '../../../hooks/useSpotFromHistoryStateOrFetch'
@@ -59,7 +60,7 @@ export const SpotPage: React.FC<Props> = () => {
   )
 
   useFetchOnScroll(customFetchThunk, ListViewTypes.SPOT_VIDEOS)
-
+  useClearFilters()
   useFetchOnFilterChanged(true, ListViewTypes.SPOT_VIDEOS, customFetchThunk)
 
   return (

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SkateSpot.Application.DTOs.DomainDTOs
 {
-	public class TempSpotWithVerificationDto
+	public class TempSpotDto
 	{
 		public Guid Id { get; set; }
 		public DateTime CreatedAt { get; set; }

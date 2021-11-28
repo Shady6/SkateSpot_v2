@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { TempSpotWithVerificationDto } from '../../skate_spot_api/client'
+import { TempSpotDto } from '../../skate_spot_api/client'
 import { vote } from '../actions/tempSpotActions'
 import { ListViewTypes } from '../generic/listViewGenerics'
 import {
@@ -9,7 +9,7 @@ import {
   reducerDefaultCases,
 } from './genericListViewReducer'
 
-export type TempSpotState = ListViewState<TempSpotWithVerificationDto>
+export type TempSpotState = ListViewState<TempSpotDto>
 
 const initialState: TempSpotState = {
   listWithCount: {
@@ -37,7 +37,7 @@ const tempSpotsSlice = createSlice({
       const tempSpot = listViewReducerHandlers.like.fulfilled(state, {
         listItemId: action.payload.tempSpotId,
         result: action.payload.result?.votes,
-      }) as TempSpotWithVerificationDto
+      }) as TempSpotDto
 
       tempSpot!.verificationProcess!.isVerified =
         action.payload.result!.verified

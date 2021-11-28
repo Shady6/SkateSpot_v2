@@ -4,7 +4,7 @@ import {
   CommentSubjectType,
   SpotDto,
   SpotVideoDto,
-  TempSpotWithVerificationDto,
+  TempSpotDto,
 } from '../../skate_spot_api/client'
 import { IAppliedFilter, IFilter } from '../reducers/filtersReducer'
 import {
@@ -67,7 +67,7 @@ export const listViewSpecifics: IListViewSpecifics = {
         snf.filter?.surfaceScore?.gtFiltering,
         snf.filter?.surfaceScore?.score,
         snf.filter?.tags
-      ) as Promise<ApiResponse<ListWithCount<TempSpotWithVerificationDto>>>,
+      ) as Promise<ApiResponse<ListWithCount<TempSpotDto>>>,
     getSpecificState: (state: RootState) => state.tempSpotsState,
     name: 'tempSpots',
     commentSubjectType: CommentSubjectType.TempSpots,

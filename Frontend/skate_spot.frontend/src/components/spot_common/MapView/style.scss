@@ -1,12 +1,35 @@
-#spot-preview-modal {
+.on-top-of-map {
+  z-index: 1000;
+  position: absolute;
   cursor: default;
   background-color: rgba(0, 0, 0, 0.9);
+}
+
+#spot-preview-modal {
   height: 100%;
-  z-index: 1000;
   overflow-y: auto;
   font-size: 0.85rem;
+  right: 0;
+  top: 0;
 
   span {
     font-size: 0.75rem !important;
   }
+}
+
+#filter-btn {
+  top: 15%;
+  background-color: rgb(31, 141, 192);
+  opacity: 0.8;
+}
+
+#filters-modal {
+  border-radius: 0 25px 25px 0;
+  background-color: black;
+  opacity: 0.9;
+}
+
+#filters-container {
+  background-color: transparent;
+  top: 15%;
 }

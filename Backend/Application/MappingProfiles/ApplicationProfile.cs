@@ -39,7 +39,7 @@ namespace SkateSpot.Application.MappingProfiles
 			CreateMap<VerificationProcess, VerificationProcessDto>()
 				.ForMember(d => d.Discussion, opt => opt.MapFrom(s =>
 					s.Discussion.OrderByDescending(c => c.CreatedAt)));
-			CreateMap<TempSpot, TempSpotWithVerificationDto>()
+			CreateMap<TempSpot, TempSpotDto>()
 				.ForMember(d => d.Obstacles, opt =>
 				opt.MapFrom(s => s.Obstacles.Select(o => o.ObstacleType)));
 

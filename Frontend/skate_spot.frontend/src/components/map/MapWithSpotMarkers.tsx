@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Popup } from 'react-leaflet'
 import MyMarkerClusterGroup from 'react-leaflet-markercluster'
+import { useDispatch, useSelector } from 'react-redux'
 import addressToHtml from '../../functions/map/addressToHtml'
-import { useAddressDataMarkers } from '../../hooks/map/useAddressDataMarkers'
+import { SpotMarkerDataDto } from '../../skate_spot_api/client'
+import { getMarkersData } from '../../state/actions/mapSpotsActions'
+import { RootState } from '../../state/store'
 import { DefaultAddress } from '../../types/types'
+import { ColorCodedMarker } from './ColorCodedMarker'
 import Legend from './Legend'
 import Map from './Map'
-import { ColorCodedMarker } from './ColorCodedMarker'
+import { filterActions } from '../../state/reducers/filtersReducer'
 
 interface Props {
   displaySelectedMarkerLegend?: boolean
@@ -17,14 +21,22 @@ const MapWithSpotMarkers: React.FC<Props> = ({
   children,
   displaySelectedMarkerLegend = false,
 }) => {
-  const spotMarkerData = useAddressDataMarkers()
+  const dispatch = useDispatch()
+  const spotMarkersData = useSelector<RootState, SpotMarkerDataDto[]>(
+    state => state.mapSpotsReducer.markersData
+  )
+
+  useEffect(() => {
+    dispatch(getMarkersData())
+  }, [])
+
   return (
     <div>
       <Map>
         {/* @ts-ignore */}
         <MyMarkerClusterGroup showCoverageOnHover={false}>
-          {spotMarkerData &&
-            spotMarkerData.map(m => (
+          {spotMarkersData.length &&
+            spotMarkersData.map(m => (
               <ColorCodedMarker key={m.name} spotMarkerData={m}>
                 <Popup>
                   <b>{m.name}</b>

@@ -9,7 +9,7 @@ export const ApplyFilters = () => {
   return (
     <Button
       onClick={_ => dispatch(filterActions.applyFilters())}
-      className='me-3'
+      className='me-2'
       variant='contained'
       color='primary'>
       Apply

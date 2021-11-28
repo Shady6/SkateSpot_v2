@@ -4,7 +4,7 @@ import {
   CommentDto,
   ObstacleType,
   SmallUserDto,
-  TempSpotWithVerificationDto,
+  TempSpotDto,
 } from '../../../skate_spot_api/client'
 import { vote } from '../../../state/actions/tempSpotActions'
 import { likeThunkCreator } from '../../../state/actions/thunk_creators/likeThunkCreator'
@@ -20,7 +20,7 @@ import { SpotImages } from '../../spot_common/SpotImages'
 import { SurfaceScore } from '../../spot_common/SurfaceScore'
 
 interface Props {
-  tempSpot: TempSpotWithVerificationDto
+  tempSpot: TempSpotDto
 }
 
 export const vote_like_adapter = ({

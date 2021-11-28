@@ -1,11 +1,9 @@
 import React from 'react'
-import { ApplyFilters } from './ApplyFilters'
-import { ClearFilters } from './ClearFilters'
+import { ListViewTypes } from '../../state/generic/listViewGenerics'
+import { FilterApplyCancelBtns } from './FilterApplyCancelBtns'
 import { SortingOptions } from './SortingOptions'
 import { SurfaceScoreFilter } from './SurfaceScoreFilter'
 import { TagsFilter } from './TagsFilter'
-import { ListViewTypes } from '../../state/generic/listViewGenerics'
-import { FilterApplyCancelBtns } from './FilterApplyCancelBtns'
 
 interface Props {
   listViewType: ListViewTypes

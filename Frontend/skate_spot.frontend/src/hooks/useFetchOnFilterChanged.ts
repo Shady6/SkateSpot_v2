@@ -5,7 +5,7 @@ import { SortOption } from '../skate_spot_api/client'
 import { getAllCommonActions } from '../state/actions/allCommonActions'
 import { getAllCommonThunks } from '../state/actions/thunk_creators/allCommonThunks'
 import { ListViewTypes } from '../state/generic/listViewGenerics'
-import { IAppliedFilter, filterActions } from '../state/reducers/filtersReducer'
+import { IAppliedFilter } from '../state/reducers/filtersReducer'
 import { RootState } from '../state/store'
 
 export const useFetchOnFilterChanged = (
@@ -18,10 +18,6 @@ export const useFetchOnFilterChanged = (
     state => state.filtersState.appliedFilter,
     _.isEqual
   )
-
-  useEffect(() => {
-    dispatch(filterActions.clearFilters())
-  }, [])
 
   useEffect(() => {
     if (

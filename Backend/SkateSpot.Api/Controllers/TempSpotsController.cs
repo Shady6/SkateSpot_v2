@@ -45,14 +45,14 @@ namespace SkateSpot.Api.Controllers
 		}
 
 		[HttpGet]
-		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<TempSpotWithVerificationDto>>), 200)]
+		[ProducesResponseType(typeof(ApiResponse<WithTotalCount<TempSpotDto>>), 200)]
 		public async Task<ActionResult> GetTempSpots([FromQuery] int take,
 											   [FromQuery] int offset,
 											   [FromQuery] SortAndFilter snf)
 		{
-			return Ok(new WithTotalCount<TempSpotWithVerificationDto>
+			return Ok(new WithTotalCount<TempSpotDto>
 			{
-				Data = await _mapper.ProjectTo<TempSpotWithVerificationDto>(
+				Data = await _mapper.ProjectTo<TempSpotDto>(
 					_dbContext.TempSpots
 					.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
 					.Include(s => s.VerificationProcess)
@@ -71,10 +71,10 @@ namespace SkateSpot.Api.Controllers
 		}
 
 		[HttpGet("{id}")]
-		[ProducesResponseType(typeof(ApiResponse<TempSpotWithVerificationDto>), 200)]
+		[ProducesResponseType(typeof(ApiResponse<TempSpotDto>), 200)]
 		public async Task<ActionResult> GetTempSpot([FromRoute] Guid id)
 		{
-			return Ok(await _mapper.ProjectTo<TempSpotWithVerificationDto>(_dbContext.TempSpots
+			return Ok(await _mapper.ProjectTo<TempSpotDto>(_dbContext.TempSpots
 					).FirstOrDefaultAsync(s => s.Id == id));
 		}
 

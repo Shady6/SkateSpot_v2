@@ -1,9 +1,6 @@
-import {
-  SpotDto,
-  TempSpotWithVerificationDto,
-} from '../../skate_spot_api/client'
+import { SpotDto, TempSpotDto } from '../../skate_spot_api/client'
 
-export const tempSpotToSpot = (t: TempSpotWithVerificationDto): SpotDto => ({
+export const tempSpotToSpot = (t: TempSpotDto): SpotDto => ({
   address: t.address,
   author: t.author,
   comments: t.verificationProcess.discussion,

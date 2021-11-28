@@ -1,4 +1,5 @@
 import { Button, Checkbox, Slider, TextField } from '@material-ui/core'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   filterActions,
@@ -11,11 +12,13 @@ export const SurfaceScoreFilter = () => {
     state => state.filtersState.filterInMaking.filter.surfaceScore
   )
   const dispatch = useDispatch()
+  const [sliderValue, setSliderValue] = useState(surfaceFilter.score)
 
   const handleSurfaceScoreInputChange = (value: number) => {
-    if (value > 10) dispatch(filterActions.setSurfaceScore(10))
-    else if (value < 1) dispatch(filterActions.setSurfaceScore(1))
-    else dispatch(filterActions.setSurfaceScore(value))
+    if (value > 10) value = 10
+    else if (value < 1) value = 1
+    dispatch(filterActions.setSurfaceScore(value))
+    setSliderValue(value)
   }
 
   return (
@@ -37,16 +40,15 @@ export const SurfaceScoreFilter = () => {
           disabled={!surfaceFilter.enabled}
           min={1}
           max={10}
-          value={surfaceFilter.score}
-          onChange={(_, value) =>
-            handleSurfaceScoreInputChange(value as number)
-          }
+          onChangeCommitted={_ => handleSurfaceScoreInputChange(sliderValue)}
+          onChange={(_, value) => setSliderValue(value as number)}
+          value={sliderValue}
         />
         <TextField
           disabled={!surfaceFilter.enabled}
           variant='standard'
           className='ms-3'
-          value={surfaceFilter.score}
+          value={sliderValue}
           size='small'
           onChange={e => handleSurfaceScoreInputChange(Number(e.target.value))}
           type='number'

@@ -1074,7 +1074,7 @@ export class Client {
      * @param filtering_ObstaclesFilter_Obstacles (optional) 
      * @return Success
      */
-    get_Temp_Spots(take: number | undefined, offset: number | undefined, sorting_Option: SortOption | undefined, sorting_Ascending: boolean | undefined, filtering_SurfaceFilter_GreaterThan: boolean | undefined, filtering_SurfaceFilter_Score: number | undefined, filtering_ObstaclesFilter_Obstacles: ObstacleType[] | undefined): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
+    get_Temp_Spots(take: number | undefined, offset: number | undefined, sorting_Option: SortOption | undefined, sorting_Ascending: boolean | undefined, filtering_SurfaceFilter_GreaterThan: boolean | undefined, filtering_SurfaceFilter_Score: number | undefined, filtering_ObstaclesFilter_Obstacles: ObstacleType[] | undefined): Promise<TempSpotDtoWithTotalCountApiResponse> {
         let url_ = this.baseUrl + "/api/TempSpots?";
         if (take === null)
             throw new Error("The parameter 'take' cannot be null.");
@@ -1118,13 +1118,13 @@ export class Client {
         });
     }
 
-    protected processGet_Temp_Spots(response: Response): Promise<TempSpotWithVerificationDtoWithTotalCountApiResponse> {
+    protected processGet_Temp_Spots(response: Response): Promise<TempSpotDtoWithTotalCountApiResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <TempSpotWithVerificationDtoWithTotalCountApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <TempSpotDtoWithTotalCountApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -1132,13 +1132,13 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<TempSpotWithVerificationDtoWithTotalCountApiResponse>(<any>null);
+        return Promise.resolve<TempSpotDtoWithTotalCountApiResponse>(<any>null);
     }
 
     /**
      * @return Success
      */
-    get_Temp_Spot(id: string): Promise<TempSpotWithVerificationDtoApiResponse> {
+    get_Temp_Spot(id: string): Promise<TempSpotDtoApiResponse> {
         let url_ = this.baseUrl + "/api/TempSpots/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1157,13 +1157,13 @@ export class Client {
         });
     }
 
-    protected processGet_Temp_Spot(response: Response): Promise<TempSpotWithVerificationDtoApiResponse> {
+    protected processGet_Temp_Spot(response: Response): Promise<TempSpotDtoApiResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <TempSpotWithVerificationDtoApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <TempSpotDtoApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -1171,7 +1171,7 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<TempSpotWithVerificationDtoApiResponse>(<any>null);
+        return Promise.resolve<TempSpotDtoApiResponse>(<any>null);
     }
 
     /**
@@ -1544,7 +1544,7 @@ export interface StringApiResponse {
     error: ErrorResponse;
 }
 
-export interface TempSpotWithVerificationDto {
+export interface TempSpotDto {
     id: string;
     createdAt: Date;
     name: string | undefined;
@@ -1557,18 +1557,18 @@ export interface TempSpotWithVerificationDto {
     images: ImageDto[] | undefined;
 }
 
-export interface TempSpotWithVerificationDtoApiResponse {
-    content: TempSpotWithVerificationDto;
+export interface TempSpotDtoApiResponse {
+    content: TempSpotDto;
     error: ErrorResponse;
 }
 
-export interface TempSpotWithVerificationDtoWithTotalCount {
-    data: TempSpotWithVerificationDto[] | undefined;
+export interface TempSpotDtoWithTotalCount {
+    data: TempSpotDto[] | undefined;
     totalCount: number;
 }
 
-export interface TempSpotWithVerificationDtoWithTotalCountApiResponse {
-    content: TempSpotWithVerificationDtoWithTotalCount;
+export interface TempSpotDtoWithTotalCountApiResponse {
+    content: TempSpotDtoWithTotalCount;
     error: ErrorResponse;
 }
 
