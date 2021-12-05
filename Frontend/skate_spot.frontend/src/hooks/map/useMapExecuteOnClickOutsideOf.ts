@@ -1,17 +1,25 @@
+import { LeafletMouseEvent } from 'leaflet'
 import { useMapEvents } from 'react-leaflet'
 
 export const useMapExecuteOnClickOutsideOf = ({
-  outsideOfId,
+  outsideOfIds,
   funcToExecute,
 }: {
-  outsideOfId: string
-  funcToExecute: () => void
+  outsideOfIds: string[]
+  funcToExecute: (e: LeafletMouseEvent) => void
 }) => {
   useMapEvents({
     click(e) {
-      // @ts-ignore
-      if (e.originalEvent.path.some(p => p.id === outsideOfId)) return
-      funcToExecute()
+      if (
+        // @ts-ignore
+        e.originalEvent.path
+          // @ts-ignore
+          .map(x => x.id)
+          // @ts-ignore
+          .some(x => outsideOfIds.indexOf(x) !== -1)
+      )
+        return
+      funcToExecute(e)
     },
   })
 }

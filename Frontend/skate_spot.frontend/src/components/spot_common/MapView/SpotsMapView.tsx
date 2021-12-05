@@ -18,11 +18,13 @@ import { ColorCodedMarker } from '../../map/ColorCodedMarker'
 import Legend from '../../map/Legend'
 import Map from '../../map/Map'
 import { OnTopOfMapContainer } from '../../map/OnTopOfMapContainer'
-import { FilterBtnOnMap } from './FilterBtnOnMap'
-import { FiltersModal } from './FiltersModal'
+import { filterBtnId, FilterBtnOnMap } from './FilterBtnOnMap'
+import { FiltersModal, filterModalId } from './FiltersModal'
 import { SpotModal } from './SpotModal'
 import './style.scss'
 import { v4 } from 'uuid'
+
+export const spotPreviewModalId = 'spot-preview-modal'
 
 export const SpotsMapView = () => {
   const dispatch = useDispatch()
@@ -46,7 +48,8 @@ export const SpotsMapView = () => {
           <OnTopOfMapContainer
             className='col-12 col-md-5 col-lg-4 d-flex flex-column'
             hide={{
-              id: 'spot-preview-modal',
+              mainContainerId: spotPreviewModalId,
+              dontHideOnIds: [filterBtnId, filterModalId],
               funcToHide: () =>
                 dispatch(mapSpotsActions.toggleSpotModal(false)),
             }}>

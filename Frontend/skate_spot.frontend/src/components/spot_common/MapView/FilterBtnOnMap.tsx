@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { mapSpotsActions } from '../../../state/reducers/mapSpotsReducer'
 import { RootState } from '../../../state/store'
 
+export const filterBtnId = 'filter-btn'
+
 export const FilterBtnOnMap = () => {
   const dispatch = useDispatch()
   const isFilterModalOpen = useSelector<RootState, boolean>(
@@ -12,11 +14,11 @@ export const FilterBtnOnMap = () => {
 
   return (
     <IconButton
-      onClick={() => {
+      onClick={e => {
         dispatch(mapSpotsActions.toggleFilterModal(!isFilterModalOpen))
       }}
       className='on-top-of-map ms-2'
-      id='filter-btn'>
+      id={filterBtnId}>
       <FilterAltIcon />
     </IconButton>
   )

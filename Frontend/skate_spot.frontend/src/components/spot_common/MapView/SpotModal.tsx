@@ -1,6 +1,7 @@
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress, IconButton } from '@material-ui/core'
+import CloseIcon from '@mui/icons-material/Close'
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import useMeasure from 'react-use-measure'
 import { createCommentComponent } from '../../../functions/component_creators/commentsCreator'
@@ -13,10 +14,15 @@ import {
   SpotDto,
   TempSpotDto,
 } from '../../../skate_spot_api/client'
+import { getAllCommonActions } from '../../../state/actions/allCommonActions'
 import { spotLike } from '../../../state/actions/spotAcionts'
 import { likeThunkCreator } from '../../../state/actions/thunk_creators/likeThunkCreator'
 import { ListViewTypes } from '../../../state/generic/listViewGenerics'
-import { MapSpotsState } from '../../../state/reducers/mapSpotsReducer'
+import { WithSocial } from '../../../state/reducers/genericListViewReducer'
+import {
+  mapSpotsActions,
+  MapSpotsState,
+} from '../../../state/reducers/mapSpotsReducer'
 import { RootState } from '../../../state/store'
 import CommentBtn from '../../social/comment/CommentBtn'
 import { MainLikeButtons } from '../../social/comment/MainLikeButtons'
@@ -29,12 +35,19 @@ import { SurfaceScore } from '../SurfaceScore'
 import './style.scss'
 
 export const SpotModal = () => {
+  const dispatch = useDispatch()
   const [modalBoundsRef, modalBounds] = useMeasure()
   const modalRef = useRef<null | HTMLDivElement>(null)
   const [commentsOpen, setCommentsOpen] = useState(false)
 
   const state = useSelector<RootState, MapSpotsState>(
     state => state.mapSpotsReducer
+  )
+  const spotFromState = useSelector<RootState, SpotDto | null>(
+    state => state.spotsState.listWithCount.data?.[0]
+  )
+  const tempSpotFromState = useSelector<RootState, TempSpotDto | null>(
+    state => state.tempSpotsState.listWithCount.data?.[0]
   )
 
   useEffect(() => {
@@ -46,9 +59,25 @@ export const SpotModal = () => {
   const isTempSpot = state.currentSpotInModal
     ? !!(state.currentSpotInModal as TempSpotDto).verificationProcess
     : false
-  const spot = isTempSpot
-    ? tempSpotToSpot(state.currentSpotInModal as TempSpotDto)
-    : (state.currentSpotInModal as SpotDto)
+  const spot =
+    spotFromState || tempSpotFromState
+      ? isTempSpot
+        ? tempSpotToSpot(tempSpotFromState as TempSpotDto)
+        : (spotFromState as SpotDto)
+      : null
+
+  useEffect(() => {
+    const actions =
+      getAllCommonActions()[
+        isTempSpot ? ListViewTypes.TEMP_SPOTS : ListViewTypes.SPOTS
+      ]
+    if (state.currentSpotInModal)
+      dispatch(actions.setItems([state.currentSpotInModal as WithSocial]))
+
+    return () => {
+      dispatch(actions.reset())
+    }
+  }, [state.currentSpotInModal])
 
   return (
     <>
@@ -60,7 +89,7 @@ export const SpotModal = () => {
         />
       )}
       {spot && !state.loadingSpotInModal && (
-        <div>
+        <div style={{ position: 'relative' }}>
           {spot.images && spot.images.length > 0 && (
             <div style={{ backgroundColor: 'black' }}>
               <SpotImages
@@ -110,6 +139,13 @@ export const SpotModal = () => {
                   ? ListViewTypes.TEMP_SPOTS
                   : ListViewTypes.SPOTS,
               })}
+          </div>
+          <div style={{ position: 'absolute', left: 0, top: 0 }}>
+            <IconButton
+              onClick={_ => dispatch(mapSpotsActions.toggleSpotModal(false))}
+              className='mt-2 ms-2 p-0'>
+              <CloseIcon />
+            </IconButton>
           </div>
         </div>
       )}
