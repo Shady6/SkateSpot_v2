@@ -23,7 +23,7 @@ const MapWithSpotMarkers: React.FC<Props> = ({
 }) => {
   const dispatch = useDispatch()
   const spotMarkersData = useSelector<RootState, SpotMarkerDataDto[]>(
-    state => state.mapSpotsReducer.markersData
+    state => state.mapSpotsState.markersData
   )
 
   useEffect(() => {

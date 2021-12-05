@@ -1,6 +1,9 @@
-﻿namespace SkateSpot.Domain.Interfaces
+﻿using System;
+
+namespace SkateSpot.Domain.Interfaces
 {
 	public interface IWithSocial : IWithLikes, IWithComments
 	{
+		public Guid Id { get; }
 	}
 }

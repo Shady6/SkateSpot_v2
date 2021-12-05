@@ -109,7 +109,7 @@ namespace SkateSpot.Api.Controllers
 		[HttpDelete("spotVideos/{spotVideoId}")]
 		public async Task<ActionResult> DeleteSpotVideo([FromRoute] DeleteSpotVideoCommand request)
 		{
-			request.UserId = User.GetUserId();
+			request.UserId = User.GetId();
 			await _spotVideosService.DeleteSpotVideo(request);
 			return Ok();
 		}

@@ -41,7 +41,7 @@ export const SpotModal = () => {
   const [commentsOpen, setCommentsOpen] = useState(false)
 
   const state = useSelector<RootState, MapSpotsState>(
-    state => state.mapSpotsReducer
+    state => state.mapSpotsState
   )
   const spotFromState = useSelector<RootState, SpotDto | null>(
     state => state.spotsState.listWithCount.data?.[0]

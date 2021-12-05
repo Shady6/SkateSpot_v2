@@ -29,7 +29,7 @@ export const spotPreviewModalId = 'spot-preview-modal'
 export const SpotsMapView = () => {
   const dispatch = useDispatch()
   const state = useSelector<RootState, MapSpotsState>(
-    state => state.mapSpotsReducer
+    state => state.mapSpotsState
   )
   const [refreshId, setRefreshId] = useState(v4())
 

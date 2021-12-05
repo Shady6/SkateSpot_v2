@@ -6,7 +6,8 @@ import flashMsgReducer from './reducers/flashMsgReducer'
 import spotsReducer from './reducers/spotReducer'
 import spotVideoReducer from './reducers/spotVideoReducer'
 import tempSpotsReducer from './reducers/tempSpotsReducer'
-import { mapSpotsReducer } from './reducers/mapSpotsReducer'
+import userProfileReducer from './reducers/userProfileReducer'
+import mapSpotsReducer from './reducers/mapSpotsReducer'
 
 export const store = configureStore({
   reducer: {
@@ -16,7 +17,8 @@ export const store = configureStore({
     spotsState: spotsReducer,
     spotVideosState: spotVideoReducer,
     filtersState: filtersReducer,
-    mapSpotsReducer: mapSpotsReducer,
+    mapSpotsState: mapSpotsReducer,
+    userProfileState: userProfileReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

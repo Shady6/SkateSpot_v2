@@ -38,7 +38,7 @@ namespace SkateSpot.Api.Controllers
 		[ProducesResponseType(typeof(ApiResponse<LikeDto[]>), 200)]
 		public async Task<ActionResult> DeleteLike([FromRoute] DeleteLikeCommand request)
 		{
-			request.UserId = User.GetUserId();
+			request.UserId = User.GetId();
 			return Ok(await _likesService.DeleteLike(request));
 		}
 	}

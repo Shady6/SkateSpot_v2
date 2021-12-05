@@ -6,6 +6,7 @@ import { SpotPage } from '../components/spot/spot_page/SpotPage'
 import { ListItemsMainPage } from '../components/spot_common/ListItemsMainPage'
 import { SpotsMapView } from '../components/spot_common/MapView/SpotsMapView'
 import AddTempSpotPage from '../components/temp_spot/add/AddTempSpotPage'
+import { UserProfile } from '../components/user/UserProfile'
 import { ListViewTypes } from '../state/generic/listViewGenerics'
 import { UserRoles } from '../types/types'
 
@@ -34,6 +35,7 @@ export enum Routes {
   MAP = '/map',
   SPOT_VIDEO = '/video',
   SPOT_DEDICATED_PAGE = `/spot/:spotName`,
+  USER_PROFILE = '/user',
 }
 
 const routes: IRoute[] = [
@@ -120,6 +122,14 @@ const routes: IRoute[] = [
     component: Logout,
     accessedBy: [UserRoles.SIGNED_IN],
     renderLink: true,
+  },
+  {
+    linkName: null,
+    path: Routes.USER_PROFILE,
+    exact: true,
+    component: UserProfile,
+    accessedBy: [UserRoles.SIGNED_IN],
+    renderLink: false,
   },
 ]
 

@@ -31,7 +31,7 @@ namespace SkateSpot.Api.Attributes
 			}
 			var userIdProp = ObjectToMapToType.GetProperty("UserId");
 			if (userIdProp != null)
-				userIdProp.SetValue(requestCommand.Value, filterContext.HttpContext.User.GetUserId());
+				userIdProp.SetValue(requestCommand.Value, filterContext.HttpContext.User.GetId());
 			filterContext.ActionArguments["request"] = requestCommand.Value;
 		}
 	}

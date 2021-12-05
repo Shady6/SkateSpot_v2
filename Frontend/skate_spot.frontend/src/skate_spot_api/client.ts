@@ -1212,6 +1212,143 @@ export class Client {
     }
 
     /**
+     * @return Success
+     */
+    get_User_Stats(authorization: string): Promise<UserStatsApiResponse> {
+        let url_ = this.baseUrl + "/api/user/stats";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_User_Stats(_response);
+        });
+    }
+
+    protected processGet_User_Stats(response: Response): Promise<UserStatsApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <UserStatsApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserStatsApiResponse>(<any>null);
+    }
+
+    /**
+     * @param take (optional) 
+     * @param skip (optional) 
+     * @return Success
+     */
+    get_User_Related_Spots(interactionType: UserInteractionType, take: number | undefined, skip: number | undefined, authorization: string): Promise<SpotDtoWithTotalCountApiResponse> {
+        let url_ = this.baseUrl + "/api/user/Spots/{interactionType}?";
+        if (interactionType === undefined || interactionType === null)
+            throw new Error("The parameter 'interactionType' must be defined.");
+        url_ = url_.replace("{interactionType}", encodeURIComponent("" + interactionType));
+        if (take === null)
+            throw new Error("The parameter 'take' cannot be null.");
+        else if (take !== undefined)
+            url_ += "take=" + encodeURIComponent("" + take) + "&";
+        if (skip === null)
+            throw new Error("The parameter 'skip' cannot be null.");
+        else if (skip !== undefined)
+            url_ += "skip=" + encodeURIComponent("" + skip) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_User_Related_Spots(_response);
+        });
+    }
+
+    protected processGet_User_Related_Spots(response: Response): Promise<SpotDtoWithTotalCountApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <SpotDtoWithTotalCountApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SpotDtoWithTotalCountApiResponse>(<any>null);
+    }
+
+    /**
+     * @param take (optional) 
+     * @param skip (optional) 
+     * @return Success
+     */
+    get_User_Related_Spot_Videos(interactionType: UserInteractionType, take: number | undefined, skip: number | undefined, authorization: string): Promise<SpotVideoDtoWithTotalCountApiResponse> {
+        let url_ = this.baseUrl + "/api/user/Videos/{interactionType}?";
+        if (interactionType === undefined || interactionType === null)
+            throw new Error("The parameter 'interactionType' must be defined.");
+        url_ = url_.replace("{interactionType}", encodeURIComponent("" + interactionType));
+        if (take === null)
+            throw new Error("The parameter 'take' cannot be null.");
+        else if (take !== undefined)
+            url_ += "take=" + encodeURIComponent("" + take) + "&";
+        if (skip === null)
+            throw new Error("The parameter 'skip' cannot be null.");
+        else if (skip !== undefined)
+            url_ += "skip=" + encodeURIComponent("" + skip) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Authorization": authorization !== undefined && authorization !== null ? "" + authorization : "",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_User_Related_Spot_Videos(_response);
+        });
+    }
+
+    protected processGet_User_Related_Spot_Videos(response: Response): Promise<SpotVideoDtoWithTotalCountApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <SpotVideoDtoWithTotalCountApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SpotVideoDtoWithTotalCountApiResponse>(<any>null);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -1399,6 +1536,12 @@ export interface GuidApiResponse {
 
 export interface ImageDto {
     base64: string | undefined;
+}
+
+export interface ItemStats {
+    addedCount: number;
+    commentedCount: number;
+    likedCount: number;
 }
 
 export interface LikeCommand {
@@ -1591,6 +1734,22 @@ export interface TokenResponse {
 
 export interface TokenResponseApiResponse {
     content: TokenResponse;
+    error: ErrorResponse;
+}
+
+export enum UserInteractionType {
+    Added = "Added",
+    Liked = "Liked",
+    Commented = "Commented",
+}
+
+export interface UserStats {
+    spotStats: ItemStats;
+    spotVideoStats: ItemStats;
+}
+
+export interface UserStatsApiResponse {
+    content: UserStats;
     error: ErrorResponse;
 }
 

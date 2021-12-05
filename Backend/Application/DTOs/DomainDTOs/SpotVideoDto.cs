@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SkateSpot.Application.DTOs.DomainDTOs
 {
-	public class SpotVideoDto
+	public class SpotVideoDto : IWithSocialDto
 	{
 		public Guid Id { get; set; }
 		public DateTime CreatedAt { get; set; }

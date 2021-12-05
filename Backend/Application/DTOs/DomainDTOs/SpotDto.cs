@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SkateSpot.Application.DTOs.DomainDTOs
 {
-    public class SpotDto
+	public class SpotDto : IWithSocialDto
 	{
 		public Guid Id { get; set; }
 		public DateTime CreatedAt { get; set; }
@@ -17,6 +17,6 @@ namespace SkateSpot.Application.DTOs.DomainDTOs
 		public LikeDto[] Likes { get; set; }
 		public IEnumerable<CommentDto> Comments { get; set; }
 		public ImageDto[] Images { get; set; }
-        public int VideosCount { get; set; }
-    }
+		public int VideosCount { get; set; }
+	}
 }

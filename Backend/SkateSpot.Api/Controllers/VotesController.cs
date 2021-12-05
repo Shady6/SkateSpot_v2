@@ -35,7 +35,7 @@ namespace SkateSpot.Api.Controllers
 		[ProducesResponseType(typeof(ApiResponse<VoteResult>), 200)]
 		public async Task<ActionResult> DeleteVote([FromRoute] DeleteVoteCommand request)
 		{
-			request.UserId = User.GetUserId();
+			request.UserId = User.GetId();
 			return Ok(await _votesService.DeleteVote(request));
 		}
 	}

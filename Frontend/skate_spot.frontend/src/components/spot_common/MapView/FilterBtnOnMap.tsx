@@ -9,7 +9,7 @@ export const filterBtnId = 'filter-btn'
 export const FilterBtnOnMap = () => {
   const dispatch = useDispatch()
   const isFilterModalOpen = useSelector<RootState, boolean>(
-    state => state.mapSpotsReducer.isFilterModalOpen
+    state => state.mapSpotsState.isFilterModalOpen
   )
 
   return (

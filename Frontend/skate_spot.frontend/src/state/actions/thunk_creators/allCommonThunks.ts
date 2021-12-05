@@ -8,9 +8,11 @@ import { deleteListItemThunkCreator } from './deleteListItemThunkCreator'
 import { editCommentThunkCreator } from './editCommentThunkCreator'
 import { fetchlistItemsThunkCreator } from './fetchlistItemsThunkCreator'
 import { likeThunkCreator } from './likeThunkCreator'
+import { fetchlistItemsCustomFuncThunkCreator } from './fetchlistItemsCustomFuncThunkCreator'
 
 export const genericThunkActions = {
   fetchListItems: fetchlistItemsThunkCreator,
+  fetchListItemsCustomFunc: fetchlistItemsCustomFuncThunkCreator,
   comment: commentThunkCreator,
   deleteComment: deleteCommentThunkCreator,
   editComment: editCommentThunkCreator,
@@ -41,6 +43,9 @@ export const getAllCommonThunks = () => {
   return thunkActions as {
     [index in ListViewTypes]: {
       fetchListItems: ReturnType<typeof fetchlistItemsThunkCreator>
+      fetchListItemsCustomFunc: ReturnType<
+        typeof fetchlistItemsCustomFuncThunkCreator
+      >
       comment: ReturnType<typeof commentThunkCreator>
       deleteComment: ReturnType<typeof deleteCommentThunkCreator>
       editComment: ReturnType<typeof editCommentThunkCreator>

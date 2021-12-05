@@ -62,5 +62,5 @@ const mapSpotsSlice = createSlice({
   },
 })
 
-export const mapSpotsReducer = mapSpotsSlice.reducer
+export default mapSpotsSlice.reducer
 export const mapSpotsActions = mapSpotsSlice.actions

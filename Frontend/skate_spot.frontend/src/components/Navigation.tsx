@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import hasRouteAccess from '../functions/route/hasRouteAccess'
 import routes from '../routes/appRoutes'
 import { useRootState } from '../state/store'
+import { Routes } from '../routes/appRoutes'
 
 const Navigation: React.FC = () => {
   const authState = useRootState().auth
@@ -21,7 +22,11 @@ const Navigation: React.FC = () => {
   return (
     <ul className={'d-flex'}>
       {renderLinks()}
-      {authState.content && <li>{authState.content.userName}</li>}
+      {authState.content && (
+        <li>
+          <Link to={Routes.USER_PROFILE}>{authState.content.userName}</Link>
+        </li>
+      )}
     </ul>
   )
 }
