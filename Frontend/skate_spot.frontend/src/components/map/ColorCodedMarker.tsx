@@ -9,20 +9,25 @@ interface Props {
   onMouseEnter?: (e: L.LeafletMouseEvent) => void
   onMouseLeave?: (e: L.LeafletMouseEvent) => void
   onClick?: (e: L.LeafletMouseEvent) => void
+  color?: string
+  size?: number
 }
 
 export const ColorCodedMarker: React.FC<Props> = p => {
   return (
     <LeafletMarkerWrapper
       color={
-        p.spotMarkerData.isTempSpot
+        p.color
+          ? p.color
+          : p.spotMarkerData.isTempSpot
           ? markersData.tempSpot.color
           : markersData.spot.color
       }
       position={p.spotMarkerData!.address!.coords as Coords}
       onClick={p.onClick}
       onMouseEnter={p.onMouseEnter}
-      onMouseLeave={p.onMouseLeave}>
+      onMouseLeave={p.onMouseLeave}
+      size={p.size}>
       {p.children}
     </LeafletMarkerWrapper>
   )

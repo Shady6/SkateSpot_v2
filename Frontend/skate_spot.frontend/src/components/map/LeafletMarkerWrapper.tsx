@@ -63,6 +63,3 @@ const LeafletMarkerWrapper: React.FC<Props> = ({
 }
 
 export default LeafletMarkerWrapper
-
-// `<i class="fa fa-map-marker"
-//             style="font-size:${size}px;color:${color}">${text ?? ""}</i>`,

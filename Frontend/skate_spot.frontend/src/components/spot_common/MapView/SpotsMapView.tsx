@@ -1,8 +1,7 @@
-import React from 'react'
-import MyMarkerClusterGroup, {
-  MarkerClusterGroup,
-} from 'react-leaflet-markercluster'
+import React, { useEffect, useState } from 'react'
+import MyMarkerClusterGroup from 'react-leaflet-markercluster'
 import { useDispatch, useSelector } from 'react-redux'
+import { v4 } from 'uuid'
 import { useClearFilters } from '../../../hooks/useClearFilters'
 import { useFuncOnFilterChanged } from '../../../hooks/useFuncOnFilterChanged'
 import {
@@ -19,10 +18,11 @@ import Legend from '../../map/Legend'
 import Map from '../../map/Map'
 import { OnTopOfMapContainer } from '../../map/OnTopOfMapContainer'
 import { filterBtnId, FilterBtnOnMap } from './FilterBtnOnMap'
-import { FiltersModal, filterModalId } from './FiltersModal'
+import { filterModalId, FiltersModal } from './FiltersModal'
+import { SpotInfoTooltip } from './SpotInfoTooltip'
 import { SpotModal } from './SpotModal'
 import './style.scss'
-import { v4 } from 'uuid'
+import { markersData } from '../../../hooks/map/useLegend'
 
 export const spotPreviewModalId = 'spot-preview-modal'
 
@@ -31,9 +31,17 @@ export const SpotsMapView = () => {
   const state = useSelector<RootState, MapSpotsState>(
     state => state.mapSpotsReducer
   )
+  const [refreshId, setRefreshId] = useState(v4())
 
   useClearFilters()
   useFuncOnFilterChanged(() => dispatch(getMarkersData()))
+
+  useEffect(() => {
+    setRefreshId(v4())
+  }, [state.markersData.length])
+
+  const isSpotSelected = (name: string) =>
+    state.currentSpotInModal?.name == name && state.isSpotModalOpen
 
   return (
     <div style={{ height: '100%', position: 'relative' }}>
@@ -56,12 +64,18 @@ export const SpotsMapView = () => {
             <SpotModal />
           </OnTopOfMapContainer>
         )}
-        <MyMarkerClusterGroup showCoverageOnHover={false} key={v4()}>
+        <MyMarkerClusterGroup showCoverageOnHover={false} key={refreshId}>
           {state.markersData.length &&
             state.markersData.map(m => (
               <ColorCodedMarker
                 key={m.id}
                 spotMarkerData={m}
+                color={
+                  isSpotSelected(m.name as string)
+                    ? markersData.selected.color
+                    : undefined
+                }
+                size={isSpotSelected(m.name as string) ? 35 : undefined}
                 onClick={() => {
                   if (
                     state.currentSpotInModal?.id === m.id &&
@@ -72,10 +86,12 @@ export const SpotsMapView = () => {
                     dispatch(fetchSpot({ markerData: m }))
                     dispatch(mapSpotsActions.toggleSpotModal(true))
                   }
-                }}></ColorCodedMarker>
+                }}>
+                <SpotInfoTooltip marker={m} />
+              </ColorCodedMarker>
             ))}
         </MyMarkerClusterGroup>
-        <Legend />
+        <Legend displaySelectedMarkerLegend={true} />
       </Map>
     </div>
   )

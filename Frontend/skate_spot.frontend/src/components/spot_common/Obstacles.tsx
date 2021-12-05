@@ -5,16 +5,16 @@ import { ObstacleType } from '../../skate_spot_api/client'
 
 export function Obstacles({
   obstacles,
-  color,
+  style,
 }: {
   obstacles: ObstacleType[]
-  color?: string
+  style?: React.CSSProperties
 }) {
   return (
-    <div>
+    <div style={{ fontSize: '0.2rem' }}>
       {obstacles?.map(o => (
         <Chip
-          style={{ color: color || 'inherit' }}
+          style={style}
           label={o}
           variant='outlined'
           className='me-1'

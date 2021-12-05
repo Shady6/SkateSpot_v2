@@ -99,7 +99,10 @@ export const SpotModal = () => {
               />
             </div>
           )}
-          <div className='mt-4 ms-3'>
+          <div
+            className={`${
+              spot.images && spot.images.length ? 'mt-3' : 'mt-5'
+            } ms-3`}>
             <SpotNameLink spotName={spot.name as string} />
             <p>{spot.description}</p>
             <div className='d-flex mt-5 mb-3'>

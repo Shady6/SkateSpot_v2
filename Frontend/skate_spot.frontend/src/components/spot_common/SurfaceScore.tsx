@@ -4,18 +4,18 @@ import React from 'react'
 
 export function SurfaceScore({
   surfaceScore,
-  color = '',
+  style,
 }: {
   surfaceScore: number
-  color?: string
+  style?: React.CSSProperties
 }) {
   return (
     <div className='me-1'>
       <Chip
-        style={{ color: color || 'inherit' }}
+        style={style}
         variant='outlined'
         label={`${surfaceScore}/10`}
-        icon={<TextureIcon style={{ color: color || 'inherit' }} />}
+        icon={<TextureIcon style={{ color: style?.color || 'inherit' }} />}
       />
     </div>
   )
