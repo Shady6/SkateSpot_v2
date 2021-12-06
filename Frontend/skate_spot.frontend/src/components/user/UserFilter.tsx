@@ -14,7 +14,7 @@ import {
 } from '../../state/reducers/userProfileReducer'
 import { RootState } from '../../state/store'
 
-const userFilters = {
+export const userFilters = {
   listItems: [
     {
       label: 'Spots',

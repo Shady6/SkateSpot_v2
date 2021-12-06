@@ -42,8 +42,8 @@ const AddressSearch: React.FC<Props> = ({
 
   return (
     <>
-      <div className={'mb-2'}>Search by address</div>
-      <div className='d-flex mb-2'>
+      <div>Search by address</div>
+      <div className='d-flex mb-2 align-items-end'>
         <TextField
           className={'me-1'}
           value={addressSearchQuery}
@@ -56,8 +56,10 @@ const AddressSearch: React.FC<Props> = ({
           }}
         />
         <Button
+          style={{ height: '100%' }}
+          size='small'
           variant='contained'
-          className={'px-2 py-0'}
+          className='px-2 py-2'
           onClick={geocodeAddress}>
           Search
         </Button>

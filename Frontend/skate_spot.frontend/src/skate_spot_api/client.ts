@@ -807,6 +807,42 @@ export class Client {
     }
 
     /**
+     * @return Success
+     */
+    get_Spot_And_Spot_Video_Stats(): Promise<SpotAndSpotVideoStatsApiResponse> {
+        let url_ = this.baseUrl + "/api/spots/stats";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGet_Spot_And_Spot_Video_Stats(_response);
+        });
+    }
+
+    protected processGet_Spot_And_Spot_Video_Stats(response: Response): Promise<SpotAndSpotVideoStatsApiResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <SpotAndSpotVideoStatsApiResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SpotAndSpotVideoStatsApiResponse>(<any>null);
+    }
+
+    /**
      * @param take (optional) 
      * @param offset (optional) 
      * @param sorting_Option (optional) 
@@ -1609,6 +1645,16 @@ export enum SortOption {
     LIKES = "LIKES",
     COMMENTS = "COMMENTS",
     VIDEOS = "VIDEOS",
+}
+
+export interface SpotAndSpotVideoStats {
+    spotsCount: number;
+    spotVideosCount: number;
+}
+
+export interface SpotAndSpotVideoStatsApiResponse {
+    content: SpotAndSpotVideoStats;
+    error: ErrorResponse;
 }
 
 export interface SpotDto {

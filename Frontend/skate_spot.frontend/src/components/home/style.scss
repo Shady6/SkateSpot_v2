@@ -1,0 +1,15 @@
+#main {
+  height: 100%;
+
+  img {
+    width: 80%;
+    margin-bottom: 15rem;
+    filter: saturate(500%) contrast(800%) brightness(500%) invert(80%)
+      sepia(100%) hue-rotate(107deg);
+  }
+
+  #title-svg,
+  h1 {
+    font-size: 5rem;
+  }
+}

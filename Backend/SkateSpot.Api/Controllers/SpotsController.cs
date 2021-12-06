@@ -80,5 +80,16 @@ namespace SkateSpot.Api.Controllers
 			await _spotsService.DeleteSpot(request);
 			return Ok();
 		}
+
+		[HttpGet("stats")]
+		[ProducesResponseType(typeof(ApiResponse<SpotAndSpotVideoStats>), 200)]
+		public async Task<ActionResult> GetSpotAndSpotVideoStats()
+		{
+			return Ok(new SpotAndSpotVideoStats
+			{
+				SpotsCount = await _dbContext.Spots.CountAsync(),
+				SpotVideosCount = await _dbContext.SpotVideos.CountAsync()
+			});
+		}
 	}
 }

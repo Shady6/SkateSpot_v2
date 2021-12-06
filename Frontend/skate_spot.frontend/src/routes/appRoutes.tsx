@@ -1,7 +1,7 @@
 import Login from '../components/auth/Login'
 import { Logout } from '../components/auth/Logout'
 import Register from '../components/auth/Register'
-import Home from '../components/Home'
+import Home from '../components/home/Home'
 import { SpotPage } from '../components/spot/spot_page/SpotPage'
 import { ListItemsMainPage } from '../components/spot_common/ListItemsMainPage'
 import { SpotsMapView } from '../components/spot_common/MapView/SpotsMapView'
@@ -40,12 +40,12 @@ export enum Routes {
 
 const routes: IRoute[] = [
   {
-    linkName: 'Home',
+    linkName: 'SkateSpot',
     path: Routes.HOME,
     exact: true,
     component: Home,
     accessedBy: [UserRoles.ALL],
-    renderLink: true,
+    renderLink: false,
   },
   {
     linkName: 'Login',
@@ -53,7 +53,7 @@ const routes: IRoute[] = [
     exact: true,
     component: Login,
     accessedBy: [UserRoles.NOT_SIGNED_IN],
-    renderLink: true,
+    renderLink: false,
   },
   {
     linkName: 'Register',
@@ -61,7 +61,7 @@ const routes: IRoute[] = [
     exact: true,
     component: Register,
     accessedBy: [UserRoles.NOT_SIGNED_IN],
-    renderLink: true,
+    renderLink: false,
   },
   {
     linkName: 'Add Spot',
@@ -116,18 +116,18 @@ const routes: IRoute[] = [
     renderLink: true,
   },
   {
-    linkName: 'Logout',
-    path: Routes.LOGOUT,
-    exact: true,
-    component: Logout,
-    accessedBy: [UserRoles.SIGNED_IN],
-    renderLink: true,
-  },
-  {
     linkName: null,
     path: Routes.USER_PROFILE,
     exact: true,
     component: UserProfile,
+    accessedBy: [UserRoles.SIGNED_IN],
+    renderLink: false,
+  },
+  {
+    linkName: 'Logout',
+    path: Routes.LOGOUT,
+    exact: true,
+    component: Logout,
     accessedBy: [UserRoles.SIGNED_IN],
     renderLink: false,
   },

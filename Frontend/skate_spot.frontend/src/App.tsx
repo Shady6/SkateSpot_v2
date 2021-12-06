@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
-import Navigation from './components/Navigation'
+import Navigation from './components/navigation/Navigation'
 import FlashMsgs from './components/shared/FlashMsgs'
 import hasRouteAccess from './functions/route/hasRouteAccess'
 import { useAuthFromLocalStorage } from './hooks/useAuthFromLocalStorage'

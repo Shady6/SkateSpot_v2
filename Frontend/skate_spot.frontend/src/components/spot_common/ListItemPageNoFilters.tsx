@@ -81,7 +81,12 @@ export const ListItemPageNoFilters: React.FC<Props> = ({
           <p>There is nothing to view here 😥</p>
         )}
       {state.listWithCount.data.map(l => getListItemComponent(l))}
-      {state.loading && <CircularProgress color='secondary' />}
+      {state.loading && (
+        <>
+          <span>Loading activities </span>
+          <CircularProgress color='secondary' />
+        </>
+      )}
     </div>
   )
 }

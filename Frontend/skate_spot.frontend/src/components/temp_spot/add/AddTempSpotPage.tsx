@@ -54,7 +54,7 @@ const AddTempSpotPage: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className='container pb-5'>
       <div className='mb-4 col-2'>
         <TextField
           value={name}
@@ -77,7 +77,7 @@ const AddTempSpotPage: React.FC = () => {
         />
       </div>
       <div className='mb-4 col-2'>
-        <p>Surface score</p>
+        <p className='m-0'>Surface score</p>
         <Slider
           defaultValue={surfaceScore}
           // @ts-ignore
@@ -98,7 +98,7 @@ const AddTempSpotPage: React.FC = () => {
       </div>
 
       <div className='mb-5'>
-        <p>Select at least one tag</p>
+        <p className='m-0'>Select at least one tag</p>
         <Tags tags={tags} setTags={setTags} />
       </div>
       <div className='mb-5'>

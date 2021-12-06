@@ -8,14 +8,16 @@ export enum UserInteractionListItem {
 }
 
 export interface UserProfileState {
-  stats: {
-    loading: boolean
-    value: UserStats
-  }
+  stats: UserStatsInfo
   listItems: {
     interactionType: UserInteractionType
     what: UserInteractionListItem
   }
+}
+
+export interface UserStatsInfo {
+  loading: boolean
+  value: UserStats
 }
 
 const initialState: UserProfileState = {
@@ -24,13 +26,13 @@ const initialState: UserProfileState = {
     value: {
       spotStats: {
         addedCount: 0,
-        commentedCount: 0,
         likedCount: 0,
+        commentedCount: 0,
       },
       spotVideoStats: {
         addedCount: 0,
-        commentedCount: 0,
         likedCount: 0,
+        commentedCount: 0,
       },
     },
   },
@@ -57,7 +59,7 @@ const userProfileSlice = createSlice({
     })
     builder.addCase(loadStats.fulfilled, (state, action) => {
       state.stats.loading = false
-      //   state.stats.value = action.payload
+      state.stats.value = action.payload as UserStats
     })
     builder.addCase(loadStats.rejected, state => {
       state.stats.loading = false

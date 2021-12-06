@@ -28,7 +28,7 @@ const ImageUpload = React.memo(
       ])
 
       return (
-        <p className='text-info text-sm'>
+        <p style={{ fontSize: '0.85rem' }} className='text-info m-0'>
           {`Uploaded ${uploadsTotal}/${imagesLimit}, `}
           <span
             className={
@@ -40,7 +40,7 @@ const ImageUpload = React.memo(
 
     return (
       <>
-        <p>Upload spot images</p>
+        <p className='m-0'>Upload spot images</p>
 
         {renderImageStats()}
 
