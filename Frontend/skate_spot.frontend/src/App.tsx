@@ -1,14 +1,16 @@
 import { ReactNode } from 'react'
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Navigation from './components/navigation/Navigation'
+import { RedirectNotPrivileged } from './components/navigation/RedirectNotPrivileged'
 import FlashMsgs from './components/shared/FlashMsgs'
 import hasRouteAccess from './functions/route/hasRouteAccess'
 import { useAuthFromLocalStorage } from './hooks/useAuthFromLocalStorage'
-import routes from './routes/appRoutes'
+import { routes } from './routes/appRoutes'
 import { useRootState } from './state/store'
 
 const App: React.FC = () => {
   const state = useRootState()
+
   useAuthFromLocalStorage()
 
   const renderRoutes = (): ReactNode =>
@@ -21,7 +23,7 @@ const App: React.FC = () => {
           hasRouteAccess(r, state.auth) ? (
             <r.component {...r.props} />
           ) : (
-            <Redirect to={'/'} />
+            <RedirectNotPrivileged />
           )
         }
       />

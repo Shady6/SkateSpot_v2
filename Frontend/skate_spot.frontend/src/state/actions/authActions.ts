@@ -1,32 +1,51 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { ApiClient } from '../../skate_spot_api/apiClient'
+import { sendRequestWithFlashMsgOnError } from '../../functions/request/sendRequestWithFlashMsgOnError'
+import { ApiClient, ApiResponse } from '../../skate_spot_api/apiClient'
 import {
-  ApiException,
+  RegisterRequest,
   TokenRequest,
   TokenResponse,
 } from '../../skate_spot_api/client'
+import { History } from 'history'
+import { RoutesEnum } from '../../routes/appRoutes'
 
 export const localStorageJWTKey = 'SkateSpotJWT'
 
-export const login = createAsyncThunk<
-  TokenResponse,
-  TokenRequest,
-  { rejectValue: string }
->('auth/login', async (loginData: TokenRequest, { rejectWithValue }) => {
-  try {
-    const client = new ApiClient()
-    const response = await client.get_Token(loginData)
+export const login = createAsyncThunk(
+  'auth/login',
+  async (
+    { loginData, history }: { loginData: TokenRequest; history: History },
+    { rejectWithValue, dispatch }
+  ) => {
+    const response = (await sendRequestWithFlashMsgOnError(
+      dispatch,
+      undefined,
+      c => c.get_Token(loginData)
+    )) as ApiResponse<TokenResponse>
+
+    if (!response.content) return rejectWithValue(null)
+
     localStorage.setItem(
       localStorageJWTKey,
       response!.content!.jwToken as string
     )
-    return response.content as TokenResponse
-  } catch (e) {
-    if (e instanceof ApiException)
-      return rejectWithValue(JSON.parse(e.response).error.message as string)
-    else throw e
+    history.push(RoutesEnum.HOME)
+    return response.content
   }
-})
+)
+
+export const register = createAsyncThunk(
+  'auth/register',
+  async (registerData: RegisterRequest, { rejectWithValue, dispatch }) => {
+    const response = (await sendRequestWithFlashMsgOnError(
+      dispatch,
+      undefined,
+      c => c.register(registerData)
+    )) as ApiResponse<string>
+
+    if (!response.content) return rejectWithValue(response.error?.message)
+  }
+)
 
 export const logout = createAsyncThunk('auth/logout', async () => {
   const jwt = localStorage.getItem(localStorageJWTKey)

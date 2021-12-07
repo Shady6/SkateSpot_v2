@@ -56,8 +56,10 @@ namespace SkateSpot.Infrastructure.Identity.Services
 			if (user == null)
 				throw new AppException(ErrorCode.BAD_INPUT, $"Email or password wrong.");
 			var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
-			if (!user.EmailConfirmed)
-				throw new AppException(ErrorCode.EMAIL_NOT_VERIFIED, $"Email is not confirmed for '{request.Email}'.");
+			// TODO
+			// uncomment this if in production
+			//if (!user.EmailConfirmed)
+			//	throw new AppException(ErrorCode.EMAIL_NOT_VERIFIED, $"Email is not confirmed for '{request.Email}'.");
 			//if (!user.IsActive)
 			//	throw new Exception($"Account for '{request.Email}' is not active. Please contact the Administrator.");
 			if (!result.Succeeded)
@@ -162,9 +164,10 @@ namespace SkateSpot.Infrastructure.Identity.Services
 				{
 					await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
 					var verificationUri = await CreateVerificationUri(user, origin);
+					return "";
 					// TODO Uncomment when in production
 					//_mailService.Send(new MailRequest() { To = user.Email, Body = $"Please confirm your account by <a href='{verificationUri}'>clicking here</a>.", Subject = "Confirm Registration" });
-					return $"{verificationUri}";
+					//return verificationUri;
 				}
 				else
 				{

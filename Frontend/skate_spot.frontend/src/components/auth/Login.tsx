@@ -6,49 +6,43 @@ import {
   Input,
   InputLabel,
 } from '@material-ui/core'
-import Alert from '@material-ui/core/Alert'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useInputState } from '../../hooks/util/useInputState'
-import { Routes } from '../../routes/appRoutes'
 import { login } from '../../state/actions/authActions'
-import { useAppDispatch, useRootState } from '../../state/store'
+import { useAppDispatch } from '../../state/store'
 
-const Login: React.FC = () => {
-  const [email, setInputEmail] = useInputState('')
-  const [password, setInputPassword] = useInputState('')
-  const [usedLoginButton, setUsedLoginButton] = useState(false)
+export const Login: React.FC = () => {
+  const [email, setEmail] = useInputState('')
+  const [password, setPassword] = useInputState('')
 
   const history = useHistory()
-
-  const authState = useRootState().auth
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    if (usedLoginButton && authState.content) history.push(Routes.HOME)
-  }, [authState.content])
-
   return (
-    <Container>
+    <Container className='mt-5'>
       <FormGroup>
         <FormControl margin={'dense'}>
-          <InputLabel htmlFor='email-input'>Email address</InputLabel>
-          <Input id='email-input' value={email} onChange={setInputEmail} />
+          <InputLabel htmlFor='email'>Email Address</InputLabel>
+          <Input id='email' value={email} onChange={setEmail} />
         </FormControl>
         <FormControl margin={'dense'}>
-          <InputLabel htmlFor='password-input'>Password</InputLabel>
+          <InputLabel htmlFor='password'>Password</InputLabel>
           <Input
             type={'password'}
-            id='password-input'
+            id='password'
             value={password}
-            onChange={setInputPassword}
+            onChange={setPassword}
           />
         </FormControl>
-        {authState.error && <Alert severity='error'>{authState.error}</Alert>}
         <Button
           onClick={() => {
-            dispatch(login({ email: email, password: password }))
-            setUsedLoginButton(true)
+            dispatch(
+              login({
+                loginData: { email: email, password: password },
+                history,
+              })
+            )
           }}>
           Login
         </Button>
@@ -56,5 +50,3 @@ const Login: React.FC = () => {
     </Container>
   )
 }
-
-export default Login

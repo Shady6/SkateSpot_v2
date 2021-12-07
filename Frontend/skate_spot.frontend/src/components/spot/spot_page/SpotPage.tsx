@@ -7,7 +7,7 @@ import { useClearFilters } from '../../../hooks/useClearFilters'
 import { useFetchOnFilterChanged } from '../../../hooks/useFetchOnFilterChanged'
 import { useFetchOnScroll } from '../../../hooks/useFetchOnScroll'
 import { useSpotFromHistoryStateOrFetch } from '../../../hooks/useSpotFromHistoryStateOrFetch'
-import { Routes } from '../../../routes/appRoutes'
+import { RoutesEnum } from '../../../routes/appRoutes'
 import { ApiResponse } from '../../../skate_spot_api/apiClient'
 import { getAllCommonActions } from '../../../state/actions/allCommonActions'
 import { customFuncSpotVideoFetch } from '../../../state/actions/spotVideoActions'
@@ -33,7 +33,7 @@ export const SpotPage: React.FC<Props> = () => {
   )
   const history = useHistory()
   const path = history.location.pathname.split('/')
-  const spotPathPart = Routes.SPOTS.replace('/', '')
+  const spotPathPart = RoutesEnum.SPOTS.replace('/', '')
   const spotName = path[path.indexOf(spotPathPart) + 1]
   useSpotFromHistoryStateOrFetch(spotName)
 

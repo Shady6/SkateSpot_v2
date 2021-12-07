@@ -1,12 +1,10 @@
+import PlaceIcon from '@mui/icons-material/Place'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import hasRouteAccess from '../../functions/route/hasRouteAccess'
-import routes from '../../routes/appRoutes'
+import { routes, RoutesEnum } from '../../routes/appRoutes'
 import { useRootState } from '../../state/store'
-import { Routes } from '../../routes/appRoutes'
 import './style.scss'
-import PlaceIcon from '@mui/icons-material/Place'
-import Login from '../auth/Login'
 
 const Navigation: React.FC = () => {
   const authState = useRootState().auth
@@ -16,7 +14,9 @@ const Navigation: React.FC = () => {
       .filter(r => r.renderLink)
       .map(r =>
         hasRouteAccess(r, authState) ? (
-          <Link to={r.path}>{r.linkName}</Link>
+          <Link key={r.path} to={r.path}>
+            {r.linkName}
+          </Link>
         ) : null
       )
 
@@ -24,7 +24,7 @@ const Navigation: React.FC = () => {
     <div id='nav' className='d-flex justify-content-between'>
       <div>
         <b>
-          <Link to={Routes.HOME}>
+          <Link to={RoutesEnum.HOME}>
             <PlaceIcon /> SkateSpot
           </Link>
         </b>
@@ -33,13 +33,13 @@ const Navigation: React.FC = () => {
 
       {authState.content ? (
         <div>
-          <Link to={Routes.USER_PROFILE}>{authState.content.userName}</Link>
-          <Link to={Routes.LOGOUT}>Logout</Link>
+          <Link to={RoutesEnum.USER_PROFILE}>{authState.content.userName}</Link>
+          <Link to={RoutesEnum.LOGOUT}>Logout</Link>
         </div>
       ) : (
         <div>
-          <Link to={Routes.REGISTER}>Register</Link>
-          <Link to={Routes.LOGIN}>Login</Link>
+          <Link to={RoutesEnum.REGISTER}>Register</Link>
+          <Link to={RoutesEnum.LOGIN}>Login</Link>
         </div>
       )}
     </div>

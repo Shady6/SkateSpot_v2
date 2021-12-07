@@ -23,6 +23,7 @@ import { SpotInfoTooltip } from './SpotInfoTooltip'
 import { SpotModal } from './SpotModal'
 import './style.scss'
 import { markersData } from '../../../hooks/map/useLegend'
+import { useOverflowHidden } from '../../../hooks/util/useOverflowHidden'
 
 export const spotPreviewModalId = 'spot-preview-modal'
 
@@ -35,6 +36,7 @@ export const SpotsMapView = () => {
 
   useClearFilters()
   useFuncOnFilterChanged(() => dispatch(getMarkersData()))
+  useOverflowHidden()
 
   useEffect(() => {
     setRefreshId(v4())

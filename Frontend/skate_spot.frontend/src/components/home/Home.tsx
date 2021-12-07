@@ -2,27 +2,21 @@ import { Button, CircularProgress, useTheme } from '@material-ui/core'
 import PeopleIcon from '@mui/icons-material/People'
 import PlaceIcon from '@mui/icons-material/Place'
 import VideocamIcon from '@mui/icons-material/Videocam'
-import { stat } from 'fs'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { request } from '../../functions/request/request'
+import { useOverflowHidden } from '../../hooks/util/useOverflowHidden'
+import { RoutesEnum } from '../../routes/appRoutes'
 import { SpotAndSpotVideoStats } from '../../skate_spot_api/client'
 import './style.scss'
 
 const Home: React.FC = () => {
   const theme = useTheme()
-  const dispatch = useDispatch()
 
   const [stats, setStats] = useState<SpotAndSpotVideoStats | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [])
+  useOverflowHidden()
 
   useEffect(() => {
     ;(async () => {
@@ -78,10 +72,16 @@ const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className='mt-5'>
-            <Button className='me-3'>Add Spot</Button>
-            <Button className='me-3'>View on map</Button>
-            <Button className='me-3'>View as a list</Button>
+          <div id='quick-actions' className='mt-5'>
+            <Link to={RoutesEnum.ADD_TEMP_SPOT}>
+              <Button className='me-3'>Add Spot</Button>
+            </Link>
+            <Link to={RoutesEnum.MAP}>
+              <Button className='me-3'>View on map</Button>
+            </Link>
+            <Link to={RoutesEnum.SPOTS}>
+              <Button className='me-3'>View as a list</Button>
+            </Link>
           </div>
 
           <div className='mt-5'>
@@ -89,8 +89,16 @@ const Home: React.FC = () => {
             <div
               style={{ color: theme.palette.secondary.main }}
               className='d-flex'>
-              <h3 className='me-4'>{renderStat(stats?.spotsCount)} Spots</h3>
-              <h3>{renderStat(stats?.spotVideosCount)} Spot Videos</h3>
+              {!loading && !stats ? (
+                <h3>Couldn't load the statistics</h3>
+              ) : (
+                <>
+                  <h3 className='me-4'>
+                    {renderStat(stats?.spotsCount)} Spots
+                  </h3>
+                  <h3>{renderStat(stats?.spotVideosCount)} Spot Videos</h3>
+                </>
+              )}
             </div>
           </div>
         </div>

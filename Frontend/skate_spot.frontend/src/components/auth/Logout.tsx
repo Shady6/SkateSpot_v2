@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { Routes } from '../../routes/appRoutes'
+import { RoutesEnum } from '../../routes/appRoutes'
 import { logout } from '../../state/actions/authActions'
 import { createFlashMsgWithTimeout } from '../../state/reducers/flashMsgReducer'
 
@@ -17,10 +17,10 @@ export const Logout: React.FC<Props> = () => {
       createFlashMsgWithTimeout({
         message: 'Logged out successfuly!',
         severity: 'success',
-        clearAtDate: new Date(Date.now() + 10000),
+        clearAtDate: new Date(Date.now() + 5000),
       })
     )
-    history.push(Routes.HOME)
+    history.push(RoutesEnum.HOME)
   }, [])
 
   return <></>

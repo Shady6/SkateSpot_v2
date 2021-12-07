@@ -32,7 +32,11 @@ export const useLegend = ({ displaySelectedMarkerLegend, map }: Props) => {
       div.innerHTML = renderToStaticMarkup(
         <div
           className='p-1'
-          style={{ background: 'rgba(255,255,255, 0.5)', color: 'black' }}>
+          style={{
+            background: 'rgba(255,255,255, 0.5)',
+            color: 'black',
+            marginBottom: '5rem',
+          }}>
           <ul className='p-0 m-0' style={{ listStyleType: 'none' }}>
             {Object.keys(markersData)
               .filter(k => !(k === 'selected' && !displaySelectedMarkerLegend))

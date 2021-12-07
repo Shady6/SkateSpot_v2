@@ -1,6 +1,6 @@
-import Login from '../components/auth/Login'
+import { Login } from '../components/auth/Login'
 import { Logout } from '../components/auth/Logout'
-import Register from '../components/auth/Register'
+import { Register } from '../components/auth/Register'
 import Home from '../components/home/Home'
 import { SpotPage } from '../components/spot/spot_page/SpotPage'
 import { ListItemsMainPage } from '../components/spot_common/ListItemsMainPage'
@@ -24,7 +24,7 @@ export enum RouteParams {
   SPOT_NAME = ':spotName',
 }
 
-export enum Routes {
+export enum RoutesEnum {
   HOME = '/',
   LOGIN = '/auth/login',
   REGISTER = '/auth/register',
@@ -38,10 +38,10 @@ export enum Routes {
   USER_PROFILE = '/user',
 }
 
-const routes: IRoute[] = [
+export const routes: IRoute[] = [
   {
     linkName: 'SkateSpot',
-    path: Routes.HOME,
+    path: RoutesEnum.HOME,
     exact: true,
     component: Home,
     accessedBy: [UserRoles.ALL],
@@ -49,7 +49,7 @@ const routes: IRoute[] = [
   },
   {
     linkName: 'Login',
-    path: Routes.LOGIN,
+    path: RoutesEnum.LOGIN,
     exact: true,
     component: Login,
     accessedBy: [UserRoles.NOT_SIGNED_IN],
@@ -57,7 +57,7 @@ const routes: IRoute[] = [
   },
   {
     linkName: 'Register',
-    path: Routes.REGISTER,
+    path: RoutesEnum.REGISTER,
     exact: true,
     component: Register,
     accessedBy: [UserRoles.NOT_SIGNED_IN],
@@ -65,7 +65,7 @@ const routes: IRoute[] = [
   },
   {
     linkName: 'Add Spot',
-    path: Routes.ADD_TEMP_SPOT,
+    path: RoutesEnum.ADD_TEMP_SPOT,
     exact: true,
     component: AddTempSpotPage,
     accessedBy: [UserRoles.SIGNED_IN],
@@ -73,7 +73,7 @@ const routes: IRoute[] = [
   },
   {
     linkName: 'Temp Spots',
-    path: Routes.TEMP_SPOTS,
+    path: RoutesEnum.TEMP_SPOTS,
     exact: true,
     component: () => (
       <ListItemsMainPage listViewType={ListViewTypes.TEMP_SPOTS} />
@@ -83,7 +83,7 @@ const routes: IRoute[] = [
   },
   {
     linkName: 'Spots',
-    path: Routes.SPOTS,
+    path: RoutesEnum.SPOTS,
     exact: true,
     component: () => <ListItemsMainPage listViewType={ListViewTypes.SPOTS} />,
     accessedBy: [UserRoles.ALL],
@@ -91,7 +91,7 @@ const routes: IRoute[] = [
   },
   {
     linkName: 'Videos',
-    path: Routes.SPOT_VIDEO,
+    path: RoutesEnum.SPOT_VIDEO,
     exact: true,
     component: () => (
       <ListItemsMainPage listViewType={ListViewTypes.SPOT_VIDEOS} />
@@ -101,7 +101,7 @@ const routes: IRoute[] = [
   },
   {
     linkName: null,
-    path: Routes.SPOT_DEDICATED_PAGE,
+    path: RoutesEnum.SPOT_DEDICATED_PAGE,
     exact: true,
     component: SpotPage,
     accessedBy: [UserRoles.ALL],
@@ -109,7 +109,7 @@ const routes: IRoute[] = [
   },
   {
     linkName: 'Map',
-    path: Routes.MAP,
+    path: RoutesEnum.MAP,
     exact: true,
     component: SpotsMapView,
     accessedBy: [UserRoles.ALL],
@@ -117,7 +117,7 @@ const routes: IRoute[] = [
   },
   {
     linkName: null,
-    path: Routes.USER_PROFILE,
+    path: RoutesEnum.USER_PROFILE,
     exact: true,
     component: UserProfile,
     accessedBy: [UserRoles.SIGNED_IN],
@@ -125,12 +125,10 @@ const routes: IRoute[] = [
   },
   {
     linkName: 'Logout',
-    path: Routes.LOGOUT,
+    path: RoutesEnum.LOGOUT,
     exact: true,
     component: Logout,
     accessedBy: [UserRoles.SIGNED_IN],
     renderLink: false,
   },
 ]
-
-export default routes
