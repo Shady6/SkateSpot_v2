@@ -23,7 +23,7 @@ export const login = createAsyncThunk(
       c => c.get_Token(loginData)
     )) as ApiResponse<TokenResponse>
 
-    if (!response.content) return rejectWithValue(null)
+    if (response.error) return rejectWithValue(null)
 
     localStorage.setItem(
       localStorageJWTKey,
@@ -43,7 +43,7 @@ export const register = createAsyncThunk(
       c => c.register(registerData)
     )) as ApiResponse<string>
 
-    if (!response.content) return rejectWithValue(response.error?.message)
+    if (response.error) return rejectWithValue(null)
   }
 )
 

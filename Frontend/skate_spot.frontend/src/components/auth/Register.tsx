@@ -80,7 +80,7 @@ export const Register: React.FC = () => {
               })
             )
           }}>
-          Login
+          Register
         </LoadingButton>
       </FormGroup>
     </Container>

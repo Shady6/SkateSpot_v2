@@ -23,7 +23,6 @@ using System.Threading.Tasks;
 
 namespace SkateSpot.Infrastructure.Identity.Services
 {
-
 	public class IdentityService : IIdentityService
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
@@ -145,10 +144,11 @@ namespace SkateSpot.Infrastructure.Identity.Services
 
 		public async Task<string> RegisterAsync(RegisterRequest request, string origin)
 		{
+			ValidateRegisterRequest(request);
 			var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
 			if (userWithSameUserName != null)
 			{
-				throw new Exception($"Username '{request.UserName}' is already taken.");
+				throw new AppException(ErrorCode.BAD_INPUT, $"Username '{request.UserName}' is already taken.");
 			}
 			var user = new ApplicationUser
 			{
@@ -177,6 +177,28 @@ namespace SkateSpot.Infrastructure.Identity.Services
 			else
 			{
 				throw new AppException(ErrorCode.BAD_INPUT, $"Email {request.Email } is already registered.");
+			}
+		}
+
+		public void ValidateRegisterRequest(RegisterRequest req)
+		{
+			if (!IsValidEmail(req.Email)) throw new AppException(ErrorCode.BAD_INPUT, "Incorrect email");
+			if (req.Password != req.ConfirmPassword) throw new AppException(ErrorCode.BAD_INPUT, "Passwords don't match");
+			if (req.Password == null || req.Password.Length < 6) throw new AppException(ErrorCode.BAD_INPUT, "Password has to be at least 6 characters long");
+			if (req.UserName == null || req.UserName.Length < 3) throw new AppException(ErrorCode.BAD_INPUT, "Username has to be at least 3 characters long");
+		}
+
+		private bool IsValidEmail(string email)
+		{
+			if (email.Trim().EndsWith(".")) return false;
+			try
+			{
+				var addr = new System.Net.Mail.MailAddress(email);
+				return addr.Address == email;
+			}
+			catch
+			{
+				return false;
 			}
 		}
 
