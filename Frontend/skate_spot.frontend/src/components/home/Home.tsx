@@ -43,7 +43,7 @@ const Home: React.FC = () => {
           <div className='mb-5'>
             <h1 style={{ color: theme.palette.primary.main }}>
               <PlaceIcon id='title-svg' />
-              SkateSpot
+              SkateSpot3
             </h1>
             <p>
               This website serves as a database of skateboarding spots from all

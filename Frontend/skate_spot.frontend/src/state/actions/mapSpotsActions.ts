@@ -1,12 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { sendRequestWithFlashMsgOnError } from '../../functions/request/sendRequestWithFlashMsgOnError'
 import {
-  SpotMarkerDataDto,
   SpotDto,
+  SpotMarkerDataDto,
   TempSpotDto,
 } from '../../skate_spot_api/client'
 import { RootState } from '../store'
-import { TempSpot } from '../../components/temp_spot/main/TempSpot'
 
 // TODO remember to clear filter before calling this thunk in TempSpot creation page
 export const getMarkersData = createAsyncThunk(

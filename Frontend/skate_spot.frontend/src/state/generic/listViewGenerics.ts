@@ -6,7 +6,7 @@ import {
   SpotVideoDto,
   TempSpotDto,
 } from '../../skate_spot_api/client'
-import { IAppliedFilter, IFilter } from '../reducers/filtersReducer'
+import { IAppliedFilter } from '../reducers/filtersReducer'
 import {
   ListViewState,
   ListWithCount,

@@ -7,7 +7,6 @@ import {
   ListViewTypes,
 } from '../../generic/listViewGenerics'
 import { RootState } from '../../store'
-import { ApiClient, ApiResponse } from '../../../skate_spot_api/apiClient'
 
 export const commentThunkCreator = (listType: ListViewTypes) => {
   return createAsyncThunk(
