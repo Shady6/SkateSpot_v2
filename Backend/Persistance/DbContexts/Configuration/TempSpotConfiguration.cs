@@ -6,24 +6,24 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 {
 	public class TempSpotConfiguration : BaseEntityTypeConfiguration<TempSpot>
 	{
-		public override void Configure(EntityTypeBuilder<TempSpot> builder)
+		public override void Configure(EntityTypeBuilder<TempSpot> b)
 		{
-			builder.ToTable("TempSpots");
+			b.ToTable("TempSpots");
 
-			builder.OwnsOne(s => s.Address);
-			builder.OwnsMany(s => s.Obstacles);
-			builder.OwnsMany(s => s.Images);
+			b.OwnsOne(s => s.Address);
+			b.OwnsMany(s => s.Obstacles);
+			b.OwnsMany(s => s.Images);
 
-			builder.HasOne(s => s.Author)
+			b.HasOne(s => s.Author)
 				.WithMany(a => a.CurrentAddedTempSpots)
 				.OnDelete(DeleteBehavior.SetNull);
 
-			builder.HasOne(s => s.VerificationProcess)
+			b.HasOne(s => s.VerificationProcess)
 				.WithOne()
 				.HasForeignKey<VerificationProcess>("TempSpotId")
 				.OnDelete(DeleteBehavior.Cascade);
 
-			base.Configure(builder);
+			base.Configure(b);
 		}
 	}
 }

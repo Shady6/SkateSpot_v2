@@ -6,32 +6,32 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 {
 	public class SpotVideoConfiguration : BaseEntityTypeConfiguration<SpotVideo>
 	{
-		public override void Configure(EntityTypeBuilder<SpotVideo> builder)
+		public override void Configure(EntityTypeBuilder<SpotVideo> b)
 		{
-			builder.ToTable("SpotVideos");
+			b.ToTable("SpotVideos");
 
-			builder.HasOne(s => s.Spot)
+			b.HasOne(s => s.Spot)
 				.WithMany(v => v.Videos)
 				.OnDelete(DeleteBehavior.SetNull);
 
-			builder.HasOne(s => s.Author)
+			b.HasOne(s => s.Author)
 				.WithMany(a => a.AddedVideos)
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasMany(s => s.Comments)
+			b.HasMany(s => s.Comments)
 				.WithOne()
 				.HasForeignKey("SpotVideoId")
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasMany(s => s.Likes)
+			b.HasMany(s => s.Likes)
 				.WithOne()
 				.HasForeignKey("SpotVideoId")
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.Ignore(s => s.Commentable);
-			builder.Ignore(l => l.Likeable);
+			b.Ignore(s => s.Commentable);
+			b.Ignore(l => l.Likeable);
 
-			base.Configure(builder);
+			base.Configure(b);
 		}
 	}
 }

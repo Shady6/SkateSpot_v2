@@ -6,22 +6,22 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 {
 	public class SpotImagesVerificationConfiguration : BaseEntityTypeConfiguration<SpotImagesVerification>
 	{
-		public override void Configure(EntityTypeBuilder<SpotImagesVerification> builder)
+		public override void Configure(EntityTypeBuilder<SpotImagesVerification> b)
 		{
-			builder.ToTable("SpotImagesVerifications");
+			b.ToTable("SpotImagesVerifications");
 
-			builder.HasOne(s => s.VerificationProcess)
+			b.HasOne(s => s.VerificationProcess)
 				.WithOne()
 				.HasForeignKey<VerificationProcess>("SpotImagesVerificationId")
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasOne(si => si.Spot)
+			b.HasOne(si => si.Spot)
 				.WithMany(s => s.ImagesVerifications)
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.OwnsMany(s => s.ImagesToBeVerified);
+			b.OwnsMany(s => s.ImagesToBeVerified);
 
-			base.Configure(builder);
+			base.Configure(b);
 		}
 	}
 }

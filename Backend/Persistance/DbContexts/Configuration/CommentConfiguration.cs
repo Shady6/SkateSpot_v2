@@ -6,20 +6,20 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 {
 	public class CommentConfiguration : BaseEntityTypeConfiguration<Comment>
 	{
-		public override void Configure(EntityTypeBuilder<Comment> builder)
+		public override void Configure(EntityTypeBuilder<Comment> b)
 		{
-			builder.ToTable("Comments");
+			b.ToTable("Comments");
 
-			builder.HasMany(c => c.Likes)
+			b.HasMany(c => c.Likes)
 				.WithOne()
 				.HasForeignKey("CommentId")
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.Ignore(l => l.SubjectId);
-			builder.Ignore(l => l.Subject);
-			builder.Ignore(l => l.Likeable);
+			b.Ignore(l => l.SubjectId);
+			b.Ignore(l => l.Subject);
+			b.Ignore(l => l.Likeable);
 
-			base.Configure(builder);
+			base.Configure(b);
 		}
 	}
 }

@@ -6,12 +6,13 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 {
 	public class VerificationStatementConfiguration : BaseEntityTypeConfiguration<VerificationStatement>
 	{
-		public override void Configure(EntityTypeBuilder<VerificationStatement> builder)
+		public override void Configure(EntityTypeBuilder<VerificationStatement> b)
 		{
-			builder.Ignore(v => v.VoteChanged);
-			builder.ToTable("VerificationStatements");
+			b.ToTable("VerificationStatements");
 
-			base.Configure(builder);
+			b.Ignore(v => v.VoteChanged);
+
+			base.Configure(b);
 		}
 	}
 }

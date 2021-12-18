@@ -6,13 +6,13 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 {
 	public class LikeConfiguration : BaseEntityTypeConfiguration<Like>
 	{
-		public override void Configure(EntityTypeBuilder<Like> builder)
+		public override void Configure(EntityTypeBuilder<Like> b)
 		{
-			builder.ToTable("Likes");
+			b.ToTable("Likes");
 
-			builder.Ignore(l => l.SubjectId);				
+			b.Ignore(l => l.SubjectId);
 
-			base.Configure(builder);
+			base.Configure(b);
 		}
 	}
 }

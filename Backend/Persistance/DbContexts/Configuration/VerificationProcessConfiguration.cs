@@ -6,22 +6,22 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 {
 	public class VerificationProcessConfiguration : BaseEntityTypeConfiguration<VerificationProcess>
 	{
-		public override void Configure(EntityTypeBuilder<VerificationProcess> builder)
+		public override void Configure(EntityTypeBuilder<VerificationProcess> b)
 		{
-			builder.ToTable("VerificationProcesses");
+			b.ToTable("VerificationProcesses");
 
-			builder.HasMany(v => v.Discussion)
+			b.HasMany(v => v.Discussion)
 				.WithOne()
 				.HasForeignKey("VerificationProcessId")
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasMany(v => v.Votes)
+			b.HasMany(v => v.Votes)
 				.WithOne()
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.Ignore(s => s.Commentable);
+			b.Ignore(s => s.Commentable);
 
-			base.Configure(builder);
+			base.Configure(b);
 		}
 	}
 }

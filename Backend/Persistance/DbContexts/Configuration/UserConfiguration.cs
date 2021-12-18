@@ -6,21 +6,23 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 {
 	public class UserConfiguration : BaseEntityTypeConfiguration<User>
 	{
-		public override void Configure(EntityTypeBuilder<User> builder)
+		public override void Configure(EntityTypeBuilder<User> b)
 		{
-			builder.HasMany(u => u.PostedComments)
+			b.ToTable("Users");
+
+			b.HasMany(u => u.PostedComments)
 				.WithOne(c => c.Author)
 				.OnDelete(DeleteBehavior.SetNull);
 
-			builder.HasMany(u => u.GivenLikes)
+			b.HasMany(u => u.GivenLikes)
 				.WithOne(l => l.Giver)
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasMany(u => u.CurrentSpotsVerifications)
+			b.HasMany(u => u.CurrentSpotsVerifications)
 				.WithOne(v => v.Voter)
 				.OnDelete(DeleteBehavior.Cascade);
 
-			base.Configure(builder);
+			base.Configure(b);
 		}
 	}
 }

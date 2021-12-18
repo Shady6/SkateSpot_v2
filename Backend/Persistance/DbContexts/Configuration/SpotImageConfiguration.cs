@@ -6,15 +6,17 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 {
 	public class SpotImageConfiguration : BaseEntityTypeConfiguration<SpotImage>
 	{
-		public override void Configure(EntityTypeBuilder<SpotImage> builder)
+		public override void Configure(EntityTypeBuilder<SpotImage> b)
 		{
-			builder.OwnsOne(si => si.Image);
+			b.ToTable("SpotImages");
 
-			builder.HasOne(si => si.Spot)
+			b.OwnsOne(si => si.Image);
+
+			b.HasOne(si => si.Spot)
 				.WithMany(s => s.Images)
 				.OnDelete(DeleteBehavior.Cascade);
 
-			base.Configure(builder);
+			base.Configure(b);
 		}
 	}
 }
