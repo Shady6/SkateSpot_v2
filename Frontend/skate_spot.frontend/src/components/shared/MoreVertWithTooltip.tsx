@@ -1,8 +1,8 @@
+import React from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import React, { useState } from 'react'
 
 interface Props {
   isTooltipOpen: boolean

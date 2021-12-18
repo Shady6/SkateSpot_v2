@@ -1,5 +1,5 @@
-import { Button } from '@material-ui/core'
 import React from 'react'
+import { Button } from '@material-ui/core'
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>

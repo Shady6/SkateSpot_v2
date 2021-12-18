@@ -10,7 +10,6 @@ import { DefaultAddress } from '../../types/types'
 import { ColorCodedMarker } from './ColorCodedMarker'
 import Legend from './Legend'
 import Map from './Map'
-import { filterActions } from '../../state/reducers/filtersReducer'
 
 interface Props {
   displaySelectedMarkerLegend?: boolean

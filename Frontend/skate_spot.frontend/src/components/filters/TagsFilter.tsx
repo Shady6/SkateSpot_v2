@@ -1,3 +1,4 @@
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../state/store'
 import { ITag, Tags } from '../temp_spot/add/tags/Tags'

@@ -1,5 +1,5 @@
-import { Box, Modal } from '@material-ui/core'
 import React from 'react'
+import { Box, Modal } from '@material-ui/core'
 
 export const ModalStyle = {
   position: 'absolute',

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Navigation from './components/navigation/Navigation'
 import { RedirectNotPrivileged } from './components/navigation/RedirectNotPrivileged'

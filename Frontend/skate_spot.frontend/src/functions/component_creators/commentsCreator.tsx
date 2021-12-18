@@ -1,3 +1,4 @@
+import React from 'react'
 import { CommentDto } from '../../skate_spot_api/client'
 import { ListViewTypes } from '../../state/generic/listViewGenerics'
 import Comments from '../../components/social/comment/Comments'

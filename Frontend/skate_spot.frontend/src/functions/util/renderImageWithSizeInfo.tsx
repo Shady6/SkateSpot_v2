@@ -1,3 +1,4 @@
+import React from 'react'
 import { getStringSizeInMb } from './getStringSizeInMb'
 
 export const renderImageWithSizeInfo = (b64Image: string) => {

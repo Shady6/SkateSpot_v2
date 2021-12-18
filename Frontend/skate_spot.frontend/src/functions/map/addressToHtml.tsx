@@ -1,3 +1,4 @@
+import React from 'react'
 import { DefaultAddress } from '../../types/types'
 import { AddressDto } from '../../skate_spot_api/client'
 

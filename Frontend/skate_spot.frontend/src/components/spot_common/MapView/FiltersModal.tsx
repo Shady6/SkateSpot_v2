@@ -1,3 +1,4 @@
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useMapExecuteOnClickOutsideOf } from '../../../hooks/map/useMapExecuteOnClickOutsideOf'
 import { mapSpotsActions } from '../../../state/reducers/mapSpotsReducer'

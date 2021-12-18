@@ -1,3 +1,4 @@
+import React from 'react'
 import { useInfo } from '../../../../hooks/small_text_feedback/useInfo'
 import { IGeoLocation } from '../../../../types/types'
 

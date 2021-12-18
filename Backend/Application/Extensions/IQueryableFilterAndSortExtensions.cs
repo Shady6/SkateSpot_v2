@@ -13,16 +13,16 @@ namespace SkateSpot.Application.Extensions
 			this IQueryable<T> spot,
 			Sorting sorting) => (sorting, spot) switch
 			{
-				({ Ascending: false, Option: SortOption.CREATION_DATE }, IQueryable<BaseEntity> be) => (IQueryable<T>)be.OrderByDescending(s => s.CreatedAt),
-				({ Ascending: true, Option: SortOption.CREATION_DATE }, IQueryable<BaseEntity> be) => (IQueryable<T>)be.OrderBy(s => s.CreatedAt),
-				({ Ascending: false, Option: SortOption.COMMENTS }, IQueryable<TempSpot> tempSpots) => (IQueryable<T>)tempSpots.OrderByDescending(s => s.VerificationProcess.Discussion.Count()),
-				({ Ascending: true, Option: SortOption.COMMENTS }, IQueryable<TempSpot> tempSpots) => (IQueryable<T>)tempSpots.OrderBy(s => s.VerificationProcess.Discussion.Count()),
-				({ Ascending: false, Option: SortOption.COMMENTS }, IQueryable<IWithComments> withComments) => (IQueryable<T>)withComments.OrderByDescending(s => s.Comments.Count()),
-				({ Ascending: true, Option: SortOption.COMMENTS }, IQueryable<IWithComments> withComments) => (IQueryable<T>)withComments.OrderBy(s => s.Comments.Count()),
-				({ Ascending: false, Option: SortOption.LIKES }, IQueryable<TempSpot> tempSpots) => (IQueryable<T>)tempSpots.OrderByDescending(s => s.VerificationProcess.Votes.Count(v => v.IsReal)),
+				({ Ascending: false, Option: SortOption.CREATION_DATE }, IQueryable<BaseEntity> be) => be.OrderByDescending(s => s.CreatedAt).Cast<T>(),
+				({ Ascending: true, Option: SortOption.CREATION_DATE }, IQueryable<BaseEntity> be) => be.OrderBy(s => s.CreatedAt).Cast<T>(),
+				({ Ascending: false, Option: SortOption.COMMENTS }, IQueryable<TempSpot> tempSpots) => tempSpots.OrderByDescending(s => s.VerificationProcess.Discussion.Count()).Cast<T>(),
+				({ Ascending: true, Option: SortOption.COMMENTS }, IQueryable<TempSpot> tempSpots) => tempSpots.OrderBy(s => s.VerificationProcess.Discussion.Count()).Cast<T>(),
+				({ Ascending: false, Option: SortOption.COMMENTS }, IQueryable<IWithComments> withComments) => withComments.OrderByDescending(s => s.Comments.Count()).Cast<T>(),
+				({ Ascending: true, Option: SortOption.COMMENTS }, IQueryable<IWithComments> withComments) => withComments.OrderBy(s => s.Comments.Count()).Cast<T>(),
+				({ Ascending: false, Option: SortOption.LIKES }, IQueryable<TempSpot> tempSpots) => tempSpots.OrderByDescending(s => s.VerificationProcess.Votes.Count(v => v.IsReal)).Cast<T>(),
 				({ Ascending: true, Option: SortOption.LIKES }, IQueryable<TempSpot> tempSpots) => (IQueryable<T>)tempSpots.OrderBy(s => s.VerificationProcess.Votes.Count(v => v.IsReal)),
-				({ Ascending: false, Option: SortOption.LIKES }, IQueryable<IWithLikes> withLikes) => (IQueryable<T>)withLikes.OrderByDescending(s => s.Likes.Count(l => l.Positive)),
-				({ Ascending: true, Option: SortOption.LIKES }, IQueryable<IWithLikes> withLikes) => (IQueryable<T>)withLikes.OrderBy(s => s.Likes.Count(l => l.Positive)),
+				({ Ascending: false, Option: SortOption.LIKES }, IQueryable<IWithLikes> withLikes) => withLikes.OrderByDescending(s => s.Likes.Count(l => l.Positive)).Cast<T>(),
+				({ Ascending: true, Option: SortOption.LIKES }, IQueryable<IWithLikes> withLikes) => withLikes.OrderBy(s => s.Likes.Count(l => l.Positive)).Cast<T>(),
 				_ => spot
 			};
 
