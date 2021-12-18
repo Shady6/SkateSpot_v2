@@ -23,9 +23,6 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 				.HasForeignKey<VerificationProcess>("TempSpotId")
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.Ignore(s => s.Comments);
-			builder.Ignore(s => s.Likes);
-
 			base.Configure(builder);
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using SkateSpot.Domain.Models;
+using System;
 using System.Linq;
 
 namespace SkateSpot.Domain.Factories
@@ -7,18 +8,6 @@ namespace SkateSpot.Domain.Factories
 	{
 		public static Spot CreateFromTempSpot(TempSpot tempSpot)
 		{
-			var historicalComments = tempSpot.VerificationProcess.Discussion.Select(c =>
-				new HistoricalComment(c)).ToList();
-
-			var historicalVerificationStatements = tempSpot.VerificationProcess.Votes.Select(v =>
-				new HistoricalVerificationStatement(v)).ToList();
-
-			var historicalVerificationProcess =
-				new HistoricalVerificationProcess(tempSpot.VerificationProcess.CreatedAt,
-																		 tempSpot.VerificationProcess.EndDate,
-																		 historicalVerificationStatements,
-																		 historicalComments);
-
 			var spotImages = tempSpot.Images.Select(i =>
 				new SpotImage(i)).ToList();
 
@@ -29,8 +18,9 @@ namespace SkateSpot.Domain.Factories
 					   tempSpot.AuthorId,
 					   tempSpot.Address,
 					   tempSpot.Obstacles.Select(o => o.ObstacleType).ToHashSet(),
-					   historicalVerificationProcess,
-					   spotImages
+					   spotImages,
+					   tempSpot.VerificationProcess.Votes.Select(v => new Like(v.VoterId, Common.SubjectType.Spot, v.IsReal)).ToList(),
+					   tempSpot.VerificationProcess.Discussion.Select(c => new Comment(c.AuthorId, Guid.Empty, Common.SubjectType.Spot, c.Text)).ToList()
 					   );
 
 			return spot;

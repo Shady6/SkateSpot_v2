@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SkateSpot.Domain.Models
 {
-	public class Spot : EditableEntity, ICommentable, ILikeable, IWithSocial, ISpot
+	public class Spot : EditableEntity, ICommentable, ILikeable, ISpot
 	{
 		public string Name { get; protected set; }
 		public string Description { get; protected set; }
@@ -15,7 +15,6 @@ namespace SkateSpot.Domain.Models
 		public ICollection<ObstacleTypeObj> Obstacles { get; protected set; }
 		public Guid? AuthorId { get; protected set; }
 		public User Author { get; protected set; }
-		public HistoricalVerificationProcess VerificationHistory { get; protected set; }
 		public ICollection<SpotVideo> Videos { get; protected set; } = new List<SpotVideo>();
 		public ICollection<SpotImage> Images { get; protected set; } = new List<SpotImage>();
 		public ICollection<SpotImagesVerification> ImagesVerifications { get; protected set; } = new List<SpotImagesVerification>();
@@ -49,9 +48,9 @@ namespace SkateSpot.Domain.Models
 			  Guid? authorId,
 			  Address address,
 			  HashSet<ObstacleType> obstacles,
-			  HistoricalVerificationProcess verificationHistory,
-			  ICollection<SpotImage> images
-
+			  ICollection<SpotImage> images,
+			  ICollection<Like> likes = null,
+			  ICollection<Comment> comments = null
 			  )
 		{
 			CreatedAt = createdAt;
@@ -61,8 +60,9 @@ namespace SkateSpot.Domain.Models
 			AuthorId = authorId;
 			Address = address;
 			Obstacles = obstacles.Select(o => new ObstacleTypeObj(o)).ToArray();
-			VerificationHistory = verificationHistory;
 			Images = images;
+			Likes ??= likes;
+			Comments ??= comments;
 		}
 
 		public void AddImages(ICollection<Image> images, Guid userId)

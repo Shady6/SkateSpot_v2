@@ -32,9 +32,6 @@ namespace SkateSpot.Application.MappingProfiles
 				.ForMember(d => d.Comments, opt => opt.MapFrom(s =>
 					s.Comments.OrderByDescending(c => c.CreatedAt)));
 
-			CreateMap<HistoricalVerificationStatement, VerificationStatementDto>();
-			CreateMap<HistoricalVerificationProcess, VerificationProcessDto>();
-
 			CreateMap<VerificationStatement, VerificationStatementDto>();
 			CreateMap<VerificationProcess, VerificationProcessDto>()
 				.ForMember(d => d.Discussion, opt => opt.MapFrom(s =>

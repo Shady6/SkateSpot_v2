@@ -10,23 +10,15 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 		{
 			builder.HasMany(u => u.PostedComments)
 				.WithOne(c => c.Author)
-				.OnDelete(DeleteBehavior.SetNull);	
+				.OnDelete(DeleteBehavior.SetNull);
 
 			builder.HasMany(u => u.GivenLikes)
 				.WithOne(l => l.Giver)
-				.OnDelete(DeleteBehavior.Cascade);	
+				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasMany(u => u.CurrentSpotsVerifications)
 				.WithOne(v => v.Voter)
 				.OnDelete(DeleteBehavior.Cascade);
-
-			builder.HasMany(u => u.SuccessfulSpotsVerifications)
-				.WithOne(v => v.Voter)
-				.OnDelete(DeleteBehavior.SetNull);
-
-			builder.HasMany(u => u.SuccessfulSpotsVerificationsComments)
-				.WithOne(v => v.Author)
-				.OnDelete(DeleteBehavior.SetNull);
 
 			base.Configure(builder);
 		}

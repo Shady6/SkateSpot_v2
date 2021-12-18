@@ -11,7 +11,7 @@ namespace SkateSpot.Domain.Models
 		YouTube
 	}
 
-	public class SpotVideo : EditableEntity, ICommentable, IWithSocial, ILikeable
+	public class SpotVideo : EditableEntity, ICommentable, ILikeable
 	{
 		public string EmbedId { get; protected set; }
 		public string Description { get; protected set; }

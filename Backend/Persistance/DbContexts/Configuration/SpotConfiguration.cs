@@ -25,11 +25,6 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 				.HasForeignKey("SpotId")
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasOne(s => s.VerificationHistory)
-				.WithOne()
-				.HasForeignKey<HistoricalVerificationProcess>("SpotId")
-				.OnDelete(DeleteBehavior.Cascade);
-
 			builder.Ignore(s => s.Commentable);
 			builder.Ignore(l => l.Likeable);
 

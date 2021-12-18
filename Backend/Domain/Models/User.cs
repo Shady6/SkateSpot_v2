@@ -13,8 +13,6 @@ namespace SkateSpot.Domain.Models
 		public List<Like> GivenLikes { get; protected set; }
 		public List<Comment> PostedComments { get; protected set; }
 		public List<VerificationStatement> CurrentSpotsVerifications { get; protected set; }
-		public List<HistoricalVerificationStatement> SuccessfulSpotsVerifications { get; protected set; }
-		public List<HistoricalComment> SuccessfulSpotsVerificationsComments { get; protected set; }
 		public List<SpotVideo> AddedVideos { get; protected set; }
 
 		public User()

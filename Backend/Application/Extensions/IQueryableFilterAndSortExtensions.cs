@@ -11,18 +11,18 @@ namespace SkateSpot.Application.Extensions
 	{
 		public static IQueryable<T> ApplySort<T>(
 			this IQueryable<T> spot,
-			Sorting sorting) where T : BaseEntity, IWithSocial => (sorting, spot) switch
+			Sorting sorting) => (sorting, spot) switch
 			{
-				({ Ascending: false, Option: SortOption.CREATION_DATE }, _) => spot.OrderByDescending(s => s.CreatedAt),
-				({ Ascending: true, Option: SortOption.CREATION_DATE }, _) => spot.OrderBy(s => s.CreatedAt),
+				({ Ascending: false, Option: SortOption.CREATION_DATE }, IQueryable<BaseEntity> be) => (IQueryable<T>)be.OrderByDescending(s => s.CreatedAt),
+				({ Ascending: true, Option: SortOption.CREATION_DATE }, IQueryable<BaseEntity> be) => (IQueryable<T>)be.OrderBy(s => s.CreatedAt),
 				({ Ascending: false, Option: SortOption.COMMENTS }, IQueryable<TempSpot> tempSpots) => (IQueryable<T>)tempSpots.OrderByDescending(s => s.VerificationProcess.Discussion.Count()),
 				({ Ascending: true, Option: SortOption.COMMENTS }, IQueryable<TempSpot> tempSpots) => (IQueryable<T>)tempSpots.OrderBy(s => s.VerificationProcess.Discussion.Count()),
-				({ Ascending: false, Option: SortOption.COMMENTS }, _) => spot.OrderByDescending(s => s.Comments.Count()),
-				({ Ascending: true, Option: SortOption.COMMENTS }, _) => spot.OrderBy(s => s.Comments.Count()),
+				({ Ascending: false, Option: SortOption.COMMENTS }, IQueryable<IWithComments> withComments) => (IQueryable<T>)withComments.OrderByDescending(s => s.Comments.Count()),
+				({ Ascending: true, Option: SortOption.COMMENTS }, IQueryable<IWithComments> withComments) => (IQueryable<T>)withComments.OrderBy(s => s.Comments.Count()),
 				({ Ascending: false, Option: SortOption.LIKES }, IQueryable<TempSpot> tempSpots) => (IQueryable<T>)tempSpots.OrderByDescending(s => s.VerificationProcess.Votes.Count(v => v.IsReal)),
 				({ Ascending: true, Option: SortOption.LIKES }, IQueryable<TempSpot> tempSpots) => (IQueryable<T>)tempSpots.OrderBy(s => s.VerificationProcess.Votes.Count(v => v.IsReal)),
-				({ Ascending: false, Option: SortOption.LIKES }, _) => spot.OrderByDescending(s => s.Likes.Count(l => l.Positive)),
-				({ Ascending: true, Option: SortOption.LIKES }, _) => spot.OrderBy(s => s.Likes.Count(l => l.Positive)),
+				({ Ascending: false, Option: SortOption.LIKES }, IQueryable<IWithLikes> withLikes) => (IQueryable<T>)withLikes.OrderByDescending(s => s.Likes.Count(l => l.Positive)),
+				({ Ascending: true, Option: SortOption.LIKES }, IQueryable<IWithLikes> withLikes) => (IQueryable<T>)withLikes.OrderBy(s => s.Likes.Count(l => l.Positive)),
 				_ => spot
 			};
 
@@ -48,7 +48,7 @@ namespace SkateSpot.Application.Extensions
 
 		public static IQueryable<T> ApplySortingAndFilters<T>(
 			this IQueryable<T> spot,
-			SortAndFilter snf) where T : BaseEntity, ISpot, IWithSocial => spot.ApplyFuncWithArgIfArgNotNull(snf.Sorting, ApplySort,
+			SortAndFilter snf) where T : BaseEntity, ISpot => spot.ApplyFuncWithArgIfArgNotNull(snf.Sorting, ApplySort,
 				(s) => s.ApplySort(new Sorting
 				{
 					Ascending = false,

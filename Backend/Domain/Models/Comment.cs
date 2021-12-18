@@ -27,7 +27,7 @@ namespace SkateSpot.Domain.Models
 		{
 		}
 
-		public Comment(Guid authorId, Guid subjectId, SubjectType subjectType, string text)
+		public Comment(Guid? authorId, Guid subjectId, SubjectType subjectType, string text)
 		{
 			AuthorId = authorId;
 			SubjectId = subjectId;
