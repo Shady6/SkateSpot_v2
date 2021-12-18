@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkateSpot.Api", "Backend\Sk
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkateSpot.Application", "Backend\Application\SkateSpot.Application.csproj", "{BC38C419-C838-42CD-AEB6-AED6FBC3A484}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkateSpot.Infrastructure.Shared", "Backend\SkateSpot.Infrastructure.Shared\SkateSpot.Infrastructure.Shared.csproj", "{AAF6DE49-4453-480A-8887-4C9AE7E05531}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{BC38C419-C838-42CD-AEB6-AED6FBC3A484}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC38C419-C838-42CD-AEB6-AED6FBC3A484}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC38C419-C838-42CD-AEB6-AED6FBC3A484}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AAF6DE49-4453-480A-8887-4C9AE7E05531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAF6DE49-4453-480A-8887-4C9AE7E05531}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AAF6DE49-4453-480A-8887-4C9AE7E05531}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AAF6DE49-4453-480A-8887-4C9AE7E05531}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,7 +54,6 @@ Global
 		{42613BD5-DA1B-4DD1-BEDB-1031B14794BB} = {D006ADD0-63E3-4514-8477-33708DB0FA9E}
 		{D29780F2-CC70-4240-963B-576C951054B9} = {6DFD378D-037D-47F0-A4DE-BD0C7511FAE8}
 		{BC38C419-C838-42CD-AEB6-AED6FBC3A484} = {33C39E03-2B18-421A-8962-3AF9F2FA1547}
-		{AAF6DE49-4453-480A-8887-4C9AE7E05531} = {D006ADD0-63E3-4514-8477-33708DB0FA9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {35A840F0-B995-4497-807D-BC21FF33368A}

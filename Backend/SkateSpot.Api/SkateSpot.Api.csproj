@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -33,7 +33,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\SkateSpot.Application.csproj" />
     <ProjectReference Include="..\Persistance\SkateSpot.Infrastructure.csproj" />
-    <ProjectReference Include="..\SkateSpot.Infrastructure.Shared\SkateSpot.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
 </Project>

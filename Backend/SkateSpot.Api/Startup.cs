@@ -15,76 +15,75 @@ using System.Text.Json.Serialization;
 
 namespace SkateSpot.Api
 {
-	public class Startup
-	{
-		public Startup(IConfiguration configuration)
-		{
-			_configuration = configuration;
-		}
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
-		public IConfiguration _configuration { get; }
+        public IConfiguration _configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.AddApplicationLayer();
-			services.AddContextInfrastructure(_configuration);
-			services.AddPersistenceContexts(_configuration);
-			services.AddRepositories();
-			services.AddSharedInfrastructure(_configuration);
-			services.AddApplicationLayer();
-			services.RegisterSwagger();
-			services.AddCors(options =>
-			{
-				options.AddDefaultPolicy(builder =>
-				{
-					builder
-					.WithOrigins("http://localhost:3000")
-					.AllowAnyHeader()
-					.AllowAnyMethod();
-				});
-			});
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddApplicationLayer();
+            services.AddContextInfrastructure(_configuration);
+            services.AddPersistenceContexts(_configuration);
+            services.AddRepositories();
+            services.AddApplicationLayer();
+            services.RegisterSwagger();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder
+                    .WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
 
-			services.AddControllers().AddJsonOptions(o =>
-			{
-				o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-			});
-		}
+            services.AddControllers().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider sp)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider sp)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
-			app.ConfigureSwagger();
-			app.UseHttpsRedirection();
+            app.ConfigureSwagger();
+            app.UseHttpsRedirection();
 
-			app.UseRouting();
-			app.UseCors();
-			app.UseMiddleware<ToApiResponseConverter>();
-			app.UseMiddleware<ExceptionHandler>();
-			app.UseAuthentication();
-			app.UseMiddleware<TokenValidityChecker>();
-			app.UseAuthorization();
+            app.UseRouting();
+            app.UseCors();
+            app.UseMiddleware<ToApiResponseConverter>();
+            app.UseMiddleware<ExceptionHandler>();
+            app.UseAuthentication();
+            app.UseMiddleware<TokenValidityChecker>();
+            app.UseAuthorization();
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
-			using (var scope = sp.CreateScope())
-			{
-				var idctx = scope.ServiceProvider.GetService<IdentityContext>();
-				if (idctx.Database.GetPendingMigrations().Any())
-					idctx.Database.Migrate();
+            using (var scope = sp.CreateScope())
+            {
+                var idctx = scope.ServiceProvider.GetService<IdentityContext>();
+                if (idctx.Database.GetPendingMigrations().Any())
+                    idctx.Database.Migrate();
 
-				var ctx = scope.ServiceProvider.GetService<ApplicationDbContext>();
-				if (ctx.Database.GetPendingMigrations().Any())
-					ctx.Database.Migrate();
-			}
-		}
-	}
+                var ctx = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                if (ctx.Database.GetPendingMigrations().Any())
+                    ctx.Database.Migrate();
+            }
+        }
+    }
 }
