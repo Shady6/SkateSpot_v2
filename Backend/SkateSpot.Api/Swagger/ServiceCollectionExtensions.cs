@@ -14,7 +14,6 @@ namespace SkateSpot.Api.Swagger
 				c.SchemaFilter<SwaggerIgnoreFilter>();
 				c.OperationFilter<SwaggerOperationIdChangerFilter>();
 				c.OperationFilter<AddAuthorizationHeaderFilter>();
-				c.IncludeXmlComments(string.Format(@"{0}\SkateSpot.Api.xml", System.AppDomain.CurrentDomain.BaseDirectory));
 				c.SwaggerDoc("v1", new OpenApiInfo
 				{
 					Version = "v1",

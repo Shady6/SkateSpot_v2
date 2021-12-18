@@ -1217,7 +1217,7 @@ export class Client {
         let url_ = this.baseUrl + "/api/TempSpots/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -1614,10 +1614,10 @@ export enum ObstacleType {
 }
 
 export interface RegisterRequest {
-    email: string;
-    userName: string;
-    password: string;
-    confirmPassword: string;
+    email: string | undefined;
+    userName: string | undefined;
+    password: string | undefined;
+    confirmPassword: string | undefined;
 }
 
 export interface ResetPasswordRequest {

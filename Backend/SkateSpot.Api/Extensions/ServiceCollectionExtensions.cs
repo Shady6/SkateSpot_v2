@@ -77,11 +77,11 @@ namespace SkateSpot.Api.Extensions
 					{
 						OnAuthenticationFailed = c =>
 						{
-							throw new AppException(ErrorCode.UNAUTHORIZED, "You're unauthorized, please login again.");
+							throw new AppException(ErrorCode.UNAUTHORIZED, "You're unauthorized, please login first.");
 						},
 						OnChallenge = context =>
 						{
-							throw new AppException(ErrorCode.UNAUTHORIZED, "You're unauthorized, please login again.");
+							throw new AppException(ErrorCode.UNAUTHORIZED, "You're unauthorized, please login first.");
 						},
 						OnForbidden = context =>
 						{

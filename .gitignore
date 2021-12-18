@@ -485,3 +485,9 @@ dist
 appsettings.json
 TODO.txt
 .history/
+
+azure.yml
+docker-compose.yml
+DockerFile
+appsettings.Production.json
+.dockerignore

@@ -1,13 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SkateSpot.Api.Extensions;
 using SkateSpot.Api.Middleware;
 using SkateSpot.Api.Swagger;
+using SkateSpot.Infrastructure.DbContexts;
 using SkateSpot.Infrastructure.Extensions;
 using System;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace SkateSpot.Api
@@ -64,14 +67,24 @@ namespace SkateSpot.Api
 			app.UseMiddleware<ToApiResponseConverter>();
 			app.UseMiddleware<ExceptionHandler>();
 			app.UseAuthentication();
-			// DEBUGGING
-			//app.UseMiddleware<TokenValidityChecker>();
+			app.UseMiddleware<TokenValidityChecker>();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
 			});
+
+			using (var scope = sp.CreateScope())
+			{
+				var idctx = scope.ServiceProvider.GetService<IdentityContext>();
+				if (idctx.Database.GetPendingMigrations().Any())
+					idctx.Database.Migrate();
+
+				var ctx = scope.ServiceProvider.GetService<ApplicationDbContext>();
+				if (ctx.Database.GetPendingMigrations().Any())
+					ctx.Database.Migrate();
+			}
 		}
 	}
 }

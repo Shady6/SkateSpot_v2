@@ -70,6 +70,7 @@ namespace SkateSpot.Application.Services
 				throw new AppException(ErrorCode.NOT_OWNED, "You can't delete temp spot which doesn't belong to you");
 
 			_context.TempSpots.Remove(foundSpot);
+			await _context.SaveChangesAsync();
 		}
 
 		private void VerifySpotOnTimerElapsed(IServiceScope scope, Guid ownerId)
