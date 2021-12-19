@@ -87,17 +87,12 @@ namespace SkateSpot.Domain.Models
 			IsVerified = votedReal > votedFake;
 		}
 
-		private (int, int) CountVotes()
-		{
-			int votedReal = 0;
-			int votedFake = 0;
-
-			foreach (var vote in Votes)
-			{
-				if (vote.IsReal) votedReal++;
-				else votedFake++;
-			}
-			return (votedReal, votedFake);
-		}
+		private (int, int) CountVotes() =>		
+			Votes.Aggregate((votedReal: 0, votedFake: 0), (result, vote) =>
+			 {
+				 if (vote.IsReal) result.votedReal++;
+				 else result.votedFake++;
+				 return result;
+			 });		
 	}
 }
