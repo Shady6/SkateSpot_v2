@@ -18,10 +18,10 @@ const App: React.FC = () => {
       <Route
         key={r.linkName}
         path={r.path}
-        exact={r.exact}
+        exact={true}
         render={() =>
           hasRouteAccess(r, state.auth) ? (
-            <r.component {...r.props} />
+            <r.component />
           ) : (
             <RedirectNotPrivileged />
           )

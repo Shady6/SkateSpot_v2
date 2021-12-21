@@ -33,12 +33,10 @@ export const AddSpotVideoModal = (p: Props) => {
     let id = ''
     try {
       if (videoUrl.indexOf('youtube') !== -1) {
-        id = videoUrl.slice(videoUrl.indexOf('?v=') + 3)
-        if (id.indexOf('/') !== -1) id = id.slice(0, id.indexOf('/'))
+        id = getYouTubeVideoId(videoUrl)
         if (id) setVideo({ type: VideoPlatformType.YouTube, id })
       } else if (videoUrl.indexOf('instagram') !== -1) {
-        id = videoUrl.slice(videoUrl.indexOf('/p/') + 3)
-        if (id.indexOf('/') !== -1) id = id.slice(0, id.indexOf('/'))
+        id = getInstagramVideoId(videoUrl)
         if (id) setVideo({ type: VideoPlatformType.Instagram, id })
       }
     } catch {
@@ -46,6 +44,18 @@ export const AddSpotVideoModal = (p: Props) => {
     } finally {
       if (!id) flashInvalidUrl()
     }
+  }
+
+  const getYouTubeVideoId = (videoUrl: string) => {
+    let id = videoUrl.slice(videoUrl.indexOf('?v=') + 3)
+    if (id.indexOf('/') !== -1) id = id.slice(0, id.indexOf('/'))
+    return id
+  }
+
+  const getInstagramVideoId = (videoUrl: string) => {
+    let id = videoUrl.slice(videoUrl.indexOf('/p/') + 3)
+    if (id.indexOf('/') !== -1) id = id.slice(0, id.indexOf('/'))
+    return id
   }
 
   const flashInvalidUrl = () => {

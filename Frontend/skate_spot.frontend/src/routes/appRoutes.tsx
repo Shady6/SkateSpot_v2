@@ -14,10 +14,8 @@ import { UserRoles } from '../types/types'
 export interface IRoute {
   linkName: string | null
   path: string
-  exact: boolean
   component: React.FC
   accessedBy: UserRoles[]
-  props?: any
   renderLink: boolean
 }
 
@@ -43,7 +41,6 @@ export const routes: IRoute[] = [
   {
     linkName: 'SkateSpot',
     path: RoutesEnum.HOME,
-    exact: true,
     component: Home,
     accessedBy: [UserRoles.ALL],
     renderLink: false,
@@ -51,7 +48,6 @@ export const routes: IRoute[] = [
   {
     linkName: 'Login',
     path: RoutesEnum.LOGIN,
-    exact: true,
     component: Login,
     accessedBy: [UserRoles.NOT_SIGNED_IN],
     renderLink: false,
@@ -59,7 +55,6 @@ export const routes: IRoute[] = [
   {
     linkName: 'Register',
     path: RoutesEnum.REGISTER,
-    exact: true,
     component: Register,
     accessedBy: [UserRoles.NOT_SIGNED_IN],
     renderLink: false,
@@ -67,7 +62,6 @@ export const routes: IRoute[] = [
   {
     linkName: 'Add Spot',
     path: RoutesEnum.ADD_TEMP_SPOT,
-    exact: true,
     component: AddTempSpotPage,
     accessedBy: [UserRoles.SIGNED_IN],
     renderLink: true,
@@ -75,7 +69,6 @@ export const routes: IRoute[] = [
   {
     linkName: 'Temp Spots',
     path: RoutesEnum.TEMP_SPOTS,
-    exact: true,
     component: () => (
       <ListItemsMainPage listViewType={ListViewTypes.TEMP_SPOTS} />
     ),
@@ -85,7 +78,6 @@ export const routes: IRoute[] = [
   {
     linkName: 'Spots',
     path: RoutesEnum.SPOTS,
-    exact: true,
     component: () => <ListItemsMainPage listViewType={ListViewTypes.SPOTS} />,
     accessedBy: [UserRoles.ALL],
     renderLink: true,
@@ -93,7 +85,6 @@ export const routes: IRoute[] = [
   {
     linkName: 'Videos',
     path: RoutesEnum.SPOT_VIDEO,
-    exact: true,
     component: () => (
       <ListItemsMainPage listViewType={ListViewTypes.SPOT_VIDEOS} />
     ),
@@ -103,7 +94,6 @@ export const routes: IRoute[] = [
   {
     linkName: null,
     path: RoutesEnum.SPOT_DEDICATED_PAGE,
-    exact: true,
     component: SpotPage,
     accessedBy: [UserRoles.ALL],
     renderLink: false,
@@ -111,7 +101,6 @@ export const routes: IRoute[] = [
   {
     linkName: 'Map',
     path: RoutesEnum.MAP,
-    exact: true,
     component: SpotsMapView,
     accessedBy: [UserRoles.ALL],
     renderLink: true,
@@ -119,7 +108,6 @@ export const routes: IRoute[] = [
   {
     linkName: null,
     path: RoutesEnum.USER_PROFILE,
-    exact: true,
     component: UserProfile,
     accessedBy: [UserRoles.SIGNED_IN],
     renderLink: false,
@@ -127,7 +115,6 @@ export const routes: IRoute[] = [
   {
     linkName: 'Logout',
     path: RoutesEnum.LOGOUT,
-    exact: true,
     component: Logout,
     accessedBy: [UserRoles.SIGNED_IN],
     renderLink: false,

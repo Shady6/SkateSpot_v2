@@ -50,8 +50,5 @@ export const register = createAsyncThunk(
 export const logout = createAsyncThunk('auth/logout', async () => {
   const jwt = localStorage.getItem(localStorageJWTKey)
   localStorage.removeItem(localStorageJWTKey)
-  if (jwt) {
-    const client = new ApiClient()
-    await client.logout('Bearer ' + jwt)
-  }
+  if (jwt) await new ApiClient().logout('Bearer ' + jwt)
 })
