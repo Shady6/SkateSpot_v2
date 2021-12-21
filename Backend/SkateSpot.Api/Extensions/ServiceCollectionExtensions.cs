@@ -13,6 +13,7 @@ using SkateSpot.Domain.Common;
 using SkateSpot.Infrastructure.DbContexts;
 using SkateSpot.Infrastructure.Identity.Models;
 using SkateSpot.Infrastructure.Identity.Services;
+using SkateSpot.Infrastructure.Repositories;
 using System;
 using System.Reflection;
 using System.Text;
@@ -86,11 +87,20 @@ namespace SkateSpot.Api.Extensions
         public static void AddApplicationLayer(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetAssembly(typeof(ApplicationProfile)));
-            services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+            services.AddTransient<IApplicationDbContext, ApplicationDbContext>();            
             services.Scan(scan =>
             scan.FromAssemblyOf<Service>()
             .AddClasses(filter => filter.InNamespaceOf<Service>())
             .AsMatchingInterface());
+        }
+
+        public static void AddRepositories(this IServiceCollection services)
+        {
+            services.Scan(scan =>
+            scan.FromCallingAssembly()
+            .AddClasses(filter => filter.InNamespaceOf<SpotRepository>())
+            .AsImplementedInterfaces()
+            );
         }
     }
 }

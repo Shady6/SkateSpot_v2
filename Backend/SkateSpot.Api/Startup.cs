@@ -8,7 +8,6 @@ using SkateSpot.Api.Extensions;
 using SkateSpot.Api.Middleware;
 using SkateSpot.Api.Swagger;
 using SkateSpot.Infrastructure.DbContexts;
-using SkateSpot.Infrastructure.Extensions;
 using System;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -29,7 +28,6 @@ namespace SkateSpot.Api
         {
             services.AddApplicationLayer();
             services.AddContextInfrastructure(_configuration);
-            services.AddPersistenceContexts(_configuration);
             services.AddRepositories();
             services.AddApplicationLayer();
             services.RegisterSwagger();

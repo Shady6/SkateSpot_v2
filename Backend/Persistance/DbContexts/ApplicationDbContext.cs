@@ -9,6 +9,13 @@ namespace SkateSpot.Infrastructure.DbContexts
 {
 	public class ApplicationDbContext : DbContext, IApplicationDbContext
 	{
+		public DbSet<User> Users { get; set; }
+		public DbSet<Spot> Spots { get; set; }
+		public DbSet<TempSpot> TempSpots { get; set; }
+		public DbSet<SpotVideo> SpotVideos { get; set; }
+		public DbSet<VerificationProcess> VerificationProcesses { get; set; }
+		public DbSet<Comment> Comments { get; set; }
+
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
 		{
@@ -37,12 +44,5 @@ namespace SkateSpot.Infrastructure.DbContexts
 		new LoggerFactory(new[] {
 			new Microsoft.Extensions.Logging.Debug.DebugLoggerProvider()
 		});
-
-		public DbSet<User> Users { get; set; }
-		public DbSet<Spot> Spots { get; set; }
-		public DbSet<TempSpot> TempSpots { get; set; }
-		public DbSet<SpotVideo> SpotVideos { get; set; }
-		public DbSet<VerificationProcess> VerificationProcesses { get; set; }
-		public DbSet<Comment> Comments { get; set; }
 	}
 }
