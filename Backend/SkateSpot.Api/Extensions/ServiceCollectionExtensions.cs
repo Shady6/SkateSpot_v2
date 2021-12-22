@@ -97,7 +97,7 @@ namespace SkateSpot.Api.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             services.Scan(scan =>
-            scan.FromCallingAssembly()
+            scan.FromAssemblyOf<SpotRepository>()
             .AddClasses(filter => filter.InNamespaceOf<SpotRepository>())
             .AsImplementedInterfaces()
             );

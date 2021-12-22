@@ -66,6 +66,7 @@ export const SpotsMapView = () => {
             <SpotModal />
           </OnTopOfMapContainer>
         )}
+        {/* @ts-ignore    */}
         <MyMarkerClusterGroup showCoverageOnHover={false} key={refreshId}>
           {state.markersData.length &&
             state.markersData.map(m => (
