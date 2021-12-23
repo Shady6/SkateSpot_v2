@@ -28,8 +28,7 @@ namespace SkateSpot.Api
         {
             services.AddApplicationLayer();
             services.AddContextInfrastructure(_configuration);
-            services.AddRepositories();
-            services.AddApplicationLayer();
+            services.AddRepositories();            
             services.RegisterSwagger();
             services.AddCors(options =>
             {
@@ -64,7 +63,7 @@ namespace SkateSpot.Api
             app.UseMiddleware<ToApiResponseConverter>();
             app.UseMiddleware<ExceptionHandler>();
             app.UseAuthentication();
-            app.UseMiddleware<TokenValidityChecker>();
+            //app.UseMiddleware<TokenValidityChecker>();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
