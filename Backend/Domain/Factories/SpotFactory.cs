@@ -19,8 +19,8 @@ namespace SkateSpot.Domain.Factories
 					   tempSpot.Address,
 					   tempSpot.Obstacles.Select(o => o.ObstacleType).ToHashSet(),
 					   spotImages,
-					   tempSpot.VerificationProcess.Votes.Select(v => new Like(v.VoterId, Common.SubjectType.Spot, v.IsReal)).ToList(),
-					   tempSpot.VerificationProcess.Discussion.Select(c => new Comment(c.AuthorId, Guid.Empty, Common.SubjectType.Spot, c.Text)).ToList()
+					   tempSpot.VerificationProcess.Votes.Select(v => new Like(v.VoterId, v.IsReal)).ToList(),
+					   tempSpot.VerificationProcess.Comments.Select(c => new Comment(c.AuthorId, c.Text)).ToList()
 					   );
 
 			return spot;

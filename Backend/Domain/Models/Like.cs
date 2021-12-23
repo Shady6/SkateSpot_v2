@@ -6,19 +6,16 @@ namespace SkateSpot.Domain.Models
 	public class Like : BaseEntity
 	{
 		public Guid GiverId { get; protected set; }
-		public User Giver { get; protected set; }
-		public Guid SubjectId { get; protected set; }
-		public SubjectType SubjectType { get; protected set; }
+		public User Giver { get; protected set; }				
 		public bool Positive { get; protected set; }
 
 		public Like()
 		{
 		}
 
-		public Like(Guid giverId, SubjectType subjectType, bool positive)
+		public Like(Guid giverId, bool positive)
 		{
-			GiverId = giverId;
-			SubjectType = subjectType;
+			GiverId = giverId;			
 			Positive = positive;
 		}
 

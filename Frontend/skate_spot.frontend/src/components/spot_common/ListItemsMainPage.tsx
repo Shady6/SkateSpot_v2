@@ -69,7 +69,9 @@ export const ListItemsMainPage: React.FC<Props> = ({ listViewType }) => {
     <>
       <div className='row m-0 mt-5' style={{ fontSize: '1rem' }}>
         <div className='col-2'>
-          <FilterAndSortPane listViewType={listViewType} />
+          <div className='col-2' style={{ position: 'fixed' }}>
+            <FilterAndSortPane listViewType={listViewType} />
+          </div>
         </div>
         <div className='col-1'></div>
         <div className='col-6'>

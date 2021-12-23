@@ -24,7 +24,7 @@ namespace SkateSpot.Infrastructure.Repositories
 		{
 			return TempSpots
 				.Include(s => s.VerificationProcess.Votes)
-				.Include(s => s.VerificationProcess.Discussion)
+				.Include(s => s.VerificationProcess.Comments)
 				.ThenInclude(d => d.Likes)
 				.FirstOrDefault(s => s.Id == id);
 		}
@@ -33,7 +33,7 @@ namespace SkateSpot.Infrastructure.Repositories
 		{
 			return await TempSpots
 				.Include(s => s.VerificationProcess.Votes)
-				.Include(s => s.VerificationProcess.Discussion)
+				.Include(s => s.VerificationProcess.Comments)
 				.ThenInclude(d => d.Likes)
 				.FirstOrDefaultAsync(s => s.Id == id);
 		}
@@ -43,8 +43,8 @@ namespace SkateSpot.Infrastructure.Repositories
 			return await TempSpots
 				.Include(s => s.Author)
 				.Include(s => s.VerificationProcess.Votes)
-				.Include(s => s.VerificationProcess.Discussion).ThenInclude(d => d.Likes)
-				.Include(s => s.VerificationProcess.Discussion).ThenInclude(d => d.Author)
+				.Include(s => s.VerificationProcess.Comments).ThenInclude(d => d.Likes)
+				.Include(s => s.VerificationProcess.Comments).ThenInclude(d => d.Author)
 				.FirstOrDefaultAsync(s => s.Id == id);
 		}
 

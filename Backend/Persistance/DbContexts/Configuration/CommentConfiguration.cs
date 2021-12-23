@@ -15,8 +15,6 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 				.HasForeignKey("CommentId")
 				.OnDelete(DeleteBehavior.Cascade);
 
-			b.Ignore(l => l.SubjectId);
-			b.Ignore(l => l.Subject);
 			b.Ignore(l => l.Likeable);
 
 			base.Configure(b);

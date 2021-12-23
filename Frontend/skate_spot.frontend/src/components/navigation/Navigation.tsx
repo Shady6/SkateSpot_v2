@@ -1,6 +1,6 @@
 import PlaceIcon from '@mui/icons-material/Place'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import hasRouteAccess from '../../functions/route/hasRouteAccess'
 import { routes, RoutesEnum } from '../../routes/appRoutes'
 import { useRootState } from '../../state/store'
@@ -8,13 +8,21 @@ import './style.scss'
 
 const Navigation: React.FC = () => {
   const authState = useRootState().auth
+  const history = useHistory()
 
   const renderLinks = () =>
     routes
       .filter(r => r.renderLink)
       .map(r =>
         hasRouteAccess(r, authState) ? (
-          <Link key={r.path} to={r.path}>
+          <Link
+            style={{
+              fontWeight: history.location.pathname.endsWith(r.path)
+                ? 700
+                : 400,
+            }}
+            key={r.path}
+            to={r.path}>
             {r.linkName}
           </Link>
         ) : null

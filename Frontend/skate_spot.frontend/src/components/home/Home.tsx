@@ -29,13 +29,13 @@ const Home: React.FC = () => {
 
   const renderStat = (statValue: number | undefined) => {
     if (loading) return <CircularProgress size={20} color='secondary' />
-    else if (!statValue) return '_'
+    else if (statValue !== 0 && !statValue) return '_'
     else return statValue
   }
 
   return (
     <div id='main' className='row m-0'>
-      <div className='col d-flex align-items-center'>
+      <div className='col d-flex align-items-center mt-5'>
         <img src='./skate.png' alt='skate-person' />
       </div>
       <div className='col d-flex align-items-center'>

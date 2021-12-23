@@ -40,7 +40,7 @@ namespace SkateSpot.Application.Services
 			await _userRepository.SaveChangesAsync();
 
 			var tempSpotFakeCommand = new Faker<CreateTempSpotCommand>()
-				.RuleFor(s => s.Name, f => f.Random.Guid().ToString())
+				.RuleFor(s => s.Name, f => string.Join(' ', f.Lorem.Words(2)))
 				.RuleFor(s => s.Description, f => f.Lorem.Lines(1))
 				.RuleFor(s => s.Address, _ => makeAddressDtoFake().Generate())
 				.RuleFor(s => s.Obstacles, f => GenerateObstacles(f))
@@ -67,8 +67,7 @@ namespace SkateSpot.Application.Services
 				.RuleFor(c => c.Author, f => f.PickRandom(users))
 				.RuleFor(c => c.Text, f => f.Lorem.Lines(1))
 				.RuleFor(c => c.Likes, (f, c) =>
-				{
-					likeFake.RuleFor(l => l.SubjectType, _ => SubjectType.Comment);
+				{					
 					likeFake.RuleFor(l => l.CreatedAt, f => f.Date.Between(c.CreatedAt, DateTime.Now));
 					return likeFake.GenerateBetween(0, 5);
 				});
@@ -76,15 +75,13 @@ namespace SkateSpot.Application.Services
 			var spotVideoFake = new Faker<SpotVideo>()
 				.RuleFor(s => s.Author, f => f.PickRandom(users))
 				.RuleFor(s => s.Comments, (f, s) =>
-				{
-					commentFake.RuleFor(c => c.SubjectType, _ => SubjectType.SpotVideo);
+				{					
 					commentFake.RuleFor(c => c.CreatedAt, f => f.Date.Between(s.CreatedAt, DateTime.Now));
 
 					return commentFake.GenerateBetween(0, 7);
 				})
 				.RuleFor(s => s.Likes, (f, s) =>
-				{
-					likeFake.RuleFor(l => l.SubjectType, _ => SubjectType.SpotVideo);
+				{					
 					likeFake.RuleFor(l => l.CreatedAt, f => f.Date.Between(s.CreatedAt, DateTime.Now));
 					return likeFake.GenerateBetween(0, 8);
 				});
@@ -109,15 +106,13 @@ namespace SkateSpot.Application.Services
 					return spotVideoFake.GenerateBetween(0, 4);
 				})
 				.RuleFor(s => s.Comments, (f, s) =>
-				{
-					commentFake.RuleFor(c => c.SubjectType, _ => SubjectType.Spot);
+				{					
 					commentFake.RuleFor(c => c.CreatedAt, f => f.Date.Between(s.CreatedAt, DateTime.Now));
 
 					return commentFake.GenerateBetween(0, 10);
 				})
 				.RuleFor(s => s.Likes, (f, s) =>
-				{
-					likeFake.RuleFor(l => l.SubjectType, _ => SubjectType.Spot);
+				{					
 					commentFake.RuleFor(l => l.CreatedAt, f => f.Date.Between(s.CreatedAt, DateTime.Now));
 					return likeFake.GenerateBetween(0, 14);
 				});

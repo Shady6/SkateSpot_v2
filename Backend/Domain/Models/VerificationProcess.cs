@@ -12,7 +12,7 @@ namespace SkateSpot.Domain.Models
 		public DateTime EndDate { get; protected set; }
 		public bool IsVerified { get; protected set; }
 
-		public ICollection<Comment> Discussion
+		public ICollection<Comment> Comments
 		{
 			get => Commentable.Comments;
 			protected set => Commentable.SetComments(value);

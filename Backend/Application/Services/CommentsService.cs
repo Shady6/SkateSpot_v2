@@ -31,7 +31,7 @@ namespace SkateSpot.Application.Services
 			var subjectType = _mapper.Map<SubjectType>(request.SubjectType);
 			var foundSubject = await ThrowOnNullAsync(() => _commentRepository.GetSubjectAsync(subjectType, request.SubjectId));
 
-			var comment = new Comment(request.UserId, request.SubjectId, subjectType, request.Text);
+			var comment = new Comment(request.UserId, request.Text);
 			(foundSubject as ICommentable).AddComment(comment);
 
 			await _commentRepository.SaveChangesAsync();

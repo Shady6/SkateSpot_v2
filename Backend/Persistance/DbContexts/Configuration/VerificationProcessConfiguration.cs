@@ -10,7 +10,7 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 		{
 			b.ToTable("VerificationProcesses");
 
-			b.HasMany(v => v.Discussion)
+			b.HasMany(v => v.Comments)
 				.WithOne()
 				.HasForeignKey("VerificationProcessId")
 				.OnDelete(DeleteBehavior.Cascade);

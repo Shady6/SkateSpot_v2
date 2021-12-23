@@ -26,7 +26,7 @@ namespace SkateSpot.Application.Services
 			var subjectType = _mapper.Map<SubjectType>(request.SubjectType);
 			var foundSubject = await ThrowOnNullAsync(() => _likeRepository.GetSubjectWithLikesAsync(subjectType, request.SubjectId)) as ILikeable;
 
-			var like = new Like(request.UserId, subjectType, request.Positive);
+			var like = new Like(request.UserId, request.Positive);
 			foundSubject.Like(like);
 
 			await _likeRepository.SaveChangesAsync();

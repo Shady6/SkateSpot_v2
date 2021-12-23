@@ -52,7 +52,7 @@ namespace SkateSpot.Infrastructure.Repositories
 
 				case SubjectType.TempSpot:
 					return await _dbContext.VerificationProcesses
-						.Include(t => t.Discussion)
+						.Include(t => t.Comments)
 						.Where(v => EF.Property<Guid>(v, "TempSpotId") == subjectId)
 						.FirstOrDefaultAsync();
 

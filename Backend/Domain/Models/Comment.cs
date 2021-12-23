@@ -8,12 +8,9 @@ namespace SkateSpot.Domain.Models
 	public class Comment : EditableEntity, ILikeable
 	{
 		public Guid? AuthorId { get; protected set; }
-		public User Author { get; protected set; }
-		public Guid SubjectId { get; protected set; }
+		public User Author { get; protected set; }		
 		public string Text { get; protected set; }
-		public bool IsDeleted { get; protected set; }
-		public BaseEntity Subject { get; protected set; }
-		public SubjectType SubjectType { get; protected set; }
+		public bool IsDeleted { get; protected set; }				
 
 		public ICollection<Like> Likes
 		{
@@ -27,11 +24,9 @@ namespace SkateSpot.Domain.Models
 		{
 		}
 
-		public Comment(Guid? authorId, Guid subjectId, SubjectType subjectType, string text)
+		public Comment(Guid? authorId, string text)
 		{
-			AuthorId = authorId;
-			SubjectId = subjectId;
-			SubjectType = subjectType;
+			AuthorId = authorId;						
 			Text = text;
 		}
 

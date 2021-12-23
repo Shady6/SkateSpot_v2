@@ -56,7 +56,7 @@ namespace SkateSpot.Api.Controllers
 					_dbContext.TempSpots
 					.Where(s => s.VerificationProcess.EndDate > DateTime.Now)
 					.Include(s => s.VerificationProcess)
-					.ThenInclude(s => s.Discussion.OrderByDescending(c => c.CreatedAt))
+					.ThenInclude(s => s.Comments.OrderByDescending(c => c.CreatedAt))
 					.ApplySortingAndFilters(snf)
 					.Cast<TempSpot>()
 					.Skip(offset)

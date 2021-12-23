@@ -15,14 +15,14 @@ namespace SkateSpot.Application.Extensions
 			{
 				({ Ascending: false, Option: SortOption.CREATION_DATE }, IQueryable<BaseEntity> be) => be.OrderByDescending(s => s.CreatedAt).Cast<T>(),
 				({ Ascending: true, Option: SortOption.CREATION_DATE }, IQueryable<BaseEntity> be) => be.OrderBy(s => s.CreatedAt).Cast<T>(),
-				({ Ascending: false, Option: SortOption.COMMENTS }, IQueryable<TempSpot> tempSpots) => tempSpots.OrderByDescending(s => s.VerificationProcess.Discussion.Count()).Cast<T>(),
-				({ Ascending: true, Option: SortOption.COMMENTS }, IQueryable<TempSpot> tempSpots) => tempSpots.OrderBy(s => s.VerificationProcess.Discussion.Count()).Cast<T>(),
-				({ Ascending: false, Option: SortOption.COMMENTS }, IQueryable<IWithComments> withComments) => withComments.OrderByDescending(s => s.Comments.Count()).Cast<T>(),
-				({ Ascending: true, Option: SortOption.COMMENTS }, IQueryable<IWithComments> withComments) => withComments.OrderBy(s => s.Comments.Count()).Cast<T>(),
+				({ Ascending: false, Option: SortOption.COMMENTS }, IQueryable<TempSpot> tempSpots) => tempSpots.OrderByDescending(s => s.VerificationProcess.Comments.Count()).Cast<T>(),
+				({ Ascending: true, Option: SortOption.COMMENTS }, IQueryable<TempSpot> tempSpots) => tempSpots.OrderBy(s => s.VerificationProcess.Comments.Count()).Cast<T>(),
+				({ Ascending: false, Option: SortOption.COMMENTS }, IQueryable<ICommentable> withComments) => withComments.OrderByDescending(s => s.Comments.Count()).Cast<T>(),
+				({ Ascending: true, Option: SortOption.COMMENTS }, IQueryable<ICommentable> withComments) => withComments.OrderBy(s => s.Comments.Count()).Cast<T>(),
 				({ Ascending: false, Option: SortOption.LIKES }, IQueryable<TempSpot> tempSpots) => tempSpots.OrderByDescending(s => s.VerificationProcess.Votes.Count(v => v.IsReal)).Cast<T>(),
 				({ Ascending: true, Option: SortOption.LIKES }, IQueryable<TempSpot> tempSpots) => (IQueryable<T>)tempSpots.OrderBy(s => s.VerificationProcess.Votes.Count(v => v.IsReal)),
-				({ Ascending: false, Option: SortOption.LIKES }, IQueryable<IWithLikes> withLikes) => withLikes.OrderByDescending(s => s.Likes.Count(l => l.Positive)).Cast<T>(),
-				({ Ascending: true, Option: SortOption.LIKES }, IQueryable<IWithLikes> withLikes) => withLikes.OrderBy(s => s.Likes.Count(l => l.Positive)).Cast<T>(),
+				({ Ascending: false, Option: SortOption.LIKES }, IQueryable<ILikeable> withLikes) => withLikes.OrderByDescending(s => s.Likes.Count(l => l.Positive)).Cast<T>(),
+				({ Ascending: true, Option: SortOption.LIKES }, IQueryable<ILikeable> withLikes) => withLikes.OrderBy(s => s.Likes.Count(l => l.Positive)).Cast<T>(),
 				_ => spot
 			};
 

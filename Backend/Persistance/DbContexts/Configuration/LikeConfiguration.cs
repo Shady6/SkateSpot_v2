@@ -8,9 +8,7 @@ namespace SkateSpot.Infrastructure.DbContexts.Configuration
 	{
 		public override void Configure(EntityTypeBuilder<Like> b)
 		{
-			b.ToTable("Likes");
-
-			b.Ignore(l => l.SubjectId);
+			b.ToTable("Likes");			
 
 			base.Configure(b);
 		}
