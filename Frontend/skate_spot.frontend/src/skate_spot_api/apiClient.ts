@@ -1,9 +1,8 @@
 import { Client, ErrorResponse } from './client'
-import { skateSpotApiBaseUrl } from './constants'
 
 export class ApiClient extends Client {
   constructor() {
-    super(skateSpotApiBaseUrl)
+    super(import.meta.env.VITE_API_URL)
   }
 }
 

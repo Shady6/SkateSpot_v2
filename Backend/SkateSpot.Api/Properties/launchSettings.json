@@ -16,6 +16,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    "PROD": {
+      "commandName": "IISExpress",
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    },
     "SkateSpot.Api": {
       "commandName": "Project",
       "launchBrowser": true,

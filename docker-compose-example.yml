@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:  
+  skatespot_web:
+    image: YOUR_IMAGE_REGISTRY_POINTING_TO_API
+    depends_on:
+      - "redis_db"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    links:
+      - "redis_db"
+
+  redis_db:
+    image: redis
+    container_name: cache
+    ports:
+      - "6379:6379"
