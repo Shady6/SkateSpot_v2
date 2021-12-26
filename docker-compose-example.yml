@@ -1,20 +1,34 @@
-version: '3.7'
+version: "3.7"
 
-services:  
+services:
   skatespot_web:
-    image: YOUR_IMAGE_REGISTRY_POINTING_TO_API
+    image: skatespot.api:latest
     depends_on:
-      - "redis_db"
+      - redis_db
+      - proxy
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "5000:5000"
     links:
       - "redis_db"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DevelopmentContainerized
+      - ASPNETCORE_URLS=http://+:5000
 
   redis_db:
     image: redis
     container_name: cache
     ports:
       - "6379:6379"
+
+  proxy:
+    image: caddy-proxy:latest
+    ports:
+      - "443:443"
+    build:
+      args:
+        ENVIRONMENT: development
+      context: ./Proxy
+      dockerfile: ./Proxy/Dockerfile

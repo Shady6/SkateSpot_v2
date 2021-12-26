@@ -1,0 +1,7 @@
+{
+    email test@test.com
+}
+
+https://localhost {
+    reverse_proxy localhost:5000
+}

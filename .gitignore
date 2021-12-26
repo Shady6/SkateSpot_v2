@@ -487,5 +487,6 @@ TODO.txt
 
 appsettings.Production.json
 appsettings.Development.json
+appsettings.DevelopmentContainerized.json
 
 docker-compose.yml
