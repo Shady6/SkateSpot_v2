@@ -12,7 +12,7 @@ services:
     ports:
       - "5000:5000"
     links:
-      - "redis_db"
+      - "redis_db"      
     environment:
       - ASPNETCORE_ENVIRONMENT=DevelopmentContainerized
       - ASPNETCORE_URLS=http://+:5000
@@ -24,11 +24,11 @@ services:
       - "6379:6379"
 
   proxy:
-    image: caddy-proxy:latest
+    image: caddy-proxy:latest    
     ports:
       - "443:443"
     build:
       args:
         ENVIRONMENT: development
       context: ./Proxy
-      dockerfile: ./Proxy/Dockerfile
+      dockerfile: ./Dockerfile
