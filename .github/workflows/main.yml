@@ -24,7 +24,7 @@ jobs:
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/skatespot_web:${{ github.sha }}
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/skatespot_web:${{ github.sha }}
             
-            docker build ./Proxy --build-arg ENVIRONMENT=production -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/skatespot_web:${{ github.sha }}
+            docker build ./Proxy --build-arg ENVIRONMENT=production -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/proxy:${{ github.sha }}
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/proxy:${{ github.sha }}
 
         - name: 'Deploy to Azure Container Instances'
