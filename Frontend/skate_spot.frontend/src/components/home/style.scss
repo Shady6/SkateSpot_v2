@@ -1,9 +1,10 @@
+$medium: 768px;
+
 #main {
   height: 100%;
 
   img {
     width: 80%;
-    margin-bottom: 15rem;
     filter: saturate(500%) contrast(800%) brightness(500%) invert(80%)
       sepia(100%) hue-rotate(107deg);
   }
@@ -11,11 +12,19 @@
   #title-svg,
   h1 {
     font-size: 5rem;
+
+    @media screen and (max-width: $medium) {
+      font-size: 3rem;
+    }
   }
 
   #quick-actions {
     a {
       text-decoration: none;
     }
+  }
+
+  div.col:nth-child(2) {
+    padding-bottom: 8rem;
   }
 }

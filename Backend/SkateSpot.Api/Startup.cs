@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using SkateSpot.Api.Extensions;
 using SkateSpot.Api.Middleware;
 using SkateSpot.Api.Swagger;
+using SkateSpot.Application.Enums;
 using SkateSpot.Infrastructure.DbContexts;
 using System;
 using System.Linq;
@@ -28,14 +29,14 @@ namespace SkateSpot.Api
         {
             services.AddApplicationLayer();
             services.AddContextInfrastructure(_configuration);
-            services.AddRepositories();            
+            services.AddRepositories();
             services.RegisterSwagger();
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
                 {
                     builder
-                    .WithOrigins("http://localhost:3000")
+                    .WithOrigins(_configuration["AllowedOrigins"])
                     .AllowAnyHeader()
                     .AllowAnyMethod();
                 });

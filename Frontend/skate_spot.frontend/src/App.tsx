@@ -7,6 +7,7 @@ import hasRouteAccess from './functions/route/hasRouteAccess'
 import { useAuthFromLocalStorage } from './hooks/useAuthFromLocalStorage'
 import { routes } from './routes/appRoutes'
 import { useRootState } from './state/store'
+import config from '../vite.config'
 
 const App: React.FC = () => {
   const state = useRootState()
@@ -32,7 +33,7 @@ const App: React.FC = () => {
   return (
     <>
       <FlashMsgs />
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Navigation />
         <Switch>{renderRoutes()}</Switch>
       </BrowserRouter>

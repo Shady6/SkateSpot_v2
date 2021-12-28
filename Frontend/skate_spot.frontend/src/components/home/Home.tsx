@@ -34,12 +34,12 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div id='main' className='row m-0'>
-      <div className='col d-flex align-items-center mt-5'>
-        <img src='./skate.png' alt='skate-person' />
+    <div id='main' className='row mt-3'>
+      <div className='col d-lg-block d-none'>
+        <img className='ms-3' src='./skate.png' alt='skate-person' />
       </div>
-      <div className='col d-flex align-items-center'>
-        <div>
+      <div className='col d-flex align-items-center justify-content-center justify-content-lg-start'>
+        <div className=' px-lg-0 px-3'>
           <div className='mb-5'>
             <h1 style={{ color: theme.palette.primary.main }}>
               <PlaceIcon id='title-svg' />
@@ -72,7 +72,7 @@ const Home: React.FC = () => {
             </p>
           </div>
 
-          <div id='quick-actions' className='mt-5'>
+          <div id='quick-actions' className='mt-2'>
             <Link to={RoutesEnum.ADD_TEMP_SPOT}>
               <Button className='me-3'>Add Spot</Button>
             </Link>
