@@ -10,13 +10,12 @@ export function SurfaceScore({
   style?: React.CSSProperties
 }) {
   return (
-    <div className='me-1'>
-      <Chip
-        style={style}
-        variant='outlined'
-        label={`${surfaceScore}/10`}
-        icon={<TextureIcon style={{ color: style?.color || 'inherit' }} />}
-      />
-    </div>
+    <Chip
+      className='me-1 mt-1'
+      style={style}
+      variant='outlined'
+      label={`${surfaceScore}/10`}
+      icon={<TextureIcon style={{ color: style?.color || 'inherit' }} />}
+    />
   )
 }

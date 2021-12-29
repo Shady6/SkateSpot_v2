@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import MyMarkerClusterGroup from 'react-leaflet-markercluster'
 import { useDispatch, useSelector } from 'react-redux'
 import { v4 } from 'uuid'
+import { markersData } from '../../../hooks/map/useLegend'
 import { useClearFilters } from '../../../hooks/useClearFilters'
 import { useFuncOnFilterChanged } from '../../../hooks/useFuncOnFilterChanged'
+import { useOverflowHidden } from '../../../hooks/util/useOverflowHidden'
 import {
   fetchSpot,
   getMarkersData,
@@ -22,8 +24,6 @@ import { filterModalId, FiltersModal } from './FiltersModal'
 import { SpotInfoTooltip } from './SpotInfoTooltip'
 import { SpotModal } from './SpotModal'
 import './style.scss'
-import { markersData } from '../../../hooks/map/useLegend'
-import { useOverflowHidden } from '../../../hooks/util/useOverflowHidden'
 
 export const spotPreviewModalId = 'spot-preview-modal'
 
@@ -46,7 +46,8 @@ export const SpotsMapView = () => {
     state.currentSpotInModal?.name == name && state.isSpotModalOpen
 
   return (
-    <div style={{ height: '100%', position: 'relative' }}>
+    <div
+      style={{ height: '100%', position: 'relative', paddingBottom: '4rem' }}>
       <Map style={{ height: '100%' }}>
         <OnTopOfMapContainer
           className='col-2'
@@ -56,7 +57,7 @@ export const SpotsMapView = () => {
         </OnTopOfMapContainer>
         {state.isSpotModalOpen && (
           <OnTopOfMapContainer
-            className='col-12 col-md-5 col-lg-4 d-flex flex-column'
+            className='col-12 col-md-5 col-xl-4 d-flex flex-column'
             hide={{
               mainContainerId: spotPreviewModalId,
               dontHideOnIds: [filterBtnId, filterModalId],

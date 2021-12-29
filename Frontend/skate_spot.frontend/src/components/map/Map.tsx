@@ -9,7 +9,7 @@ interface Props {
 const Map: React.FC<Props> = ({ children, whenReady, style = null }) => {
   return (
     <MapContainer
-      style={style || { height: 600 }}
+      style={style || { height: '60vh' }}
       center={{ lat: 12.12, lng: 12.12 }}
       zoom={2}
       whenReady={() => whenReady && whenReady()}>

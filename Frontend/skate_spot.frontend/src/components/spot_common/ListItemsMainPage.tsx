@@ -68,13 +68,15 @@ export const ListItemsMainPage: React.FC<Props> = ({ listViewType }) => {
   return (
     <>
       <div className='row m-0 mt-5' style={{ fontSize: '1rem' }}>
-        <div className='col-2'>
-          <div className='col-2' style={{ position: 'fixed' }}>
+        <div className='col-3'>
+          <div
+            className='col-3 d-none d-lg-block'
+            style={{ position: 'fixed' }}>
             <FilterAndSortPane listViewType={listViewType} />
           </div>
         </div>
-        <div className='col-1'></div>
-        <div className='col-6'>
+        <div className='col-1 d-none d-lg-block'></div>
+        <div className='col-12 col-lg-6 justify-content-center d-flex'>
           {!state.loading &&
             !state.error &&
             state.listWithCount.data.length === 0 && (

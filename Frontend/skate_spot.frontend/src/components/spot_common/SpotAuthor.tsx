@@ -4,7 +4,7 @@ import { SmallUserDto } from '../../skate_spot_api/client'
 
 export function SpotAuthor({ author }: { author: SmallUserDto }) {
   return (
-    <div style={{ marginLeft: 'auto' }}>
+    <div className='mt-2 mt-sm-0'>
       <PersonIcon /> {author?.userName}
     </div>
   )

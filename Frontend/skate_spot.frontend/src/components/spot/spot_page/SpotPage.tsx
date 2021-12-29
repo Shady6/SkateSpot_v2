@@ -66,16 +66,18 @@ export const SpotPage: React.FC<Props> = () => {
   return (
     <div className='mt-5' style={{ fontSize: '1rem' }}>
       <div className='row mt-5 mx-0'>
-        <div className='col-3'></div>
-        <div className='col-6'>{spot && <SpotDetails spot={spot} />}</div>
+        <div className='col-3 d-none d-lg-block'></div>
+        <div className='col-12 col-lg-6 justify-content-center d-flex'>
+          {spot && <SpotDetails spot={spot} />}
+        </div>
       </div>
 
       <div className='row mx-0'>
-        <div className='col-2'>
+        <div className='col-3 d-none d-lg-block'>
           <SortPane listViewType={ListViewTypes.SPOT_VIDEOS} />
         </div>
-        <div className='col-1'></div>
-        <div className='col-6'>
+        <div className='col-1 d-none d-lg-block'></div>
+        <div className='col-12 col-lg-6 d-flex flex-column'>
           <h4 className='mb-5'>Videos</h4>
           {state.spotVideosState.listWithCount?.data?.map(t => {
             return (
@@ -83,7 +85,7 @@ export const SpotPage: React.FC<Props> = () => {
             )
           })}
           {state.spotVideosState.loading && (
-            <CircularProgress color='secondary' />
+            <CircularProgress className='align-self-center' color='secondary' />
           )}
         </div>
       </div>

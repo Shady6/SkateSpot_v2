@@ -1,18 +1,7 @@
+import { Box, IconButton, Modal } from '@material-ui/core'
+import CloseIcon from '@mui/icons-material/Close'
 import React from 'react'
-import { Box, Modal } from '@material-ui/core'
-
-export const ModalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '80%',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-  cursor: 'default',
-}
+import './modal.scss'
 
 interface Props {
   isOpen: boolean
@@ -25,8 +14,14 @@ export const MyModal: React.FC<Props> = p => {
       style={{ cursor: 'pointer' }}
       open={p.isOpen}
       onClose={() => p.setIsOpen(false)}>
-      {/* @ts-ignore */}
-      <Box sx={ModalStyle}>{p.children}</Box>
+      <Box id='modal-skatespot'>
+        <IconButton
+          onClick={() => p.setIsOpen(false)}
+          className='d-flex ms-auto'>
+          <CloseIcon />
+        </IconButton>
+        {p.children}
+      </Box>
     </Modal>
   )
 }

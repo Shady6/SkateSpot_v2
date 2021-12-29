@@ -11,16 +11,16 @@ export function Obstacles({
   style?: React.CSSProperties
 }) {
   return (
-    <div style={{ fontSize: '0.2rem' }}>
+    <>
       {obstacles?.map(o => (
         <Chip
           style={style}
           label={o}
           variant='outlined'
-          className='me-1'
+          className='me-1 mt-1'
           key={v4()}
         />
       ))}
-    </div>
+    </>
   )
 }

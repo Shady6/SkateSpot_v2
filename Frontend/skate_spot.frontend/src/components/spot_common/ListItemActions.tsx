@@ -1,13 +1,13 @@
+import DeleteIcon from '@mui/icons-material/Delete'
 import { IconButton } from '@mui/material'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { ApiClient } from '../../skate_spot_api/apiClient'
 import { TokenResponse } from '../../skate_spot_api/client'
+import { getAllCommonThunks } from '../../state/actions/thunk_creators/allCommonThunks'
+import { ListViewTypes } from '../../state/generic/listViewGenerics'
 import { RootState } from '../../state/store'
 import { MoreVertWithTooltip } from '../shared/MoreVertWithTooltip'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { ListViewTypes } from '../../state/generic/listViewGenerics'
-import { getAllCommonThunks } from '../../state/actions/thunk_creators/allCommonThunks'
-import { ApiClient } from '../../skate_spot_api/apiClient'
 
 interface Props {
   authorId: string
@@ -25,25 +25,27 @@ export const ListItemActions: React.FC<Props> = p => {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
 
   return p.authorId === user?.id ? (
-    <MoreVertWithTooltip
-      isTooltipOpen={isTooltipOpen}
-      setIsTooltipOpen={setIsTooltipOpen}>
-      <div>
-        <IconButton
-          onClick={() => {
-            dispatch(
-              getAllCommonThunks()[p.listViewType].deleteListItem({
-                listItemId: p.listItemId,
-                deleteFunc: p.deleteFunc,
-              })
-            )
-            setIsTooltipOpen(false)
-          }}
-          className='p-1'>
-          <DeleteIcon style={{ cursor: 'pointer', fontSize: '1.1rem' }} />
-        </IconButton>
-      </div>
-    </MoreVertWithTooltip>
+    <div style={{ position: 'relative' }}>
+      <MoreVertWithTooltip
+        isTooltipOpen={isTooltipOpen}
+        setIsTooltipOpen={setIsTooltipOpen}>
+        <div>
+          <IconButton
+            onClick={() => {
+              dispatch(
+                getAllCommonThunks()[p.listViewType].deleteListItem({
+                  listItemId: p.listItemId,
+                  deleteFunc: p.deleteFunc,
+                })
+              )
+              setIsTooltipOpen(false)
+            }}
+            className='p-1'>
+            <DeleteIcon style={{ cursor: 'pointer', fontSize: '1.1rem' }} />
+          </IconButton>
+        </div>
+      </MoreVertWithTooltip>
+    </div>
   ) : (
     <></>
   )

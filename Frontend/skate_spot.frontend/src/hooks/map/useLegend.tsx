@@ -35,7 +35,7 @@ export const useLegend = ({ displaySelectedMarkerLegend, map }: Props) => {
           style={{
             background: 'rgba(255,255,255, 0.5)',
             color: 'black',
-            marginBottom: '5rem',
+            marginBottom: '0rem',
           }}>
           <ul className='p-0 m-0' style={{ listStyleType: 'none' }}>
             {Object.keys(markersData)

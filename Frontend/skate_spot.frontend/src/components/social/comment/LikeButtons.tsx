@@ -4,7 +4,7 @@ import { LikeDto } from '../../../skate_spot_api/client'
 import { likeThunkCreator } from '../../../state/actions/thunk_creators/likeThunkCreator'
 import { LikeButton } from '../like/LikeButton'
 
-export function MainLikeButtons({
+export function LikeButtons({
   likes,
   listItemId,
   likeAction,
@@ -24,7 +24,7 @@ export function MainLikeButtons({
   })
 
   return (
-    <div>
+    <div className='d-flex'>
       {buttonsProps.map(props => (
         <LikeButton key={props.isPositive.toString()} {...props} />
       ))}

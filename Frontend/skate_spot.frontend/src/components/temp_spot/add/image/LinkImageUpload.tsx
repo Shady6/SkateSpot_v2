@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, IconButton, TextField } from '@material-ui/core'
+import { Button, Icon, IconButton, TextField } from '@material-ui/core'
 import { useState } from 'react'
 import { renderImageWithSizeInfo } from '../../../../functions/util/renderImageWithSizeInfo'
 import { useError } from '../../../../hooks/small_text_feedback/useError'
@@ -66,31 +66,23 @@ const LinkImageUpload: React.FC<Props> = ({
       otherUploadedItemsCount={otherImagesCount}
       uploadLimit={imagesLimit}
       uploadedItemPluralized={'images'}
-      onUploadBtnClick={() => {}}
+      onUploadBtnClick={addImage}
       uploadedCount={uploadedImagesCount}
       setUploadedCount={setImagesUploadedCount}
-      showUploadButton={false}
-      renderItem={renderImageWithSizeInfo}>
-      <>
-        <div className='order-1'>
-          <TextField
-            value={input}
-            onKeyDown={e => {
-              if (e.key === 'Enter') addImage()
-            }}
-            onChange={setInput}
-            variant='standard'
-            label='Url'
-          />
-          <IconButton
-            onClick={addImage}
-            disabled={!canUploadImage()}
-            className='align-self-end ms-2'>
-            <Icon className='fa fa-plus-circle' aria-hidden='true'></Icon>
-          </IconButton>
-        </div>
+      renderItem={renderImageWithSizeInfo}
+      uploadText='Upload URL'>
+      <div className='order-1 mb-2'>
+        <TextField
+          value={input}
+          onKeyDown={e => {
+            if (e.key === 'Enter') addImage()
+          }}
+          onChange={setInput}
+          variant='standard'
+          label='Url'
+        />
         {renderError()}
-      </>
+      </div>
     </Upload>
   )
 }

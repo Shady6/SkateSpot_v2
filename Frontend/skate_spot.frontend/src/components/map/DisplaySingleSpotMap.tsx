@@ -17,7 +17,7 @@ const DisplaySingleSpot: React.FC<Props> = ({ address }: Props) => {
           animateFly={false}
           position={address!.coords as Coords}></LeafletMarkerWrapper>
       </Map>
-      <p>
+      <p className='mt-2'>
         {address.country} {address.city} {address.streetName && ','}{' '}
         {address.streetName} {address.streetName && address.streetNumber}
       </p>

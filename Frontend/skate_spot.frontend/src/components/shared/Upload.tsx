@@ -12,8 +12,8 @@ interface Props {
   onUploadBtnClick: () => void
   uploadedCount: number
   setUploadedCount: React.Dispatch<React.SetStateAction<number>>
-  showUploadButton?: boolean
   renderItem: (item: any) => JSX.Element
+  uploadText: string
 }
 
 const Upload: React.FC<Props> = ({
@@ -26,8 +26,8 @@ const Upload: React.FC<Props> = ({
   onUploadBtnClick,
   uploadedCount,
   setUploadedCount,
-  showUploadButton = true,
   renderItem,
+  uploadText,
 }) => {
   const renderError = useError(() => {
     const totalUploads = uploadedCount + otherUploadedItemsCount
@@ -76,14 +76,13 @@ const Upload: React.FC<Props> = ({
 
   return (
     <div className='mb-2'>
-      <div className='d-flex'>
+      <div className='d-flex flex-column'>
         <div className='order-2'>
           <Button
-            hidden={!showUploadButton}
             variant='contained'
             onClick={onUploadBtnClick}
             className={'me-1'}>
-            Upload Files
+            {uploadText}
           </Button>
           {uploadedItems.length !== 0 && (
             <Button

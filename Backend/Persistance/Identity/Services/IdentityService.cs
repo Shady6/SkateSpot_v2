@@ -159,7 +159,10 @@ namespace SkateSpot.Infrastructure.Identity.Services
                 {
                     await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
                     var verificationUri = await CreateVerificationUri(user, origin);
-                    return "";
+
+                    await _userRepository.AddAsync(new User(Guid.Parse(user.Id), user.Email, user.UserName));
+                    await _userRepository.SaveChangesAsync();
+                    return $"{user.Id} Account Confirmed for {user.Email}. You can now use the /api/identity/token endpoint to generate JWT.";
                     // TODO Uncomment when in production
                     //_mailService.Send(new MailRequest() { To = user.Email, Body = $"Please confirm your account by <a href='{verificationUri}'>clicking here</a>.", Subject = "Confirm Registration" });
                     //return verificationUri;

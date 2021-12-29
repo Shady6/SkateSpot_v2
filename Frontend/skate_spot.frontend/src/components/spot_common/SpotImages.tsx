@@ -13,7 +13,7 @@ export const SpotImages = ({
   width = 800,
 }: SpotImagesProps) => {
   return images && images.length ? (
-    <div>
+    <div style={{ background: 'black' }}>
       <ImageGallery
         showThumbnails={false}
         showPlayButton={false}
@@ -21,6 +21,7 @@ export const SpotImages = ({
           original: i.base64 as string,
           originalWidth: width,
           originalHeight: height,
+          fullscreen: i.base64,
         }))}
       />
     </div>

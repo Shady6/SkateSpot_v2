@@ -10,8 +10,10 @@ import {
 import { spotVideoLike } from '../../../state/actions/spotVideoActions'
 import { ListViewTypes } from '../../../state/generic/listViewGenerics'
 import CommentBtn from '../../social/comment/CommentBtn'
-import { MainLikeButtons } from '../../social/comment/MainLikeButtons'
+import { LikeButtons } from '../../social/comment/LikeButtons'
+import { CommonSpotActions } from '../../spot_common/CommonSpotActions'
 import { ListItemActions } from '../../spot_common/ListItemActions'
+import { ListItemBottomRow } from '../../spot_common/ListItemBottomRow'
 import { SpotAuthor as SpotVideoAuthor } from '../../spot_common/SpotAuthor'
 import { InstagramVideo } from '../InstagramVideo'
 import { YouTubeVideo } from '../YouTubeVideo'
@@ -26,41 +28,40 @@ export const SpotVideo = React.memo(
 
     return (
       <div className='mb-4'>
-        <div className='d-flex justify-content-between'>
+        <div>
+          <div className='text-end mb-2'>
+            <ListItemActions
+              authorId={spotVideo.author.id}
+              listItemId={spotVideo.id}
+              listViewType={ListViewTypes.SPOT_VIDEOS}
+              deleteFunc={(c, t) => c.delete_Spot_Video(spotVideo.id, t)}
+            />
+          </div>
           {spotVideo.platformType === VideoPlatformType.Instagram ? (
             <InstagramVideo videoId={spotVideo.embedId as string} />
           ) : (
             <YouTubeVideo videoId={spotVideo.embedId as string} />
           )}
-          <ListItemActions
-            authorId={spotVideo.author.id}
-            listItemId={spotVideo.id}
-            listViewType={ListViewTypes.SPOT_VIDEOS}
-            deleteFunc={(c, t) => c.delete_Spot_Video(spotVideo.id, t)}
-          />
         </div>
         <p>{spotVideo.description}</p>
-        <div className='d-flex mt-2'>
-          <MainLikeButtons
+        <div className='d-flex flex-wrap justify-content-between mt-2'>
+          <CommonSpotActions
             listItemId={spotVideo.id as string}
             likes={spotVideo.likes as LikeDto[]}
             likeAction={spotVideoLike}
-          />
-          <CommentBtn
-            onClick={() => setCommentsOpen(!commentsOpen)}
+            onCommentBtnClick={() => setCommentsOpen(!commentsOpen)}
             commentsCount={spotVideo?.comments?.length || 0}
+            removeMapModalBtn={true}
           />
           <SpotVideoAuthor author={spotVideo.author as SmallUserDto} />
         </div>
-        {commentsOpen && (
-          <div className='row col-4'>
-            {createCommentComponent({
-              listItemId: spotVideo.id,
-              comments: spotVideo.comments as CommentDto[],
-              listViewType: ListViewTypes.SPOT_VIDEOS,
-            })}
-          </div>
-        )}
+
+        {commentsOpen &&
+          createCommentComponent({
+            listItemId: spotVideo.id,
+            comments: spotVideo.comments as CommentDto[],
+            listViewType: ListViewTypes.SPOT_VIDEOS,
+          })}
         <hr />
       </div>
     )

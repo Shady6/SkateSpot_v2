@@ -4,23 +4,16 @@ import {
   CommentDto,
   LikeDto,
   ObstacleType,
-  SmallUserDto,
   SpotVideoDto,
   VideoPlatformType,
 } from '../../../skate_spot_api/client'
 import { spotVideoLike } from '../../../state/actions/spotVideoActions'
 import { ListViewTypes } from '../../../state/generic/listViewGenerics'
-import CommentBtn from '../../social/comment/CommentBtn'
-import { MainLikeButtons } from '../../social/comment/MainLikeButtons'
-import { MapModal } from '../../spot_common/MapView/MapModal'
-import { ShowMapModalBtn } from '../../spot_common/MapView/ShowMapModalBtn'
-import { SpotAuthor as SpotVideoAuthor } from '../../spot_common/SpotAuthor'
+import { ListItemBottomRow } from '../../spot_common/ListItemBottomRow'
+import { ListItemHeader } from '../../spot_common/ListItemHeader'
 import { SpotNameLink } from '../../spot_common/SpotNameLink'
 import { InstagramVideo } from '../InstagramVideo'
 import { YouTubeVideo } from '../YouTubeVideo'
-import { ListItemHeader } from '../../spot_common/ListItemHeader'
-import { Obstacles } from '../../spot_common/Obstacles'
-import { SurfaceScore } from '../../spot_common/SurfaceScore'
 
 interface Props {
   spotVideo: SpotVideoDto
@@ -28,7 +21,6 @@ interface Props {
 
 export const SpotVideo = React.memo(
   ({ spotVideo }: Props) => {
-    const [isMapModalOpen, setIsMapModalOpen] = useState(false)
     const [commentsOpen, setCommentsOpen] = useState(false)
     return (
       <div className='mb-4'>
@@ -49,49 +41,24 @@ export const SpotVideo = React.memo(
           <YouTubeVideo videoId={spotVideo.embedId as string} />
         )}
         <p>{spotVideo.description}</p>
-        <div className='d-flex mt-2'>
-          <MainLikeButtons
-            listItemId={spotVideo.id as string}
-            likes={spotVideo.likes as LikeDto[]}
-            likeAction={spotVideoLike}
-          />
-          <CommentBtn
-            onClick={() => setCommentsOpen(!commentsOpen)}
-            commentsCount={spotVideo?.comments?.length || 0}
-          />
-          <ShowMapModalBtn
-            disabled={!spotVideo.spot}
-            setIsMapModalOpen={setIsMapModalOpen}
-          />
-          {spotVideo.spot && (
-            <div className='ms-3 d-flex'>
-              <SurfaceScore
-                surfaceScore={spotVideo.spot.surfaceScore as number}
-              />
-              <Obstacles
-                obstacles={spotVideo.spot.obstacles as ObstacleType[]}
-              />
-            </div>
-          )}
-          <SpotVideoAuthor author={spotVideo.author as SmallUserDto} />
-        </div>
-        {commentsOpen && (
-          <div className='row col-4'>
-            {createCommentComponent({
-              listItemId: spotVideo.id,
-              comments: spotVideo.comments as CommentDto[],
-              listViewType: ListViewTypes.SPOT_VIDEOS,
-            })}
-          </div>
-        )}
+        <ListItemBottomRow
+          listItemId={spotVideo.id as string}
+          likes={spotVideo.likes as LikeDto[]}
+          likeAction={spotVideoLike}
+          onCommentBtnClick={() => setCommentsOpen(!commentsOpen)}
+          commentsCount={spotVideo?.comments?.length || 0}
+          surfaceScore={spotVideo.spot?.surfaceScore as number}
+          obstacles={spotVideo.spot?.obstacles as ObstacleType[]}
+          address={spotVideo.spot?.address}
+          author={spotVideo?.author}
+        />
+        {commentsOpen &&
+          createCommentComponent({
+            listItemId: spotVideo.id,
+            comments: spotVideo.comments as CommentDto[],
+            listViewType: ListViewTypes.SPOT_VIDEOS,
+          })}
         <hr />
-        {spotVideo.spot && (
-          <MapModal
-            isMapModalOpen={isMapModalOpen}
-            setIsMapModalOpen={setIsMapModalOpen}
-            address={spotVideo.spot.address}
-          />
-        )}
       </div>
     )
   },

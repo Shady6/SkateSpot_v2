@@ -1,7 +1,13 @@
-import { Button, CircularProgress, TextField } from '@material-ui/core'
+import {
+  Button,
+  CircularProgress,
+  TextField,
+  useTheme,
+} from '@material-ui/core'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { sendRequestWithFlashMsgOnError } from '../../functions/request/sendRequestWithFlashMsgOnError'
+import { useWindowSize } from '../../hooks/useWindowSize'
 import { useInputState } from '../../hooks/util/useInputState'
 import { VideoPlatformType } from '../../skate_spot_api/client'
 import { createFlashMsgWithTimeout } from '../../state/reducers/flashMsgReducer'
@@ -27,6 +33,8 @@ export const AddSpotVideoModal = (p: Props) => {
   const dispatch = useDispatch()
   const state = useRootState()
   const [sendingSpot, setSendingSpot] = useState(false)
+  const theme = useTheme()
+  const window = useWindowSize()
 
   const handleLoadClick = () => {
     setVideo(null)
@@ -96,9 +104,9 @@ export const AddSpotVideoModal = (p: Props) => {
 
   return (
     <MyModal isOpen={p.isOpen} setIsOpen={p.setIsOpen}>
-      <div>
+      <div className='p-3'>
         <div className='d-flex'>
-          <div className='col-5 me-2'>
+          <div className='col me-2'>
             <TextField
               value={videoUrl}
               onChange={setVideoUrl}
@@ -117,12 +125,29 @@ export const AddSpotVideoModal = (p: Props) => {
               This is the preview of the video. If you can see it you are good
               to go otherwise please insert correct link.
             </p>
-            {video.type === VideoPlatformType.Instagram ? (
-              <InstagramVideo videoId={video.id} />
-            ) : (
-              <YouTubeVideo videoId={video.id} />
-            )}
-            <div className='col-5 mt-2 mb-3'>
+            <div>
+              {video.type === VideoPlatformType.Instagram ? (
+                <InstagramVideo
+                  style={
+                    window.width && window.width <= theme.breakpoints.values.sm
+                      ? { height: 200 }
+                      : undefined
+                  }
+                  videoId={video.id}
+                />
+              ) : (
+                <YouTubeVideo
+                  style={
+                    window.width && window.width <= theme.breakpoints.values.sm
+                      ? { height: 200 }
+                      : undefined
+                  }
+                  videoId={video.id}
+                />
+              )}
+            </div>
+
+            <div className='col mt-2 mb-3'>
               <TextField
                 value={description}
                 onChange={setDescription}

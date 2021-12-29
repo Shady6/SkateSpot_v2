@@ -72,7 +72,8 @@ const FileImageUpload: React.FC<Props> = ({
       uploadedCount={uploadedImagesCount}
       setUploadedCount={setUploadedImagesCount}
       renderItem={renderImageWithSizeInfo}
-      otherUploadedItemsCount={otherImagesCount}>
+      otherUploadedItemsCount={otherImagesCount}
+      uploadText='Upload Files'>
       <input
         ref={fileInput}
         onChange={handleFileInputChange}

@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using SkateSpot.Api.Extensions;
 using SkateSpot.Api.Middleware;
 using SkateSpot.Api.Swagger;
-using SkateSpot.Application.Enums;
 using SkateSpot.Infrastructure.DbContexts;
 using System;
 using System.Linq;

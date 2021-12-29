@@ -24,14 +24,12 @@ import {
   MapSpotsState,
 } from '../../../state/reducers/mapSpotsReducer'
 import { RootState } from '../../../state/store'
-import CommentBtn from '../../social/comment/CommentBtn'
-import { MainLikeButtons } from '../../social/comment/MainLikeButtons'
 import { SpotVideoBtn } from '../../spot_video/SpotVideoBtn'
 import { vote_like_adapter } from '../../temp_spot/main/TempSpot'
-import { Obstacles } from '../Obstacles'
+import { ListItemBottomRow } from '../ListItemBottomRow'
+import { ListItemHeader } from '../ListItemHeader'
 import { SpotImages } from '../SpotImages'
 import { SpotNameLink } from '../SpotNameLink'
-import { SurfaceScore } from '../SurfaceScore'
 import './style.scss'
 
 export const SpotModal = () => {
@@ -103,36 +101,51 @@ export const SpotModal = () => {
             className={`${
               spot.images && spot.images.length ? 'mt-3' : 'mt-5'
             } ms-3`}>
-            <SpotNameLink spotName={spot.name as string} />
-            <p>{spot.description}</p>
-            <div className='d-flex mt-5 mb-3'>
-              <SurfaceScore surfaceScore={spot.surfaceScore as number} />
-              <Obstacles obstacles={spot.obstacles as ObstacleType[]} />
-            </div>
-
-            <div className='d-flex'>
-              <MainLikeButtons
-                likes={spot.likes as LikeDto[]}
-                listItemId={spot.id}
-                likeAction={
-                  isTempSpot
-                    ? (vote_like_adapter as unknown as ReturnType<
-                        typeof likeThunkCreator
-                      >)
-                    : spotLike
-                }
-              />
-              <CommentBtn
-                onClick={() => setCommentsOpen(!commentsOpen)}
-                commentsCount={spot.comments?.length}
-              />
-              {!isTempSpot && (
-                <SpotVideoBtn
-                  videosCount={spot.videosCount}
-                  onClick={() => goToSpotDetailPage({ history, spot })}
-                />
+            <ListItemHeader
+              authorId={spot.author.id}
+              listItemId={spot.id}
+              listViewType={ListViewTypes.TEMP_SPOTS}
+              deleteFunc={(c, t) =>
+                isTempSpot
+                  ? c.delete_Temp_Spot(spot.id, t)
+                  : c.delete_Spot(spot.id, t)
+              }>
+              {isTempSpot ? (
+                <h4>{spot.name}</h4>
+              ) : (
+                <SpotNameLink spotName={spot.name as string} />
               )}
-            </div>
+            </ListItemHeader>
+
+            <p>{spot.description}</p>
+
+            <ListItemBottomRow
+              likes={spot.likes as LikeDto[]}
+              listItemId={spot.id}
+              likeAction={
+                isTempSpot
+                  ? (vote_like_adapter as unknown as ReturnType<
+                      typeof likeThunkCreator
+                    >)
+                  : spotLike
+              }
+              surfaceScore={spot.surfaceScore}
+              obstacles={spot.obstacles as ObstacleType[]}
+              onCommentBtnClick={() => setCommentsOpen(!commentsOpen)}
+              commentsCount={spot.comments!.length}
+              removeMapModalBtn={true}
+              author={spot.author}
+              customActions={
+                !isTempSpot ? (
+                  <div className='order-3'>
+                    <SpotVideoBtn
+                      videosCount={spot.videosCount}
+                      onClick={() => goToSpotDetailPage({ history, spot })}
+                    />
+                  </div>
+                ) : undefined
+              }
+            />
 
             {commentsOpen &&
               createCommentComponent({

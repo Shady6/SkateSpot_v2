@@ -55,7 +55,7 @@ const AddTempSpotPage: React.FC = () => {
 
   return (
     <div className='container pb-5'>
-      <div className='mb-4 col-2'>
+      <div className='mb-4'>
         <TextField
           value={name}
           onChange={setName}
@@ -65,7 +65,7 @@ const AddTempSpotPage: React.FC = () => {
           label='Name'
         />
       </div>
-      <div className='mb-4 col-2'>
+      <div className='mb-4'>
         <TextField
           value={description}
           onChange={setDescription}
@@ -76,10 +76,10 @@ const AddTempSpotPage: React.FC = () => {
           label='Description'
         />
       </div>
-      <div className='mb-4 col-2'>
+      <div className='mb-4'>
         <p className='m-0'>Surface score</p>
         <Slider
-          defaultValue={surfaceScore}
+          value={surfaceScore}
           // @ts-ignore
           onChange={e => setSurfaceScore(Number(e.target.value))}
           aria-labelledby='discrete-slider'
@@ -87,13 +87,9 @@ const AddTempSpotPage: React.FC = () => {
           step={1}
           min={1}
           max={10}
-          marks={[
-            { value: 1, label: 'The worst' },
-            { value: 10, label: 'The best' },
-          ]}
         />
       </div>
-      <div className='mb-5'>
+      <div className='mb-5 vh-10'>
         <MapAddress location={location} setLocation={setLocation} />
       </div>
 

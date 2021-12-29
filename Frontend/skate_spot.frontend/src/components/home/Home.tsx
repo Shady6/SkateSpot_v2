@@ -77,10 +77,10 @@ const Home: React.FC = () => {
               <Button className='me-3'>Add Spot</Button>
             </Link>
             <Link to={RoutesEnum.MAP}>
-              <Button className='me-3'>View on map</Button>
+              <Button className='me-3'>View Map</Button>
             </Link>
             <Link to={RoutesEnum.SPOTS}>
-              <Button className='me-3'>View as a list</Button>
+              <Button className='me-0'>View List</Button>
             </Link>
           </div>
 
