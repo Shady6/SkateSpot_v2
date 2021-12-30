@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { v4 } from 'uuid'
 import { useDisablePropagationInMap } from '../../hooks/map/disablePropagationInMap'
 import { useMapExecuteOnClickOutsideOf } from '../../hooks/map/useMapExecuteOnClickOutsideOf'
@@ -12,6 +12,7 @@ interface Props {
   }
   style?: React.CSSProperties | undefined
   className?: string
+  setRefCurrent?: (element: HTMLElement | SVGElement | null) => void
 }
 
 export const OnTopOfMapContainer: React.FC<Props> = ({
@@ -19,6 +20,7 @@ export const OnTopOfMapContainer: React.FC<Props> = ({
   style,
   children,
   className,
+  setRefCurrent,
 }) => {
   const ref = useRef<null | HTMLDivElement>(null)
   useDisablePropagationInMap({ ref })
@@ -27,6 +29,10 @@ export const OnTopOfMapContainer: React.FC<Props> = ({
     outsideOfIds: hide ? [hide.mainContainerId, ...hide.dontHideOnIds] : [],
     funcToExecute: hide ? e => hide.funcToHide(e) : () => {},
   })
+
+  useEffect(() => {
+    if (ref.current && setRefCurrent) setRefCurrent(ref.current)
+  }, [ref])
 
   return (
     <div

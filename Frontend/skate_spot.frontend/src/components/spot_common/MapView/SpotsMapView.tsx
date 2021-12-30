@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MyMarkerClusterGroup from 'react-leaflet-markercluster'
 import { useDispatch, useSelector } from 'react-redux'
+import useMeasure from 'react-use-measure'
 import { v4 } from 'uuid'
 import { markersData } from '../../../hooks/map/useLegend'
 import { useClearFilters } from '../../../hooks/useClearFilters'
@@ -42,17 +43,30 @@ export const SpotsMapView = () => {
     setRefreshId(v4())
   }, [state.markersData.length])
 
+  const [setRefCurrent, filterBtnBounds] = useMeasure()
+
+  useEffect(() => {
+    document.body.style.marginTop = '0rem'
+
+    return () => {
+      document.body.style.marginTop = '4rem'
+    }
+  }, [])
+
   const isSpotSelected = (name: string) =>
     state.currentSpotInModal?.name == name && state.isSpotModalOpen
 
   return (
-    <div
-      style={{ height: '100%', position: 'relative', paddingBottom: '4rem' }}>
+    <div style={{ height: '100%', position: 'relative', paddingTop: '4rem' }}>
       <Map style={{ height: '100%' }}>
         <OnTopOfMapContainer
-          className='col-2'
+          setRefCurrent={setRefCurrent}
           style={{ backgroundColor: 'transparent', top: '15%' }}>
           <FilterBtnOnMap />
+        </OnTopOfMapContainer>
+        <OnTopOfMapContainer
+          className='col-12 col-md-5 col-xl-3'
+          style={{ top: `calc(15% + ${filterBtnBounds.height}px + 1rem)` }}>
           {state.isFilterModalOpen && <FiltersModal />}
         </OnTopOfMapContainer>
         {state.isSpotModalOpen && (

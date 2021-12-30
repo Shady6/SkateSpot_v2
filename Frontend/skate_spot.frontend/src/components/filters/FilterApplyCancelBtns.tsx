@@ -2,13 +2,19 @@ import React from 'react'
 import { ApplyFilters } from './ApplyFilters'
 import { ClearFilters } from './ClearFilters'
 
-interface Props {}
+interface Props {
+  onApplyClick?: () => void
+  onClearClick?: () => void
+}
 
-export const FilterApplyCancelBtns: React.FC<Props> = () => {
+export const FilterApplyCancelBtns: React.FC<Props> = ({
+  onApplyClick,
+  onClearClick,
+}) => {
   return (
     <div className='mt-3'>
-      <ApplyFilters />
-      <ClearFilters />
+      <ApplyFilters onClick={onApplyClick} />
+      <ClearFilters onClick={onClearClick}/>
     </div>
   )
 }

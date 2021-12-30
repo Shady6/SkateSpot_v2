@@ -5,13 +5,22 @@ import { SortingOptions } from './SortingOptions'
 
 interface Props {
   listViewType: ListViewTypes
+  onApplyClick?: () => void
+  onClearClick?: () => void
 }
 
-export const SortPane: React.FC<Props> = ({ listViewType }) => {
+export const SortPane: React.FC<Props> = ({
+  listViewType,
+  onApplyClick,
+  onClearClick,
+}) => {
   return (
     <div className='ms-3'>
       <SortingOptions listViewType={listViewType} />
-      <FilterApplyCancelBtns />
+      <FilterApplyCancelBtns
+        onApplyClick={onApplyClick}
+        onClearClick={onClearClick}
+      />
     </div>
   )
 }

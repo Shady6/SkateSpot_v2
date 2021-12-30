@@ -42,7 +42,7 @@ export const UserStats: React.FC<Props> = () => {
 
   return (
     <div className='mb-5'>
-      <h1>Stats</h1>
+      <h1 className='mb-4'>Stats</h1>
       {state.loading ? (
         <>
           <span>Loading stats </span>
@@ -66,7 +66,7 @@ interface StatProps {
 export const Stat: React.FC<StatProps> = p => {
   return (
     <div className='mb-3'>
-      <p style={{ fontSize: '1rem' }} className='m-0'>
+      <p style={{ fontSize: '1rem' }} className='m-0 mb-2 ms-1'>
         {p.label}
       </p>
       <div>

@@ -7,15 +7,24 @@ import { TagsFilter } from './TagsFilter'
 
 interface Props {
   listViewType: ListViewTypes
+  onApplyClick?: () => void
+  onClearClick?: () => void
 }
 
-export const FilterAndSortPane: React.FC<Props> = ({ listViewType }) => {
+export const FilterAndSortPane: React.FC<Props> = ({
+  listViewType,
+  onApplyClick,
+  onClearClick,
+}) => {
   return (
     <div className='ms-3'>
       <SortingOptions listViewType={listViewType} />
       <SurfaceScoreFilter />
       <TagsFilter />
-      <FilterApplyCancelBtns />
+      <FilterApplyCancelBtns
+        onApplyClick={onApplyClick}
+        onClearClick={onClearClick}
+      />
     </div>
   )
 }

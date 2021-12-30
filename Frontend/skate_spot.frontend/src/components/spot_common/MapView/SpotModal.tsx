@@ -157,10 +157,12 @@ export const SpotModal = () => {
               })}
           </div>
           <div style={{ position: 'absolute', left: 0, top: 0 }}>
-            <IconButton
+            <IconButton              
               onClick={_ => dispatch(mapSpotsActions.toggleSpotModal(false))}
               className='mt-2 ms-2 p-0'>
-              <CloseIcon />
+              <CloseIcon
+                style={{ filter: 'drop-shadow(1px 1px 2px rgb(0 0 0 / 0.6))' }}
+              />
             </IconButton>
           </div>
         </div>

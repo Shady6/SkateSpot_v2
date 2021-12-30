@@ -10,6 +10,7 @@ import { ListViewTypes } from '../../state/generic/listViewGenerics'
 import { ListViewState } from '../../state/reducers/genericListViewReducer'
 import { RootState } from '../../state/store'
 import { FilterAndSortPane } from '../filters/FilterAndSortPane'
+import { MobileFilterAndSort } from '../filters/MobileFilterAndSort'
 import { Spot } from '../spot/Spot'
 import { SpotVideo } from '../spot_video/spot_videos/SpotVideo'
 import { TempSpot } from '../temp_spot/main/TempSpot'
@@ -82,7 +83,14 @@ export const ListItemsMainPage: React.FC<Props> = ({ listViewType }) => {
             state.listWithCount.data.length === 0 && (
               <p>There is nothing to view here 😥</p>
             )}
-          {state.listWithCount.data.map(l => getListItemComponent(l))}
+          {
+            <>
+              {state.listWithCount.data.map(l => getListItemComponent(l))}
+              <div className='d-block d-lg-none'>
+                <MobileFilterAndSort listViewType={listViewType} />
+              </div>
+            </>
+          }
           {state.loading && <CircularProgress color='secondary' />}
         </div>
       </div>

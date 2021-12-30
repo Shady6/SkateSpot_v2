@@ -18,6 +18,7 @@ import {
   WithSocial,
 } from '../../../state/reducers/genericListViewReducer'
 import { RootState, useRootState } from '../../../state/store'
+import { MobileSort } from '../../filters/MobileSort'
 import { SortPane } from '../../filters/SortPane'
 import { SpotVideo } from '../../spot_video/videos_of_spot/SpotVideo'
 import { SpotDetails } from './SpotDetails'
@@ -77,13 +78,24 @@ export const SpotPage: React.FC<Props> = () => {
           <SortPane listViewType={ListViewTypes.SPOT_VIDEOS} />
         </div>
         <div className='col-1 d-none d-lg-block'></div>
-        <div className='col-12 col-lg-6 d-flex flex-column'>
+        <div
+          style={{ position: 'relative' }}
+          className='col-12 col-lg-6 d-flex flex-column'>
           <h4 className='mb-5'>Videos</h4>
-          {state.spotVideosState.listWithCount?.data?.map(t => {
-            return (
-              <SpotVideo key={t.createdAt as unknown as string} spotVideo={t} />
-            )
-          })}
+          <>
+            {state.spotVideosState.listWithCount?.data?.map(t => {
+              return (
+                <SpotVideo
+                  key={t.createdAt as unknown as string}
+                  spotVideo={t}
+                />
+              )
+            })}
+            <div className='d-block d-lg-none'>
+              <MobileSort />
+            </div>
+          </>
+
           {state.spotVideosState.loading && (
             <CircularProgress className='align-self-center' color='secondary' />
           )}

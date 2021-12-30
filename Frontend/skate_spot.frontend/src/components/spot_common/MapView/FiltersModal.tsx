@@ -1,3 +1,5 @@
+import { IconButton } from '@material-ui/core'
+import CloseIcon from '@mui/icons-material/Close'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useMapExecuteOnClickOutsideOf } from '../../../hooks/map/useMapExecuteOnClickOutsideOf'
@@ -7,8 +9,6 @@ import { SurfaceScoreFilter } from '../../filters/SurfaceScoreFilter'
 import { TagsFilter } from '../../filters/TagsFilter'
 import { filterBtnId } from './FilterBtnOnMap'
 import { spotPreviewModalId } from './SpotsMapView'
-import CloseIcon from '@mui/icons-material/Close'
-import { IconButton } from '@material-ui/core'
 
 export const filterModalId = 'filters-modal'
 
@@ -17,7 +17,7 @@ export const FiltersModal = () => {
 
   useMapExecuteOnClickOutsideOf({
     outsideOfIds: [filterModalId, filterBtnId, spotPreviewModalId],
-    funcToExecute: e => {
+    funcToExecute: _ => {
       dispatch(mapSpotsActions.toggleFilterModal(false))
     },
   })

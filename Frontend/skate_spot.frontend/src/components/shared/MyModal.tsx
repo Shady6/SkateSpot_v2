@@ -6,12 +6,13 @@ import './modal.scss'
 interface Props {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  opacity?: number
 }
 
 export const MyModal: React.FC<Props> = p => {
   return (
     <Modal
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: 'pointer', opacity: p.opacity ?? 0.9 }}
       open={p.isOpen}
       onClose={() => p.setIsOpen(false)}>
       <Box id='modal-skatespot'>
