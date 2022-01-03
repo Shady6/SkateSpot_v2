@@ -77,7 +77,6 @@ export const SpotPage: React.FC<Props> = () => {
         <div className='col-3 d-none d-lg-block'>
           <SortPane listViewType={ListViewTypes.SPOT_VIDEOS} />
         </div>
-        <div className='col-1 d-none d-lg-block'></div>
         <div
           style={{ position: 'relative' }}
           className='col-12 col-lg-6 d-flex flex-column'>

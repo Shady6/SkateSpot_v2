@@ -8,7 +8,7 @@ interface Props {
 export const InstagramVideo = (p: Props) => {
   return (
     <iframe
-      style={p.style || { width: '100%', height: 400 }}
+      style={p.style || { height: 600 }}
       title='Instagram video'
       src={`https://www.instagram.com/p/${p.videoId}/embed`}
       frameBorder='0'

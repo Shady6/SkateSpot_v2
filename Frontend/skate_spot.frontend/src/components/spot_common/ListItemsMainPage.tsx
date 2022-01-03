@@ -77,7 +77,7 @@ export const ListItemsMainPage: React.FC<Props> = ({ listViewType }) => {
           </div>
         </div>
         <div className='col-1 d-none d-lg-block'></div>
-        <div className='col-12 col-lg-6 justify-content-center d-flex'>
+        <div className='col-12 col-lg-6 justify-content-center d-flex flex-column'>
           {!state.loading &&
             !state.error &&
             state.listWithCount.data.length === 0 && (

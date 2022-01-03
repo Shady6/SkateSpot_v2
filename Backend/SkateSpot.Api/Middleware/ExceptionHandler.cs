@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using SkateSpot.Api.Data;
 using SkateSpot.Api.Extensions;
 using SkateSpot.Domain.Common;
@@ -58,7 +59,10 @@ namespace SkateSpot.Api.Middleware
 					Message = appEx is null ? "Something went wrong." : exception.Message,
 					StatusCode = errorCode,
 					Data = appEx?.Data,
-					DeveloperMessage = $"{exception.Message}\n" +
+					DeveloperMessage = 
+					Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Production 
+					? "" 
+					: $"{exception.Message}\n" +
 					$"{exception.InnerException?.Message ?? ""}\n" +
 					$"{exception.StackTrace} \n" +
 					$"{exception.InnerException?.StackTrace ?? ""}"

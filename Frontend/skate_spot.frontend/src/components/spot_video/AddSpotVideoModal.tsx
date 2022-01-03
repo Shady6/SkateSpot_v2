@@ -61,7 +61,11 @@ export const AddSpotVideoModal = (p: Props) => {
   }
 
   const getInstagramVideoId = (videoUrl: string) => {
-    let id = videoUrl.slice(videoUrl.indexOf('/p/') + 3)
+    let videoIdIndexStart =
+      videoUrl.indexOf('/p/') !== -1
+        ? videoUrl.indexOf('/p/') + 3
+        : videoUrl.indexOf('/tv/') + 4
+    let id = videoUrl.slice(videoIdIndexStart)
     if (id.indexOf('/') !== -1) id = id.slice(0, id.indexOf('/'))
     return id
   }
@@ -127,14 +131,17 @@ export const AddSpotVideoModal = (p: Props) => {
             </p>
             <div>
               {video.type === VideoPlatformType.Instagram ? (
-                <InstagramVideo
-                  style={
-                    window.width && window.width <= theme.breakpoints.values.sm
-                      ? { height: 200 }
-                      : undefined
-                  }
-                  videoId={video.id}
-                />
+                <div
+                  style={{
+                    height:
+                      window.width &&
+                      window.width <= theme.breakpoints.values.sm
+                        ? 200
+                        : 'auto',
+                    overflowY: 'auto',
+                  }}>
+                  <InstagramVideo videoId={video.id} />
+                </div>
               ) : (
                 <YouTubeVideo
                   style={
