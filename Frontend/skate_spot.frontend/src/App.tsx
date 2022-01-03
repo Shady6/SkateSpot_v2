@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { HashRouter, Route, Switch } from 'react-router-dom'
 import Navigation from './components/navigation/Navigation'
 import { RedirectNotPrivileged } from './components/navigation/RedirectNotPrivileged'
 import FlashMsgs from './components/shared/FlashMsgs'
@@ -7,7 +7,6 @@ import hasRouteAccess from './functions/route/hasRouteAccess'
 import { useAuthFromLocalStorage } from './hooks/useAuthFromLocalStorage'
 import { routes } from './routes/appRoutes'
 import { useRootState } from './state/store'
-import config from '../vite.config'
 
 const App: React.FC = () => {
   const state = useRootState()
@@ -33,10 +32,10 @@ const App: React.FC = () => {
   return (
     <>
       <FlashMsgs />
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <HashRouter>
         <Navigation />
         <Switch>{renderRoutes()}</Switch>
-      </BrowserRouter>
+      </HashRouter>
     </>
   )
 }
