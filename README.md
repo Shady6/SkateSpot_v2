@@ -1,7 +1,3 @@
----
-# The website is still work in progress
----
-
 ## About The SkateSpot
 [SkateSpot](https://shady6.github.io/SkateSpot_v2/#/) is a web application where people can share skateboarding spots and videos. Added spots are verified by community by liking or disliking them. When the spot becomes verified it becomes part of the website and you can attach videos to it. In other case the spot is deleted. You can preview all the spots on a list or on a map. To help you search for spots you can use filtering and sorting.
 
