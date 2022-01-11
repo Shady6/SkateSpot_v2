@@ -16,7 +16,7 @@ You will need to have the following installed:
 - PostgreSQL
 - Redis
 
-### Installatio.
+### Installation
 1. Clone the repo
    ```sh
    git clone https://github.com/Shady6/SkateSpot_v2.git
