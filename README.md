@@ -32,7 +32,7 @@ You will need to have the following installed:
   Update-Database -context ApplicationDbContext
   Update-Database -context IdentityContext
   ```
-6. Run the API in Visual Studio and then ```sh npm start``` in the frontend directory
+6. Run the API in Visual Studio and then ```npm start``` in the frontend directory
 
 ## Contributing
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -49,7 +49,23 @@ Don't forget to give the project a star! Thanks again!
 ## Contact
 Feel free to contact me at mikolaj.mikolaj@gmail.com or at Discord Pierog#2244
 
+
+
 ## Acknowledgments
 * [Best-README-Template](https://github.com/othneildrew/Best-README-Template#top)
 * [OpenStreetMap](https://www.openstreetmap.org/#map=7/52.022/19.138)
 * [Nominatim](https://nominatim.org/)
+
+## Screenshots (wide mobile version)
+---
+<kbd><img src="./screenshots/main.png" alt="Main" width="500" /></kbd>
+---
+<kbd><img src="./screenshots/spots.png" alt="Spots" width="500" /></kbd>
+---
+<kbd><img src="./screenshots/filters.png" alt="Filters" width="500" /></kbd>
+---
+<kbd><img src="./screenshots/videos.png" alt="Videos" width="500" /></kbd>
+---
+<kbd><img src="./screenshots/map.png" alt="Map" width="500" /></kbd>
+---
+<kbd><img src="./screenshots/userprofile.png" alt="User" width="500" /></kbd>
